@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["###", "EEE", "###"],
+  "key": {
+    "#": {
+      "item": "enderitemod:enderite_ingot"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "result": {
+    "item": "enderitemod:enderite_respawn_anchor",
+    "count": 1
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "enderitemod",
+  "version": "${version}",
+
+  "name": "Enderite Mod",
+  "description": "Adds Enderite tools and armor with void float ability.",
+  "authors": ["PITTI11", "Nic4las"],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/enderitemod/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": ["net.enderitemc.enderitemod.EnderiteMod"],
+    "client": [
+      {
+        "value": "net.enderitemc.enderitemod.EnderiteModClient"
+      }
+    ]
+  },
+  "mixins": ["enderitemod.mixins.json"],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "enderitemod:enderite_scrap"
+    },
+    {
+      "item": "enderitemod:enderite_scrap"
+    },
+    {
+      "item": "enderitemod:enderite_scrap"
+    },
+    {
+      "item": "enderitemod:enderite_scrap"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    }
+  ],
+  "result": {
+    "item": "enderitemod:enderite_ingot",
+    "count": 1
+  },
+  "group": "enderite_ingot"
+}

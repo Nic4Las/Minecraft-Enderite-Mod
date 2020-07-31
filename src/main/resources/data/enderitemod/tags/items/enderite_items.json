@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "enderitemod:enderite_ore",
+    "enderitemod:cracked_enderite_ore",
+    "enderitemod:enderite_ingot",
+    "enderitemod:enderite_scrap",
+    "enderitemod:enderite_block",
+    "enderitemod:enderite_pickaxe",
+    "enderitemod:enderite_axe",
+    "enderitemod:enderite_sword",
+    "enderitemod:enderite_shovel",
+    "enderitemod:enderite_hoe",
+    "enderitemod:enderite_helmet",
+    "enderitemod:enderite_chestplate",
+    "enderitemod:enderite_leggings",
+    "enderitemod:enderite_boots",
+    "enderitemod:enderite_respawn_anchor",
+    "enderitemod:enderite_shulker_box",
+    "enderitemod:enderite_elytra"
+  ]
+}

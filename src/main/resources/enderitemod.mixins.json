@@ -1,0 +1,31 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.enderitemc.enderitemod.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "EnderiteDropMixin",
+    "EnderiteDropDamageMixin",
+    "EndermanStopStaringMixin",
+    "SmithingEnderiteSwordMixin",
+    "SmithingEnderiteSwordOutputMixin",
+    "SmithingEnderiteSwordTakeMixin",
+    "EnderiteRespawnAnchorMixin",
+    "ElytraPlayerEntityMixin",
+    "ElytraLivingEntityMixin"
+  ],
+  "client": [
+    "EnderiteDropMixin",
+    "EnderiteDropDamageMixin",
+    "EndermanStopStaringMixin",
+    "SmithingEnderiteSwordMixin",
+    "SmithingEnderiteSwordOutputMixin",
+    "SmithingEnderiteSwordTakeMixin",
+    "EnderiteRespawnAnchorMixin",
+    "ElytraFeatureRendererMixin",
+    "ElytraClientPlayerEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
