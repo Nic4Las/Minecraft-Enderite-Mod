@@ -24,7 +24,15 @@ With these ingots you can craft Enderite tools and blocks, which all have the vo
 - **Enderite Helmet**: prevents Enderman from getting aggressive towards you when looking at them
 - **Enderite Elytra Chestplate**: Enderite Chestplate fused with the Elytra, provides armor and Eyltra flight
 
-Found on Curseforge at:
+Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric
+
+
+## Developers
+- Pitti11
+- Nic4Las
+
+## License
+Enderite Mod is licensed under MIT. The full license can be found in the license file.
 
 ## TODO
 
