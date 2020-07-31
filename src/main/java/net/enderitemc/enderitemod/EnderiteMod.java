@@ -1,7 +1,5 @@
 package net.enderitemc.enderitemod;
 
-import org.lwjgl.glfw.GLFW;
-
 import net.enderitemc.enderitemod.blocks.CrackedEnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteBlock;
 import net.enderitemc.enderitemod.blocks.EnderiteOre;
@@ -19,7 +17,6 @@ import net.enderitemc.enderitemod.tools.EnderiteSword;
 import net.enderitemc.enderitemod.tools.HoeSubclass;
 import net.enderitemc.enderitemod.tools.PickaxeSubclass;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
@@ -30,8 +27,6 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
-import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
@@ -101,15 +96,6 @@ public class EnderiteMod implements ModInitializer {
 			FabricBlockSettings.of(Material.SHULKER_BOX).nonOpaque().strength(2.0f, 2.0f)
 					.breakByTool(FabricToolTags.PICKAXES, 1));
 
-	// Key binding
-	public static KeyBinding keyArmorEffect = new KeyBinding("key.enderitemod.keyArmorEffect", // The translation key
-																								// of the keybinding's
-			// name
-			InputUtil.Type.KEYSYM, // The type of the keybinding, KEYSYM for keyboard, MOUSE for mouse.
-			GLFW.GLFW_KEY_LEFT_SHIFT, // The keycode of the key
-			"category.enderitemod.keys" // The translation key of the keybinding's category.
-	);
-
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -156,21 +142,6 @@ public class EnderiteMod implements ModInitializer {
 				"enderitemod:enderite_shulker_box_block_entity",
 				BlockEntityType.Builder.create(EnderiteShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null));
 		BlockEntityType.Builder.create(ShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null);
-		// ScreenHandlerRegistry.registerExtended(new
-		// Identifier("enderitemod:enderite_shulker_box_block_entity"),
-		// new ExtendedClientHandlerFactory<ScreenHandler>() {
-		// public ScreenHandler create(int syncId, PlayerInventory playerInv,
-		// PacketByteBuf buf) {
-		// final BlockEntity blockEntity =
-		// playerInv.player.world.getBlockEntity(buf.readBlockPos());
-		// return ((EnderiteShulkerBoxBlockEntity)
-		// blockEntity).createScreenHandler(syncId, playerInv);
-		// }
-
-		// });
-
-		// Key binding
-		KeyBindingHelper.registerKeyBinding(keyArmorEffect);
 
 		// Loop over existing biomes
 		Registry.BIOME.forEach(this::handleBiome);

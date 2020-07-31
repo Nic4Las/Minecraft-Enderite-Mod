@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -161,12 +162,19 @@ public class EnderiteSword extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
+        if (itemStack.getTag().contains("teleport_charge")) {
+            String charge = itemStack.getTag().get("teleport_charge").toString();
+            tooltip.add(new LiteralText("Charge: " + charge).formatted(new Formatting[] { Formatting.DARK_AQUA }));
+        } else {
+            tooltip.add(new LiteralText("Charge: 0").formatted(new Formatting[] { Formatting.DARK_AQUA }));
+        }
         tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip1")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
         tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip2")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
         tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip3")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
+
     }
 
     @Override
