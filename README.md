@@ -1,5 +1,5 @@
 # Enderite Mod
-
+[![](http://cf.way2muchnoise.eu/versions/399221.svg)](https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric) [![](http://cf.way2muchnoise.eu/short_399221_⭳.svg)](https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric/files) [![License: LGPL v3](https://img.shields.io/badge/License-MIT-darkred.svg?&style=flat-square)](https://opensource.org/licenses/MIT)
 ![Items and Blocks](https://i.imgur.com/55CfkBm.png)
 
 ## Description
