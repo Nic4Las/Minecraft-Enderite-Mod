@@ -6,7 +6,7 @@
   "item.enderitemod.enderite_shovel": "Enderitschaufel",
   "item.enderitemod.enderite_hoe": "Enderithacke",
   "item.enderitemod.enderite_sword": "Enderitschwert",
-  "block.enderitemod.enderite_block": "Block of Enderite",
+  "block.enderitemod.enderite_block": "Enderitblock",
   "block.enderitemod.enderite_ore": "Enderiterz",
   "block.enderitemod.cracked_enderite_ore": "Rissiges Enderiterz",
   "block.enderitemod.enderite_respawn_anchor": "Enderitseelenanker",
@@ -19,7 +19,7 @@
   "item.enderitemod.enderite_elytra": "Enderitelytraharnisch",
   "category.enderitemod.keys": "Enderite Mod Tasten",
   "key.enderitemod.keyArmorEffect": "Effekt unterdrücken",
-  "item.enderitemod.enderite_sword.tooltip1": "Verbessere im Schmiedetisch mit Enderperlen",
+  "item.enderitemod.enderite_sword.tooltip1": "Im Schmiedetisch mit Enderperlen verbessern",
   "item.enderitemod.enderite_sword.tooltip2": "um Teleportationsaufladungen zu erhalten.",
   "item.enderitemod.enderite_sword.tooltip3": "Teleportieren mit schleichen + rechtsklick!",
   "item.enderitemod.enderite_sword.charge": "Aufladung"
