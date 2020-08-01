@@ -1,4 +1,5 @@
 # Enderite Mod
+
 [![](http://cf.way2muchnoise.eu/versions/399221.svg)](https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric) [![](http://cf.way2muchnoise.eu/short_399221_⭳.svg)](https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric/files) [![License: LGPL v3](https://img.shields.io/badge/License-MIT-darkred.svg?&style=flat-square)](https://opensource.org/licenses/MIT)
 ![Items and Blocks](https://i.imgur.com/55CfkBm.png)
 
@@ -26,12 +27,17 @@ With these ingots you can craft Enderite tools and blocks, which all have the vo
 
 Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric
 
-
 ## Developers
+
 - Pitti11
 - Nic4Las
 
+## Translation
+
+- ES: CamoloQlo
+
 ## License
+
 Enderite Mod is licensed under MIT. The full license can be found in the license file.
 
 ## TODO

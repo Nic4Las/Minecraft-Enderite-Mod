@@ -21,5 +21,6 @@
   "key.enderitemod.keyArmorEffect": "Effect disabling",
   "item.enderitemod.enderite_sword.tooltip1": "Upgrade in smithing table with",
   "item.enderitemod.enderite_sword.tooltip2": "enderpearls to load teleportation uses.",
-  "item.enderitemod.enderite_sword.tooltip3": "Teleport with sneaking + right click!"
+  "item.enderitemod.enderite_sword.tooltip3": "Teleport with sneaking + right click!",
+  "item.enderitemod.enderite_sword.charge": "Charge"
 }

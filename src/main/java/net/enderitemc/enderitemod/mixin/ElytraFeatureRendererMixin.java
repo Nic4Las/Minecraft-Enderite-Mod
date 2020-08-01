@@ -28,8 +28,7 @@ import net.minecraft.util.Identifier;
 public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M extends EntityModel<T>>
         extends FeatureRenderer<T, M> {
 
-    @Shadow
-    private static final Identifier SKIN = new Identifier("textures/entity/enderite_elytra.png");
+    private static final Identifier ELYTRA_SKIN = new Identifier("textures/entity/enderite_elytra.png");
 
     @Shadow
     private final ElytraEntityModel<T> elytra = new ElytraEntityModel();
@@ -55,10 +54,10 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
                         && abstractClientPlayerEntity.isPartVisible(PlayerModelPart.CAPE)) {
                     identifier4 = abstractClientPlayerEntity.getCapeTexture();
                 } else {
-                    identifier4 = SKIN;
+                    identifier4 = ELYTRA_SKIN;
                 }
             } else {
-                identifier4 = SKIN;
+                identifier4 = ELYTRA_SKIN;
             }
 
             matrixStack.push();

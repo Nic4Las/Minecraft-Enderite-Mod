@@ -164,9 +164,11 @@ public class EnderiteSword extends SwordItem {
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
         if (itemStack.getTag().contains("teleport_charge")) {
             String charge = itemStack.getTag().get("teleport_charge").toString();
-            tooltip.add(new LiteralText("Charge: " + charge).formatted(new Formatting[] { Formatting.DARK_AQUA }));
+            tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.charge")
+                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(new LiteralText(": " + charge)));
         } else {
-            tooltip.add(new LiteralText("Charge: 0").formatted(new Formatting[] { Formatting.DARK_AQUA }));
+            tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.charge")
+                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(new LiteralText(": 0")));
         }
         tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip1")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
