@@ -31,6 +31,7 @@ Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mo
 
 - Pitti11
 - Nic4Las
+- Pianomanu (Forge)
 
 ## Translation
 
@@ -42,6 +43,10 @@ Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mo
 Enderite Mod is licensed under MIT. The full license can be found in the license file.
 
 ## TODO
+
+- Forge version
+
+## Fabric
 
 ### 1.1.0
 
