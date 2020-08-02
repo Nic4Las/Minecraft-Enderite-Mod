@@ -45,6 +45,8 @@ Enderite Mod is licensed under MIT. The full license can be found in the license
 
 ### 1.1.0
 
+- [ ] Enderite Bow/Crossbow
+- [ ] Enderite Shield
 - [ ] Void floating enchantment
 - [ ] Enderite Horse Armor compatibility with Netherite Horse Armor mod
 
