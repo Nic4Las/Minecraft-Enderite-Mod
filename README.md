@@ -5,7 +5,10 @@
 
 ## Description
 
-The Enderite Mod adds new armor and tools, which are successors of Netherite tools.
+<details>
+  <summary>Open Description</summary>
+  
+  The Enderite Mod adds new armor and tools, which are successors of Netherite tools.
 Enderite ore can be found in the End and needs to be blown up before it can be mined.
 You can smelt the ore in a blast furnace to get scraps, which can be craft with diamonds to Enderite Ingots (similar to Netherite).
 With these ingots you can craft Enderite tools and blocks, which all have the void floating ability.
@@ -24,6 +27,11 @@ With these ingots you can craft Enderite tools and blocks, which all have the vo
 - **Enderite Sword**: Can be charged with ender pearls in the smithing table, lets you teleport with sneak + right click if charged
 - **Enderite Helmet**: prevents Enderman from getting aggressive towards you when looking at them
 - **Enderite Elytra Chestplate**: Enderite Chestplate fused with the Elytra, provides armor and Eyltra flight
+  
+  
+</details>
+
+
 
 Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric
 
@@ -56,6 +64,9 @@ Enderite Mod is licensed under MIT. The full license can be found in the license
 - [ ] Void floating enchantment
 - [x] Enderite Horse Armor compatibility with Netherite Horse Armor mod
 
+<details>
+  <summary>Open Old Versions</summary>
+
 ### 1.0.0
 
 - [x] Enderite Sword show charge status
@@ -79,3 +90,4 @@ Enderite Mod is licensed under MIT. The full license can be found in the license
 - [x] Enderite Ore/Cracked Enderite Ore
 - [x] Enderite Tools
 - [x] Enderite Armor
+</details>
