@@ -146,12 +146,6 @@ public class EnderiteMod implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_bow"), ENDERITE_BOW);
 
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_shield"), ENDERITE_SHIELD);
-		BuiltinItemRendererRegistry.INSTANCE.register(ENDERITE_SHIELD, new EnderiteShieldRenderer());
-		ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlaxTexture, registry) -> {
-			if (atlaxTexture.getId() == SpriteAtlasTexture.BLOCK_ATLAS_TEX) {
-				registry.register(new Identifier("enderitemod:entity/enderite_shield_base"));
-			}
-		});
 		Registry.register(Registry.RECIPE_SERIALIZER, "enderitemod:crafting_special_enderiteshielddecoration",
 				ENDERITE_SHIELD_DECORATION_RECIPE);
 
