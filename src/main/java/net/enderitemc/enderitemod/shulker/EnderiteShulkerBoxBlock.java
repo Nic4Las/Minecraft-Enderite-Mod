@@ -167,7 +167,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         builder.add(FACING);
     }
 
-    public ItemStack getItemStack() {
+    public static ItemStack getItemStack() {
         return new ItemStack(EnderiteMod.ENDERITE_SHULKER_BOX);
     }
 

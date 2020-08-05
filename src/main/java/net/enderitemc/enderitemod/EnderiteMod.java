@@ -4,19 +4,28 @@ import net.enderitemc.enderitemod.blocks.CrackedEnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteBlock;
 import net.enderitemc.enderitemod.blocks.EnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
+import net.enderitemc.enderitemod.enchantments.VoidFloatingEnchantment;
 import net.enderitemc.enderitemod.items.EnderiteIngot;
 import net.enderitemc.enderitemod.items.EnderiteScrap;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
+import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
+import net.enderitemc.enderitemod.misc.EnderiteShieldRenderer;
 import net.enderitemc.enderitemod.oreGeneration.EndOreFeature;
 import net.enderitemc.enderitemod.oreGeneration.EndOreFeatureConfig;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
+import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxRecipe;
 import net.enderitemc.enderitemod.tools.AxeSubclass;
+import net.enderitemc.enderitemod.tools.EnderiteBow;
+import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
+import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteSword;
 import net.enderitemc.enderitemod.tools.HoeSubclass;
 import net.enderitemc.enderitemod.tools.PickaxeSubclass;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
@@ -27,14 +36,19 @@ import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.predicate.block.BlockPredicate;
+import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -93,14 +107,30 @@ public class EnderiteMod implements ModInitializer {
 	// Shulker Box
 	public static BlockEntityType<EnderiteShulkerBoxBlockEntity> ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
 	public static final EnderiteShulkerBoxBlock ENDERITE_SHULKER_BOX = new EnderiteShulkerBoxBlock((DyeColor) null,
-			FabricBlockSettings.of(Material.SHULKER_BOX).nonOpaque().strength(2.0f, 2.0f)
+			FabricBlockSettings.of(Material.SHULKER_BOX).nonOpaque().strength(2.0f, 17.0f)
 					.breakByTool(FabricToolTags.PICKAXES, 1));
+	public static SpecialRecipeSerializer<EnderiteShulkerBoxRecipe> ENDERITE_SHULKER_BOX_RECIPE = new SpecialRecipeSerializer<>(
+			EnderiteShulkerBoxRecipe::new);
+
+	// Bows
+	public static final EnderiteCrossbow ENDERITE_CROSSBOW = new EnderiteCrossbow(
+			new Item.Settings().group(ItemGroup.COMBAT).fireproof().maxCount(1).maxDamage(768));
+	public static final BowItem ENDERITE_BOW = new EnderiteBow(
+			new Item.Settings().group(ItemGroup.COMBAT).fireproof().maxCount(1).maxDamage(768));
+
+	// Shield
+	public static final ShieldItem ENDERITE_SHIELD = new EnderiteShield(
+			new Item.Settings().group(ItemGroup.COMBAT).fireproof().maxCount(1).maxDamage(768));
+
+	public static SpecialRecipeSerializer<EnderiteShieldDecorationRecipe> ENDERITE_SHIELD_DECORATION_RECIPE = new SpecialRecipeSerializer<>(
+			EnderiteShieldDecorationRecipe::new);
+
+	// Enchantment
+	public static Enchantment VOID_FLOATING_ENCHANTMENT;
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+		// Items
 
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_ingot"), ENDERITE_INGOT);
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_scrap"), ENDERITE_SCRAP);
@@ -111,6 +141,21 @@ public class EnderiteMod implements ModInitializer {
 
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_shovel"), ENDERITE_SHOVEL);
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_sword"), ENDERITE_SWORD);
+
+		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_crossbow"), ENDERITE_CROSSBOW);
+		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_bow"), ENDERITE_BOW);
+
+		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_shield"), ENDERITE_SHIELD);
+		BuiltinItemRendererRegistry.INSTANCE.register(ENDERITE_SHIELD, new EnderiteShieldRenderer());
+		ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlaxTexture, registry) -> {
+			if (atlaxTexture.getId() == SpriteAtlasTexture.BLOCK_ATLAS_TEX) {
+				registry.register(new Identifier("enderitemod:entity/enderite_shield_base"));
+			}
+		});
+		Registry.register(Registry.RECIPE_SERIALIZER, "enderitemod:crafting_special_enderiteshielddecoration",
+				ENDERITE_SHIELD_DECORATION_RECIPE);
+
+		// Blocks
 
 		Registry.register(Registry.BLOCK, new Identifier("enderitemod", "enderite_block"), ENDERITE_BLOCK);
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_block"),
@@ -135,6 +180,8 @@ public class EnderiteMod implements ModInitializer {
 
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_elytra"), ENDERITE_ELYTRA);
 
+		Registry.register(Registry.RECIPE_SERIALIZER, "enderitemod:crafting_special_enderiteshulkerbox",
+				ENDERITE_SHULKER_BOX_RECIPE);
 		Registry.register(Registry.BLOCK, new Identifier("enderitemod", "enderite_shulker_box"), ENDERITE_SHULKER_BOX);
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_shulker_box"), new BlockItem(
 				ENDERITE_SHULKER_BOX, new Item.Settings().group(ItemGroup.DECORATIONS).fireproof().maxCount(1)));
@@ -142,6 +189,10 @@ public class EnderiteMod implements ModInitializer {
 				"enderitemod:enderite_shulker_box_block_entity",
 				BlockEntityType.Builder.create(EnderiteShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null));
 		BlockEntityType.Builder.create(ShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null);
+
+		// ENCHANTMENT
+		VOID_FLOATING_ENCHANTMENT = Registry.register(Registry.ENCHANTMENT,
+				new Identifier("enderitemod", "void_floating"), new VoidFloatingEnchantment());
 
 		// Loop over existing biomes
 		Registry.BIOME.forEach(this::handleBiome);

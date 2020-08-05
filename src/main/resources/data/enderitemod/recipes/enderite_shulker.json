@@ -1,16 +1,3 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [" # ", "#S#", " # "],
-  "key": {
-    "#": {
-      "item": "enderitemod:enderite_ingot"
-    },
-    "S": {
-      "tag": "enderitemod:shulker_boxes"
-    }
-  },
-  "result": {
-    "item": "enderitemod:enderite_shulker_box",
-    "count": 1
-  }
+  "type": "enderitemod:crafting_special_enderiteshulkerbox"
 }

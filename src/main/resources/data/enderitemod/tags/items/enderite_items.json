@@ -17,6 +17,9 @@
     "enderitemod:enderite_boots",
     "enderitemod:enderite_respawn_anchor",
     "enderitemod:enderite_shulker_box",
-    "enderitemod:enderite_elytra"
+    "enderitemod:enderite_elytra",
+    "enderitemod:enderite_bow",
+    "enderitemod:enderite_crossbow",
+    "enderitemod:enderite_shield"
   ]
 }

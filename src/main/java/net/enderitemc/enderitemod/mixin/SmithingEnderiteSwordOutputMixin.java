@@ -24,7 +24,8 @@ public abstract class SmithingEnderiteSwordOutputMixin extends ForgingScreenHand
     private void alwaysTakeable(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> info) {
         // If output is enderite sword, you can always take it out
         // used to make the enderpearl charging work
-        if (this.output.getStack(0).getItem() == EnderiteMod.ENDERITE_SWORD) {
+        if (this.output.getStack(0).getItem() == EnderiteMod.ENDERITE_SWORD
+                || this.output.getStack(0).getItem() == EnderiteMod.ENDERITE_SHIELD) {
             info.setReturnValue(true);
         }
     }

@@ -27,7 +27,8 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
         // Overwrites smithing screen to accept enderpearls as charge for sword
         ItemStack sword = this.input.getStack(0);
         ItemStack pearls = this.input.getStack(1);
-        if (sword.getItem() == EnderiteMod.ENDERITE_SWORD && pearls.getItem() == Items.ENDER_PEARL) {
+        if ((sword.getItem() == EnderiteMod.ENDERITE_SWORD || sword.getItem() == EnderiteMod.ENDERITE_SHIELD)
+                && pearls.getItem() == Items.ENDER_PEARL) {
             // If new sword, basic charge is enderpearl count
             int teleport_charge = pearls.getCount();
             // Read the charge of sword
@@ -35,6 +36,9 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
                 // Charge is old charge + amount of enderpearls
                 teleport_charge = Integer.parseInt(sword.getTag().get("teleport_charge").asString())
                         + pearls.getCount();
+            }
+            if (teleport_charge > 64) {
+                teleport_charge = 64;
             }
             // Copy the same sword and put charge into it
             ItemStack newSword = sword.copy();

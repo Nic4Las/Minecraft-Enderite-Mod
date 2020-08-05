@@ -36,9 +36,20 @@ public abstract class SmithingEnderiteSwordTakeMixin extends ForgingScreenHandle
     @Inject(at = @At("HEAD"), cancellable = true, method = "onTakeOutput")
     private void nowTake(PlayerEntity player, ItemStack itemStack, CallbackInfoReturnable<Boolean> info) {
         // Take all pearls
-        if (this.input.getStack(0).getItem() == EnderiteMod.ENDERITE_SWORD
+        if ((this.input.getStack(0).getItem() == EnderiteMod.ENDERITE_SWORD
+                || this.input.getStack(0).getItem() == EnderiteMod.ENDERITE_SHIELD)
                 && this.input.getStack(1).getItem() == Items.ENDER_PEARL) {
-            this.superDecrement(1, this.input.getStack(1).getCount());
+
+            int amountToSubstract = this.input.getStack(1).getCount();
+            // Read the charge of sword
+            if (this.input.getStack(0).getTag().contains("teleport_charge")) {
+                // Charge is old charge + amount of enderpearls
+                int allowableSubstract = 64
+                        - Integer.parseInt(this.input.getStack(0).getTag().get("teleport_charge").asString());
+                amountToSubstract = Math.min(allowableSubstract, amountToSubstract);
+            }
+
+            this.superDecrement(1, amountToSubstract - 1);
         }
     }
 }

@@ -1,6 +1,6 @@
 package net.enderitemc.enderitemod.materials;
 
-import com.google.common.base.Supplier;
+import java.util.function.Supplier;
 
 import net.enderitemc.enderitemod.*;
 

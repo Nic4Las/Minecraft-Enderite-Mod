@@ -20,7 +20,7 @@
   "category.enderitemod.keys": "Enderite Mod Keys",
   "key.enderitemod.keyArmorEffect": "Efecto inhabilitado",
   "item.enderitemod.enderite_sword.tooltip1": "Mejorar en una mesa de herrería con",
-  "item.enderitemod.enderite_sword.tooltip2": "perlas de ender para obtener usos",
-  "item.enderitemod.enderite_sword.tooltip3": "Agachado usa click derecho para teletransportarte!!",
+  "item.enderitemod.enderite_sword.tooltip2": "perlas de ender para obtener usos.",
+  "item.enderitemod.enderite_sword.tooltip3": "Agachado usa click derecho para teletransportarte!",
   "item.enderitemod.enderite_sword.charge": "Carga"
 }

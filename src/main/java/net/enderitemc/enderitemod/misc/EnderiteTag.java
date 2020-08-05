@@ -7,4 +7,6 @@ import net.minecraft.util.Identifier;
 
 public class EnderiteTag {
     public static final Tag<Item> ENDERITE_ITEM = TagRegistry.item(new Identifier("enderitemod", "enderite_items"));
+    public static final Tag<Item> CRAFTABLE_SHULKER_BOXES = TagRegistry
+            .item(new Identifier("enderitemod", "shulker_boxes"));
 }

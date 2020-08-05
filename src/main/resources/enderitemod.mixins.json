@@ -12,7 +12,8 @@
     "SmithingEnderiteSwordTakeMixin",
     "EnderiteRespawnAnchorMixin",
     "ElytraPlayerEntityMixin",
-    "ElytraLivingEntityMixin"
+    "ElytraLivingEntityMixin",
+    "EnderiteShieldPlayerEntityMixin"
   ],
   "client": [
     "EnderiteDropMixin",
@@ -23,7 +24,8 @@
     "SmithingEnderiteSwordTakeMixin",
     "EnderiteRespawnAnchorMixin",
     "ElytraFeatureRendererMixin",
-    "ElytraClientPlayerEntityMixin"
+    "ElytraClientPlayerEntityMixin",
+    "EnderiteRangedMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -17,7 +17,6 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -40,7 +39,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
 
     public EnderiteShulkerBoxBlockEntity() {
         super(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY);
-        this.inventory = DefaultedList.ofSize(27, ItemStack.EMPTY);
+        this.inventory = DefaultedList.ofSize(45, ItemStack.EMPTY);
         this.animationStage = EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED;
     }
 
@@ -264,7 +263,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     }
 
     public ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new ShulkerBoxScreenHandler(syncId, playerInventory, this);
+        return new EnderiteShulkerBoxScreenHandler(syncId, playerInventory, this, this.inventory.size());
     }
 
     public boolean suffocates() {
