@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.enderitemc.enderitemod.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "enderitemod.refmap.json",
+  "mixins": ["EnderiteDropMixin"],
+  "client": ["EndermanStopStaringMixin"],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
