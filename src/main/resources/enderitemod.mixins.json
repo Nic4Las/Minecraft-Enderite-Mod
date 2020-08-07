@@ -4,8 +4,8 @@
   "package": "net.enderitemc.enderitemod.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "enderitemod.refmap.json",
-  "mixins": ["EnderiteDropMixin"],
-  "client": ["EndermanStopStaringMixin"],
+  "mixins": ["EnderiteDropMixin", "EnderiteDropDamageMixin"],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }
