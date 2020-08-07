@@ -43,6 +43,7 @@ Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mo
 - ES: CamoloQlo
 - ZH: Samekichi
 - RU: temac000
+- CH: WuzgXY
 
 ## License
 
