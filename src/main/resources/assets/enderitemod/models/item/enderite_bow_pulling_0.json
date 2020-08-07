@@ -1,0 +1,6 @@
+{
+  "parent": "enderitemod:item/enderite_bow",
+  "textures": {
+    "layer0": "enderitemod:item/enderite_bow_pulling_0"
+  }
+}

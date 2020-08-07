@@ -11,6 +11,7 @@ import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -18,6 +19,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.structure.MineshaftPieces.Cross;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
@@ -131,6 +133,24 @@ public class Registration {
                     (new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_().rarity(Rarity.EPIC)))); // obfuscated
                                                                                                             // method is
                                                                                                             // "fireproof"
-    //OreGen
+    //Shulker
+    public static final RegistryObject<Block> ENDERITE_SHULKER_BOX = BLOCKS.register("enderite_shulker_box",
+            () -> new ShulkerBoxBlock(null,AbstractBlock.Properties.create(Material.SHULKER, MaterialColor.BLACK)
+                    .notSolid().hardnessAndResistance(2.0F, 17.0F)));
+    public static final RegistryObject<Item> ENDERITE_SHULKER_BOX_ITEM = ITEMS.register("enderite_shulker_box",
+            () -> new BlockItem(ENDERITE_SHULKER_BOX.get(), new Item.Properties().group(ItemGroup.DECORATIONS)));
+
+
+
+    //Bow/Crossbow/shield
+    public static final RegistryObject<Item> ENDERITE_SHIELD = ITEMS.register("enderite_shield",
+            () -> new ShieldItem(new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_()));
+
+    public static final RegistryObject<Item> ENDERITE_BOW = ITEMS.register("enderite_bow",
+            () -> new BowItem(new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_()));
+
+    public static final RegistryObject<Item> ENDERITE_CROSSBOW = ITEMS.register("enderite_crossbow",
+            () -> new CrossbowItem(new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_()));
+
 
 }

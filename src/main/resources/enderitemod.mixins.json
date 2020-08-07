@@ -4,8 +4,8 @@
   "package": "net.enderitemc.enderitemod.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "enderitemod.refmap.json",
-  "mixins": ["EnderiteDropMixin", "EnderiteDropDamageMixin"],
-  "client": [],
+  "mixins": ["EnderiteDropMixin", "EnderiteDropDamageMixin", "ElytraPlayerEntityMixin", "ElytraLivingEntityMixin"],
+  "client": ["ElytraFeatureRendererMixin", "ElytraClientPlayerEntityMixin"],
   "injectors": {
     "defaultRequire": 1
   }

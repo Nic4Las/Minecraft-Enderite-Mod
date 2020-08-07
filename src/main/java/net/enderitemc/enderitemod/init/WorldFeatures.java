@@ -17,18 +17,30 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class WorldFeatures {
-    public static void init() {
-        BiomeDictionary.getTypes(Biomes.THE_END);
+        public static void init() {
+                BiomeDictionary.getTypes(Biomes.THE_END);
 
-        OreFeatureConfig.FillerBlockType fillerBlockType = OreFeatureConfig.FillerBlockType.create("END_STONE","endstone", new BlockMatcher(Blocks.END_STONE));
-        //BlockState state = Registration.ENDERITE_ORE.get().getDefaultState();
-        //fixme
-        BlockState state = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(EnderiteMod.MOD_ID, "enderite_ore")).getDefaultState();
-        //Biomes.THE_END.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new EnderiteOreHelper(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Registration.ENDERITE_ORE.get().getDefaultState(), 3)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(30,0,12,48))));
-        Biomes.THE_END.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(300,0,12,48))));
-        Biomes.END_BARRENS.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(300,0,12,48))));
-        Biomes.END_HIGHLANDS.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(300,0,12,48))));
-        Biomes.END_MIDLANDS.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(300,0,12,48))));
-        Biomes.SMALL_END_ISLANDS.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(300,0,12,48))));
-    }
+                OreFeatureConfig.FillerBlockType fillerBlockType = OreFeatureConfig.FillerBlockType.create("END_STONE",
+                                "endstone", new BlockMatcher(Blocks.END_STONE));
+                                
+                BlockState state = ForgeRegistries.BLOCKS
+                                .getValue(new ResourceLocation(EnderiteMod.MOD_ID, "enderite_ore")).getDefaultState();
+
+                CountRangeConfig countConfig = new CountRangeConfig(3, 12, 12, 48);
+                Biomes.THE_END.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE
+                                .withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3))
+                                .withPlacement(Placement.COUNT_RANGE.configure(countConfig)));
+                Biomes.END_BARRENS.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE
+                                .withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3))
+                                .withPlacement(Placement.COUNT_RANGE.configure(countConfig)));
+                Biomes.END_HIGHLANDS.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE
+                                .withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3))
+                                .withPlacement(Placement.COUNT_RANGE.configure(countConfig)));
+                Biomes.END_MIDLANDS.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE
+                                .withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3))
+                                .withPlacement(Placement.COUNT_RANGE.configure(countConfig)));
+                Biomes.SMALL_END_ISLANDS.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE
+                                .withConfiguration(new EnderiteOreHelper(fillerBlockType, state, 3))
+                                .withPlacement(Placement.COUNT_RANGE.configure(countConfig)));
+        }
 }

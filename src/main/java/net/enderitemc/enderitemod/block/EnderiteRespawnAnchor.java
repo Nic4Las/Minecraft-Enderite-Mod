@@ -62,7 +62,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
     }
 
     public static boolean isNether(World world) {
-        return world.func_230315_m_().func_241511_k_();
+        return world.func_230315_m_().func_236046_h_(); //world.getDimesnion().hasEnderDragonFight()
     }
 
     private static boolean canCharge(BlockState state) {
