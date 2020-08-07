@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 
 public class EnderiteHelmet extends ArmorItem {
 
-    public EnderiteHelmet(IArmorMaterial materialIn, EquipmentSlotType slot, Properties p_i48534_3_) {
-        super(materialIn, slot, p_i48534_3_);
+    public EnderiteHelmet(IArmorMaterial materialIn, EquipmentSlotType slot, Properties properties) {
+        super(materialIn, slot, properties);
     }
 
     @Override
