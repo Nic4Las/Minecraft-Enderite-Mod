@@ -23,4 +23,26 @@
   "item.enderitemod.enderite_sword.tooltip2": "来补充传送的可用次数，",
   "item.enderitemod.enderite_sword.tooltip3": "并使用潜行+右键来传送！",
   "item.enderitemod.enderite_sword.charge": "可用次数"
+  
+  "enchantment.enderitemod.void_floating": "Void floating",
+  "item.enderitemod.enderite_bow": "Enderite Bow",
+  "item.enderitemod.enderite_crossbow": "Enderite Crossbow",
+  "item.enderitemod.enderite_shield": "Enderite Shield",
+  "item.enderitemod.enderite_shield.black": "Black Enderite Shield",
+  "item.enderitemod.enderite_shield.red": "Red Enderite Shield",
+  "item.enderitemod.enderite_shield.green": "Green Enderite Shield",
+  "item.enderitemod.enderite_shield.brown": "Brown Enderite Shield",
+  "item.enderitemod.enderite_shield.blue": "Blue Enderite Shield",
+  "item.enderitemod.enderite_shield.purple": "Purple Enderite Shield",
+  "item.enderitemod.enderite_shield.cyan": "Cyan Enderite Shield",
+  "item.enderitemod.enderite_shield.light_gray": "Light Gray Enderite Shield",
+  "item.enderitemod.enderite_shield.gray": "Gray Enderite Shield",
+  "item.enderitemod.enderite_shield.pink": "Pink Enderite Shield",
+  "item.enderitemod.enderite_shield.lime": "Lime Enderite Shield",
+  "item.enderitemod.enderite_shield.yellow": "Yellow Enderite Shield",
+  "item.enderitemod.enderite_shield.light_blue": "Light Blue Enderite Shield",
+  "item.enderitemod.enderite_shield.magenta": "Magenta Enderite Shield",
+  "item.enderitemod.enderite_shield.orange": "Orange Enderite Shield",
+  "item.enderitemod.enderite_shield.white": "White Enderite Shield",
+  "item.enderitemod.enderite_shield.tooltip3": "Teleport attacker with sneaking + block!"
 }
