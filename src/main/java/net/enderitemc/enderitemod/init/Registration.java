@@ -17,6 +17,7 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
@@ -35,6 +36,7 @@ public class Registration {
             EnderiteMod.MOD_ID);
     private static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister
             .create(ForgeRegistries.TILE_ENTITIES, EnderiteMod.MOD_ID);
+    private static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, EnderiteMod.MOD_ID);
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -129,5 +131,6 @@ public class Registration {
                     (new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_().rarity(Rarity.EPIC)))); // obfuscated
                                                                                                             // method is
                                                                                                             // "fireproof"
+    //OreGen
 
 }

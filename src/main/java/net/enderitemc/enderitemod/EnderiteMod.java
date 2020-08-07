@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod;
 
 import net.enderitemc.enderitemod.init.Registration;
+import net.enderitemc.enderitemod.init.WorldFeatures;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,6 +35,7 @@ public class EnderiteMod {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
 
         Registration.init();
+        WorldFeatures.init();
         // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         // Register the doClientStuff method for modloading
