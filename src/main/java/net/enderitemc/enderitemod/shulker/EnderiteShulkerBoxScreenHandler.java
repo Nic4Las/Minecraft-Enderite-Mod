@@ -1,5 +1,8 @@
 package net.enderitemc.enderitemod.shulker;
 
+import net.enderitemc.enderitemod.misc.EnderiteTag;
+import net.minecraft.block.Block;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -13,22 +16,23 @@ import net.minecraft.screen.slot.Slot;
 public class EnderiteShulkerBoxScreenHandler extends ScreenHandler {
     private final Inventory inventory;
 
-    public EnderiteShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory, int inventorySize) {
-        this(syncId, playerInventory, new SimpleInventory(inventorySize), inventorySize);
+    public EnderiteShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory) {
+        this(syncId, playerInventory, new SimpleInventory(45));
     }
 
-    public EnderiteShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory,
-            int inventorySize) {
+    public EnderiteShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(ScreenHandlerType.GENERIC_9X5, syncId);
-        checkSize(inventory, inventorySize);
+        checkSize(inventory, 45);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
+        int i;
+        int j;
 
         int o;
         int n;
-        for (o = 0; o < inventorySize / 9; ++o) {
+        for (o = 0; o < 5; ++o) {
             for (n = 0; n < 9; ++n) {
-                this.addSlot(new ShulkerBoxSlot(inventory, n + o * 9, 8 + n * 18, 18 + o * 18));
+                this.addSlot(new EnderiteShulkerSlot(inventory, n + o * 9, 8 + n * 18, 18 + o * 18));
             }
         }
 
@@ -70,6 +74,21 @@ public class EnderiteShulkerBoxScreenHandler extends ScreenHandler {
         }
 
         return itemStack;
+    }
+
+    @Override
+    public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
+        boolean bl = true;
+        if (slot instanceof EnderiteShulkerSlot) {
+            bl = this.acceptItems(stack);
+        }
+        return super.canInsertIntoSlot(stack, slot) && bl;
+    }
+
+    public boolean acceptItems(ItemStack stack) {
+        boolean bl1 = stack.getItem() == EnderiteShulkerBoxBlock.getItemStack().getItem();
+        boolean bl2 = Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock;
+        return !bl1 && !bl2;
     }
 
     public void close(PlayerEntity player) {

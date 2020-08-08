@@ -1,14 +1,3 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "enderitemod:enderite_chestplate"
-    },
-    {
-      "item": "minecraft:elytra"
-    }
-  ],
-  "result": {
-    "item": "enderitemod:enderite_elytra"
-  }
+  "type": "enderitemod:crafting_special_enderiteelytra"
 }

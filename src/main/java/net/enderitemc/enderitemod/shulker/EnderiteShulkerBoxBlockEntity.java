@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
@@ -251,7 +252,8 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     }
 
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        return !(Block.getBlockFromItem(stack.getItem()) instanceof EnderiteShulkerBoxBlock);
+        return !(Block.getBlockFromItem(stack.getItem()) instanceof EnderiteShulkerBoxBlock
+                || Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock);
     }
 
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
@@ -263,7 +265,8 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     }
 
     public ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new EnderiteShulkerBoxScreenHandler(syncId, playerInventory, this, this.inventory.size());
+        // return new ShulkerBoxScreenHandler(syncId, playerInventory, this);
+        return new EnderiteShulkerBoxScreenHandler(syncId, playerInventory, this);
     }
 
     public boolean suffocates() {

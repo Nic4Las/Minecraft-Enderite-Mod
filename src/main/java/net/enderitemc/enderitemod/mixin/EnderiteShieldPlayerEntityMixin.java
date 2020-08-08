@@ -114,7 +114,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                         attacker.playSound(soundEvent, 1.0F, 1.0F);
 
                         this.activeItemStack.getTag().putInt("teleport_charge", charge - 1);
-                        this.getItemCooldownManager().set(this.activeItemStack.getItem(), 420);
+                        this.getItemCooldownManager().set(this.activeItemStack.getItem(), 128);
                         break;
                     }
                 }

@@ -62,11 +62,7 @@ public class EnderiteSword extends SwordItem {
             }
             double near = distance;
 
-            int slot = -1;
-            if (playerEntity.inventory.contains(Items.ENDER_PEARL.getStackForRender())) {
-                slot = playerEntity.inventory.getSlotWithStack(Items.ENDER_PEARL.getStackForRender());
-            }
-            slot = 0;
+            int slot = 0;
             if (playerEntity.getStackInHand(hand).getTag().contains("teleport_charge")) {
                 slot = Integer.parseInt(playerEntity.getStackInHand(hand).getTag().get("teleport_charge").asString());
 

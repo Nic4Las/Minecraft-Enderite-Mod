@@ -9,12 +9,14 @@ import net.enderitemc.enderitemod.items.EnderiteIngot;
 import net.enderitemc.enderitemod.items.EnderiteScrap;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
+import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
 import net.enderitemc.enderitemod.oreGeneration.EndOreFeature;
 import net.enderitemc.enderitemod.oreGeneration.EndOreFeatureConfig;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxRecipe;
+import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.enderitemc.enderitemod.tools.AxeSubclass;
 import net.enderitemc.enderitemod.tools.EnderiteBow;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
@@ -45,6 +47,8 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.predicate.block.BlockPredicate;
 import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.screen.ScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -99,6 +103,8 @@ public class EnderiteMod implements ModInitializer {
 	// Enderite Elytra
 	public static final ArmorItem ENDERITE_ELYTRA = new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.CHEST,
 			(new Item.Settings().group(ItemGroup.COMBAT).fireproof().rarity(Rarity.EPIC)));
+	public static SpecialRecipeSerializer<EnderiteElytraSpecialRecipe> ENDERITE_EYLTRA_SPECIAL_RECIPE = new SpecialRecipeSerializer<>(
+			EnderiteElytraSpecialRecipe::new);
 
 	// Shulker Box
 	public static BlockEntityType<EnderiteShulkerBoxBlockEntity> ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
@@ -123,6 +129,8 @@ public class EnderiteMod implements ModInitializer {
 
 	// Enchantment
 	public static Enchantment VOID_FLOATING_ENCHANTMENT;
+
+	public static ScreenHandlerType<EnderiteShulkerBoxScreenHandler> ENDERITE_SHULKER_BOX_SCREEN_HANDLER;
 
 	@Override
 	public void onInitialize() {
@@ -169,7 +177,10 @@ public class EnderiteMod implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_boots"), ENDERITE_BOOTS);
 
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_elytra"), ENDERITE_ELYTRA);
+		Registry.register(Registry.RECIPE_SERIALIZER, "enderitemod:crafting_special_enderiteelytra",
+				ENDERITE_EYLTRA_SPECIAL_RECIPE);
 
+		// Shulker
 		Registry.register(Registry.RECIPE_SERIALIZER, "enderitemod:crafting_special_enderiteshulkerbox",
 				ENDERITE_SHULKER_BOX_RECIPE);
 		Registry.register(Registry.BLOCK, new Identifier("enderitemod", "enderite_shulker_box"), ENDERITE_SHULKER_BOX);
