@@ -4,7 +4,10 @@
 
 ## Description
 
-The Enderite Mod adds new armor and tools, which are successors of Netherite tools.
+<details>
+  <summary>Open Description</summary>
+  
+  The Enderite Mod adds new armor and tools, which are successors of Netherite tools.
 Enderite ore can be found in the End and needs to be blown up before it can be mined.
 You can smelt the ore in a blast furnace to get scraps, which can be craft with diamonds to Enderite Ingots (similar to Netherite).
 With these ingots you can craft Enderite tools and blocks, which all have the void floating ability.
@@ -24,7 +27,9 @@ With these ingots you can craft Enderite tools and blocks, which all have the vo
 - **Enderite Helmet**: prevents Enderman from getting aggressive towards you when looking at them
 - **Enderite Elytra Chestplate**: Enderite Chestplate fused with the Elytra, provides armor and Eyltra flight
 
-Found on Curseforge at: [Not available]
+</details>
+
+Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-forge
 
 ## Developers
 
@@ -35,7 +40,8 @@ Found on Curseforge at: [Not available]
 ## Translation
 
 - ES: CamoloQlo
-- ZH: Samekichi
+- ZH: Samekichi, WuzgXY
+- RU: temac000
 
 ## License
 
@@ -45,15 +51,19 @@ Enderite Mod is licensed under MIT. The full license can be found in the license
 
 ### Todo
 
-- [ ] Enderite Sword show charge status
-- [ ] Enderite Elytra Armor
-- [ ] Enderite Shulker Box
-- [ ] Enderite Respawn Anchor
-- [ ] Enderite Sword teleport and charging abilities
+- [ ] Void floating enchantment
+- [ ] Enderite Shield ability
 
 ### 0.1.0
 
+- [x] Enderite Sword show charge status
+- [x] Enderite Elytra Armor
+- [x] Enderite Shulker Box
+- [x] Enderite Respawn Anchor
+- [x] Enderite Sword teleport and charging abilities
 - [x] Enderite Ingot/Block
 - [x] Enderite Ore/Cracked Enderite Ore
+- [x] Enderite Shield
+- [x] Enderite Weapons
 - [x] Enderite Tools
 - [x] Enderite Armor
