@@ -1,5 +1,6 @@
 package net.enderitemc.enderitemod;
 
+import net.enderitemc.enderitemod.init.EnderiteModConfig;
 import net.enderitemc.enderitemod.init.Registration;
 import net.enderitemc.enderitemod.init.WorldFeatures;
 import net.minecraft.block.Block;
@@ -8,7 +9,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -16,6 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.stream.Collectors;
@@ -30,8 +34,14 @@ public class EnderiteMod {
     public static final String MOD_ID = "enderitemod";
 
     public EnderiteMod() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, EnderiteModConfig.CLIENT_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EnderiteModConfig.COMMON_CONFIG);
+
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+
+        EnderiteModConfig.loadConfig(EnderiteModConfig.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("enderitemod-client.toml"));
+        EnderiteModConfig.loadConfig(EnderiteModConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("enderitemod-common.toml"));
         // Register the enqueueIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
 
@@ -39,6 +49,7 @@ public class EnderiteMod {
 
         // Register the processIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
