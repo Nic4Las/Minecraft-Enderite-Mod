@@ -3,13 +3,20 @@ package net.enderitemc.enderitemod;
 import net.enderitemc.enderitemod.init.EnderiteModConfig;
 import net.enderitemc.enderitemod.init.Registration;
 import net.enderitemc.enderitemod.init.WorldFeatures;
+import net.enderitemc.enderitemod.renderer.EnderiteShieldRenderer;
+import net.enderitemc.enderitemod.renderer.EnderiteShulkerBoxTileEntityRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.tileentity.ShulkerBoxTileEntityRenderer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -22,6 +29,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.stream.Collectors;
 
 import static net.enderitemc.enderitemod.EnderiteMod.MOD_ID;
@@ -40,8 +48,10 @@ public class EnderiteMod {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
-        EnderiteModConfig.loadConfig(EnderiteModConfig.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("enderitemod-client.toml"));
-        EnderiteModConfig.loadConfig(EnderiteModConfig.COMMON_CONFIG, FMLPaths.CONFIGDIR.get().resolve("enderitemod-common.toml"));
+        EnderiteModConfig.loadConfig(EnderiteModConfig.CLIENT_CONFIG,
+                FMLPaths.CONFIGDIR.get().resolve("enderitemod-client.toml"));
+        EnderiteModConfig.loadConfig(EnderiteModConfig.COMMON_CONFIG,
+                FMLPaths.CONFIGDIR.get().resolve("enderitemod-common.toml"));
         // Register the enqueueIMC method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
 
@@ -92,8 +102,33 @@ public class EnderiteMod {
     // You can use EventBusSubscriber to automatically subscribe events on the
     // contained class (this is subscribing to the MOD
     // Event bus for receiving Registry Events)
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class RegistryEventsClient {
+
+        @SubscribeEvent
+        public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
+            WorldFeatures.init();
+        }
+
+        @SubscribeEvent
+        public static void onTextureStitchEvent(TextureStitchEvent.Pre event) {
+            LOGGER.info("RSL" + event.getMap().getTextureLocation() + ", " + AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+            if (event.getMap().getTextureLocation() == AtlasTexture.LOCATION_BLOCKS_TEXTURE) {
+                event.addSprite(EnderiteShieldRenderer.LOCATION_ENDERITE_SHIELD_BASE_NO_PATTERN);
+            }
+        }
+
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            ClientRegistry.bindTileEntityRenderer(Registration.ENDERITE_SHULKER_BOX_TILE_ENTITY.get(),
+                    EnderiteShulkerBoxTileEntityRenderer::new);
+        }
+
+    }
+
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
+
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
             // register a new block here
@@ -104,5 +139,6 @@ public class EnderiteMod {
         public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
             WorldFeatures.init();
         }
+
     }
 }

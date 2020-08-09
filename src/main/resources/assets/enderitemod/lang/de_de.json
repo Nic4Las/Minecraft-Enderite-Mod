@@ -22,5 +22,27 @@
   "item.enderitemod.enderite_sword.tooltip1": "Im Schmiedetisch mit Enderperlen verbessern",
   "item.enderitemod.enderite_sword.tooltip2": "um Teleportationsaufladungen zu erhalten.",
   "item.enderitemod.enderite_sword.tooltip3": "Teleportieren mit schleichen + rechtsklick!",
-  "item.enderitemod.enderite_sword.charge": "Aufladung"
+  "item.enderitemod.enderite_sword.charge": "Aufladung",
+
+  "enchantment.enderitemod.void_floating": "Leereschwebe",
+  "item.enderitemod.enderite_bow": "Enderitbogen",
+  "item.enderitemod.enderite_crossbow": "Enderitarmbrust",
+  "item.enderitemod.enderite_shield": "Enderitschild",
+  "item.enderitemod.enderite_shield.black": "Schwarzes Enderitschild",
+  "item.enderitemod.enderite_shield.red": "Rotes Enderitschild",
+  "item.enderitemod.enderite_shield.green": "Grünes Enderitschild",
+  "item.enderitemod.enderite_shield.brown": "Braunes Enderitschild",
+  "item.enderitemod.enderite_shield.blue": "Blaues Enderitschild",
+  "item.enderitemod.enderite_shield.purple": "Violettes Enderitschild",
+  "item.enderitemod.enderite_shield.cyan": "Türkises Enderitschild",
+  "item.enderitemod.enderite_shield.light_gray": "Hellgraues Enderitschild",
+  "item.enderitemod.enderite_shield.gray": "Graues Enderitschild",
+  "item.enderitemod.enderite_shield.pink": "Pinkes Enderitschild",
+  "item.enderitemod.enderite_shield.lime": "Hellgrünes Enderitschild",
+  "item.enderitemod.enderite_shield.yellow": "Gelbes Enderitschild",
+  "item.enderitemod.enderite_shield.light_blue": "Hellblaues Enderitschild",
+  "item.enderitemod.enderite_shield.magenta": "Magenta Enderitschild",
+  "item.enderitemod.enderite_shield.orange": "Orangenes Enderitschild",
+  "item.enderitemod.enderite_shield.white": "Weißes Enderitschild",
+  "item.enderitemod.enderite_shield.tooltip3": "Teleportiere Angreifer mit schleichen + blocken!"
 }

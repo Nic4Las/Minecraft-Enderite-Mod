@@ -26,8 +26,8 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-                                             BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player,
+            Hand hand, BlockRayTraceResult hit) {
         ItemStack itemStack = player.getHeldItem(hand);
         if (hand == Hand.MAIN_HAND && !isChargeItem(itemStack) && isChargeItem(player.getHeldItem(Hand.OFF_HAND))) {
             return ActionResultType.PASS;
@@ -52,7 +52,8 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
                 if (serverPlayerEntity.func_241141_L_() != world.func_234923_W_()
                         || !serverPlayerEntity.func_241140_K_().equals(pos)) {
                     serverPlayerEntity.func_241153_a_(world.func_234923_W_(), pos, false, true);
-                    world.playSound((PlayerEntity)null, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, SoundEvents.field_232819_mt_, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    world.playSound((PlayerEntity) null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
+                            (double) pos.getZ() + 0.5D, SoundEvents.field_232819_mt_, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return ActionResultType.SUCCESS;
                 }
             }
@@ -62,7 +63,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
     }
 
     public static boolean isNether(World world) {
-        return world.func_230315_m_().func_236046_h_(); //world.getDimesnion().hasEnderDragonFight()
+        return world.func_230315_m_().func_236046_h_(); // world.getDimesnion().hasEnderDragonFight()
     }
 
     private static boolean canCharge(BlockState state) {
