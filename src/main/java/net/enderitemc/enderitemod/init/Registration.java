@@ -1,5 +1,6 @@
 package net.enderitemc.enderitemod.init;
 
+import net.enderitemc.enderitemod.item.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,13 +8,6 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.block.EnderiteOre;
 import net.enderitemc.enderitemod.block.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.block.EnderiteShulkerBox;
-import net.enderitemc.enderitemod.item.EnderiteCrossbow;
-import net.enderitemc.enderitemod.item.EnderiteElytra;
-import net.enderitemc.enderitemod.item.EnderiteHelmet;
-import net.enderitemc.enderitemod.item.EnderiteIngot;
-import net.enderitemc.enderitemod.item.EnderiteScrap;
-import net.enderitemc.enderitemod.item.EnderiteShield;
-import net.enderitemc.enderitemod.item.EnderiteSword;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.enderitemc.enderitemod.recipe.EnderiteElytraSpecialRecipe;
@@ -212,7 +206,7 @@ public class Registration {
                         .register("crafting_special_enderiteshielddecoration",
                                         () -> new SpecialRecipeSerializer<>(EnderiteShieldDecorationRecipe::new));
 
-        public static final RegistryObject<Item> ENDERITE_BOW = ITEMS.register("enderite_bow", () -> new BowItem(
+        public static final RegistryObject<Item> ENDERITE_BOW = ITEMS.register("enderite_bow", () -> new EnderiteBow(
                         new Item.Properties().group(ItemGroup.COMBAT).maxStackSize(1).func_234689_a_()));
 
         public static final RegistryObject<Item> ENDERITE_CROSSBOW = ITEMS.register("enderite_crossbow",
