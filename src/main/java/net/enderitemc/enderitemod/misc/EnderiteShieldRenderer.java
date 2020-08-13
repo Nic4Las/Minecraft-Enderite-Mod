@@ -39,7 +39,7 @@ public class EnderiteShieldRenderer implements BuiltinItemRenderer {
                 if (!bl) {
 
                         matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180));
-                        VertexConsumer vertexConsumer2 = ItemRenderer.method_29711(vertexConsumers,
+                        VertexConsumer vertexConsumer2 = ItemRenderer.getDirectGlintVertexConsumer(vertexConsumers,
                                         shieldModel.getLayer(new Identifier(
                                                         "enderitemod:textures/entity/enderite_shield_base_nopattern.png")),
                                         false, stack.hasGlint());
@@ -53,7 +53,7 @@ public class EnderiteShieldRenderer implements BuiltinItemRenderer {
                                         new Identifier("enderitemod:entity/enderite_shield_base"));
 
                         VertexConsumer vertexConsumer = spriteIdentifier.getSprite().getTextureSpecificVertexConsumer(
-                                        ItemRenderer.method_29711(vertexConsumers, shieldModel
+                                        ItemRenderer.getDirectGlintVertexConsumer(vertexConsumers, shieldModel
                                                         .getLayer(ModelLoader.SHIELD_BASE_NO_PATTERN.getAtlasId()),
                                                         true, stack.hasGlint()));
                         shieldModel.method_23775().render(matrices, vertexConsumer, light, overlay, 1.0F, 1.0F, 1.0F,

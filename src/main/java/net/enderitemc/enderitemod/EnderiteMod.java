@@ -1,5 +1,12 @@
 package net.enderitemc.enderitemod;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 import net.enderitemc.enderitemod.blocks.CrackedEnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteBlock;
 import net.enderitemc.enderitemod.blocks.EnderiteOre;
@@ -11,8 +18,6 @@ import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
-import net.enderitemc.enderitemod.oreGeneration.EndOreFeature;
-import net.enderitemc.enderitemod.oreGeneration.EndOreFeatureConfig;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxRecipe;
@@ -45,18 +50,21 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolItem;
-import net.minecraft.predicate.block.BlockPredicate;
 import net.minecraft.recipe.SpecialRecipeSerializer;
-import net.minecraft.screen.ScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.structure.rule.BlockStateMatchRuleTest;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.OreFeature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
 
 public class EnderiteMod implements ModInitializer {
 
@@ -132,6 +140,11 @@ public class EnderiteMod implements ModInitializer {
 
 	public static ScreenHandlerType<EnderiteShulkerBoxScreenHandler> ENDERITE_SHULKER_BOX_SCREEN_HANDLER;
 
+	public static final ConfiguredFeature<?, ?> ENDERITE_ORE_FEATURE = OreFeature.ORE
+			.configure(new OreFeatureConfig(new BlockStateMatchRuleTest(Blocks.END_STONE.getDefaultState()),
+					ENDERITE_ORE.getDefaultState(), 3))
+			.decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(12, 12, 48)).repeat(3));
+
 	@Override
 	public void onInitialize() {
 		// Items
@@ -196,27 +209,35 @@ public class EnderiteMod implements ModInitializer {
 				new Identifier("enderitemod", "void_floating"), new VoidFloatingEnchantment());
 
 		// Loop over existing biomes
-		Registry.BIOME.forEach(this::handleBiome);
+
+		BuiltinRegistries.add(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier("enderite_ore_feature"),
+				ENDERITE_ORE_FEATURE);
+		BuiltinRegistries.BIOME.forEach(this::handleBiome);
 
 		// Listen for other biomes being registered
-		RegistryEntryAddedCallback.event(Registry.BIOME).register((i, identifier, biome) -> handleBiome(biome));
+		RegistryEntryAddedCallback.event(BuiltinRegistries.BIOME)
+				.register((i, identifier, biome) -> handleBiome(biome));
 
 		System.out.println("-Initialized Enderitemod!-");
 	}
 
 	private void handleBiome(Biome biome) {
 		if (biome.getCategory() == Biome.Category.THEEND) {
-			biome.addFeature(GenerationStep.Feature.UNDERGROUND_ORES, EndOreFeature.END_ORE_FEATURE.configure(
-					new EndOreFeatureConfig(new BlockPredicate(Blocks.END_STONE), ENDERITE_ORE.getDefaultState(), 3 // Ore
-																													// vein
-																													// size
-					)).createDecoratedFeature(Decorator.COUNT_RANGE.configure(new RangeDecoratorConfig(3, // Number of
-																											// veins per
-																											// chunk
-							0, // Bottom Offset
-							12, // Min y level
-							48 // Max y level
-			))));
+			GenerationStep.Feature feature = GenerationStep.Feature.UNDERGROUND_ORES;
+			List<List<Supplier<ConfiguredFeature<?, ?>>>> features = biome.getGenerationSettings().getFeatures();
+
+			int stepIndex = feature.ordinal();
+
+			while (features.size() <= stepIndex) {
+				features.add(Lists.newArrayList());
+			}
+
+			List<Supplier<ConfiguredFeature<?, ?>>> stepList = features.get(feature.ordinal());
+			if (stepList instanceof ImmutableList) {
+				features.set(feature.ordinal(), stepList = new ArrayList<>(stepList));
+			}
+
+			stepList.add(() -> ENDERITE_ORE_FEATURE);
 		}
 	}
 }

@@ -20,7 +20,7 @@ import net.minecraft.util.math.Vec3d;
 public class EnderiteRespawnAnchorMixin {
 
     @Inject(at = @At("HEAD"), method = "findRespawnPosition", cancellable = true)
-    private static void isEnd(ServerWorld world, BlockPos pos, boolean bl, boolean bl2,
+    private static void isEnd(ServerWorld world, BlockPos pos, float f, boolean bl, boolean bl2,
             CallbackInfoReturnable<Optional<Vec3d>> info) {
         // Implements possibility to spawn in end with enderite respawn anchor
         BlockState blockState = world.getBlockState(pos);

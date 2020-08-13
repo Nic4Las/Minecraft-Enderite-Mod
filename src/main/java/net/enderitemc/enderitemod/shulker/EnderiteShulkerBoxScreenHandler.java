@@ -1,6 +1,5 @@
 package net.enderitemc.enderitemod.shulker;
 
-import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.block.Block;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,7 +9,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.ShulkerBoxSlot;
 import net.minecraft.screen.slot.Slot;
 
 public class EnderiteShulkerBoxScreenHandler extends ScreenHandler {

@@ -107,7 +107,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
         if (blockState.getBlock() instanceof EnderiteShulkerBoxBlock) {
             Direction direction = (Direction) blockState.get(EnderiteShulkerBoxBlock.FACING);
             Box box = this.getCollisionBox(direction).offset(this.pos);
-            List<Entity> list = this.world.getEntities((Entity) null, box);
+            List<Entity> list = this.world.getOtherEntities((Entity) null, box);
             if (!list.isEmpty()) {
                 for (int i = 0; i < list.size(); ++i) {
                     Entity entity = (Entity) list.get(i);
@@ -178,7 +178,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     }
 
     private void updateNeighborStates() {
-        this.getCachedState().method_30101(this.getWorld(), this.getPos(), 3);
+        this.getCachedState().updateNeighbors(this.getWorld(), this.getPos(), 3);
     }
 
     public void onOpen(PlayerEntity player) {

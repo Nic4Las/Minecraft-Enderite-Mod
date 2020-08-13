@@ -31,7 +31,7 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
     private static final Identifier ELYTRA_SKIN = new Identifier("textures/entity/enderite_elytra.png");
 
     @Shadow
-    private final ElytraEntityModel<T> elytra = new ElytraEntityModel();
+    private final ElytraEntityModel<T> elytra = new ElytraEntityModel<>();
 
     public ElytraFeatureRendererMixin(FeatureRendererContext<T, M> context) {
         super(context);
@@ -64,7 +64,7 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
             matrixStack.translate(0.0D, 0.0D, 0.125D);
             this.getContextModel().copyStateTo(this.elytra);
             this.elytra.setAngles(livingEntity, f, g, j, k, l);
-            VertexConsumer vertexConsumer = ItemRenderer.method_29711(vertexConsumerProvider,
+            VertexConsumer vertexConsumer = ItemRenderer.getDirectGlintVertexConsumer(vertexConsumerProvider,
                     this.elytra.getLayer(identifier4), false, itemStack.hasGlint());
             this.elytra.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStack.pop();

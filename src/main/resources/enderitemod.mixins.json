@@ -13,7 +13,8 @@
     "EnderiteRespawnAnchorMixin",
     "ElytraPlayerEntityMixin",
     "ElytraLivingEntityMixin",
-    "EnderiteShieldPlayerEntityMixin"
+    "EnderiteShieldPlayerEntityMixin",
+    "GenerationSettingsMixin"
   ],
   "client": [
     "EnderiteDropMixin",

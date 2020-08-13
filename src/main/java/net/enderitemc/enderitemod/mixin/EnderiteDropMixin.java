@@ -1,8 +1,6 @@
 package net.enderitemc.enderitemod.mixin;
 
-import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;

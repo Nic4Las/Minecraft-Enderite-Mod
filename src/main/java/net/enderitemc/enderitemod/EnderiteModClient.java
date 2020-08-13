@@ -21,5 +21,6 @@ public class EnderiteModClient implements ClientModInitializer {
                 registry.register(new Identifier("enderitemod:entity/enderite_shield_base"));
             }
         });
+
     }
 }

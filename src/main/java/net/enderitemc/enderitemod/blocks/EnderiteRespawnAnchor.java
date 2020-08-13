@@ -52,7 +52,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
                 ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
                 if (serverPlayerEntity.getSpawnPointDimension() != world.getRegistryKey()
                         || !serverPlayerEntity.getSpawnPointPosition().equals(pos)) {
-                    serverPlayerEntity.setSpawnPoint(world.getRegistryKey(), pos, false, true);
+                    serverPlayerEntity.setSpawnPoint(world.getRegistryKey(), pos, 0.0f, false, true);
                     world.playSound((PlayerEntity) null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
                             (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN,
                             SoundCategory.BLOCKS, 1.0F, 1.0F);
