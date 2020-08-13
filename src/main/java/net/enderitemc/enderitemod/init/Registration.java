@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod.init;
 
 import net.enderitemc.enderitemod.item.*;
+import net.minecraft.enchantment.Enchantment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,24 +21,19 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ShovelItem;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ToolType;
@@ -61,6 +57,8 @@ public class Registration {
         private static final DeferredRegister<IRecipeSerializer<?>> RECIPES = DeferredRegister
                         .create(ForgeRegistries.RECIPE_SERIALIZERS, EnderiteMod.MOD_ID);
 
+        private static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, EnderiteMod.MOD_ID);
+
         private static final Logger LOGGER = LogManager.getLogger();
 
         public static void init() {
@@ -72,6 +70,8 @@ public class Registration {
                 TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
                 LOGGER.info("Registering recipes from Enderite Mod");
                 RECIPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+                LOGGER.info("Registering enchantments from Enderite Mod");
+                ENCHANTMENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
                 // CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
                 // ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
                 // DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
@@ -125,19 +125,19 @@ public class Registration {
                                         .harvestLevel(4)));
         public static final RegistryObject<Item> ENDERITE_BLOCK_ITEM = ITEMS.register("enderite_block",
                         () -> new BlockItem(ENDERITE_BLOCK.get(),
-                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS)));
+                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).func_234689_a_()));
 
         public static final RegistryObject<Block> ENDERITE_ORE = BLOCKS.register("enderite_ore", EnderiteOre::new);
         public static final RegistryObject<Item> ENDERITE_ORE_ITEM = ITEMS.register("enderite_ore",
                         () -> new BlockItem(ENDERITE_ORE.get(),
-                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS)));
+                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).func_234689_a_()));
 
         public static final RegistryObject<Block> CRACKED_ENDERITE_ORE = BLOCKS.register("cracked_enderite_ore",
                         () -> new Block(AbstractBlock.Properties.from(ENDERITE_BLOCK.get())
                                         .sound(SoundType.field_235595_Q_)));
         public static final RegistryObject<Item> CRACKED_ENDERITE_ORE_ITEM = ITEMS.register("cracked_enderite_ore",
                         () -> new BlockItem(CRACKED_ENDERITE_ORE.get(),
-                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS)));
+                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).func_234689_a_()));
 
         public static final RegistryObject<Block> ENDERITE_RESPAWN_ANCHOR = BLOCKS.register("enderite_respawn_anchor",
                         () -> new EnderiteRespawnAnchor(AbstractBlock.Properties
@@ -146,7 +146,7 @@ public class Registration {
                                         .func_235838_a_((state) -> EnderiteRespawnAnchor.func_235565_a_(state, 15))));
         public static final RegistryObject<Item> ENDERITE_RESPAWN_ANCHOR_ITEM = ITEMS
                         .register("enderite_respawn_anchor", () -> new BlockItem(ENDERITE_RESPAWN_ANCHOR.get(),
-                                        new Item.Properties().group(ItemGroup.DECORATIONS)));
+                                        new Item.Properties().group(ItemGroup.DECORATIONS).func_234689_a_()));
 
         // Armor
         public static final RegistryObject<Item> ENDERITE_HELMET = ITEMS.register("enderite_helmet",
@@ -189,7 +189,7 @@ public class Registration {
                                                         .hardnessAndResistance(2.0F, 17.0F)));
         public static final RegistryObject<Item> ENDERITE_SHULKER_BOX_ITEM = ITEMS.register("enderite_shulker_box",
                         () -> new BlockItem(ENDERITE_SHULKER_BOX.get(),
-                                        new Item.Properties().group(ItemGroup.DECORATIONS).maxStackSize(1)));
+                                        new Item.Properties().group(ItemGroup.DECORATIONS).maxStackSize(1).func_234689_a_()));
         public static final RegistryObject<TileEntityType<EnderiteShulkerBoxTileEntity>> ENDERITE_SHULKER_BOX_TILE_ENTITY = TILES
                         .register("enderite_shulker_box_tile_entity", () -> TileEntityType.Builder
                                         .create(EnderiteShulkerBoxTileEntity::new, ENDERITE_SHULKER_BOX.get())
