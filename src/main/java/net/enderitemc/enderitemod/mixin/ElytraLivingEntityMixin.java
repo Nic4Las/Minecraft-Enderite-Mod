@@ -1,6 +1,5 @@
 package net.enderitemc.enderitemod.mixin;
 
-import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
 import net.minecraft.entity.Entity;

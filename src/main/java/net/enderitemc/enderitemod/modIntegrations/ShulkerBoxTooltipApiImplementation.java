@@ -1,5 +1,6 @@
 package net.enderitemc.enderitemod.modIntegrations;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ public class ShulkerBoxTooltipApiImplementation implements ShulkerBoxTooltipApi 
 
     @Override
     public void registerProviders(Map<PreviewProvider, List<Item>> previewProviders) {
-        List<Item> list = List.of(EnderiteMod.ENDERITE_SHULKER_BOX.getItemStack().getItem());
+        // List<Item> list =
+        // List.of(EnderiteMod.ENDERITE_SHULKER_BOX.getItemStack().getItem());
+        List<Item> list = Arrays.asList(EnderiteMod.ENDERITE_SHULKER_BOX.getItemStack().getItem());
         previewProviders.put(EnderiteShulkerBoxPreviewProvider.INSTANCE, list);
     }
 
