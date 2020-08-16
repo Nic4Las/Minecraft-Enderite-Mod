@@ -18,8 +18,9 @@ import net.minecraft.world.World;
 public class EnderiteBow extends BowItem {
 
     public float speedMulitplier = 4.0f; // 3.0
-    public double newBaseDamage = EnderiteModConfig.ENDERITE_BOW_BASE_DAMAGE.get(); //default: 1.5d
-    public static float chargeTime = EnderiteModConfig.ENDERITE_BOW_CHARGE_TIME.get().floatValue(); //default: 30.0f, in config: 30.0d
+    public double newBaseDamage = EnderiteModConfig.ENDERITE_BOW_BASE_DAMAGE.get(); // default: 1.5d
+    public static float chargeTime = EnderiteModConfig.ENDERITE_BOW_CHARGE_TIME.get().floatValue(); // default: 30.0f,
+                                                                                                    // in config: 30.0d
 
     public EnderiteBow(Properties builder) {
         super(builder);

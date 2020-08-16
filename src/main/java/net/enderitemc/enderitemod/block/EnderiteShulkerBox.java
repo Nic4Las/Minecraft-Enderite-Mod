@@ -26,11 +26,14 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ShulkerAABBHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EnderiteShulkerBox extends ShulkerBoxBlock {
 
@@ -159,7 +162,7 @@ public class EnderiteShulkerBox extends ShulkerBoxBlock {
 
     @Override
     public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-        ItemStack itemstack = super.getItem(worldIn, pos, state);
+        ItemStack itemstack = new ItemStack(this);
         EnderiteShulkerBoxTileEntity shulkerboxtileentity = (EnderiteShulkerBoxTileEntity) worldIn.getTileEntity(pos);
         CompoundNBT compoundnbt = shulkerboxtileentity.saveToNbt(new CompoundNBT());
         if (!compoundnbt.isEmpty()) {
@@ -167,6 +170,21 @@ public class EnderiteShulkerBox extends ShulkerBoxBlock {
         }
 
         return itemstack;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos,
+            PlayerEntity player) {
+        // ItemStack itemStack = super.getPickStack(world, pos, state);
+        ItemStack itemStack = getItem(world, pos, state);
+        EnderiteShulkerBoxTileEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxTileEntity) world.getTileEntity(pos);
+        CompoundNBT compoundTag = shulkerBoxBlockEntity.saveToNbt(new CompoundNBT());
+        if (!compoundTag.isEmpty()) {
+            itemStack.setTagInfo("BlockEntityTag", compoundTag);
+        }
+
+        return itemStack;
     }
 
     public static ItemStack getStack() {

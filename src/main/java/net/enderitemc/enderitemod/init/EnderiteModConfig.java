@@ -35,7 +35,7 @@ public class EnderiteModConfig {
 
     static {
         COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
-        //currently unused, but general settings config goes in here
+        // currently unused, but general settings config goes in here
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("World-generation settings").push(CATEGORY_WORLD_GENERATION);
@@ -53,20 +53,33 @@ public class EnderiteModConfig {
 
     private static void setupEnderiteGeneration() {
         COMMON_BUILDER.comment("Enderite settings").push(SUBCATEGORY_ENDERITE_GENERATION);
-        ENDERITE_COUNT = COMMON_BUILDER.comment("How many enderite ore should be generated per chunk (default: 3)").defineInRange("count",3,1,255);
-        ENDERITE_BOTTOM_OFFSET = COMMON_BUILDER.comment("Bottom offset for enderite ore generation, e.g. if you choose this value as '12' (default value), ore will only be generated above y = 12").defineInRange("bottom_offset",12,0,255);
-        ENDERITE_TOP_OFFSET = COMMON_BUILDER.comment("Top offset for enderite ore generation, based on maximum height, e.g. if you choose this value as '12' (default value), ore will only be generated below y = maximum - 12").defineInRange("top_offset",12,0,255);
-        ENDERITE_MAXIMUM = COMMON_BUILDER.comment("Maximum height for enderite ore generation, has to be greater than 'top_offset', default value is '48'").defineInRange("maximum", 48,1,255);
+        ENDERITE_COUNT = COMMON_BUILDER.comment("\nHow many enderite ore should be generated per chunk (default: 3)")
+                .defineInRange("count", 3, 1, 255);
+        ENDERITE_BOTTOM_OFFSET = COMMON_BUILDER.comment(
+                "\nBottom offset for enderite ore generation, e.g. if you choose this value as '12' (default value), ore will only be generated above y = 12")
+                .defineInRange("bottom_offset", 12, 0, 255);
+        ENDERITE_TOP_OFFSET = COMMON_BUILDER.comment(
+                "\nTop offset for enderite ore generation, based on maximum height, e.g. if you choose this value as '12' (default value), ore will only be generated below y = maximum - 12")
+                .defineInRange("top_offset", 12, 0, 255);
+        ENDERITE_MAXIMUM = COMMON_BUILDER.comment(
+                "\nMaximum height for enderite ore generation, has to be greater than 'top_offset', default value is '48'")
+                .defineInRange("maximum", 48, 1, 255);
     }
 
     private static void setupToolSettings() {
-        COMMON_BUILDER.comment("Settings for the Enderite Bow, do only affect the bow and no other tools").push(SUBCATEGORY_ENDERITE_BOW);
-        ENDERITE_BOW_BASE_DAMAGE = COMMON_BUILDER.comment("Determines the base damage of the bow, i.e. how many damage you will cause with one single arrow (default: 1.5)").defineInRange("bow_base_damage", 1.5d,0d,255d); //I can't think of a useful maxValue...
-        ENDERITE_BOW_CHARGE_TIME = COMMON_BUILDER.comment("Determines the time you need to fully charge the Enderite Bow (charge time or draw speed), default value is '30.0', which is nearly the same as the vanilla bow").defineInRange("charge_time",30.0d,1.0d,255d);
+        COMMON_BUILDER.comment("Settings for the Enderite Bow, do only affect the bow and no other tools")
+                .push(SUBCATEGORY_ENDERITE_BOW);
+        ENDERITE_BOW_BASE_DAMAGE = COMMON_BUILDER.comment(
+                "\nDetermines the base damage of the bow, i.e. how many damage you will cause with one single arrow (default: 1.5)")
+                .defineInRange("bow_base_damage", 1.5d, 0d, 255d); // I can't think of a useful maxValue...
+        ENDERITE_BOW_CHARGE_TIME = COMMON_BUILDER.comment(
+                "\nDetermines the time you need to fully charge the Enderite Bow (charge time or draw speed), default value is '30.0', which is nearly the same as the vanilla bow")
+                .defineInRange("charge_time", 30.0d, 1.0d, 255d);
     }
 
     public static void loadConfig(ForgeConfigSpec spec, Path path) {
-        final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().writingMode(WritingMode.REPLACE).build();
+        final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave()
+                .writingMode(WritingMode.REPLACE).build();
         configData.load();
         spec.setConfig(configData);
     }

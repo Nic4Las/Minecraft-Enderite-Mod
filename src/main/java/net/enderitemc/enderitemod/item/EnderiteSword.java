@@ -143,7 +143,7 @@ public class EnderiteSword extends SwordItem {
             }
 
         } else
-
+            return new ActionResult<>(ActionResultType.FAIL, playerEntity.getHeldItem(hand));
         {
 
         }
@@ -163,7 +163,7 @@ public class EnderiteSword extends SwordItem {
     @Override
     public void addInformation(ItemStack itemStack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(itemStack, worldIn, tooltip, flagIn);
-        if (itemStack.getTag().contains("teleport_charge")) {
+        if (itemStack.getOrCreateTag().contains("teleport_charge")) {
             String charge = itemStack.getTag().get("teleport_charge").toString();
             tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.charge")
                     .func_240701_a_(new TextFormatting[] { TextFormatting.DARK_AQUA })

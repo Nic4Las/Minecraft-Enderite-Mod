@@ -78,7 +78,7 @@ public abstract class SmithingEnderiteSwordMixin extends AbstractRepairContainer
 
             int amountToSubstract = this.field_234643_d_.getStackInSlot(1).getCount();
             // Read the charge of sword
-            if (this.field_234643_d_.getStackInSlot(0).getTag().contains("teleport_charge")) {
+            if (this.field_234643_d_.getStackInSlot(0).getOrCreateTag().contains("teleport_charge")) {
                 // Charge is old charge + amount of enderpearls
                 int allowableSubstract = 64 - Integer
                         .parseInt(this.field_234643_d_.getStackInSlot(0).getTag().get("teleport_charge").toString());

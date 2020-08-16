@@ -9,6 +9,7 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.block.EnderiteOre;
 import net.enderitemc.enderitemod.block.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.block.EnderiteShulkerBox;
+import net.enderitemc.enderitemod.enchantments.VoidFloatingEnchantment;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.enderitemc.enderitemod.recipe.EnderiteElytraSpecialRecipe;
@@ -56,8 +57,8 @@ public class Registration {
 
         private static final DeferredRegister<IRecipeSerializer<?>> RECIPES = DeferredRegister
                         .create(ForgeRegistries.RECIPE_SERIALIZERS, EnderiteMod.MOD_ID);
-
-        private static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, EnderiteMod.MOD_ID);
+        private static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister
+                        .create(ForgeRegistries.ENCHANTMENTS, EnderiteMod.MOD_ID);
 
         private static final Logger LOGGER = LogManager.getLogger();
 
@@ -188,8 +189,8 @@ public class Registration {
                                                         .create(Material.SHULKER, MaterialColor.BLACK).notSolid()
                                                         .hardnessAndResistance(2.0F, 17.0F)));
         public static final RegistryObject<Item> ENDERITE_SHULKER_BOX_ITEM = ITEMS.register("enderite_shulker_box",
-                        () -> new BlockItem(ENDERITE_SHULKER_BOX.get(),
-                                        new Item.Properties().group(ItemGroup.DECORATIONS).maxStackSize(1).func_234689_a_()));
+                        () -> new BlockItem(ENDERITE_SHULKER_BOX.get(), new Item.Properties()
+                                        .group(ItemGroup.DECORATIONS).maxStackSize(1).func_234689_a_()));
         public static final RegistryObject<TileEntityType<EnderiteShulkerBoxTileEntity>> ENDERITE_SHULKER_BOX_TILE_ENTITY = TILES
                         .register("enderite_shulker_box_tile_entity", () -> TileEntityType.Builder
                                         .create(EnderiteShulkerBoxTileEntity::new, ENDERITE_SHULKER_BOX.get())
@@ -201,16 +202,20 @@ public class Registration {
         // Bow/Crossbow/shield
         public static final RegistryObject<Item> ENDERITE_SHIELD = ITEMS.register("enderite_shield",
                         () -> new EnderiteShield(new Item.Properties().group(ItemGroup.COMBAT).maxStackSize(1)
-                                        .func_234689_a_().setISTER(() -> EnderiteShieldRenderer::new)));
+                                        .maxDamage(768).func_234689_a_().setISTER(() -> EnderiteShieldRenderer::new)));
         public static final RegistryObject<IRecipeSerializer<EnderiteShieldDecorationRecipe>> ENDERITE_SHIELD_DECORATION_RECIPE = RECIPES
                         .register("crafting_special_enderiteshielddecoration",
                                         () -> new SpecialRecipeSerializer<>(EnderiteShieldDecorationRecipe::new));
 
         public static final RegistryObject<Item> ENDERITE_BOW = ITEMS.register("enderite_bow", () -> new EnderiteBow(
-                        new Item.Properties().group(ItemGroup.COMBAT).maxStackSize(1).func_234689_a_()));
+                        new Item.Properties().group(ItemGroup.COMBAT).maxStackSize(1).maxDamage(768).func_234689_a_()));
 
         public static final RegistryObject<Item> ENDERITE_CROSSBOW = ITEMS.register("enderite_crossbow",
                         () -> new EnderiteCrossbow(new Item.Properties().group(ItemGroup.COMBAT).maxStackSize(1)
-                                        .func_234689_a_()));
+                                        .maxDamage(768).func_234689_a_()));
+
+        // ENCHANTMENT Void floating
+        public static final RegistryObject<Enchantment> VOID_FLOATING = ENCHANTMENTS.register("void_floating",
+                        () -> new VoidFloatingEnchantment());
 
 }
