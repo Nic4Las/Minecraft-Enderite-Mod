@@ -27,10 +27,13 @@ With these ingots you can craft Enderite tools and blocks, which all have the vo
 - **Enderite Sword**: Can be charged with ender pearls in the smithing table, lets you teleport with sneak + right click if charged
 - **Enderite Helmet**: prevents Enderman from getting aggressive towards you when looking at them
 - **Enderite Elytra Chestplate**: Enderite Chestplate fused with the Elytra, provides armor and Eyltra flight
+- **Enderite Bow/Crossbow**: Are able to shoot Enderman
 
 </details>
 
-Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric
+Found on Curseforge at: 
+- **Fabric** https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric
+- **Forge** https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-forge
 
 ## Developers
 
@@ -48,21 +51,24 @@ Found on Curseforge at: https://www.curseforge.com/minecraft/mc-mods/enderite-mo
 
 Enderite Mod is licensed under MIT. The full license can be found in the license file.
 
-## TODO
-
-- Forge version
 
 ## Fabric
 
+### 1.2.0
+
+- [x] Enderite Bow/Crossbow have ability to shoot enderman
+- [x] Config
+- [x] ?Enderite Shears?
+- [x] Compatability with Shulker Box Tooltips
+<details>
+  <summary>Open Old Versions</summary>
+  
 ### 1.1.0
 
 - [x] Enderite Bow/Crossbow
 - [x] Enderite Shield
 - [x] Void floating enchantment
 - [x] Enderite Horse Armor compatibility with Netherite Horse Armor mod
-
-<details>
-  <summary>Open Old Versions</summary>
 
 ### 1.0.0
 
