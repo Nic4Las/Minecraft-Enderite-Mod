@@ -21,7 +21,8 @@
       {
         "value": "net.enderitemc.enderitemod.EnderiteModClient"
       }
-    ]
+    ],
+    "modmenu": ["net.enderitemc.enderitemod.config.EnderiteModModMenuIntegration"]
   },
   "mixins": ["enderitemod.mixins.json"],
 

@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.enderitemc.enderitemod.EnderiteMod;
+import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -31,7 +32,7 @@ public abstract class ElytraPlayerEntityMixin extends ElytraLivingEntityMixin {
     public void checkFallFlying(CallbackInfoReturnable<Boolean> info) {
         // Check if player is wearing usable gear to start flying
         ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
-        if (itemStack.getItem() == EnderiteMod.ENDERITE_ELYTRA
+        if (itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA)
                 && itemStack.getDamage() < itemStack.getMaxDamage() - 10) {
             this.startFallFlying();
             info.setReturnValue(true);

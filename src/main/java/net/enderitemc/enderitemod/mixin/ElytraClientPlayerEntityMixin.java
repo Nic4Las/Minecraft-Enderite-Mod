@@ -1,6 +1,6 @@
 package net.enderitemc.enderitemod.mixin;
 
-import net.enderitemc.enderitemod.EnderiteMod;
+import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -34,7 +34,7 @@ public abstract class ElytraClientPlayerEntityMixin extends ElytraPlayerEntityMi
     @Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getEquippedStack(Lnet/minecraft/entity/EquipmentSlot;)Lnet/minecraft/item/ItemStack;"), method = "tickMovement")
     public void tickMovement(CallbackInfo info) {
         ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
-        if (itemStack.getItem() == EnderiteMod.ENDERITE_ELYTRA && this.checkFallFlying()) {
+        if (itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA) && this.checkFallFlying()) {
             // Send packet that player is fall flying when he got enderite elytra and should
             // be fall flying
             this.networkHandler.sendPacket(new ClientCommandC2SPacket((ClientPlayerEntity) ((Object) this),

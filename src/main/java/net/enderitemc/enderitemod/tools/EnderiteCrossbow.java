@@ -245,6 +245,8 @@ public class EnderiteCrossbow extends CrossbowItem {
             persistentProjectileEntity.setCritical(true);
         }
 
+        persistentProjectileEntity.setDamage(EnderiteMod.CONFIG.tools.enderiteCrossbowAD);
+
         persistentProjectileEntity.setSound(SoundEvents.ITEM_CROSSBOW_HIT);
         persistentProjectileEntity.setShotFromCrossbow(true);
         int i = EnchantmentHelper.getLevel(Enchantments.PIERCING, crossbow);
@@ -388,7 +390,7 @@ public class EnderiteCrossbow extends CrossbowItem {
 
     private static float getSpeed(ItemStack stack) {
         return stack.getItem() == EnderiteMod.ENDERITE_CROSSBOW && hasProjectile(stack, Items.FIREWORK_ROCKET) ? 2.1F
-                : 4.15F;
+                : EnderiteMod.CONFIG.tools.enderiteCrossbowArrowSpeed;
     }
 
     @Override

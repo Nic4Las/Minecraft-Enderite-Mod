@@ -17,8 +17,13 @@ dependencies {
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	//modImplementation "io.github.prospector:modmenu:1.14.5+build.30"
+	modImplementation "io.github.prospector:modmenu:1.14.6+build.31"
 	//modCompile "com.misterpemodder.shulkerboxtooltip:shulkerboxtooltip:2.1.0+1.16.1"
+
+	modApi("me.shedaniel.cloth:config-2:4.7.0-unstable") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+	include "me.shedaniel.cloth:config-2:4.7.0-unstable"
 }
 
 processResources {

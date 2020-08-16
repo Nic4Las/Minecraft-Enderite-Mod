@@ -1,12 +1,16 @@
 package net.enderitemc.enderitemod.mixin;
 
 import net.enderitemc.enderitemod.EnderiteMod;
+import net.enderitemc.enderitemod.misc.EnderiteTag;
+import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import java.util.function.Consumer;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,7 +33,14 @@ public abstract class ElytraLivingEntityMixin extends Entity {
         boolean bl = this.getFlag(7);
         if (bl && !this.isOnGround() && !this.hasVehicle()) {
             ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
-            return itemStack.getItem() == EnderiteMod.ENDERITE_ELYTRA || value;
+            if (itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA) && EnderiteElytraSeperated.isUsable(itemStack)) {
+                if (this.random.nextFloat() > 0.95) {
+                    itemStack.damage(1, (LivingEntity) (Entity) this, (Consumer<LivingEntity>) ((livingEntity) -> {
+                        livingEntity.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
+                    }));
+                }
+            }
+            return itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA) || value;
         }
         return value;
     }

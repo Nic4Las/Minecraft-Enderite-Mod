@@ -1,14 +1,14 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "enderitemod:item/enderite_elytra"
+    "layer0": "enderitemod:item/enderite_elytra_seperated"
   },
   "overrides": [
     {
       "predicate": {
         "broken": 1
       },
-      "model": "enderitemod:item/enderite_elytra_broken"
+      "model": "enderitemod:item/enderite_elytra_seperated_broken"
     }
   ]
 }

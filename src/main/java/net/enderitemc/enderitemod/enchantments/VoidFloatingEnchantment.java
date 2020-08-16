@@ -1,5 +1,6 @@
 package net.enderitemc.enderitemod.enchantments;
 
+import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
@@ -37,6 +38,6 @@ public class VoidFloatingEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return this.type.isAcceptableItem(stack.getItem());
+        return EnderiteMod.CONFIG.general.allowVoidFloatingEnchantment && this.type.isAcceptableItem(stack.getItem());
     }
 }

@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.enderitemc.enderitemod.EnderiteMod;
+import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
@@ -42,7 +42,7 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
             float f, float g, float h, float j, float k, float l, CallbackInfo info) {
         // If player is wearing enderite elytra, render it
         ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.CHEST);
-        if (itemStack.getItem() == EnderiteMod.ENDERITE_ELYTRA) {
+        if (itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA)) {
             Identifier identifier4;
             if (livingEntity instanceof AbstractClientPlayerEntity) {
                 AbstractClientPlayerEntity abstractClientPlayerEntity = (AbstractClientPlayerEntity) livingEntity;

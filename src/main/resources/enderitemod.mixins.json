@@ -14,7 +14,8 @@
     "ElytraPlayerEntityMixin",
     "ElytraLivingEntityMixin",
     "EnderiteShieldPlayerEntityMixin",
-    "GenerationSettingsMixin"
+    "GenerationSettingsMixin",
+    "MobEntityMixin"
   ],
   "client": [
     "EnderiteDropMixin",
