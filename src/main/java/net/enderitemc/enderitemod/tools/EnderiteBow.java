@@ -18,6 +18,8 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -63,6 +65,9 @@ public class EnderiteBow extends BowItem {
                                 : Items.ARROW));
                         PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack,
                                 playerEntity);
+
+                        persistentProjectileEntity.setCustomName(new LiteralText("Enderite Arrow"));
+
                         persistentProjectileEntity.setProperties(playerEntity, playerEntity.pitch, playerEntity.yaw,
                                 0.0F, f * this.getSpeedMultiplier(), 1.0F);
                         if (f == 1.0F) {

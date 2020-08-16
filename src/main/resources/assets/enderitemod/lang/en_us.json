@@ -47,6 +47,7 @@
   "item.enderitemod.enderite_shield.tooltip3": "Teleport attacker with sneaking + block!",
 
   "item.enderitemod.enderite_elytra_seperated": "Enderite Elytra",
+  "item.enderitemod.enderite_shears": "Enderite Shears",
   "category.enderitemod.general": "General Settings",
   "option.enderitemod.general.allow_void_floating_enchantment": "Allow Void Floating Enchantment",
   "option.enderitemod.general.allow_void_floating_enchantment.hover": "If true, items can be enchanted with void floating",
@@ -57,7 +58,7 @@
   "option.enderitemod.general.enderite_crossbow.attack_damage": "Enderite Crossbow base attack damage",
   "option.enderitemod.general.enderite_crossbow.attack_damage.hover": "Normal Crossbow has 2.0",
   "option.enderitemod.general.enderite_crossbow.arrow_speed": "Enderite Crossbow arrow speed",
-  "option.enderitemod.general.enderite_crossbow.arrow_speed.hover": "Normal Crossbow has 4.15",
+  "option.enderitemod.general.enderite_crossbow.arrow_speed.hover": "Normal Crossbow has 3.15",
   "category.enderitemod.restart": "Requires restart",
   "option.enderitemod.restart.enderite_ore.vein_size": "Enderite Ore vein size",
   "option.enderitemod.restart.enderite_ore.vein_size.hover": "How many ores per vein",

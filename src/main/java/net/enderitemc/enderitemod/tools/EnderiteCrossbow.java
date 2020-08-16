@@ -241,6 +241,9 @@ public class EnderiteCrossbow extends CrossbowItem {
         ArrowItem arrowItem = (ArrowItem) ((ArrowItem) (arrow.getItem() instanceof ArrowItem ? arrow.getItem()
                 : Items.ARROW));
         PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, arrow, entity);
+
+        persistentProjectileEntity.setCustomName(new LiteralText("Enderite Arrow"));
+
         if (entity instanceof PlayerEntity) {
             persistentProjectileEntity.setCritical(true);
         }
@@ -325,6 +328,7 @@ public class EnderiteCrossbow extends CrossbowItem {
                 world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(), soundEvent2,
                         SoundCategory.PLAYERS, 0.5F, 1.0F);
             }
+
         }
 
     }

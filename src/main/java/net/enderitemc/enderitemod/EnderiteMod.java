@@ -50,6 +50,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ShearsItem;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolItem;
@@ -119,7 +120,8 @@ public class EnderiteMod implements ModInitializer {
 	public static SpecialRecipeSerializer<EnderiteElytraSpecialRecipe> ENDERITE_EYLTRA_SPECIAL_RECIPE = new SpecialRecipeSerializer<>(
 			EnderiteElytraSpecialRecipe::new);
 	public static final EnderiteElytraSeperated ENDERITE_ELYTRA_SEPERATED = new EnderiteElytraSeperated(
-			(new Item.Settings().group(ItemGroup.COMBAT).fireproof().maxCount(1).maxDamage(1024).rarity(Rarity.EPIC)));
+			(new Item.Settings().group(ItemGroup.TRANSPORTATION).fireproof().maxCount(1).maxDamage(1024)
+					.rarity(Rarity.EPIC)));
 
 	// Shulker Box
 	public static BlockEntityType<EnderiteShulkerBoxBlockEntity> ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
@@ -153,6 +155,10 @@ public class EnderiteMod implements ModInitializer {
 			.decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(12, 12, 48))
 					.repeat(CONFIG.worldGeneration.enderiteOre.veinAmount));
 
+	// MOST IMPORTANT
+	public static final ShearsItem ENDERITE_SHEAR = new ShearsItem(
+			new Item.Settings().group(ItemGroup.TOOLS).fireproof().maxCount(1).maxDamage(2048).rarity(Rarity.RARE));
+
 	@Override
 	public void onInitialize() {
 
@@ -174,6 +180,9 @@ public class EnderiteMod implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_shield"), ENDERITE_SHIELD);
 		Registry.register(Registry.RECIPE_SERIALIZER, "enderitemod:crafting_special_enderiteshielddecoration",
 				ENDERITE_SHIELD_DECORATION_RECIPE);
+
+		// IMPORTANT
+		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_shears"), ENDERITE_SHEAR);
 
 		// Blocks
 

@@ -18,9 +18,9 @@ public class Config {
         public int enderiteSwordAD = 6;
 
         public float enderiteBowAD = 2.5f;
-        public float enderiteBowArrowSpeed = 4.0f;
+        public float enderiteBowArrowSpeed = 3.5f;
         public float enderiteCrossbowAD = 3.0f;
-        public float enderiteCrossbowArrowSpeed = 4.5f;
+        public float enderiteCrossbowArrowSpeed = 3.65f;
     }
 
     public static class WorldGeneration {
