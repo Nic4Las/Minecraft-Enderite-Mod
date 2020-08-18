@@ -23,7 +23,8 @@
       }
     ],
     "modmenu": ["net.enderitemc.enderitemod.config.EnderiteModModMenuIntegration"],
-    "shulkerboxtooltip": ["net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation"]
+    "shulkerboxtooltip": ["net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation"],
+    "quickshulker": ["net.enderitemc.enderitemod.modIntegrations.QuickShulkerImplementation"]
   },
   "mixins": ["enderitemod.mixins.json"],
 
