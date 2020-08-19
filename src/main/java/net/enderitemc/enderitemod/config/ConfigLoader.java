@@ -49,8 +49,11 @@ public class ConfigLoader {
         try (FileReader reader = new FileReader(file)) {
             return GSON.fromJson(reader, Config.class);
         } catch (Exception e) {
-            e.printStackTrace();
-            return new Config();
+           // e.printStackTrace();
+            System.out.println("Enderitemod config not found, creating a new one");
+            Config newconfig = new Config();
+            set(newconfig);
+            return newconfig;
         }
     }
 

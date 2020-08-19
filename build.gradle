@@ -12,6 +12,8 @@ group = project.maven_group
 
 repositories {
     maven {url "https://maven.misterpemodder.com/libs-release/"}
+	maven {url "https://dl.bintray.com/kyrptonaught/kyrptconfig"}
+	maven {url "https://dl.bintray.com/kyrptonaught/Quickshulker/"}
 }
 
 dependencies {
@@ -30,6 +32,7 @@ dependencies {
 	include "me.shedaniel.cloth:config-2:4.7.0-unstable"
 
 	modCompile "com.misterpemodder:shulkerboxtooltip:2.1.1-beta.1+1.16.2-rc2"
+	modImplementation "net.kyrptonaught:quickshulker:1.1.6-1.16"
 }
 
 processResources {
