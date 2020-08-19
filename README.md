@@ -40,7 +40,7 @@ Found on Curseforge at:
 - Pitti11
 - Nic4Las
 - Pianomanu (Forge)
-
+- kyrptonaught
 ## Translation
 
 - ES: CamoloQlo
