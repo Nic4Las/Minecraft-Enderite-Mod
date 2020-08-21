@@ -8,7 +8,6 @@ import java.util.List;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -139,7 +138,7 @@ public class EnderiteSword extends SwordItem {
             }
 
         } else
-
+            return new TypedActionResult<>(ActionResult.FAIL, playerEntity.getStackInHand(hand));
         {
 
         }

@@ -5,6 +5,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -27,6 +29,17 @@ public abstract class EndermanStopStaringMixin extends Entity {
         ItemStack itemStack = (ItemStack) player.inventory.armor.get(3);
         if (itemStack.getItem() == EnderiteMod.ENDERITE_HELMET) {
             info.setReturnValue(false);
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "damage", cancellable = true)
+    private void damageThem(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
+        if (source.getSource() != null && source.getSource().getCustomName() != null) {
+            if (source instanceof ProjectileDamageSource
+                    && source.getSource().getCustomName().getString().equals("Enderite Arrow")) {
+                source.getSource().remove();
+                info.setReturnValue(super.damage(source, amount));
+            }
         }
     }
 }

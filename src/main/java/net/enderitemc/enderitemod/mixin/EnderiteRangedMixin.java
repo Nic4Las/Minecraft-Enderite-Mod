@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
+import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.ModelPredicateProvider;
@@ -74,6 +75,13 @@ public abstract class EnderiteRangedMixin {
                     ? 1.0F
                     : 0.0F;
         });
+        register(EnderiteMod.ENDERITE_ELYTRA, new Identifier("broken"), (itemStack, clientWorld, livingEntity) -> {
+            return EnderiteElytraSeperated.isUsable(itemStack) ? 0.0F : 1.0F;
+        });
+        register(EnderiteMod.ENDERITE_ELYTRA_SEPERATED, new Identifier("broken"),
+                (itemStack, clientWorld, livingEntity) -> {
+                    return EnderiteElytraSeperated.isUsable(itemStack) ? 0.0F : 1.0F;
+                });
     }
 
 }

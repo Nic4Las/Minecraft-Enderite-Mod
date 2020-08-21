@@ -3,6 +3,7 @@ package net.enderitemc.enderitemod.tools;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -17,6 +18,7 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -24,8 +26,6 @@ import net.minecraft.world.World;
 
 public class EnderiteBow extends BowItem {
 
-    public float speedMulitplier = 4.0f; // 3.0
-    public double newBaseDamage = 1.5d;
     public static float chargeTime = 30.0f;
 
     public EnderiteBow(Item.Settings settings) {
@@ -65,15 +65,19 @@ public class EnderiteBow extends BowItem {
                         PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack,
                                 playerEntity);
                         persistentProjectileEntity.setProperties(playerEntity, playerEntity.pitch, playerEntity.yaw,
-                                0.0F, f * this.speedMulitplier, 1.0F);
+                                0.0F, f * this.getSpeedMultiplier(), 1.0F);
                         if (f == 1.0F) {
                             persistentProjectileEntity.setCritical(true);
                         }
 
+                        persistentProjectileEntity.setCustomName(new LiteralText("Enderite Arrow"));
+
                         int j = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
                         if (j > 0) {
                             persistentProjectileEntity.setDamage(
-                                    persistentProjectileEntity.getDamage() + (double) j * 0.5D + this.newBaseDamage);
+                                    persistentProjectileEntity.getDamage() + (double) j * 0.5D + this.getBaseDamage());
+                        } else {
+                            persistentProjectileEntity.setDamage(this.getBaseDamage());
                         }
 
                         int k = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
@@ -163,5 +167,13 @@ public class EnderiteBow extends BowItem {
     @Override
     public boolean canRepair(ItemStack stack, ItemStack ingredient) {
         return EnderiteMaterial.ENDERITE.getRepairIngredient().test(ingredient);
+    }
+
+    public float getBaseDamage() {
+        return EnderiteMod.CONFIG.tools.enderiteBowAD;
+    }
+
+    public float getSpeedMultiplier() {
+        return EnderiteMod.CONFIG.tools.enderiteBowArrowSpeed;
     }
 }

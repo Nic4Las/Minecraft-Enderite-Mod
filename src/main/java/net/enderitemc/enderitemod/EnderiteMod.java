@@ -4,6 +4,8 @@ import net.enderitemc.enderitemod.blocks.CrackedEnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteBlock;
 import net.enderitemc.enderitemod.blocks.EnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
+import net.enderitemc.enderitemod.config.Config;
+import net.enderitemc.enderitemod.config.ConfigLoader;
 import net.enderitemc.enderitemod.enchantments.VoidFloatingEnchantment;
 import net.enderitemc.enderitemod.items.EnderiteIngot;
 import net.enderitemc.enderitemod.items.EnderiteScrap;
@@ -20,6 +22,7 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.enderitemc.enderitemod.tools.AxeSubclass;
 import net.enderitemc.enderitemod.tools.EnderiteBow;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
+import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteSword;
 import net.enderitemc.enderitemod.tools.HoeSubclass;
@@ -47,7 +50,6 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.predicate.block.BlockPredicate;
 import net.minecraft.recipe.SpecialRecipeSerializer;
-import net.minecraft.screen.ScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -59,6 +61,8 @@ import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
 
 public class EnderiteMod implements ModInitializer {
+
+	public static Config CONFIG = ConfigLoader.get();
 
 	// Enderite Ingot
 	public static final EnderiteIngot ENDERITE_INGOT = new EnderiteIngot(
@@ -105,6 +109,9 @@ public class EnderiteMod implements ModInitializer {
 			(new Item.Settings().group(ItemGroup.COMBAT).fireproof().rarity(Rarity.EPIC)));
 	public static SpecialRecipeSerializer<EnderiteElytraSpecialRecipe> ENDERITE_EYLTRA_SPECIAL_RECIPE = new SpecialRecipeSerializer<>(
 			EnderiteElytraSpecialRecipe::new);
+	public static final EnderiteElytraSeperated ENDERITE_ELYTRA_SEPERATED = new EnderiteElytraSeperated(
+			(new Item.Settings().group(ItemGroup.TRANSPORTATION).fireproof().maxCount(1).maxDamage(1024)
+					.rarity(Rarity.EPIC)));
 
 	// Shulker Box
 	public static BlockEntityType<EnderiteShulkerBoxBlockEntity> ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
@@ -179,6 +186,8 @@ public class EnderiteMod implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_elytra"), ENDERITE_ELYTRA);
 		Registry.register(Registry.RECIPE_SERIALIZER, "enderitemod:crafting_special_enderiteelytra",
 				ENDERITE_EYLTRA_SPECIAL_RECIPE);
+		Registry.register(Registry.ITEM, new Identifier("enderitemod", "enderite_elytra_seperated"),
+				ENDERITE_ELYTRA_SEPERATED);
 
 		// Shulker
 		Registry.register(Registry.RECIPE_SERIALIZER, "enderitemod:crafting_special_enderiteshulkerbox",
