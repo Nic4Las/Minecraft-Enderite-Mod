@@ -33,7 +33,7 @@ public abstract class ElytraLivingEntityMixin extends Entity {
         if (bl && !this.isOnGround() && !this.hasVehicle()) {
             ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
             if (itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA) && EnderiteElytraSeperated.isUsable(itemStack)) {
-                if (this.random.nextFloat() > 0.95) {
+                if (this.random.nextFloat() > 0.96) {
                     itemStack.damage(1, (LivingEntity) (Entity) this, (Consumer<LivingEntity>) ((livingEntity) -> {
                         livingEntity.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
                     }));
