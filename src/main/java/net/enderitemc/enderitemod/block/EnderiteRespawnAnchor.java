@@ -51,7 +51,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
                 ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
                 if (serverPlayerEntity.func_241141_L_() != world.func_234923_W_()
                         || !serverPlayerEntity.func_241140_K_().equals(pos)) {
-                    serverPlayerEntity.func_241153_a_(world.func_234923_W_(), pos, false, true);
+                    serverPlayerEntity.func_242111_a(world.func_234923_W_(), pos, 0.0f, false, true);
                     world.playSound((PlayerEntity) null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
                             (double) pos.getZ() + 0.5D, SoundEvents.field_232819_mt_, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return ActionResultType.SUCCESS;

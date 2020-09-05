@@ -19,8 +19,8 @@ import net.minecraft.world.server.ServerWorld;
 @Mixin(PlayerEntity.class)
 public class EnderiteRespawnAnchorMixin {
 
-    @Inject(at = @At("HEAD"), method = "func_234567_a_", cancellable = true)
-    private static void isEnd(ServerWorld world, BlockPos pos, boolean bl, boolean bl2,
+    @Inject(at = @At("HEAD"), method = "func_242374_a", cancellable = true)
+    private static void isEnd(ServerWorld world, BlockPos pos, float f, boolean bl, boolean bl2,
             CallbackInfoReturnable<Optional<Vector3d>> info) {
         // Implements possibility to spawn in end with enderite respawn anchor
         BlockState blockState = world.getBlockState(pos);
