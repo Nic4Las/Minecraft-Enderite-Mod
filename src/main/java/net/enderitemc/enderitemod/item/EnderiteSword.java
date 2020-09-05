@@ -4,8 +4,6 @@ import net.minecraft.item.SwordItem;
 
 import java.util.List;
 
-import com.mojang.brigadier.LiteralMessage;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.IItemTier;
@@ -18,7 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -140,12 +137,12 @@ public class EnderiteSword extends SwordItem {
                     world.setEntityState(playerEntity, (byte) 46);
                     playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
                 }
+            } else {
+                return new ActionResult<>(ActionResultType.FAIL, playerEntity.getHeldItem(hand));
             }
 
-        } else
+        } else {
             return new ActionResult<>(ActionResultType.FAIL, playerEntity.getHeldItem(hand));
-        {
-
         }
 
         return new ActionResult<>(ActionResultType.SUCCESS, playerEntity.getHeldItem(hand));
