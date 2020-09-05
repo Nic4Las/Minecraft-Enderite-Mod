@@ -135,12 +135,12 @@ public class EnderiteSword extends SwordItem {
                     world.sendEntityStatus(playerEntity, (byte) 46);
                     playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
                 }
+            } else {
+                return new TypedActionResult<>(ActionResult.FAIL, playerEntity.getStackInHand(hand));
             }
 
-        } else
+        } else {
             return new TypedActionResult<>(ActionResult.FAIL, playerEntity.getStackInHand(hand));
-        {
-
         }
 
         return new TypedActionResult<>(ActionResult.SUCCESS, playerEntity.getStackInHand(hand));
