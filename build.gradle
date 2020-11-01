@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.2-0.6.0-forge-33.0.36'
+version = '1.16.2-0.7.0-forge-33.0.36'
 group = 'net.enderitemc.enderitemod' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'enderitemod'
 
