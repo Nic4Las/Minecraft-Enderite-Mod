@@ -37,6 +37,7 @@ Found on Curseforge at:
 
 ## Developers
 
+### Our Curseforge accounts are currently unable to acces the projects so we are unable to update the Curseforge Project
 - Pitti11
 - Nic4Las
 - Pianomanu (Forge)
