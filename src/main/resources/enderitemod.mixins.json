@@ -16,7 +16,8 @@
     "EnderiteShieldPlayerEntityMixin",
     "GenerationSettingsMixin",
     "MobEntityMixin",
-    "EnderiteShearsSheepMixin"
+    "EnderiteShearsSheepMixin",
+    "ShulkerBoxColoringMixin"
   ],
   "client": [
     "EnderiteDropMixin",

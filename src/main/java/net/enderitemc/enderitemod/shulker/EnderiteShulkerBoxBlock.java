@@ -57,7 +57,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
                 boolean bl2;
                 if (shulkerBoxBlockEntity.getAnimationStage() == EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
                     Direction direction = (Direction) state.get(FACING);
-                    bl2 = world.doesNotCollide(ShulkerLidCollisions.getLidCollisionBox(pos, direction));
+                    bl2 = world.isSpaceEmpty(ShulkerLidCollisions.getLidCollisionBox(pos, direction));
                 } else {
                     bl2 = true;
                 }
@@ -65,7 +65,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
                 if (bl2) {
                     player.openHandledScreen(shulkerBoxBlockEntity);
                     player.incrementStat(Stats.OPEN_SHULKER_BOX);
-                    PiglinBrain.onGuardedBlockBroken(player, true);
+                    PiglinBrain.onGuardedBlockInteracted(player, true);
                 }
 
                 return ActionResult.CONSUME;

@@ -41,7 +41,7 @@ public class EnderiteElytraSeperated extends ElytraItem {
         if (itemStack2.isEmpty()) {
             user.equipStack(equipmentSlot, itemStack.copy());
             itemStack.setCount(0);
-            return TypedActionResult.method_29237(itemStack, world.isClient());
+            return TypedActionResult.success(itemStack);
         } else {
             return TypedActionResult.fail(itemStack);
         }

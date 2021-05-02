@@ -39,7 +39,7 @@ public class EnderiteShieldRenderer implements BuiltinItemRenderer {
                 if (!bl) {
 
                         matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180));
-                        VertexConsumer vertexConsumer2 = ItemRenderer.getDirectGlintVertexConsumer(vertexConsumers,
+                        VertexConsumer vertexConsumer2 = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers,
                                         shieldModel.getLayer(new Identifier(
                                                         "enderitemod:textures/entity/enderite_shield_base_nopattern.png")),
                                         false, stack.hasGlint());
@@ -49,19 +49,19 @@ public class EnderiteShieldRenderer implements BuiltinItemRenderer {
 
                 } else {
                         matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180));
-                        SpriteIdentifier spriteIdentifier = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEX,
+                        SpriteIdentifier spriteIdentifier = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE,
                                         new Identifier("enderitemod:entity/enderite_shield_base"));
 
                         VertexConsumer vertexConsumer = spriteIdentifier.getSprite().getTextureSpecificVertexConsumer(
-                                        ItemRenderer.getDirectGlintVertexConsumer(vertexConsumers, shieldModel
+                                        ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, shieldModel
                                                         .getLayer(ModelLoader.SHIELD_BASE_NO_PATTERN.getAtlasId()),
                                                         true, stack.hasGlint()));
-                        shieldModel.method_23775().render(matrices, vertexConsumer, light, overlay, 1.0F, 1.0F, 1.0F,
+                        shieldModel.getHandle().render(matrices, vertexConsumer, light, overlay, 1.0F, 1.0F, 1.0F,
                                         1.0F);
                         List<Pair<BannerPattern, DyeColor>> list = BannerBlockEntity.method_24280(
                                         ShieldItem.getColor(stack), BannerBlockEntity.getPatternListTag(stack));
                         BannerBlockEntityRenderer.renderCanvas(matrices, vertexConsumers, light, overlay,
-                                        shieldModel.method_23774(), spriteIdentifier, false, list, stack.hasGlint());
+                                        shieldModel.getPlate(), spriteIdentifier, false, list, stack.hasGlint());
 
                 }
 

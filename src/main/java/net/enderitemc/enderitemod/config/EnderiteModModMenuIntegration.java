@@ -1,10 +1,10 @@
 package net.enderitemc.enderitemod.config;
 
-import io.github.prospector.modmenu.api.ConfigScreenFactory;
-import io.github.prospector.modmenu.api.ModMenuApi;
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.terraformersmc.modmenu.api.ModMenuApi;
 
 public class EnderiteModModMenuIntegration implements ModMenuApi {
-    @Override
+    // @Override
     public String getModId() {
         return "enderitemod"; // Return your modid here
     }

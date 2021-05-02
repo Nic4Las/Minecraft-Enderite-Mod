@@ -100,7 +100,7 @@ public class EnderiteMod implements ModInitializer {
 	public static final CrackedEnderiteOre CRACKED_ENDERITE_ORE = new CrackedEnderiteOre();
 
 	public static final EnderiteRespawnAnchor ENDERITE_RESPAWN_ANCHOR = new EnderiteRespawnAnchor(AbstractBlock.Settings
-			.of(Material.STONE, MaterialColor.BLACK).requiresTool().strength(50.0F, 1200.0F).lightLevel((state) -> {
+			.of(Material.STONE, MaterialColor.BLACK).requiresTool().strength(50.0F, 1200.0F).luminance((state) -> {
 				return EnderiteRespawnAnchor.getLightLevel(state, 15);
 			}));
 

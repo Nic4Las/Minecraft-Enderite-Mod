@@ -16,11 +16,12 @@ public class EnderiteModClient implements ClientModInitializer {
         BlockEntityRendererRegistry.INSTANCE.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY,
                 EnderiteShulkerBoxBlockEntityRenderer::new);
         BuiltinItemRendererRegistry.INSTANCE.register(EnderiteMod.ENDERITE_SHIELD, new EnderiteShieldRenderer());
-        ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEX).register((atlaxTexture, registry) -> {
-            if (atlaxTexture.getId() == SpriteAtlasTexture.BLOCK_ATLAS_TEX) {
-                registry.register(new Identifier("enderitemod:entity/enderite_shield_base"));
-            }
-        });
+        ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE)
+                .register((atlaxTexture, registry) -> {
+                    if (atlaxTexture.getId() == SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE) {
+                        registry.register(new Identifier("enderitemod:entity/enderite_shield_base"));
+                    }
+                });
 
     }
 }
