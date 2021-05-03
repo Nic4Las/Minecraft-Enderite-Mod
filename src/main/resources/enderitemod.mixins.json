@@ -14,7 +14,6 @@
     "ElytraPlayerEntityMixin",
     "ElytraLivingEntityMixin",
     "EnderiteShieldPlayerEntityMixin",
-    "GenerationSettingsMixin",
     "MobEntityMixin",
     "EnderiteShearsSheepMixin",
     "ShulkerBoxColoringMixin"

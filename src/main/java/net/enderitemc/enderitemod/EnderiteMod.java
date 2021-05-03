@@ -1,12 +1,5 @@
 package net.enderitemc.enderitemod;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
 import net.enderitemc.enderitemod.blocks.CrackedEnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteBlock;
 import net.enderitemc.enderitemod.blocks.EnderiteOre;
@@ -33,7 +26,8 @@ import net.enderitemc.enderitemod.tools.EnderiteSword;
 import net.enderitemc.enderitemod.tools.HoeSubclass;
 import net.enderitemc.enderitemod.tools.PickaxeSubclass;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
@@ -62,7 +56,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
@@ -229,36 +223,12 @@ public class EnderiteMod implements ModInitializer {
 		VOID_FLOATING_ENCHANTMENT = Registry.register(Registry.ENCHANTMENT,
 				new Identifier("enderitemod", "void_floating"), new VoidFloatingEnchantment());
 
-		// Loop over existing biomes
-
-		BuiltinRegistries.add(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier("enderite_ore_feature"),
-				ENDERITE_ORE_FEATURE);
-		BuiltinRegistries.BIOME.forEach(this::handleBiome);
-
-		// Listen for other biomes being registered
-		RegistryEntryAddedCallback.event(BuiltinRegistries.BIOME)
-				.register((i, identifier, biome) -> handleBiome(biome));
+		RegistryKey<ConfiguredFeature<?, ?>> oreEnderiteEnd = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN,
+				new Identifier("enderitemod", "ore_enderite_end"));
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, oreEnderiteEnd.getValue(), ENDERITE_ORE_FEATURE);
+		BiomeModifications.addFeature(BiomeSelectors.foundInTheEnd(), GenerationStep.Feature.UNDERGROUND_ORES,
+				oreEnderiteEnd);
 
 		System.out.println("-Initialized Enderitemod!-");
-	}
-
-	private void handleBiome(Biome biome) {
-		if (biome.getCategory() == Biome.Category.THEEND) {
-			GenerationStep.Feature feature = GenerationStep.Feature.UNDERGROUND_ORES;
-			List<List<Supplier<ConfiguredFeature<?, ?>>>> features = biome.getGenerationSettings().getFeatures();
-
-			int stepIndex = feature.ordinal();
-
-			while (features.size() <= stepIndex) {
-				features.add(Lists.newArrayList());
-			}
-
-			List<Supplier<ConfiguredFeature<?, ?>>> stepList = features.get(feature.ordinal());
-			if (stepList instanceof ImmutableList) {
-				features.set(feature.ordinal(), stepList = new ArrayList<>(stepList));
-			}
-
-			stepList.add(() -> ENDERITE_ORE_FEATURE);
-		}
 	}
 }

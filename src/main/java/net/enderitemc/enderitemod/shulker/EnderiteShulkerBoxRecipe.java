@@ -20,6 +20,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
     public boolean matches(CraftingInventory inv, World world) {
         int i = 0;
         int j = 0;
+        int l = 0;
 
         for (int k = 0; k < inv.size(); ++k) {
             ItemStack itemStack = inv.getStack(k);
@@ -34,7 +35,10 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
                 if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT && (k == 1 || k == 3 || k == 5 || k == 7)) {
                     ++j;
                 }
-                if (j > 4 || i > 1) {
+                if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT) {
+                    ++l;
+                }
+                if (l > 4 || i > 1) {
                     return false;
                 }
             }
