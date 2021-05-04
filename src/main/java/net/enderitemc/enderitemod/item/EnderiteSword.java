@@ -29,12 +29,12 @@ public class EnderiteSword extends SwordItem {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity playerEntity, Hand hand) {
+    public ActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
 
-        if (playerEntity.isSneaking()) {
+        if (playerEntity.isShiftKeyDown()) {
             Double distance = 30.0d;
-            double yaw = (double) playerEntity.rotationYawHead;
-            double pitch = (double) playerEntity.rotationPitch;
+            double yaw = (double) playerEntity.yHeadRot;
+            double pitch = (double) playerEntity.xRot;
 
             // x: 1 = -90, -1 = 90
             // y: 1 = -90, -1 = 90
@@ -43,33 +43,34 @@ public class EnderiteSword extends SwordItem {
             double dX = temp * -Math.sin(Math.toRadians(yaw));
             double dY = -Math.sin(Math.toRadians(pitch));
             double dZ = temp * Math.cos(Math.toRadians(yaw));
-            Vector3d position = playerEntity.getPositionVec().add(0,
-                    playerEntity.getEyeHeight() - playerEntity.getYOffset(), 0);
+            Vector3d position = playerEntity.position().add(0,
+                    playerEntity.getEyeHeight() - playerEntity.getMyRidingOffset(), 0);
             Vector3d endPosition = new Vector3d(position.x + dX * distance, position.y + dY * distance,
                     position.z + dZ * distance);
             BlockPos blockPos = new BlockPos(endPosition.x, endPosition.y, endPosition.z);
 
-            BlockPos[] blockPoses = { blockPos, blockPos.up(), blockPos };
+            BlockPos[] blockPoses = { blockPos, blockPos.above(), blockPos };
 
             double down = endPosition.y;
             double maxDown = down - distance - 1 > 0 ? down - distance - 1 : 0;
             double up = endPosition.y + 1;
             double maxUp = 128;
-            if (playerEntity.getEntityWorld().func_230315_m_().func_236046_h_()) {
-                maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
-            } else {
-                maxUp = up + distance - 1 < 255 ? up + distance - 1 : 255;
-            }
+            // if (playerEntity.getCommandSenderWorld().dimensionType().createDragonFight())
+            // {
+            // maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
+            // } else {
+            maxUp = up + distance - 1 < 255 ? up + distance - 1 : 255;
+            // }
             double near = distance;
 
             int slot = 0;
-            if (playerEntity.getHeldItem(hand).getTag().contains("teleport_charge")) {
-                slot = Integer.parseInt(playerEntity.getHeldItem(hand).getTag().get("teleport_charge").toString());
+            if (playerEntity.getItemInHand(hand).getTag().contains("teleport_charge")) {
+                slot = Integer.parseInt(playerEntity.getItemInHand(hand).getTag().get("teleport_charge").toString());
 
             }
 
             // Check to Teleport
-            if (world.isAreaLoaded(blockPos, 1) && (slot > 0 || playerEntity.abilities.isCreativeMode)) {
+            if (world.isAreaLoaded(blockPos, 1) && (slot > 0 || playerEntity.abilities.instabuild)) {
                 int foundSpace = 0;
 
                 while (foundSpace == 0 && (blockPoses[0].getY() > maxDown || blockPoses[1].getY() < maxUp)) {
@@ -79,7 +80,7 @@ public class EnderiteSword extends SwordItem {
                             foundSpace = 1;
                         } else {
                             --down;
-                            blockPoses[0] = blockPoses[0].down();
+                            blockPoses[0] = blockPoses[0].below();
                         }
                     }
                     // CheckUp
@@ -88,7 +89,7 @@ public class EnderiteSword extends SwordItem {
                             foundSpace = 2;
                         } else {
                             ++up;
-                            blockPoses[1] = blockPoses[1].up();
+                            blockPoses[1] = blockPoses[1].above();
                         }
                     }
                     // CheckNear
@@ -97,12 +98,12 @@ public class EnderiteSword extends SwordItem {
                             foundSpace = 3;
                         } else {
                             --near;
-                            blockPoses[2] = blockPoses[2].add(-dX, -dY, -dZ);
+                            blockPoses[2] = blockPoses[2].offset(-dX, -dY, -dZ);
                         }
                     }
                 }
-                if (foundSpace == 0 && !world.getBlockState(blockPos).getMaterial().blocksMovement()
-                        && !world.getBlockState(blockPos.up()).getMaterial().blocksMovement()) {
+                if (foundSpace == 0 && !world.getBlockState(blockPos).getMaterial().blocksMotion()
+                        && !world.getBlockState(blockPos.above()).getMaterial().blocksMotion()) {
                     foundSpace = 4;
                 }
                 // world.rayTraceBlock(position, endPosition, blockPos, playerEntity.shape,
@@ -111,76 +112,76 @@ public class EnderiteSword extends SwordItem {
                 // System.out.printf("| %s, %s, %s, %s |\r\n", foundSpace, down, up, near);
 
                 if (foundSpace > 0 && (position.y + dY * near) < maxUp && (position.y + dY * near) > maxDown) {
-                    playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
+                    playerEntity.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
                     switch (foundSpace) {
                         case 1: // Down
-                            playerEntity.teleportKeepLoaded(endPosition.x, down > maxDown ? down : maxDown,
+                            playerEntity.teleportToWithTicket(endPosition.x, down > maxDown ? down : maxDown,
                                     endPosition.z);
                             break;
                         case 2: // Up
-                            playerEntity.teleportKeepLoaded(endPosition.x, up < maxUp ? up : maxUp, endPosition.z);
+                            playerEntity.teleportToWithTicket(endPosition.x, up < maxUp ? up : maxUp, endPosition.z);
                             break;
                         case 4: // Air
                             near = distance / 2;
                         case 3: // Near
-                            playerEntity.teleportKeepLoaded(position.x + dX * near, position.y + dY * near,
+                            playerEntity.teleportToWithTicket(position.x + dX * near, position.y + dY * near,
                                     position.z + dZ * near);
                             break;
                     }
-                    playerEntity.getCooldownTracker().setCooldown(this, 30);
+                    playerEntity.getCooldowns().addCooldown(this, 30);
                     // if (!playerEntity.abilities.creativeMode) {
                     // playerEntity.inventory.getStack(slot).decrement(1);
                     // }
-                    if (!playerEntity.abilities.isCreativeMode) {
-                        playerEntity.getHeldItem(hand).getTag().putInt("teleport_charge", slot - 1);
+                    if (!playerEntity.abilities.instabuild) {
+                        playerEntity.getItemInHand(hand).getTag().putInt("teleport_charge", slot - 1);
                     }
-                    world.setEntityState(playerEntity, (byte) 46);
-                    playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
+                    world.broadcastEntityEvent(playerEntity, (byte) 46);
+                    playerEntity.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
                 }
             } else {
-                return new ActionResult<>(ActionResultType.FAIL, playerEntity.getHeldItem(hand));
+                return new ActionResult<>(ActionResultType.FAIL, playerEntity.getItemInHand(hand));
             }
 
         } else {
-            return new ActionResult<>(ActionResultType.FAIL, playerEntity.getHeldItem(hand));
+            return new ActionResult<>(ActionResultType.FAIL, playerEntity.getItemInHand(hand));
         }
 
-        return new ActionResult<>(ActionResultType.SUCCESS, playerEntity.getHeldItem(hand));
+        return new ActionResult<>(ActionResultType.SUCCESS, playerEntity.getItemInHand(hand));
     }
 
     protected boolean checkBlocks(World world, BlockPos pos) {
-        if (world.getBlockState(pos.down()).getMaterial().blocksMovement()
-                && !world.getBlockState(pos).getMaterial().blocksMovement()
-                && !world.getBlockState(pos.up()).getMaterial().blocksMovement()) {
+        if (world.getBlockState(pos.below()).getMaterial().blocksMotion()
+                && !world.getBlockState(pos).getMaterial().blocksMotion()
+                && !world.getBlockState(pos.above()).getMaterial().blocksMotion()) {
             return true;
         }
         return false;
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(itemStack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack itemStack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.appendHoverText(itemStack, worldIn, tooltip, flagIn);
         if (itemStack.getOrCreateTag().contains("teleport_charge")) {
             String charge = itemStack.getTag().get("teleport_charge").toString();
             tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.charge")
-                    .func_240701_a_(new TextFormatting[] { TextFormatting.DARK_AQUA })
-                    .func_230529_a_(new StringTextComponent(": " + charge)));
+                    .withStyle(new TextFormatting[] { TextFormatting.DARK_AQUA })
+                    .append(new StringTextComponent(": " + charge)));
         } else {
             tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.charge")
-                    .func_240701_a_(new TextFormatting[] { TextFormatting.DARK_AQUA })
-                    .func_230529_a_(new StringTextComponent(":0")));
+                    .withStyle(new TextFormatting[] { TextFormatting.DARK_AQUA })
+                    .append(new StringTextComponent(":0")));
         }
 
         tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.tooltip1")
-                .func_240701_a_(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
+                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
         tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.tooltip2")
-                .func_240701_a_(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
+                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
         tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.tooltip3")
-                .func_240701_a_(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
+                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
     }
 
     @Override
-    public void onCreated(ItemStack stack, World world, PlayerEntity player) {
+    public void onCraftedBy(ItemStack stack, World world, PlayerEntity player) {
     }
 
 }

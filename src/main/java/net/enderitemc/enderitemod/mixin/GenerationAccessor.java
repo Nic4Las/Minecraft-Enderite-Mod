@@ -15,10 +15,10 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 @Mixin(BiomeGenerationSettings.class)
 public interface GenerationAccessor {
 
-    @Accessor("field_242484_f")
+    @Accessor("features")
     List<List<Supplier<ConfiguredFeature<?, ?>>>> getFeatures();
 
-    @Accessor("field_242484_f")
+    @Accessor("features")
     void setFeatures(List<List<Supplier<ConfiguredFeature<?, ?>>>> features);
 
 }

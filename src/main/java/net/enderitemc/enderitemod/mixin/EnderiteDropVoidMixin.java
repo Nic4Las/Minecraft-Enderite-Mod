@@ -25,22 +25,22 @@ public abstract class EnderiteDropVoidMixin extends Entity {
 		super(type, world);
 	}
 
-	@Inject(at = @At("TAIL"), method = "tick")
+	@Inject(at = @At("TAIL"), method = "tick()V")
 	private void damageItem(CallbackInfo info) {
 		// Items in the void get telported up and will live on (because they float)
-		if (this.getPosY() < 0.0D) {
-			int i = EnchantmentHelper.getEnchantmentLevel(Registration.VOID_FLOATING.get(), getItem());
+		if (this.getY() < 0.0D) {
+			int i = EnchantmentHelper.getItemEnchantmentLevel(Registration.VOID_FLOATING.get(), getItem());
 			boolean survives = false;
 			float r = (float) Math.random();
 			if (r < i / 3.0) {
 				survives = true;
 			}
-			if (getItem().getItem().isIn(EnderiteTag.ENDERITE_ITEM) || survives) {
+			if (getItem().getItem().is(EnderiteTag.ENDERITE_ITEM) || survives) {
 				setNoGravity(true);
 				revive();
 				setGlowing(true);
-				setPosition(getPosX(), 5, getPosZ());
-				setVelocity(0, 0, 0);
+				setPos(getX(), 5, getZ());
+				lerpMotion(0, 0, 0);
 			}
 		}
 	}

@@ -23,4 +23,9 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
-.vscode
+
+.settings/
+.vscode/
+bin/
+.classpath
+.project

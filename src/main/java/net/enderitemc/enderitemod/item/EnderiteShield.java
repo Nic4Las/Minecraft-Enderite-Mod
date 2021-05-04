@@ -20,13 +20,13 @@ public class EnderiteShield extends ShieldItem {
     }
 
     @Override
-    public int getItemEnchantability() {
-        return EnderiteMaterial.ENDERITE.getEnchantability();
+    public int getEnchantmentValue() {
+        return EnderiteMaterial.ENDERITE.getEnchantmentValue();
     }
 
     @Override
-    public boolean getIsRepairable(ItemStack stack, ItemStack ingredient) {
-        return EnderiteMaterial.ENDERITE.getRepairMaterial().test(ingredient);
+    public boolean isValidRepairItem(ItemStack stack, ItemStack ingredient) {
+        return EnderiteMaterial.ENDERITE.getRepairIngredient().test(ingredient);
     }
 
     @Override
@@ -35,25 +35,25 @@ public class EnderiteShield extends ShieldItem {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(itemStack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack itemStack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.appendHoverText(itemStack, worldIn, tooltip, flagIn);
         if (itemStack.getOrCreateTag().contains("teleport_charge")) {
             String charge = itemStack.getTag().get("teleport_charge").toString();
             tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.charge")
-                    .func_240701_a_(new TextFormatting[] { TextFormatting.DARK_AQUA })
-                    .func_230529_a_(new StringTextComponent(": " + charge)));
+                    .withStyle(new TextFormatting[] { TextFormatting.DARK_AQUA })
+                    .append(new StringTextComponent(": " + charge)));
         } else {
             tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.charge")
-                    .func_240701_a_(new TextFormatting[] { TextFormatting.DARK_AQUA })
-                    .func_230529_a_(new StringTextComponent(":0")));
+                    .withStyle(new TextFormatting[] { TextFormatting.DARK_AQUA })
+                    .append(new StringTextComponent(":0")));
         }
 
         tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.tooltip1")
-                .func_240701_a_(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
+                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
         tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.tooltip2")
-                .func_240701_a_(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
+                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
         tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_shield.tooltip3")
-                .func_240701_a_(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
+                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
     }
 
 }

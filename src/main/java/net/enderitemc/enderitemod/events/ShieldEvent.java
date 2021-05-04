@@ -39,7 +39,7 @@ public class ShieldEvent {
                 f1 = amount;
                 amount = 0.0F;
                 if (!event.getSource().isProjectile()) {
-                    Entity entity = event.getSource().getImmediateSource();
+                    Entity entity = event.getSource().getDirectEntity();
                     if (entity instanceof LivingEntity) {
                         blockUsingShield((PlayerEntity) event.getEntityLiving(), (LivingEntity) entity);
                     }
@@ -51,7 +51,7 @@ public class ShieldEvent {
     }
 
     private static boolean canBlockDamageSource(LivingEntity blockingEntity, DamageSource damageSourceIn) {
-        Entity entity = damageSourceIn.getImmediateSource();
+        Entity entity = damageSourceIn.getDirectEntity();
         boolean flag = false;
         if (entity instanceof AbstractArrowEntity) {
             AbstractArrowEntity abstractarrowentity = (AbstractArrowEntity) entity;
@@ -60,13 +60,13 @@ public class ShieldEvent {
             }
         }
 
-        if (!damageSourceIn.isUnblockable() && blockingEntity.isActiveItemStackBlocking() && !flag) {
-            Vector3d vector3d2 = damageSourceIn.getDamageLocation();
+        if (!damageSourceIn.isBypassArmor() && blockingEntity.isBlocking() && !flag) {
+            Vector3d vector3d2 = damageSourceIn.getSourcePosition();
             if (vector3d2 != null) {
-                Vector3d vector3d = blockingEntity.getLook(1.0F);
-                Vector3d vector3d1 = vector3d2.subtractReverse(blockingEntity.getPositionVec()).normalize();
+                Vector3d vector3d = blockingEntity.getViewVector(1.0F);
+                Vector3d vector3d1 = vector3d2.vectorTo(blockingEntity.position()).normalize();
                 vector3d1 = new Vector3d(vector3d1.x, 0.0D, vector3d1.z);
-                if (vector3d1.dotProduct(vector3d) < 0.0D) {
+                if (vector3d1.dot(vector3d) < 0.0D) {
                     return true;
                 }
             }
@@ -76,29 +76,29 @@ public class ShieldEvent {
     }
 
     protected static void damageShield(PlayerEntity blockingPlayer, float damage) {
-        if (blockingPlayer.getActiveItemStack().isShield(blockingPlayer)) {
-            if (!blockingPlayer.world.isRemote) {
-                blockingPlayer.addStat(Stats.ITEM_USED.get(blockingPlayer.getActiveItemStack().getItem()));
+        if (blockingPlayer.getUseItem().isShield(blockingPlayer)) {
+            if (!blockingPlayer.level.isClientSide) {
+                blockingPlayer.awardStat(Stats.ITEM_USED.get(blockingPlayer.getUseItem().getItem()));
             }
 
             if (damage >= 3.0F) {
                 int i = 1 + MathHelper.floor(damage);
-                Hand hand = blockingPlayer.getActiveHand();
-                blockingPlayer.getActiveItemStack().damageItem(i, blockingPlayer, (p_213833_1_) -> {
-                    p_213833_1_.sendBreakAnimation(hand);
+                Hand hand = blockingPlayer.getUsedItemHand();
+                blockingPlayer.getUseItem().hurtAndBreak(i, blockingPlayer, (p_213833_1_) -> {
+                    p_213833_1_.broadcastBreakEvent(hand);
                     net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(blockingPlayer,
-                            blockingPlayer.getActiveItemStack(), hand);
+                            blockingPlayer.getUseItem(), hand);
                 });
-                if (blockingPlayer.getActiveItemStack().isEmpty()) {
+                if (blockingPlayer.getUseItem().isEmpty()) {
                     if (hand == Hand.MAIN_HAND) {
-                        blockingPlayer.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
+                        blockingPlayer.setItemSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
                     } else {
-                        blockingPlayer.setItemStackToSlot(EquipmentSlotType.OFFHAND, ItemStack.EMPTY);
+                        blockingPlayer.setItemSlot(EquipmentSlotType.OFFHAND, ItemStack.EMPTY);
                     }
 
-                    blockingPlayer.getActiveItemStack().setCount(0);
-                    blockingPlayer.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F,
-                            0.8F + blockingPlayer.world.rand.nextFloat() * 0.4F);
+                    blockingPlayer.getUseItem().setCount(0);
+                    blockingPlayer.playSound(SoundEvents.SHIELD_BREAK, 0.8F,
+                            0.8F + blockingPlayer.level.random.nextFloat() * 0.4F);
                 }
             }
 
@@ -107,28 +107,26 @@ public class ShieldEvent {
 
     protected static void blockUsingShield(PlayerEntity blockingPlayer, LivingEntity attacker) {
         // LivingEntity.blockUsingShield(entityIn);
-        if (attacker.getHeldItemMainhand().canDisableShield(blockingPlayer.getActiveItemStack(), blockingPlayer,
-                attacker)) {
+        if (attacker.getMainHandItem().canDisableShield(blockingPlayer.getUseItem(), blockingPlayer, attacker)) {
             blockingPlayer.disableShield(true);
         } else {
-            if (blockingPlayer.isSneaking() && blockingPlayer.getActiveItemStack().getItem() instanceof EnderiteShield
-                    && !blockingPlayer.getCooldownTracker()
-                            .hasCooldown(blockingPlayer.getActiveItemStack().getItem())) {
+            if (blockingPlayer.isShiftKeyDown() && blockingPlayer.getUseItem().getItem() instanceof EnderiteShield
+                    && !blockingPlayer.getCooldowns().isOnCooldown(blockingPlayer.getUseItem().getItem())) {
 
                 int charge = 0;
-                if (blockingPlayer.getActiveItemStack().getOrCreateTag().contains("teleport_charge")) {
-                    charge = Integer.parseInt(
-                            blockingPlayer.getActiveItemStack().getOrCreateTag().get("teleport_charge").toString());
+                if (blockingPlayer.getUseItem().getOrCreateTag().contains("teleport_charge")) {
+                    charge = Integer
+                            .parseInt(blockingPlayer.getUseItem().getOrCreateTag().get("teleport_charge").toString());
                 }
 
-                if (!blockingPlayer.getEntityWorld().isRemote && charge > 0 && !(attacker instanceof EnderDragonEntity
+                if (!blockingPlayer.level.isClientSide && charge > 0 && !(attacker instanceof EnderDragonEntity
                         || attacker instanceof WitherEntity || attacker instanceof ElderGuardianEntity)) {
-                    double d = attacker.getPosX();
-                    double e = attacker.getPosY();
-                    double f = attacker.getPosZ();
+                    double d = attacker.getX();
+                    double e = attacker.getY();
+                    double f = attacker.getZ();
 
-                    double yaw = (double) blockingPlayer.rotationYaw;
-                    double pitch = (double) blockingPlayer.rotationPitch;
+                    double yaw = (double) blockingPlayer.yRot;
+                    double pitch = (double) blockingPlayer.xRot;
 
                     // x: 1 = -90, -1 = 90
                     // y: 1 = -90, -1 = 90
@@ -140,25 +138,24 @@ public class ShieldEvent {
                     double distance = 10.0;
 
                     for (int i = 0; i < 16; ++i) {
-                        double g = attacker.getPosX() + dX * distance + (attacker.getRNG().nextDouble() - 0.5D) * 16.0D;
+                        double g = attacker.getX() + dX * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                         double h = MathHelper.clamp(
-                                attacker.getPosY() + dY * distance + (double) (attacker.getRNG().nextInt(16) - 8), 0.0D,
-                                (double) (blockingPlayer.getEntityWorld().func_234938_ad_() - 1));
-                        double j = attacker.getPosZ() + dZ * distance + (attacker.getRNG().nextDouble() - 0.5D) * 16.0D;
+                                attacker.getY() + dY * distance + (double) (attacker.getRandom().nextInt(16) - 8), 0.0D,
+                                (double) (blockingPlayer.getCommandSenderWorld().getHeight() - 1));
+                        double j = attacker.getZ() + dZ * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                         if (attacker.isPassenger()) {
                             attacker.stopRiding();
                         }
 
-                        if (attacker.attemptTeleport(g, h, j, true)) {
-                            SoundEvent soundEvent = attacker instanceof FoxEntity ? SoundEvents.field_232710_ez_
-                                    : SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
-                            blockingPlayer.getEntityWorld().playSound((PlayerEntity) null, d, e, f, soundEvent,
+                        if (attacker.randomTeleport(g, h, j, true)) {
+                            SoundEvent soundEvent = attacker instanceof FoxEntity ? SoundEvents.FOX_TELEPORT
+                                    : SoundEvents.CHORUS_FRUIT_TELEPORT;
+                            blockingPlayer.getCommandSenderWorld().playSound((PlayerEntity) null, d, e, f, soundEvent,
                                     SoundCategory.PLAYERS, 1.0F, 1.0F);
                             attacker.playSound(soundEvent, 1.0F, 1.0F);
 
-                            blockingPlayer.getActiveItemStack().getOrCreateTag().putInt("teleport_charge", charge - 1);
-                            blockingPlayer.getCooldownTracker()
-                                    .setCooldown(blockingPlayer.getActiveItemStack().getItem(), 128);
+                            blockingPlayer.getUseItem().getOrCreateTag().putInt("teleport_charge", charge - 1);
+                            blockingPlayer.getCooldowns().addCooldown(blockingPlayer.getUseItem().getItem(), 128);
                             break;
                         }
                     }

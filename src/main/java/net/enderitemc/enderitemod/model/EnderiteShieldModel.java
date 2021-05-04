@@ -30,7 +30,7 @@ public class EnderiteShieldModel extends ShieldModel implements IBakedModel {
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
+    public boolean useAmbientOcclusion() {
         // TODO Auto-generated method stub
         return false;
     }
@@ -42,18 +42,18 @@ public class EnderiteShieldModel extends ShieldModel implements IBakedModel {
     }
 
     @Override
-    public boolean func_230044_c_() {
+    public boolean usesBlockLight() {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
+    public boolean isCustomRenderer() {
         return true;
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
+    public TextureAtlasSprite getParticleIcon() {
         // TODO Auto-generated method stub
         return null;
     }

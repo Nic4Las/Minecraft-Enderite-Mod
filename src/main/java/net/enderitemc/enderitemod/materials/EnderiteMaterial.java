@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public enum EnderiteMaterial implements IItemTier {
 
-    ENDERITE(4, 4096, 15.0F, 2.0F, 17, () -> Ingredient.fromItems(Registration.ENDERITE_INGOT.get()));
+    ENDERITE(4, 4096, 15.0F, 2.0F, 17, () -> Ingredient.of(Registration.ENDERITE_INGOT.get()));
 
     private final int miningLevel;
     private final int itemDurability;
@@ -28,32 +28,32 @@ public enum EnderiteMaterial implements IItemTier {
     }
 
     @Override
-    public int getMaxUses() {
+    public int getUses() {
         return this.itemDurability;
     }
 
     @Override
-    public float getEfficiency() {
+    public float getSpeed() {
         return this.miningSpeed;
     }
 
     @Override
-    public float getAttackDamage() {
+    public float getAttackDamageBonus() {
         return this.attackDamage;
     }
 
     @Override
-    public int getHarvestLevel() {
+    public int getLevel() {
         return this.miningLevel;
     }
 
     @Override
-    public int getEnchantability() {
+    public int getEnchantmentValue() {
         return this.enchantability;
     }
 
     @Override
-    public Ingredient getRepairMaterial() {
+    public Ingredient getRepairIngredient() {
         return this.repairIngredient;
     }
 

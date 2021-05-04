@@ -26,34 +26,35 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player,
-            Hand hand, BlockRayTraceResult hit) {
-        ItemStack itemStack = player.getHeldItem(hand);
-        if (hand == Hand.MAIN_HAND && !isChargeItem(itemStack) && isChargeItem(player.getHeldItem(Hand.OFF_HAND))) {
+    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
+            BlockRayTraceResult hit) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (hand == Hand.MAIN_HAND && !isChargeItem(itemStack) && isChargeItem(player.getItemInHand(Hand.OFF_HAND))) {
             return ActionResultType.PASS;
         } else if (isChargeItem(itemStack) && canCharge(state)) {
-            func_235564_a_(world, pos, state);
-            if (!player.abilities.isCreativeMode) {
+            charge(world, pos, state);
+            if (!player.abilities.instabuild) {
                 itemStack.shrink(1);
             }
 
-            return ActionResultType.func_233537_a_(world.isRemote);
-        } else if ((Integer) state.get(field_235559_a_) == 0) {
+            return ActionResultType.sidedSuccess(world.isClientSide);
+        } else if ((Integer) state.getValue(CHARGE) == 0) {
             return ActionResultType.PASS;
         } else if (!isNether(world)) {
-            if (!world.isRemote) {
+            if (!world.isClientSide) {
                 this.explode(state, world, pos);
             }
 
-            return ActionResultType.func_233537_a_(world.isRemote);
+            return ActionResultType.sidedSuccess(world.isClientSide);
         } else {
-            if (!world.isRemote) {
+            if (!world.isClientSide) {
                 ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-                if (serverPlayerEntity.func_241141_L_() != world.func_234923_W_()
-                        || !serverPlayerEntity.func_241140_K_().equals(pos)) {
-                    serverPlayerEntity.func_242111_a(world.func_234923_W_(), pos, 0.0f, false, true);
+                if (serverPlayerEntity.getRespawnDimension() != world.dimension()
+                        || !serverPlayerEntity.getRespawnPosition().equals(pos)) {
+                    serverPlayerEntity.setRespawnPosition(world.dimension(), pos, 0.0f, false, true);
                     world.playSound((PlayerEntity) null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
-                            (double) pos.getZ() + 0.5D, SoundEvents.field_232819_mt_, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                            (double) pos.getZ() + 0.5D, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.BLOCKS,
+                            1.0F, 1.0F);
                     return ActionResultType.SUCCESS;
                 }
             }
@@ -63,16 +64,16 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
     }
 
     public static boolean isNether(World world) {
-        return world.func_230315_m_().func_236046_h_(); // world.getDimesnion().hasEnderDragonFight()
+        return world.dimensionType().createDragonFight(); // world.getDimesnion().hasEnderDragonFight()
     }
 
     private static boolean canCharge(BlockState state) {
-        return (Integer) state.get(field_235559_a_) < 4;
+        return (Integer) state.getValue(CHARGE) < 4;
     }
 
     private void explode(BlockState state, World world, final BlockPos explodedPos) {
         world.removeBlock(explodedPos, false);
-        world.createExplosion(null, explodedPos.getX(), explodedPos.getY(), explodedPos.getZ(), 6.9F, true,
+        world.explode(null, explodedPos.getX(), explodedPos.getY(), explodedPos.getZ(), 6.9F, true,
                 Explosion.Mode.DESTROY);
     }
 }

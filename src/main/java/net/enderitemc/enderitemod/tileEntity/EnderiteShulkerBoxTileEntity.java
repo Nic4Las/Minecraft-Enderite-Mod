@@ -73,7 +73,7 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
                     this.moveCollidedEntities();
                     this.animationStatus = EnderiteShulkerBoxTileEntity.AnimationStatus.OPENED;
                     this.progress = 1.0F;
-                    this.func_213975_v();
+                    this.doNeighborUpdates();
                 }
                 break;
             case CLOSING:
@@ -81,7 +81,7 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
                 if (this.progress <= 0.0F) {
                     this.animationStatus = EnderiteShulkerBoxTileEntity.AnimationStatus.CLOSED;
                     this.progress = 0.0F;
-                    this.func_213975_v();
+                    this.doNeighborUpdates();
                 }
                 break;
             case OPENED:
@@ -95,32 +95,32 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
     }
 
     public AxisAlignedBB getBoundingBox(BlockState p_190584_1_) {
-        return this.getBoundingBox(p_190584_1_.get(EnderiteShulkerBox.FACING));
+        return this.getBoundingBox(p_190584_1_.getValue(EnderiteShulkerBox.FACING));
     }
 
     public AxisAlignedBB getBoundingBox(Direction p_190587_1_) {
         float f = this.getProgress(1.0F);
-        return VoxelShapes.fullCube().getBoundingBox().expand((double) (0.5F * f * (float) p_190587_1_.getXOffset()),
-                (double) (0.5F * f * (float) p_190587_1_.getYOffset()),
-                (double) (0.5F * f * (float) p_190587_1_.getZOffset()));
+        return VoxelShapes.block().bounds().expandTowards((double) (0.5F * f * (float) p_190587_1_.getStepX()),
+                (double) (0.5F * f * (float) p_190587_1_.getStepY()),
+                (double) (0.5F * f * (float) p_190587_1_.getStepZ()));
     }
 
     private AxisAlignedBB getTopBoundingBox(Direction p_190588_1_) {
         Direction direction = p_190588_1_.getOpposite();
-        return this.getBoundingBox(p_190588_1_).contract((double) direction.getXOffset(),
-                (double) direction.getYOffset(), (double) direction.getZOffset());
+        return this.getBoundingBox(p_190588_1_).contract((double) direction.getStepX(),
+                (double) direction.getStepY(), (double) direction.getStepZ());
     }
 
     private void moveCollidedEntities() {
-        BlockState blockstate = this.world.getBlockState(this.getPos());
+        BlockState blockstate = this.level.getBlockState(this.getBlockPos());
         if (blockstate.getBlock() instanceof EnderiteShulkerBox) {
-            Direction direction = blockstate.get(EnderiteShulkerBox.FACING);
-            AxisAlignedBB axisalignedbb = this.getTopBoundingBox(direction).offset(this.pos);
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity((Entity) null, axisalignedbb);
+            Direction direction = blockstate.getValue(EnderiteShulkerBox.FACING);
+            AxisAlignedBB axisalignedbb = this.getTopBoundingBox(direction).move(this.worldPosition);
+            List<Entity> list = this.level.getEntities((Entity) null, axisalignedbb);
             if (!list.isEmpty()) {
                 for (int i = 0; i < list.size(); ++i) {
                     Entity entity = list.get(i);
-                    if (entity.getPushReaction() != PushReaction.IGNORE) {
+                    if (entity.getPistonPushReaction() != PushReaction.IGNORE) {
                         double d0 = 0.0D;
                         double d1 = 0.0D;
                         double d2 = 0.0D;
@@ -154,8 +154,8 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
                                 d2 = d2 + 0.01D;
                         }
 
-                        entity.move(MoverType.SHULKER_BOX, new Vector3d(d0 * (double) direction.getXOffset(),
-                                d1 * (double) direction.getYOffset(), d2 * (double) direction.getZOffset()));
+                        entity.move(MoverType.SHULKER_BOX, new Vector3d(d0 * (double) direction.getStepX(),
+                                d1 * (double) direction.getStepY(), d2 * (double) direction.getStepZ()));
                     }
                 }
 
@@ -166,7 +166,7 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory() {
+    public int getContainerSize() {
         return this.items.size();
     }
 
@@ -174,52 +174,52 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
      * See {@link Block#eventReceived} for more information. This must return true
      * serverside before it is called clientside.
      */
-    public boolean receiveClientEvent(int id, int type) {
+    public boolean triggerEvent(int id, int type) {
         if (id == 1) {
             this.openCount = type;
             if (type == 0) {
                 this.animationStatus = EnderiteShulkerBoxTileEntity.AnimationStatus.CLOSING;
-                this.func_213975_v();
+                this.doNeighborUpdates();
             }
 
             if (type == 1) {
                 this.animationStatus = EnderiteShulkerBoxTileEntity.AnimationStatus.OPENING;
-                this.func_213975_v();
+                this.doNeighborUpdates();
             }
 
             return true;
         } else {
-            return super.receiveClientEvent(id, type);
+            return super.triggerEvent(id, type);
         }
     }
 
-    private void func_213975_v() {
-        this.getBlockState().func_235734_a_(this.getWorld(), this.getPos(), 3);
+    private void doNeighborUpdates() {
+        this.getBlockState().updateNeighbourShapes(this.getLevel(), this.getBlockPos(), 3);
     }
 
-    public void openInventory(PlayerEntity player) {
+    public void startOpen(PlayerEntity player) {
         if (!player.isSpectator()) {
             if (this.openCount < 0) {
                 this.openCount = 0;
             }
 
             ++this.openCount;
-            this.world.addBlockEvent(this.pos, this.getBlockState().getBlock(), 1, this.openCount);
+            this.level.blockEvent(this.worldPosition, this.getBlockState().getBlock(), 1, this.openCount);
             if (this.openCount == 1) {
-                this.world.playSound((PlayerEntity) null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_OPEN,
-                        SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+                this.level.playSound((PlayerEntity) null, this.worldPosition, SoundEvents.SHULKER_BOX_OPEN,
+                        SoundCategory.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
             }
         }
 
     }
 
-    public void closeInventory(PlayerEntity player) {
+    public void stopOpen(PlayerEntity player) {
         if (!player.isSpectator()) {
             --this.openCount;
-            this.world.addBlockEvent(this.pos, this.getBlockState().getBlock(), 1, this.openCount);
+            this.level.blockEvent(this.worldPosition, this.getBlockState().getBlock(), 1, this.openCount);
             if (this.openCount <= 0) {
-                this.world.playSound((PlayerEntity) null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_CLOSE,
-                        SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+                this.level.playSound((PlayerEntity) null, this.worldPosition, SoundEvents.SHULKER_BOX_CLOSE,
+                        SoundCategory.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
             }
         }
 
@@ -229,26 +229,26 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
         return new TranslationTextComponent("container.enderitemod.enderiteShulkerBox");
     }
 
-    public void func_230337_a_(BlockState p_230337_1_, CompoundNBT p_230337_2_) {
-        super.func_230337_a_(p_230337_1_, p_230337_2_);
+    public void load(BlockState p_230337_1_, CompoundNBT p_230337_2_) {
+        super.load(p_230337_1_, p_230337_2_);
         this.loadFromNbt(p_230337_2_);
     }
 
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
+    public CompoundNBT save(CompoundNBT compound) {
+        super.save(compound);
         return this.saveToNbt(compound);
     }
 
     public void loadFromNbt(CompoundNBT compound) {
-        this.items = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        if (!this.checkLootAndRead(compound) && compound.contains("Items", 9)) {
+        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        if (!this.tryLoadLootTable(compound) && compound.contains("Items", 9)) {
             ItemStackHelper.loadAllItems(compound, this.items);
         }
 
     }
 
     public CompoundNBT saveToNbt(CompoundNBT compound) {
-        if (!this.checkLootAndWrite(compound)) {
+        if (!this.trySaveLootTable(compound)) {
             ItemStackHelper.saveAllItems(compound, this.items, false);
         }
 
@@ -271,15 +271,15 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
      * Returns true if automation can insert the given item in the given slot from
      * the given side.
      */
-    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-        return !(Block.getBlockFromItem(itemStackIn.getItem()) instanceof EnderiteShulkerBox);
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
+        return !(Block.byItem(itemStackIn.getItem()) instanceof EnderiteShulkerBox);
     }
 
     /**
      * Returns true if automation can extract the given item in the given slot from
      * the given side.
      */
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
         return true;
     }
 
@@ -291,7 +291,7 @@ public class EnderiteShulkerBoxTileEntity extends LockableLootTileEntity
         return new ShulkerBoxContainer(id, player, this);
     }
 
-    public boolean func_235676_l_() {
+    public boolean isClosed() {
         return this.animationStatus == EnderiteShulkerBoxTileEntity.AnimationStatus.CLOSED;
     }
 

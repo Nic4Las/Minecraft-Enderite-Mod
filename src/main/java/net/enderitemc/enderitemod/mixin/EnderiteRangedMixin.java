@@ -23,61 +23,64 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class EnderiteRangedMixin {
 
     @Shadow
-    public static Map<Item, Map<ResourceLocation, IItemPropertyGetter>> field_239415_f_;
+    public static Map<Item, Map<ResourceLocation, IItemPropertyGetter>> PROPERTIES;
 
     @Shadow
-    public static void func_239418_a_(Item item, ResourceLocation id, IItemPropertyGetter provider) {
-        ((Map) field_239415_f_.computeIfAbsent(item, (itemx) -> {
+    public static void register(Item item, ResourceLocation id, IItemPropertyGetter provider) {
+        ((Map) PROPERTIES.computeIfAbsent(item, (itemx) -> {
             return Maps.newHashMap();
         })).put(id, provider);
     }
 
     static {
-        func_239418_a_((Item) Registration.ENDERITE_BOW.get(), new ResourceLocation("pull"),
-                (itemStack, clientWorld, livingEntity) -> {
-                    if (livingEntity == null) {
-                        return 0.0F;
-                    } else {
-                        return livingEntity.getActiveItemStack() != itemStack ? 0.0F
-                                : (float) (itemStack.getUseDuration() - livingEntity.getItemInUseCount())
-                                        / EnderiteBow.chargeTime;
-                    }
-                });
-        func_239418_a_((Item) Registration.ENDERITE_BOW.get(), new ResourceLocation("pulling"),
-                (itemStack, clientWorld, livingEntity) -> {
-                    return livingEntity != null && livingEntity.isHandActive()
-                            && livingEntity.getActiveItemStack() == itemStack ? 1.0F : 0.0F;
-                });
-        func_239418_a_((Item) Registration.ENDERITE_CROSSBOW.get(), new ResourceLocation("pull"),
+        // register((Item) Registration.ENDERITE_BOW.get(), new
+        // ResourceLocation("pull"),
+        // (itemStack, clientWorld, livingEntity) -> {
+        // if (livingEntity == null) {
+        // return 0.0F;
+        // } else {
+        // return livingEntity.getUseItem() != itemStack ? 0.0F
+        // : (float) (itemStack.getUseDuration() -
+        // livingEntity.getUseItemRemainingTicks())
+        // / EnderiteBow.chargeTime;
+        // }
+        // });
+        // register((Item) Registration.ENDERITE_BOW.get(), new
+        // ResourceLocation("pulling"),
+        // (itemStack, clientWorld, livingEntity) -> {
+        // return livingEntity != null && livingEntity.isUsingItem()
+        // && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F;
+        // });
+        register((Item) Registration.ENDERITE_CROSSBOW.get(), new ResourceLocation("pull"),
                 (itemStack, clientWorld, livingEntity) -> {
                     if (livingEntity == null) {
                         return 0.0F;
                     } else {
                         return EnderiteCrossbow.isCharged(itemStack) ? 0.0F
-                                : (float) (itemStack.getUseDuration() - livingEntity.getItemInUseCount())
+                                : (float) (itemStack.getUseDuration() - livingEntity.getUseItemRemainingTicks())
                                         / (float) EnderiteCrossbow.getChargeTime(itemStack);
                     }
                 });
-        func_239418_a_((Item) Registration.ENDERITE_CROSSBOW.get(), new ResourceLocation("pulling"),
+        register((Item) Registration.ENDERITE_CROSSBOW.get(), new ResourceLocation("pulling"),
                 (itemStack, clientWorld, livingEntity) -> {
-                    return livingEntity != null && livingEntity.isHandActive()
-                            && livingEntity.getActiveItemStack() == itemStack && !EnderiteCrossbow.isCharged(itemStack)
-                                    ? 1.0F
-                                    : 0.0F;
+                    return livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack
+                            && !EnderiteCrossbow.isCharged(itemStack) ? 1.0F : 0.0F;
                 });
-        func_239418_a_(Registration.ENDERITE_CROSSBOW.get(), new ResourceLocation("charged"),
+        register(Registration.ENDERITE_CROSSBOW.get(), new ResourceLocation("charged"),
                 (itemStack, clientWorld, livingEntity) -> {
                     return livingEntity != null && EnderiteCrossbow.isCharged(itemStack) ? 1.0F : 0.0F;
                 });
-        func_239418_a_(Registration.ENDERITE_CROSSBOW.get(), new ResourceLocation("firework"),
+        register(Registration.ENDERITE_CROSSBOW.get(), new ResourceLocation("firework"),
                 (itemStack, clientWorld, livingEntity) -> {
                     return livingEntity != null && EnderiteCrossbow.isCharged(itemStack)
-                            && EnderiteCrossbow.hasChargedProjectile(itemStack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F;
+                            && EnderiteCrossbow.containsChargedProjectile(itemStack, Items.FIREWORK_ROCKET) ? 1.0F
+                                    : 0.0F;
                 });
-        func_239418_a_(Registration.ENDERITE_SHIELD.get(), new ResourceLocation("blocking"),
+        register(Registration.ENDERITE_SHIELD.get(), new ResourceLocation("blocking"),
                 (itemStack, clientWorld, livingEntity) -> {
-                    return livingEntity != null && livingEntity.isHandActive()
-                            && livingEntity.getActiveItemStack() == itemStack ? 1.0F : 0.0F;
+                    return livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack
+                            ? 1.0F
+                            : 0.0F;
                 });
     }
 

@@ -12,12 +12,12 @@ import net.minecraft.world.World;
 public class EnderiteOre extends Block {
 
     public EnderiteOre() {
-        super(Properties.create(Material.IRON, MaterialColor.BLACK).sound(SoundType.STONE)
-                .hardnessAndResistance(-1.0f, 9.0F).noDrops());
+        super(Properties.of(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.STONE).strength(-1.0f, 9.0F)
+                .noDrops());
     }
 
     @Override
-    public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
-        world.setBlockState(pos, Registration.CRACKED_ENDERITE_ORE.get().getDefaultState());
+    public void wasExploded(World world, BlockPos pos, Explosion explosion) {
+        world.setBlockAndUpdate(pos, Registration.CRACKED_ENDERITE_ORE.get().defaultBlockState());
     }
 }

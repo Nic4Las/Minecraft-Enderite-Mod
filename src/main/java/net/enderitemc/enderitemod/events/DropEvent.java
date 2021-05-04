@@ -23,20 +23,20 @@ public class DropEvent {
     @SubscribeEvent
     public static void playerDeathDropEvent(LivingDropsEvent event) {
         event.getDrops().forEach((e) -> {
-            if (e.getPosY() < 0) {
-                int i = EnchantmentHelper.getEnchantmentLevel(Registration.VOID_FLOATING.get(), e.getItem());
+            if (e.getY() < 0) {
+                int i = EnchantmentHelper.getItemEnchantmentLevel(Registration.VOID_FLOATING.get(), e.getItem());
                 boolean survives = false;
                 float r = (float) Math.random();
                 LOGGER.info(r);
                 if (r < i / 3.0) {
                     survives = true;
                 }
-                if ((e.getItem().getItem().isIn(EnderiteTag.ENDERITE_ITEM) || survives)) {
+                if ((e.getItem().getItem().is(EnderiteTag.ENDERITE_ITEM) || survives)) {
                     e.setNoGravity(true);
                     e.revive();
                     e.setGlowing(true);
-                    e.setPosition(e.getPosX(), 5, e.getPosZ());
-                    e.setVelocity(0, 0, 0);
+                    e.setPos(e.getX(), 5, e.getZ());
+                    e.lerpMotion(0, 0, 0);
                 }
             }
         });
@@ -48,13 +48,9 @@ public class DropEvent {
         ItemStack stack = entity.getItem();
         Item item = stack.getItem();
 
-        if (!entity.hasNoGravity() && !event.getPlayer().getEntityWorld().isRemote() && !stack.isEmpty()
-                && item.isIn(EnderiteTag.ENDERITE_ITEM)) {
+        if (!entity.isNoGravity() && !event.getPlayer().getCommandSenderWorld().isClientSide() && !stack.isEmpty()
+                && item.is(EnderiteTag.ENDERITE_ITEM)) {
             entity.setNoGravity(true);
-        }
-        // Slow down enderite item y velocity (to stop vertical spread)
-        if (item.isIn(EnderiteTag.ENDERITE_ITEM)) {
-            entity.setMotion(entity.getMotion().mul(1.0D, 0.96D, 1.0D));
         }
     }
 

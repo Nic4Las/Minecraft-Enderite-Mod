@@ -28,7 +28,7 @@ public class WorldFeatures {
                 RuleTest fillerBlockType = new BlockMatchRuleTest(Blocks.END_STONE);
 
                 BlockState state = ForgeRegistries.BLOCKS
-                                .getValue(new ResourceLocation(EnderiteMod.MOD_ID, "enderite_ore")).getDefaultState();
+                                .getValue(new ResourceLocation(EnderiteMod.MOD_ID, "enderite_ore")).defaultBlockState();
 
                 // CountRangeConfig countConfig = new CountRangeConfig(3, 12, 12, 48);
                 int count = EnderiteModConfig.ENDERITE_COUNT.get();
@@ -40,14 +40,14 @@ public class WorldFeatures {
                 TopSolidRangeConfig countConfig = new TopSolidRangeConfig(bottomOffset, topOffset, maximum);
 
                 ConfiguredFeature<?, ?> enderite_cf = Feature.ORE
-                                .withConfiguration(new OreFeatureConfig(fillerBlockType, state, 3))
-                                .withPlacement(Placement.field_242907_l.configure(countConfig)).func_242728_a()
-                                .func_242731_b(count);
+                                .configured(new OreFeatureConfig(fillerBlockType, state, 3))
+                                .decorated(Placement.RANGE.configured(countConfig)).squared()
+                                .count(count);
 
-                Registry.register(WorldGenRegistries.field_243653_e,
+                Registry.register(WorldGenRegistries.CONFIGURED_FEATURE,
                                 new ResourceLocation(EnderiteMod.MOD_ID, "enderite_cf"), enderite_cf);
-                WorldGenRegistries.field_243657_i.forEach(biome -> {
-                        if (biome.getCategory() == Biome.Category.THEEND) {
+                WorldGenRegistries.BIOME.forEach(biome -> {
+                        if (biome.getBiomeCategory() == Biome.Category.THEEND) {
                                 BiomeHandler handler = new BiomeHandler(biome);
                                 handler.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, enderite_cf);
                         }

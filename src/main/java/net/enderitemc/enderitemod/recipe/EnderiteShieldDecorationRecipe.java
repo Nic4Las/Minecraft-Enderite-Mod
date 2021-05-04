@@ -23,8 +23,8 @@ public class EnderiteShieldDecorationRecipe extends SpecialRecipe {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.getSizeInventory(); ++i) {
-            ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
+        for (int i = 0; i < craftingInventory.getContainerSize(); ++i) {
+            ItemStack itemStack3 = craftingInventory.getItem(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.getItem() instanceof BannerItem) {
                     if (!itemStack2.isEmpty()) {
@@ -41,7 +41,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialRecipe {
                         return false;
                     }
 
-                    if (itemStack3.getChildTag("BlockEntityTag") != null) {
+                    if (itemStack3.getTagElement("BlockEntityTag") != null) {
                         return false;
                     }
 
@@ -57,12 +57,12 @@ public class EnderiteShieldDecorationRecipe extends SpecialRecipe {
         }
     }
 
-    public ItemStack getCraftingResult(CraftingInventory craftingInventory) {
+    public ItemStack assemble(CraftingInventory craftingInventory) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.getSizeInventory(); ++i) {
-            ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
+        for (int i = 0; i < craftingInventory.getContainerSize(); ++i) {
+            ItemStack itemStack3 = craftingInventory.getItem(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.getItem() instanceof BannerItem) {
                     itemStack = itemStack3;
@@ -75,16 +75,16 @@ public class EnderiteShieldDecorationRecipe extends SpecialRecipe {
         if (itemStack2.isEmpty()) {
             return itemStack2;
         } else {
-            CompoundNBT compoundTag = itemStack.getChildTag("BlockEntityTag");
+            CompoundNBT compoundTag = itemStack.getTagElement("BlockEntityTag");
             CompoundNBT compoundTag2 = compoundTag == null ? new CompoundNBT() : compoundTag.copy();
             compoundTag2.putInt("Base", ((BannerItem) itemStack.getItem()).getColor().getId());
-            itemStack2.setTagInfo("BlockEntityTag", compoundTag2);
+            itemStack2.addTagElement("BlockEntityTag", compoundTag2);
             return itemStack2;
         }
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 2;
     }
 

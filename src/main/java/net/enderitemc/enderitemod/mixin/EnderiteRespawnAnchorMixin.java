@@ -19,7 +19,7 @@ import net.minecraft.world.server.ServerWorld;
 @Mixin(PlayerEntity.class)
 public class EnderiteRespawnAnchorMixin {
 
-    @Inject(at = @At("HEAD"), method = "func_242374_a", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "findRespawnPositionAndUseSpawnBlock", cancellable = true)
     private static void isEnd(ServerWorld world, BlockPos pos, float f, boolean bl, boolean bl2,
             CallbackInfoReturnable<Optional<Vector3d>> info) {
         // Implements possibility to spawn in end with enderite respawn anchor
@@ -27,12 +27,12 @@ public class EnderiteRespawnAnchorMixin {
         Block block = blockState.getBlock();
         // isNether() method is actually checking if dimension is the end
         if (block instanceof EnderiteRespawnAnchor
-                && (Integer) blockState.get(EnderiteRespawnAnchor.field_235559_a_) > 0
+                && (Integer) blockState.getValue(EnderiteRespawnAnchor.CHARGE) > 0
                 && EnderiteRespawnAnchor.isNether(world)) {
-            Optional<Vector3d> optional = EnderiteRespawnAnchor.func_235560_a_(EntityType.PLAYER, world, pos);
+            Optional<Vector3d> optional = EnderiteRespawnAnchor.findStandUpPosition(EntityType.PLAYER, world, pos);
             if (!bl2 && optional.isPresent()) {
-                world.setBlockState(pos, (BlockState) blockState.with(EnderiteRespawnAnchor.field_235559_a_,
-                        (Integer) blockState.get(EnderiteRespawnAnchor.field_235559_a_) - 1), 3);
+                world.setBlock(pos, (BlockState) blockState.setValue(EnderiteRespawnAnchor.CHARGE,
+                        (Integer) blockState.getValue(EnderiteRespawnAnchor.CHARGE) - 1), 3);
             }
 
             info.setReturnValue(optional);

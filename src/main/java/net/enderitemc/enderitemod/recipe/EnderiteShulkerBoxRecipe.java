@@ -21,22 +21,26 @@ public class EnderiteShulkerBoxRecipe extends SpecialRecipe {
     public boolean matches(CraftingInventory craftingInventory, World world) {
         int i = 0;
         int j = 0;
+        int l = 0;
 
-        for (int k = 0; k < craftingInventory.getSizeInventory(); ++k) {
-            ItemStack itemStack = craftingInventory.getStackInSlot(k);
+        for (int k = 0; k < craftingInventory.getContainerSize(); ++k) {
+            ItemStack itemStack = craftingInventory.getItem(k);
             if (!itemStack.isEmpty()) {
                 if (!(itemStack.getItem() == Registration.ENDERITE_INGOT.get()
-                        || itemStack.getItem().isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES))) {
+                        || itemStack.getItem().is(EnderiteTag.CRAFTABLE_SHULKER_BOXES))) {
                     return false;
                 }
-                if (k == 4 && itemStack.getItem().isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES)) {
+                if (k == 4 && itemStack.getItem().is(EnderiteTag.CRAFTABLE_SHULKER_BOXES)) {
                     ++i;
                 }
                 if (itemStack.getItem() == Registration.ENDERITE_INGOT.get()
                         && (k == 1 || k == 3 || k == 5 || k == 7)) {
                     ++j;
                 }
-                if (j > 4 || i > 1) {
+                if (itemStack.getItem() == Registration.ENDERITE_INGOT.get()) {
+                    ++l;
+                }
+                if (l > 4 || i > 1) {
                     return false;
                 }
             }
@@ -45,14 +49,14 @@ public class EnderiteShulkerBoxRecipe extends SpecialRecipe {
         return i == 1 && j == 4;
     }
 
-    public ItemStack getCraftingResult(CraftingInventory craftingInventory) {
+    public ItemStack assemble(CraftingInventory craftingInventory) {
         ItemStack itemStack = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.getSizeInventory(); ++i) {
-            ItemStack itemStack2 = craftingInventory.getStackInSlot(i);
+        for (int i = 0; i < craftingInventory.getContainerSize(); ++i) {
+            ItemStack itemStack2 = craftingInventory.getItem(i);
             if (!itemStack2.isEmpty()) {
                 Item item = itemStack2.getItem();
-                if (item.isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES)) {
+                if (item.is(EnderiteTag.CRAFTABLE_SHULKER_BOXES)) {
                     itemStack = itemStack2;
                 }
             }
@@ -67,7 +71,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialRecipe {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 9;
     }
 

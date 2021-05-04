@@ -25,8 +25,8 @@ public class EnderiteElytraSpecialRecipe extends SpecialRecipe {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.getSizeInventory(); ++i) {
-            ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
+        for (int i = 0; i < craftingInventory.getContainerSize(); ++i) {
+            ItemStack itemStack3 = craftingInventory.getItem(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.getItem() == Registration.ENDERITE_CHESTPLATE.get()) {
                     if (!itemStack2.isEmpty()) {
@@ -55,12 +55,12 @@ public class EnderiteElytraSpecialRecipe extends SpecialRecipe {
         }
     }
 
-    public ItemStack getCraftingResult(CraftingInventory craftingInventory) {
+    public ItemStack assemble(CraftingInventory craftingInventory) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.getSizeInventory(); ++i) {
-            ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
+        for (int i = 0; i < craftingInventory.getContainerSize(); ++i) {
+            ItemStack itemStack3 = craftingInventory.getItem(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.getItem() == Registration.ENDERITE_CHESTPLATE.get()) {
                     itemStack = itemStack3;
@@ -88,7 +88,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialRecipe {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width * height >= 2;
     }
 

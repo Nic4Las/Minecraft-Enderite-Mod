@@ -17,18 +17,18 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public abstract class ElytraLivingEntityMixin extends Entity {
 
     @Shadow
-    public abstract ItemStack getItemStackFromSlot(EquipmentSlotType type);
+    public abstract ItemStack getItemBySlot(EquipmentSlotType type);
 
     public ElytraLivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    @ModifyArg(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setFlag(IZ)V"), method = "updateElytra", index = 1)
+    @ModifyArg(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setSharedFlag(IZ)V"), method = "updateFallFlying", index = 1)
     private boolean flagSevenFix(boolean value) {
         // Mixin to overwrite check of flag 7
-        boolean bl = this.getFlag(7);
+        boolean bl = this.getSharedFlag(7);
         if (bl && !this.onGround && !this.isPassenger()) {
-            ItemStack itemStack = this.getItemStackFromSlot(EquipmentSlotType.CHEST);
+            ItemStack itemStack = this.getItemBySlot(EquipmentSlotType.CHEST);
             return itemStack.getItem() == Registration.ENDERITE_ELYTRA.get() || value;
         }
         return value;

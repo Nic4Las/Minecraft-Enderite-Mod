@@ -1,14 +1,20 @@
 package net.enderitemc.enderitemod;
 
+import net.enderitemc.enderitemod.events.GenerationEvent;
+import net.enderitemc.enderitemod.init.AnimationFeatures;
 import net.enderitemc.enderitemod.init.EnderiteModConfig;
 import net.enderitemc.enderitemod.init.Registration;
 import net.enderitemc.enderitemod.init.WorldFeatures;
+import net.enderitemc.enderitemod.item.EnderiteBow;
 import net.enderitemc.enderitemod.renderer.EnderiteShieldRenderer;
 import net.enderitemc.enderitemod.renderer.EnderiteShulkerBoxTileEntityRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.ShulkerBoxTileEntityRenderer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -71,11 +77,13 @@ public class EnderiteMod {
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+        GenerationEvent.registerOres();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().options);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -107,13 +115,14 @@ public class EnderiteMod {
 
         @SubscribeEvent
         public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
-            WorldFeatures.init();
+            // WorldFeatures.init();
+            AnimationFeatures.init();
         }
 
         @SubscribeEvent
         public static void onTextureStitchEvent(TextureStitchEvent.Pre event) {
-            LOGGER.info("RSL" + event.getMap().getTextureLocation() + ", " + AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-            if (event.getMap().getTextureLocation() == AtlasTexture.LOCATION_BLOCKS_TEXTURE) {
+            LOGGER.info("RSL" + event.getMap().location() + ", " + AtlasTexture.LOCATION_BLOCKS);
+            if (event.getMap().location() == AtlasTexture.LOCATION_BLOCKS) {
                 event.addSprite(EnderiteShieldRenderer.LOCATION_ENDERITE_SHIELD_BASE_NO_PATTERN);
             }
         }
@@ -137,7 +146,7 @@ public class EnderiteMod {
 
         @SubscribeEvent
         public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
-            WorldFeatures.init();
+            // WorldFeatures.init();
         }
 
     }

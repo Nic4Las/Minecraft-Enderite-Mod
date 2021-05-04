@@ -31,13 +31,13 @@ public abstract class ElytraClientPlayerEntityMixin extends ElytraPlayerEntityMi
     @Final
     public ClientPlayNetHandler connection;
 
-    @Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/entity/player/ClientPlayerEntity;getItemStackFromSlot(Lnet/minecraft/inventory/EquipmentSlotType;)Lnet/minecraft/item/ItemStack;"), method = "livingTick")
+    @Inject(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/entity/player/ClientPlayerEntity;getItemBySlot(Lnet/minecraft/inventory/EquipmentSlotType;)Lnet/minecraft/item/ItemStack;"), method = "aiStep")
     public void tickMovement(CallbackInfo info) {
-        ItemStack itemStack = this.getItemStackFromSlot(EquipmentSlotType.CHEST);
+        ItemStack itemStack = this.getItemBySlot(EquipmentSlotType.CHEST);
         if (itemStack.getItem() == Registration.ENDERITE_ELYTRA.get() && this.tryToStartFallFlying()) {
             // Send packet that player is fall flying when he got enderite elytra and should
             // be fall flyin
-            this.connection.sendPacket(new CEntityActionPacket(this, CEntityActionPacket.Action.START_FALL_FLYING));
+            this.connection.send(new CEntityActionPacket(this, CEntityActionPacket.Action.START_FALL_FLYING));
         }
     }
 }

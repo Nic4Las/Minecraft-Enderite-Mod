@@ -41,33 +41,33 @@ public class EnderiteShulkerBox extends ShulkerBoxBlock {
         super(color, properties);
     }
 
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new EnderiteShulkerBoxTileEntity();
     }
 
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player,
-            Hand handIn, BlockRayTraceResult hit) {
-        if (worldIn.isRemote) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn,
+            BlockRayTraceResult hit) {
+        if (worldIn.isClientSide) {
             return ActionResultType.SUCCESS;
         } else if (player.isSpectator()) {
             return ActionResultType.CONSUME;
         } else {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+            TileEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof EnderiteShulkerBoxTileEntity) {
                 EnderiteShulkerBoxTileEntity shulkerboxtileentity = (EnderiteShulkerBoxTileEntity) tileentity;
                 boolean flag;
                 if (shulkerboxtileentity.getAnimationStatus() == EnderiteShulkerBoxTileEntity.AnimationStatus.CLOSED) {
-                    Direction direction = state.get(FACING);
-                    flag = worldIn.hasNoCollisions(ShulkerAABBHelper.func_233539_a_(pos, direction));
+                    Direction direction = state.getValue(FACING);
+                    flag = worldIn.noCollision(ShulkerAABBHelper.openBoundingBox(pos, direction));
                 } else {
                     flag = true;
                 }
 
                 if (flag) {
-                    player.openContainer(shulkerboxtileentity);
-                    player.addStat(Stats.OPEN_SHULKER_BOX);
-                    PiglinTasks.func_234478_a_(player, true);
+                    player.openMenu(shulkerboxtileentity);
+                    player.awardStat(Stats.OPEN_SHULKER_BOX);
+                    PiglinTasks.angerNearbyPiglins(player, true);
                 }
 
                 return ActionResultType.CONSUME;
@@ -82,41 +82,41 @@ public class EnderiteShulkerBox extends ShulkerBoxBlock {
      * the player's tool can actually collect this block
      */
     @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        TileEntity tileentity = worldIn.getBlockEntity(pos);
         if (tileentity instanceof EnderiteShulkerBoxTileEntity) {
             EnderiteShulkerBoxTileEntity shulkerboxtileentity = (EnderiteShulkerBoxTileEntity) tileentity;
-            if (!worldIn.isRemote && player.isCreative() && !shulkerboxtileentity.isEmpty()) {
+            if (!worldIn.isClientSide && player.isCreative() && !shulkerboxtileentity.isEmpty()) {
                 ItemStack itemstack = getColoredItemStack(this.getColor());
                 CompoundNBT compoundnbt = shulkerboxtileentity.saveToNbt(new CompoundNBT());
                 if (!compoundnbt.isEmpty()) {
-                    itemstack.setTagInfo("BlockEntityTag", compoundnbt);
+                    itemstack.addTagElement("BlockEntityTag", compoundnbt);
                 }
 
                 if (shulkerboxtileentity.hasCustomName()) {
-                    itemstack.setDisplayName(shulkerboxtileentity.getCustomName());
+                    itemstack.setHoverName(shulkerboxtileentity.getCustomName());
                 }
 
                 ItemEntity itementity = new ItemEntity(worldIn, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
                         (double) pos.getZ() + 0.5D, itemstack);
-                itementity.setDefaultPickupDelay();
-                worldIn.addEntity(itementity);
+                itementity.setDefaultPickUpDelay();
+                worldIn.addFreshEntity(itementity);
             } else {
-                shulkerboxtileentity.fillWithLoot(player);
+                shulkerboxtileentity.unpackLootTable(player);
             }
         }
 
-        super.onBlockHarvested(worldIn, pos, state, player);
+        super.playerWillDestroy(worldIn, pos, state, player);
     }
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        TileEntity tileentity = builder.get(LootParameters.BLOCK_ENTITY);
+        TileEntity tileentity = builder.getOptionalParameter(LootParameters.BLOCK_ENTITY);
         if (tileentity instanceof EnderiteShulkerBoxTileEntity) {
             EnderiteShulkerBoxTileEntity shulkerboxtileentity = (EnderiteShulkerBoxTileEntity) tileentity;
             builder = builder.withDynamicDrop(CONTENTS, (p_220168_1_, p_220168_2_) -> {
-                for (int i = 0; i < shulkerboxtileentity.getSizeInventory(); ++i) {
-                    p_220168_2_.accept(shulkerboxtileentity.getStackInSlot(i));
+                for (int i = 0; i < shulkerboxtileentity.getContainerSize(); ++i) {
+                    p_220168_2_.accept(shulkerboxtileentity.getItem(i));
                 }
 
             });
@@ -130,9 +130,9 @@ public class EnderiteShulkerBox extends ShulkerBoxBlock {
      * logic
      */
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        if (stack.hasDisplayName()) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        if (stack.hasCustomHoverName()) {
+            TileEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof EnderiteShulkerBoxTileEntity) {
                 ((EnderiteShulkerBoxTileEntity) tileentity).setCustomName(stack.getDisplayName());
             }
@@ -141,32 +141,32 @@ public class EnderiteShulkerBox extends ShulkerBoxBlock {
     }
 
     @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.isIn(newState.getBlock())) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
+    public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!state.is(newState.getBlock())) {
+            TileEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof EnderiteShulkerBoxTileEntity) {
-                worldIn.updateComparatorOutputLevel(pos, state.getBlock());
+                worldIn.updateNeighbourForOutputSignal(pos, state.getBlock());
             }
 
-            super.onReplaced(state, worldIn, pos, newState, isMoving);
+            super.onRemove(state, worldIn, pos, newState, isMoving);
         }
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        TileEntity tileentity = worldIn.getTileEntity(pos);
+        TileEntity tileentity = worldIn.getBlockEntity(pos);
         return tileentity instanceof EnderiteShulkerBoxTileEntity
                 ? VoxelShapes.create(((EnderiteShulkerBoxTileEntity) tileentity).getBoundingBox(state))
-                : VoxelShapes.fullCube();
+                : VoxelShapes.block();
     }
 
     @Override
-    public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
         ItemStack itemstack = new ItemStack(this);
-        EnderiteShulkerBoxTileEntity shulkerboxtileentity = (EnderiteShulkerBoxTileEntity) worldIn.getTileEntity(pos);
+        EnderiteShulkerBoxTileEntity shulkerboxtileentity = (EnderiteShulkerBoxTileEntity) worldIn.getBlockEntity(pos);
         CompoundNBT compoundnbt = shulkerboxtileentity.saveToNbt(new CompoundNBT());
         if (!compoundnbt.isEmpty()) {
-            itemstack.setTagInfo("BlockEntityTag", compoundnbt);
+            itemstack.addTagElement("BlockEntityTag", compoundnbt);
         }
 
         return itemstack;
@@ -177,11 +177,11 @@ public class EnderiteShulkerBox extends ShulkerBoxBlock {
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos,
             PlayerEntity player) {
         // ItemStack itemStack = super.getPickStack(world, pos, state);
-        ItemStack itemStack = getItem(world, pos, state);
-        EnderiteShulkerBoxTileEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxTileEntity) world.getTileEntity(pos);
+        ItemStack itemStack = getCloneItemStack(world, pos, state);
+        EnderiteShulkerBoxTileEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxTileEntity) world.getBlockEntity(pos);
         CompoundNBT compoundTag = shulkerBoxBlockEntity.saveToNbt(new CompoundNBT());
         if (!compoundTag.isEmpty()) {
-            itemStack.setTagInfo("BlockEntityTag", compoundTag);
+            itemStack.addTagElement("BlockEntityTag", compoundTag);
         }
 
         return itemStack;

@@ -17,12 +17,12 @@ public class EnderiteCrossbow extends CrossbowItem {
     }
 
     public static int getChargeTime(ItemStack stack) {
-        int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
+        int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
         return i == 0 ? 35 : 35 - 7 * i;
     }
 
     @Override
-    public boolean isCrossbow(ItemStack stack) {
+    public boolean useOnRelease(ItemStack stack) {
         return true;
     }
 

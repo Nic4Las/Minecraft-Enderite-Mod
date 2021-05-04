@@ -10,9 +10,9 @@
     "SmithingEnderiteSwordMixin",
     "EnderiteRespawnAnchorMixin",
     "EnderiteDropVoidMixin",
-    "GenerationAccessor"
+    "ShulkerBoxColoringMixin"
   ],
-  "client": ["ElytraFeatureRendererMixin", "ElytraClientPlayerEntityMixin", "EnderiteRangedMixin"],
+  "client": ["ElytraFeatureRendererMixin", "ElytraClientPlayerEntityMixin"],
   "injectors": {
     "defaultRequire": 1
   }

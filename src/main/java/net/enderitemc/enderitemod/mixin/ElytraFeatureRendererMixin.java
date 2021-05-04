@@ -34,7 +34,7 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
     private static final ResourceLocation ELYTRA_SKIN = new ResourceLocation("textures/entity/enderite_elytra.png");
 
     @Shadow
-    private final ElytraModel<T> modelElytra = new ElytraModel<>();
+    private final ElytraModel<T> elytraModel = new ElytraModel<>();
 
     public ElytraFeatureRendererMixin(IEntityRenderer<T, M> rendererIn) {
         super(rendererIn);
@@ -45,18 +45,18 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
             T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
             float netHeadYaw, float headPitch, CallbackInfo info) {
         // If player is wearing enderite elytra, render it
-        ItemStack itemStack = entitylivingbaseIn.getItemStackFromSlot(EquipmentSlotType.CHEST);
+        ItemStack itemStack = entitylivingbaseIn.getItemBySlot(EquipmentSlotType.CHEST);
         if (itemStack.getItem() == Registration.ENDERITE_ELYTRA.get()) {
             ResourceLocation resourcelocation;
             if (entitylivingbaseIn instanceof AbstractClientPlayerEntity) {
                 AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity) entitylivingbaseIn;
-                if (abstractclientplayerentity.isPlayerInfoSet()
-                        && abstractclientplayerentity.getLocationElytra() != null) {
-                    resourcelocation = abstractclientplayerentity.getLocationElytra();
-                } else if (abstractclientplayerentity.hasPlayerInfo()
-                        && abstractclientplayerentity.getLocationCape() != null
-                        && abstractclientplayerentity.isWearing(PlayerModelPart.CAPE)) {
-                    resourcelocation = abstractclientplayerentity.getLocationCape();
+                if (abstractclientplayerentity.isElytraLoaded()
+                        && abstractclientplayerentity.getElytraTextureLocation() != null) {
+                    resourcelocation = abstractclientplayerentity.getElytraTextureLocation();
+                } else if (abstractclientplayerentity.isCapeLoaded()
+                        && abstractclientplayerentity.getCloakTextureLocation() != null
+                        && abstractclientplayerentity.isModelPartShown(PlayerModelPart.CAPE)) {
+                    resourcelocation = abstractclientplayerentity.getCloakTextureLocation();
                 } else {
                     resourcelocation = ELYTRA_SKIN;
                 }
@@ -64,16 +64,16 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
                 resourcelocation = ELYTRA_SKIN;
             }
 
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             matrixStackIn.translate(0.0D, 0.0D, 0.125D);
-            this.getEntityModel().copyModelAttributesTo(this.modelElytra);
-            this.modelElytra.setRotationAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw,
+            this.getParentModel().copyPropertiesTo(this.elytraModel);
+            this.elytraModel.setupAnim(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw,
                     headPitch);
-            IVertexBuilder ivertexbuilder = ItemRenderer.func_239391_c_(bufferIn,
-                    this.modelElytra.getRenderType(resourcelocation), false, itemStack.hasEffect());
-            this.modelElytra.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F,
-                    1.0F, 1.0F);
-            matrixStackIn.pop();
+            IVertexBuilder ivertexbuilder = ItemRenderer.getFoilBufferDirect(bufferIn,
+                    this.elytraModel.renderType(resourcelocation), false, itemStack.hasFoil());
+            this.elytraModel.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY,
+                    1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
         }
     }
 }

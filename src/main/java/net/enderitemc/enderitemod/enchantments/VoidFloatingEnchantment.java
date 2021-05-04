@@ -16,7 +16,7 @@ public class VoidFloatingEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMinEnchantability(int level) {
+    public int getMinCost(int level) {
         return 5 * level + 15;
     }
 
@@ -26,17 +26,17 @@ public class VoidFloatingEnchantment extends Enchantment {
     }
 
     @Override
-    public boolean func_230309_h_() {
+    public boolean isTradeable() {
         return false;
     }
 
     @Override
-    public boolean isTreasureEnchantment() {
+    public boolean isTreasureOnly() {
         return false;
     }
 
     @Override
-    public boolean canApply(ItemStack stack) {
+    public boolean canEnchant(ItemStack stack) {
         return this.type.isAcceptableItem(stack.getItem());
     }
 }

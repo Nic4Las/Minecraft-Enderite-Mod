@@ -39,40 +39,40 @@ public class EnderiteShieldRenderer extends ItemStackTileEntityRenderer {
         private static final Logger LOGGER = LogManager.getLogger();
 
         @Override
-        public void func_239207_a_(ItemStack stack, ItemCameraTransforms.TransformType transformType,
+        public void renderByItem(ItemStack stack, ItemCameraTransforms.TransformType transformType,
                         MatrixStack matrices, IRenderTypeBuffer bufferIn, int light, int overlay) {
-                matrices.push();
-                boolean bl = stack.getChildTag("BlockEntityTag") != null;
+                matrices.pushPose();
+                boolean bl = stack.getTagElement("BlockEntityTag") != null;
                 // LOGGER.info("Shield renderer");
 
                 if (!bl) {
 
-                        matrices.rotate(Vector3f.XP.rotationDegrees(180));
-                        IVertexBuilder vertexConsumer2 = ItemRenderer.func_239391_c_(bufferIn,
-                                        shieldModel.getRenderType(new ResourceLocation(
+                        matrices.mulPose(Vector3f.XP.rotationDegrees(180));
+                        IVertexBuilder vertexConsumer2 = ItemRenderer.getFoilBufferDirect(bufferIn,
+                                        shieldModel.renderType(new ResourceLocation(
                                                         "enderitemod:textures/entity/enderite_shield_base_nopattern.png")),
-                                        false, stack.hasEffect());
-                        shieldModel.render(matrices, vertexConsumer2, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
+                                        false, stack.hasFoil());
+                        shieldModel.renderToBuffer(matrices, vertexConsumer2, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
 
                 } else {
-                        matrices.rotate(Vector3f.XP.rotationDegrees(180));
-                        RenderMaterial spriteIdentifier = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS_TEXTURE,
+                        matrices.mulPose(Vector3f.XP.rotationDegrees(180));
+                        RenderMaterial spriteIdentifier = new RenderMaterial(AtlasTexture.LOCATION_BLOCKS,
                                         new ResourceLocation("enderitemod:entity/enderite_shield_base"));
 
-                        IVertexBuilder vertexConsumer = spriteIdentifier.getSprite()
-                                        .wrapBuffer(ItemRenderer.func_239391_c_(bufferIn, shieldModel.getRenderType(
-                                                        ModelBakery.LOCATION_SHIELD_NO_PATTERN.getAtlasLocation()),
-                                                        true, stack.hasEffect()));
-                        shieldModel.func_228294_b_().render(matrices, vertexConsumer, light, overlay, 1.0F, 1.0F, 1.0F,
+                        IVertexBuilder vertexConsumer = spriteIdentifier.sprite()
+                                        .wrap(ItemRenderer.getFoilBufferDirect(bufferIn, shieldModel.renderType(
+                                                        ModelBakery.NO_PATTERN_SHIELD.atlasLocation()),
+                                                        true, stack.hasFoil()));
+                        shieldModel.handle().render(matrices, vertexConsumer, light, overlay, 1.0F, 1.0F, 1.0F,
                                         1.0F);
-                        List<Pair<BannerPattern, DyeColor>> list = BannerTileEntity.func_230138_a_(
-                                        ShieldItem.getColor(stack), BannerTileEntity.func_230139_a_(stack));
-                        BannerTileEntityRenderer.func_241717_a_(matrices, bufferIn, light, overlay,
-                                        shieldModel.func_228293_a_(), spriteIdentifier, false, list, stack.hasEffect());
+                        List<Pair<BannerPattern, DyeColor>> list = BannerTileEntity.createPatterns(
+                                        ShieldItem.getColor(stack), BannerTileEntity.getItemPatterns(stack));
+                        BannerTileEntityRenderer.renderPatterns(matrices, bufferIn, light, overlay,
+                                        shieldModel.plate(), spriteIdentifier, false, list, stack.hasFoil());
 
                 }
 
                 // Mandatory call after GL calls
-                matrices.pop();
+                matrices.popPose();
         }
 }

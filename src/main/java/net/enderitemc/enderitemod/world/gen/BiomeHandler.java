@@ -17,7 +17,7 @@ public final class BiomeHandler {
 
     @SuppressWarnings("ConstantConditions")
     public BiomeHandler(Biome biome) {
-        this.genAcc = (GenerationAccessor) biome.func_242440_e();
+        this.genAcc = (GenerationAccessor) biome.getGenerationSettings();
     }
 
     public void addFeature(GenerationStage.Decoration step, ConfiguredFeature<?, ?> feature) {

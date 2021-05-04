@@ -29,12 +29,14 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ToolType;
@@ -67,6 +69,7 @@ public class Registration {
                 BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
                 LOGGER.info("Registering items from Enderite Mod");
                 ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
                 LOGGER.info("Registering tiles from Enderite Mod");
                 TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
                 LOGGER.info("Registering recipes from Enderite Mod");
@@ -81,100 +84,103 @@ public class Registration {
 
         // Items
         public static final RegistryObject<Item> ENDERITE_INGOT = ITEMS.register("enderite_ingot",
-                        () -> new EnderiteIngot(new Item.Properties().group(ItemGroup.MISC).func_234689_a_())); // obfuscated
-                                                                                                                // method
-                                                                                                                // is
-                                                                                                                // "fireproof"
+                        () -> new EnderiteIngot(new Item.Properties().tab(ItemGroup.TAB_MISC).fireResistant())); // obfuscated
+                                                                                                                 // method
+                                                                                                                 // is
+                                                                                                                 // "fireproof"
         public static final RegistryObject<Item> ENDERITE_SCRAP = ITEMS.register("enderite_scrap",
-                        () -> new EnderiteScrap(new Item.Properties().group(ItemGroup.MISC).func_234689_a_())); // obfuscated
-                                                                                                                // method
-                                                                                                                // is
-                                                                                                                // "fireproof"
+                        () -> new EnderiteScrap(new Item.Properties().tab(ItemGroup.TAB_MISC).fireResistant())); // obfuscated
+                                                                                                                 // method
+                                                                                                                 // is
+                                                                                                                 // "fireproof"
 
         // Tools
         public static final RegistryObject<Item> ENDERITE_PICKAXE = ITEMS.register("enderite_pickaxe",
                         () -> new PickaxeItem(EnderiteMaterial.ENDERITE, 4, -2.8F,
-                                        (new Item.Properties()).group(ItemGroup.TOOLS).func_234689_a_())); // obfuscated
-                                                                                                           // method is
-                                                                                                           // "fireproof"
-        public static final RegistryObject<Item> ENDERITE_AXE = ITEMS.register("enderite_axe",
-                        () -> new AxeItem(EnderiteMaterial.ENDERITE, 8, -3.0F,
-                                        (new Item.Properties()).group(ItemGroup.TOOLS).func_234689_a_())); // obfuscated
-                                                                                                           // method is
-                                                                                                           // "fireproof"
-        public static final RegistryObject<Item> ENDERITE_SHOVEL = ITEMS.register("enderite_shovel",
-                        () -> new ShovelItem(EnderiteMaterial.ENDERITE, 4.5F, -3.0F,
-                                        (new Item.Properties()).group(ItemGroup.TOOLS).func_234689_a_())); // obfuscated
-                                                                                                           // method is
-                                                                                                           // "fireproof"
-        public static final RegistryObject<Item> ENDERITE_SWORD = ITEMS.register("enderite_sword",
-                        () -> new EnderiteSword(EnderiteMaterial.ENDERITE, 6, -2.4F,
-                                        (new Item.Properties()).group(ItemGroup.COMBAT).func_234689_a_())); // obfuscated
+                                        (new Item.Properties()).tab(ItemGroup.TAB_TOOLS).fireResistant())); // obfuscated
                                                                                                             // method is
                                                                                                             // "fireproof"
+        public static final RegistryObject<Item> ENDERITE_AXE = ITEMS.register("enderite_axe",
+                        () -> new AxeItem(EnderiteMaterial.ENDERITE, 8, -3.0F,
+                                        (new Item.Properties()).tab(ItemGroup.TAB_TOOLS).fireResistant())); // obfuscated
+                                                                                                            // method is
+                                                                                                            // "fireproof"
+        public static final RegistryObject<Item> ENDERITE_SHOVEL = ITEMS.register("enderite_shovel",
+                        () -> new ShovelItem(EnderiteMaterial.ENDERITE, 4.5F, -3.0F,
+                                        (new Item.Properties()).tab(ItemGroup.TAB_TOOLS).fireResistant())); // obfuscated
+                                                                                                            // method is
+                                                                                                            // "fireproof"
+        public static final RegistryObject<Item> ENDERITE_SWORD = ITEMS.register("enderite_sword",
+                        () -> new EnderiteSword(EnderiteMaterial.ENDERITE, 6, -2.4F,
+                                        (new Item.Properties()).tab(ItemGroup.TAB_COMBAT).fireResistant())); // obfuscated
+                                                                                                             // method
+                                                                                                             // is
+                                                                                                             // "fireproof"
         public static final RegistryObject<Item> ENDERITE_HOE = ITEMS.register("enderite_hoe",
                         () -> new HoeItem(EnderiteMaterial.ENDERITE, -2, 0.0F,
-                                        (new Item.Properties()).group(ItemGroup.TOOLS).func_234689_a_())); // obfuscated
-                                                                                                           // method is
-                                                                                                           // "fireproof"
+                                        (new Item.Properties()).tab(ItemGroup.TAB_TOOLS).fireResistant())); // obfuscated
+                                                                                                            // method is
+                                                                                                            // "fireproof"
 
         // Blocks
         public static final RegistryObject<Block> ENDERITE_BLOCK = BLOCKS.register("enderite_block",
-                        () -> new Block(Block.Properties.create(Material.IRON, MaterialColor.BLACK)
-                                        .sound(SoundType.field_235594_P_).func_235861_h_()
-                                        .hardnessAndResistance(66.0F, 1200.0F).harvestTool(ToolType.PICKAXE)
-                                        .harvestLevel(4)));
+                        () -> new Block(Block.Properties.of(Material.METAL, MaterialColor.COLOR_BLACK)
+                                        .sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops()
+                                        .strength(66.0F, 1200.0F).harvestTool(ToolType.PICKAXE).harvestLevel(4)));
         public static final RegistryObject<Item> ENDERITE_BLOCK_ITEM = ITEMS.register("enderite_block",
                         () -> new BlockItem(ENDERITE_BLOCK.get(),
-                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).func_234689_a_()));
+                                        new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS).fireResistant()));
 
         public static final RegistryObject<Block> ENDERITE_ORE = BLOCKS.register("enderite_ore", EnderiteOre::new);
         public static final RegistryObject<Item> ENDERITE_ORE_ITEM = ITEMS.register("enderite_ore",
                         () -> new BlockItem(ENDERITE_ORE.get(),
-                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).func_234689_a_()));
+                                        new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS).fireResistant()));
 
         public static final RegistryObject<Block> CRACKED_ENDERITE_ORE = BLOCKS.register("cracked_enderite_ore",
-                        () -> new Block(AbstractBlock.Properties.from(ENDERITE_BLOCK.get())
-                                        .sound(SoundType.field_235595_Q_)));
+                        () -> new Block(AbstractBlock.Properties.copy(ENDERITE_BLOCK.get())
+                                        .sound(SoundType.ANCIENT_DEBRIS)));
         public static final RegistryObject<Item> CRACKED_ENDERITE_ORE_ITEM = ITEMS.register("cracked_enderite_ore",
                         () -> new BlockItem(CRACKED_ENDERITE_ORE.get(),
-                                        new Item.Properties().group(ItemGroup.BUILDING_BLOCKS).func_234689_a_()));
+                                        new Item.Properties().tab(ItemGroup.TAB_BUILDING_BLOCKS).fireResistant()));
 
         public static final RegistryObject<Block> ENDERITE_RESPAWN_ANCHOR = BLOCKS.register("enderite_respawn_anchor",
                         () -> new EnderiteRespawnAnchor(AbstractBlock.Properties
-                                        .create(Material.ROCK, MaterialColor.BLACK)
-                                        .hardnessAndResistance(50.0F, 1200.0F)
-                                        .func_235838_a_((state) -> EnderiteRespawnAnchor.func_235565_a_(state, 15))));
+                                        .of(Material.STONE, MaterialColor.COLOR_BLACK).strength(50.0F, 1200.0F)
+                                        .lightLevel((state) -> EnderiteRespawnAnchor.getScaledChargeLevel(state, 15))));
         public static final RegistryObject<Item> ENDERITE_RESPAWN_ANCHOR_ITEM = ITEMS
                         .register("enderite_respawn_anchor", () -> new BlockItem(ENDERITE_RESPAWN_ANCHOR.get(),
-                                        new Item.Properties().group(ItemGroup.DECORATIONS).func_234689_a_()));
+                                        new Item.Properties().tab(ItemGroup.TAB_DECORATIONS).fireResistant()));
 
         // Armor
         public static final RegistryObject<Item> ENDERITE_HELMET = ITEMS.register("enderite_helmet",
                         () -> new EnderiteHelmet(EnderiteArmorMaterial.ENDERITE, EquipmentSlotType.HEAD,
-                                        (new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_()))); // obfuscated
-                                                                                                            // method is
-                                                                                                            // "fireproof"
+                                        (new Item.Properties().tab(ItemGroup.TAB_COMBAT).fireResistant()))); // obfuscated
+                                                                                                             // method
+                                                                                                             // is
+                                                                                                             // "fireproof"
         public static final RegistryObject<Item> ENDERITE_CHESTPLATE = ITEMS.register("enderite_chestplate",
                         () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlotType.CHEST,
-                                        (new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_()))); // obfuscated
-                                                                                                            // method is
-                                                                                                            // "fireproof"
+                                        (new Item.Properties().tab(ItemGroup.TAB_COMBAT).fireResistant()))); // obfuscated
+                                                                                                             // method
+                                                                                                             // is
+                                                                                                             // "fireproof"
         public static final RegistryObject<Item> ENDERITE_LEGGINGS = ITEMS.register("enderite_leggings",
                         () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlotType.LEGS,
-                                        (new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_()))); // obfuscated
-                                                                                                            // method is
-                                                                                                            // "fireproof"
+                                        (new Item.Properties().tab(ItemGroup.TAB_COMBAT).fireResistant()))); // obfuscated
+                                                                                                             // method
+                                                                                                             // is
+                                                                                                             // "fireproof"
         public static final RegistryObject<Item> ENDERITE_BOOTS = ITEMS.register("enderite_boots",
                         () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlotType.FEET,
-                                        (new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_()))); // obfuscated
-                                                                                                            // method is
-                                                                                                            // "fireproof"
+                                        (new Item.Properties().tab(ItemGroup.TAB_COMBAT).fireResistant()))); // obfuscated
+                                                                                                             // method
+                                                                                                             // is
+                                                                                                             // "fireproof"
 
         // Elytra
         public static final RegistryObject<Item> ENDERITE_ELYTRA = ITEMS.register("enderite_elytra",
                         () -> new EnderiteElytra(EnderiteArmorMaterial.ENDERITE, EquipmentSlotType.CHEST,
-                                        (new Item.Properties().group(ItemGroup.COMBAT).func_234689_a_()
+                                        (new Item.Properties().tab(ItemGroup.TAB_COMBAT).fireResistant()
                                                         .rarity(Rarity.EPIC)))); // obfuscated
                                                                                  // method is
                                                                                  // "fireproof"
@@ -186,33 +192,32 @@ public class Registration {
         public static final RegistryObject<Block> ENDERITE_SHULKER_BOX = BLOCKS
                         .register("enderite_shulker_box",
                                         () -> new EnderiteShulkerBox(null, AbstractBlock.Properties
-                                                        .create(Material.SHULKER, MaterialColor.BLACK).notSolid()
-                                                        .hardnessAndResistance(2.0F, 17.0F)));
+                                                        .of(Material.SHULKER_SHELL, MaterialColor.COLOR_BLACK)
+                                                        .noOcclusion().strength(2.0F, 17.0F)));
         public static final RegistryObject<Item> ENDERITE_SHULKER_BOX_ITEM = ITEMS.register("enderite_shulker_box",
                         () -> new BlockItem(ENDERITE_SHULKER_BOX.get(), new Item.Properties()
-                                        .group(ItemGroup.DECORATIONS).maxStackSize(1).func_234689_a_()));
+                                        .tab(ItemGroup.TAB_DECORATIONS).stacksTo(1).fireResistant()));
         public static final RegistryObject<TileEntityType<EnderiteShulkerBoxTileEntity>> ENDERITE_SHULKER_BOX_TILE_ENTITY = TILES
                         .register("enderite_shulker_box_tile_entity", () -> TileEntityType.Builder
-                                        .create(EnderiteShulkerBoxTileEntity::new, ENDERITE_SHULKER_BOX.get())
-                                        .build(null));
+                                        .of(EnderiteShulkerBoxTileEntity::new, ENDERITE_SHULKER_BOX.get()).build(null));
         public static final RegistryObject<IRecipeSerializer<EnderiteShulkerBoxRecipe>> ENDERITE_SHULKER_BOX_RECIPE = RECIPES
                         .register("crafting_special_enderiteshulkerbox",
                                         () -> new SpecialRecipeSerializer<>(EnderiteShulkerBoxRecipe::new));
 
         // Bow/Crossbow/shield
         public static final RegistryObject<Item> ENDERITE_SHIELD = ITEMS.register("enderite_shield",
-                        () -> new EnderiteShield(new Item.Properties().group(ItemGroup.COMBAT).maxStackSize(1)
-                                        .maxDamage(768).func_234689_a_().setISTER(() -> EnderiteShieldRenderer::new)));
+                        () -> new EnderiteShield(new Item.Properties().tab(ItemGroup.TAB_COMBAT).stacksTo(1)
+                                        .durability(768).fireResistant().setISTER(() -> EnderiteShieldRenderer::new)));
         public static final RegistryObject<IRecipeSerializer<EnderiteShieldDecorationRecipe>> ENDERITE_SHIELD_DECORATION_RECIPE = RECIPES
                         .register("crafting_special_enderiteshielddecoration",
                                         () -> new SpecialRecipeSerializer<>(EnderiteShieldDecorationRecipe::new));
 
         public static final RegistryObject<Item> ENDERITE_BOW = ITEMS.register("enderite_bow", () -> new EnderiteBow(
-                        new Item.Properties().group(ItemGroup.COMBAT).maxStackSize(1).maxDamage(768).func_234689_a_()));
+                        new Item.Properties().tab(ItemGroup.TAB_COMBAT).stacksTo(1).durability(768).fireResistant()));
 
         public static final RegistryObject<Item> ENDERITE_CROSSBOW = ITEMS.register("enderite_crossbow",
-                        () -> new EnderiteCrossbow(new Item.Properties().group(ItemGroup.COMBAT).maxStackSize(1)
-                                        .maxDamage(768).func_234689_a_()));
+                        () -> new EnderiteCrossbow(new Item.Properties().tab(ItemGroup.TAB_COMBAT).stacksTo(1)
+                                        .durability(768).fireResistant()));
 
         // ENCHANTMENT Void floating
         public static final RegistryObject<Enchantment> VOID_FLOATING = ENCHANTMENTS.register("void_floating",
