@@ -27,8 +27,7 @@
     "SmithingEnderiteSwordTakeMixin",
     "EnderiteRespawnAnchorMixin",
     "ElytraFeatureRendererMixin",
-    "ElytraClientPlayerEntityMixin",
-    "EnderiteRangedMixin"
+    "ElytraClientPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
