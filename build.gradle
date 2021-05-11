@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.5-0.8.0-forge-36.1.0'
+version = '1.16.5-'+mod_version+'-forge-36.1.0'
 group = 'net.enderitemc.enderitemod' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'enderitemod'
 
@@ -227,7 +227,7 @@ processResources {
 		include 'META-INF/mods.toml'
 
 		// Replace version
-		expand 'version':project.version
+		expand 'version':project.mod_version
 	}
 
 	// Copy everything else except the mods.toml

@@ -137,6 +137,7 @@ public class EnderiteSword extends SwordItem {
                     }
                     world.broadcastEntityEvent(playerEntity, (byte) 46);
                     playerEntity.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+                    playerEntity.fallDistance = 0;
                 }
             } else {
                 return new ActionResult<>(ActionResultType.FAIL, playerEntity.getItemInHand(hand));

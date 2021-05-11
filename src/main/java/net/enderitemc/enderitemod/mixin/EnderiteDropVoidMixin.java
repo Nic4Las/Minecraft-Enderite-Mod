@@ -30,6 +30,8 @@ public abstract class EnderiteDropVoidMixin extends Entity {
 		// Items in the void get telported up and will live on (because they float)
 		if (this.getY() < 0.0D) {
 			int i = EnchantmentHelper.getItemEnchantmentLevel(Registration.VOID_FLOATING.get(), getItem());
+			i += getItem().getOrCreateTag().getCompound("tic_volatile_data").getInt("tconstruct:void_floating");
+			i = i > 3 ? 3 : i;
 			boolean survives = false;
 			float r = (float) Math.random();
 			if (r < i / 3.0) {
@@ -40,7 +42,7 @@ public abstract class EnderiteDropVoidMixin extends Entity {
 				revive();
 				setGlowing(true);
 				setPos(getX(), 5, getZ());
-				lerpMotion(0, 0, 0);
+				setDeltaMovement(0, 0, 0);
 			}
 		}
 	}

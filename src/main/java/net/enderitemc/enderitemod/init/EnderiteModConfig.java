@@ -29,9 +29,14 @@ public class EnderiteModConfig {
         public static ForgeConfigSpec.IntValue ENDERITE_BOTTOM_OFFSET;
         public static ForgeConfigSpec.IntValue ENDERITE_TOP_OFFSET;
         public static ForgeConfigSpec.IntValue ENDERITE_MAXIMUM;
+        public static ForgeConfigSpec.IntValue ENDERITE_VEIN_SIZE;
 
         public static ForgeConfigSpec.DoubleValue ENDERITE_BOW_BASE_DAMAGE;
         public static ForgeConfigSpec.DoubleValue ENDERITE_BOW_CHARGE_TIME;
+
+        public static ForgeConfigSpec.IntValue ENDERITE_SWORD_BASE_DAMAGE;
+
+        public static ForgeConfigSpec.BooleanValue ENDERITE_ITEMS_NO_GRAVITY;
 
         static {
                 COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
@@ -66,11 +71,13 @@ public class EnderiteModConfig {
                 ENDERITE_MAXIMUM = COMMON_BUILDER.comment(
                                 "\nMaximum height for enderite ore generation, has to be greater than 'top_offset', default value is '48'")
                                 .defineInRange("maximum", 48, 1, 255);
+                ENDERITE_VEIN_SIZE = COMMON_BUILDER
+                                .comment("\nHow many enderite ore should be generated on average per vein (default: 1)")
+                                .defineInRange("vein_size", 1, 1, 255);
         }
 
         private static void setupToolSettings() {
-                COMMON_BUILDER.comment("Settings for the Enderite Bow, do only affect the bow and no other tools")
-                                .push(SUBCATEGORY_ENDERITE_BOW);
+                COMMON_BUILDER.comment("Settings for the Enderite Tools").push(SUBCATEGORY_ENDERITE_BOW);
                 ENDERITE_BOW_BASE_DAMAGE = COMMON_BUILDER.comment(
                                 "\nDetermines the base damage of the bow, i.e. how many damage you will cause with one single arrow (default: 1.5)")
                                 .defineInRange("bow_base_damage", 1.5d, 0d, 255d); // I can't think of a useful
@@ -78,6 +85,14 @@ public class EnderiteModConfig {
                 ENDERITE_BOW_CHARGE_TIME = COMMON_BUILDER.comment(
                                 "\nDetermines the time you need to fully charge the Enderite Bow (charge time or draw speed), default value is '30.0', which is nearly the same as the vanilla bow")
                                 .defineInRange("charge_time", 30.0d, 1.0d, 255d);
+
+                ENDERITE_SWORD_BASE_DAMAGE = COMMON_BUILDER.comment(
+                                "\nDetermines the base damage of the sword, default value is '9', which is one more than netherite")
+                                .defineInRange("sword_base_damage", 9, 3, 255);
+
+                ENDERITE_ITEMS_NO_GRAVITY = COMMON_BUILDER.comment(
+                                "\nDetermines if dropped Enderite items have no gravity, default 'true'. They will still save themselves from the void even when set to 'false'!")
+                                .define("no_gravity", true);
         }
 
         public static void loadConfig(ForgeConfigSpec spec, Path path) {

@@ -111,7 +111,8 @@ public class Registration {
                                                                                                             // method is
                                                                                                             // "fireproof"
         public static final RegistryObject<Item> ENDERITE_SWORD = ITEMS.register("enderite_sword",
-                        () -> new EnderiteSword(EnderiteMaterial.ENDERITE, 6, -2.4F,
+                        () -> new EnderiteSword(EnderiteMaterial.ENDERITE,
+                                        EnderiteModConfig.ENDERITE_SWORD_BASE_DAMAGE.get() - 3, -2.4F,
                                         (new Item.Properties()).tab(ItemGroup.TAB_COMBAT).fireResistant())); // obfuscated
                                                                                                              // method
                                                                                                              // is

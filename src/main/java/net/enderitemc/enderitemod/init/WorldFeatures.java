@@ -35,14 +35,14 @@ public class WorldFeatures {
                 int bottomOffset = EnderiteModConfig.ENDERITE_BOTTOM_OFFSET.get();
                 int topOffset = EnderiteModConfig.ENDERITE_TOP_OFFSET.get();
                 int maximum = EnderiteModConfig.ENDERITE_MAXIMUM.get();
+                int veinSize = EnderiteModConfig.ENDERITE_VEIN_SIZE.get() + 2;
                 LOGGER.debug("ENDERITE ORE GENERATION SETTINGS: " + count + ", " + bottomOffset + ", " + topOffset
                                 + ", " + maximum);
                 TopSolidRangeConfig countConfig = new TopSolidRangeConfig(bottomOffset, topOffset, maximum);
 
                 ConfiguredFeature<?, ?> enderite_cf = Feature.ORE
-                                .configured(new OreFeatureConfig(fillerBlockType, state, 3))
-                                .decorated(Placement.RANGE.configured(countConfig)).squared()
-                                .count(count);
+                                .configured(new OreFeatureConfig(fillerBlockType, state, veinSize))
+                                .decorated(Placement.RANGE.configured(countConfig)).squared().count(count);
 
                 Registry.register(WorldGenRegistries.CONFIGURED_FEATURE,
                                 new ResourceLocation(EnderiteMod.MOD_ID, "enderite_cf"), enderite_cf);
