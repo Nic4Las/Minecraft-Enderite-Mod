@@ -32,13 +32,17 @@ public class DropEvent {
             ItemStack stack = ((ItemEntity) entity).getItem();
             Item item = stack.getItem();
             if (EnderiteModConfig.ENDERITE_ITEMS_NO_GRAVITY.get() && !entity.isNoGravity() && !world.isClientSide()
-                    && !stack.isEmpty() && (item.is(EnderiteTag.ENDERITE_ITEM)
-                            || stack.getOrCreateTag().getAsString().indexOf("tconstruct:void_floating") >= 0)) {
+                    && !stack.isEmpty() && (item.is(EnderiteTag.ENDERITE_ITEM) || (stack.getTag() != null
+                            && stack.getTag().getAsString().indexOf("tconstruct:void_floating") >= 0))) {
                 entity.setNoGravity(true);
             }
             if (entity.getY() < 0 && !world.isClientSide() && !stack.isEmpty()) {
                 int i = EnchantmentHelper.getItemEnchantmentLevel(Registration.VOID_FLOATING.get(), stack);
-                i += stack.getOrCreateTag().getCompound("tic_volatile_data").getInt("tconstruct:void_floating");
+                // Mute NullPointerException if tag not present
+                try {
+                    i += stack.getTag().getCompound("tic_volatile_data").getInt("tconstruct:void_floating");
+                } catch (NullPointerException e) {
+                }
                 i = i > 3 ? 3 : i;
                 boolean survives = false;
                 float r = (float) Math.random();
