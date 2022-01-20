@@ -7,7 +7,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
@@ -40,7 +40,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
                         return false;
                     }
 
-                    if (itemStack3.getSubTag("BlockEntityTag") != null) {
+                    if (itemStack3.getSubNbt("BlockEntityTag") != null) {
                         return false;
                     }
 
@@ -74,10 +74,10 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         if (itemStack2.isEmpty()) {
             return itemStack2;
         } else {
-            CompoundTag compoundTag = itemStack.getSubTag("BlockEntityTag");
-            CompoundTag compoundTag2 = compoundTag == null ? new CompoundTag() : compoundTag.copy();
+            NbtCompound compoundTag = itemStack.getSubNbt("BlockEntityTag");
+            NbtCompound compoundTag2 = compoundTag == null ? new NbtCompound() : compoundTag.copy();
             compoundTag2.putInt("Base", ((BannerItem) itemStack.getItem()).getColor().getId());
-            itemStack2.putSubTag("BlockEntityTag", compoundTag2);
+            itemStack2.setSubNbt("BlockEntityTag", compoundTag2);
             return itemStack2;
         }
     }

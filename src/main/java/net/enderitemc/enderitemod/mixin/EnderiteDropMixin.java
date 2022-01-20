@@ -28,11 +28,11 @@ public abstract class EnderiteDropMixin extends Entity {
 	private void dropItem(CallbackInfo info) {
 		// If enderite item entity has gravity, turn it off
 		if (!hasNoGravity() && !world.isClient && !getStack().isEmpty()
-				&& getStack().getItem().isIn(EnderiteTag.ENDERITE_ITEM)) {
+				&& (EnderiteTag.ENDERITE_ITEM.contains(getStack().getItem()))) {
 			setNoGravity(true);
 		}
 		// Slow down enderite item y velocity (to stop vertical spread)
-		if (getStack().getItem().isIn(EnderiteTag.ENDERITE_ITEM)) {
+		if ((EnderiteTag.ENDERITE_ITEM.contains(getStack().getItem()))) {
 			this.setVelocity(this.getVelocity().multiply(1.0D, 0.96D, 1.0D));
 		}
 	}

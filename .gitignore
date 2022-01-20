@@ -23,14 +23,12 @@ classes/
 bin/
 .classpath
 .project
+.github
+
+# macos
+
+*.DS_Store
 
 # fabric
 
 run/
-
-#extra
-
-Extra/
-assets.lnk
-
-remappedSrc

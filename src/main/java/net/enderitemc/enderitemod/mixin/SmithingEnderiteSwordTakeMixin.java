@@ -15,13 +15,14 @@ import net.minecraft.screen.SmithingScreenHandler;
 
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SmithingScreenHandler.class)
 public abstract class SmithingEnderiteSwordTakeMixin extends ForgingScreenHandler {
 
     @Shadow
-    public abstract void method_29539(int i);
+    public abstract void decrementStack(int i);
 
     public SmithingEnderiteSwordTakeMixin(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(ScreenHandlerType.SMITHING, syncId, playerInventory, context);
@@ -34,7 +35,7 @@ public abstract class SmithingEnderiteSwordTakeMixin extends ForgingScreenHandle
     }
 
     @Inject(at = @At("HEAD"), cancellable = true, method = "onTakeOutput")
-    private void nowTake(PlayerEntity player, ItemStack itemStack, CallbackInfoReturnable<Boolean> info) {
+    private void nowTake(PlayerEntity player, ItemStack itemStack, CallbackInfo info) {
         // Take all pearls
         if ((this.input.getStack(0).getItem() == EnderiteMod.ENDERITE_SWORD
                 || this.input.getStack(0).getItem() == EnderiteMod.ENDERITE_SHIELD)
@@ -42,10 +43,10 @@ public abstract class SmithingEnderiteSwordTakeMixin extends ForgingScreenHandle
 
             int amountToSubstract = this.input.getStack(1).getCount();
             // Read the charge of sword
-            if (this.input.getStack(0).getTag().contains("teleport_charge")) {
+            if (this.input.getStack(0).getNbt().contains("teleport_charge")) {
                 // Charge is old charge + amount of enderpearls
                 int allowableSubstract = 64
-                        - Integer.parseInt(this.input.getStack(0).getTag().get("teleport_charge").asString());
+                        - Integer.parseInt(this.input.getStack(0).getNbt().get("teleport_charge").asString());
                 amountToSubstract = Math.min(allowableSubstract, amountToSubstract);
             }
 

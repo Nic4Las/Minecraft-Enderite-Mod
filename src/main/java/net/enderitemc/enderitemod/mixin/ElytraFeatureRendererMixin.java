@@ -17,6 +17,8 @@ import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.ElytraEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
@@ -31,10 +33,11 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
     private static final Identifier ELYTRA_SKIN = new Identifier("textures/entity/enderite_elytra.png");
 
     @Shadow
-    private final ElytraEntityModel<T> elytra = new ElytraEntityModel<>();
+    private final ElytraEntityModel<T> elytra;
 
-    public ElytraFeatureRendererMixin(FeatureRendererContext<T, M> context) {
+    public ElytraFeatureRendererMixin(FeatureRendererContext<T, M> context, EntityModelLoader loader) {
         super(context);
+        this.elytra = new ElytraEntityModel<>(loader.getModelPart(EntityModelLayers.SHIELD));
     }
 
     @Inject(at = @At("HEAD"), method = "render")
@@ -42,7 +45,7 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
             float f, float g, float h, float j, float k, float l, CallbackInfo info) {
         // If player is wearing enderite elytra, render it
         ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.CHEST);
-        if (itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA)) {
+        if (EnderiteTag.ENDERITE_ELYTRA.contains(itemStack.getItem())) {
             Identifier identifier4;
             if (livingEntity instanceof AbstractClientPlayerEntity) {
                 AbstractClientPlayerEntity abstractClientPlayerEntity = (AbstractClientPlayerEntity) livingEntity;

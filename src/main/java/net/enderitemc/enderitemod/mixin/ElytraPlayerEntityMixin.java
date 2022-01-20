@@ -31,7 +31,7 @@ public abstract class ElytraPlayerEntityMixin extends ElytraLivingEntityMixin {
     public void checkFallFlying(CallbackInfoReturnable<Boolean> info) {
         // Check if player is wearing usable gear to start flying
         ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
-        if (itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA)
+        if (EnderiteTag.ENDERITE_ELYTRA.contains(itemStack.getItem())
                 && itemStack.getDamage() < itemStack.getMaxDamage() - 10) {
             this.startFallFlying();
             info.setReturnValue(true);

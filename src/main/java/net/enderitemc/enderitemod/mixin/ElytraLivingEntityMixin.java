@@ -26,20 +26,20 @@ public abstract class ElytraLivingEntityMixin extends Entity {
         super(type, world);
     }
 
-    @ModifyArg(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setFlag(IZ)V"), method = "initAi", index = 1)
+    @ModifyArg(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setFlag(IZ)V"), method = "tickFallFlying", index = 1)
     private boolean flagSevenFix(boolean value) {
         // Mixin to overwrite check of flag 7
         boolean bl = this.getFlag(7);
         if (bl && !this.isOnGround() && !this.hasVehicle()) {
             ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
-            if (itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA) && EnderiteElytraSeperated.isUsable(itemStack)) {
+            if (EnderiteTag.ENDERITE_ELYTRA.contains(itemStack.getItem()) && EnderiteElytraSeperated.isUsable(itemStack)) {
                 if (this.random.nextFloat() > 0.96) {
                     itemStack.damage(1, (LivingEntity) (Entity) this, (Consumer<LivingEntity>) ((livingEntity) -> {
                         livingEntity.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
                     }));
                 }
             }
-            return itemStack.getItem().isIn(EnderiteTag.ENDERITE_ELYTRA) || value;
+            return EnderiteTag.ENDERITE_ELYTRA.contains(itemStack.getItem()) || value;
         }
         return value;
     }

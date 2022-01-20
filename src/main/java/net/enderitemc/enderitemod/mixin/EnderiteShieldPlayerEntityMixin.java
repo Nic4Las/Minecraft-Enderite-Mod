@@ -75,8 +75,8 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                 && !this.getItemCooldownManager().isCoolingDown(this.activeItemStack.getItem())) {
 
             int charge = 0;
-            if (this.activeItemStack.getTag().contains("teleport_charge")) {
-                charge = Integer.parseInt(this.activeItemStack.getTag().get("teleport_charge").asString());
+            if (this.activeItemStack.getNbt().contains("teleport_charge")) {
+                charge = Integer.parseInt(this.activeItemStack.getNbt().get("teleport_charge").asString());
             }
 
             if (!world.isClient && charge > 0 && !(attacker instanceof EnderDragonEntity
@@ -86,7 +86,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                 double f = attacker.getZ();
 
                 double yaw = (double) this.headYaw;
-                double pitch = (double) this.pitch;
+                double pitch = (double) this.getPitch();
 
                 // x: 1 = -90, -1 = 90
                 // y: 1 = -90, -1 = 90
@@ -101,7 +101,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                     double g = attacker.getX() + dX * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                     double h = MathHelper.clamp(
                             attacker.getY() + dY * distance + (double) (attacker.getRandom().nextInt(16) - 8), 0.0D,
-                            (double) (world.getDimensionHeight() - 1));
+                            (double) (world.getHeight() - 1));
                     double j = attacker.getZ() + dZ * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                     if (attacker.hasVehicle()) {
                         attacker.stopRiding();
@@ -113,7 +113,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                         world.playSound((PlayerEntity) null, d, e, f, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
                         attacker.playSound(soundEvent, 1.0F, 1.0F);
 
-                        this.activeItemStack.getTag().putInt("teleport_charge", charge - 1);
+                        this.activeItemStack.getNbt().putInt("teleport_charge", charge - 1);
                         this.getItemCooldownManager().set(this.activeItemStack.getItem(), 128);
                         break;
                     }

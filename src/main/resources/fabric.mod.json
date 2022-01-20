@@ -22,16 +22,14 @@
         "value": "net.enderitemc.enderitemod.EnderiteModClient"
       }
     ],
-    "modmenu": ["net.enderitemc.enderitemod.config.EnderiteModModMenuIntegration"],
-    "shulkerboxtooltip": ["net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation"],
-    "quickshulker": ["net.enderitemc.enderitemod.modIntegrations.QuickShulkerImplementation"]
+    "modmenu": ["net.enderitemc.enderitemod.config.EnderiteModModMenuIntegration"]
   },
   "mixins": ["enderitemod.mixins.json"],
 
   "depends": {
-    "fabricloader": ">=0.7.4",
+    "fabricloader": ">=0.12.0",
     "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.18.x"
   },
   "suggests": {
     "flamingo": "*"

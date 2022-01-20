@@ -7,11 +7,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-@Mixin(MobEntity.class)
+@Mixin(LivingEntity.class)
 public class MobEntityMixin {
 
     @Inject(at = @At("HEAD"), method = "getPreferredEquipmentSlot", cancellable = true)

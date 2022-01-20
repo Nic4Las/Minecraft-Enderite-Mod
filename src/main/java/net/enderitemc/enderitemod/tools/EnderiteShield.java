@@ -30,8 +30,8 @@ public class EnderiteShield extends ShieldItem {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        if (itemStack.getTag().contains("teleport_charge")) {
-            String charge = itemStack.getTag().get("teleport_charge").toString();
+        if (itemStack.getNbt().contains("teleport_charge")) {
+            String charge = itemStack.getNbt().get("teleport_charge").toString();
             tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.charge")
                     .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(new LiteralText(": " + charge)));
         } else {

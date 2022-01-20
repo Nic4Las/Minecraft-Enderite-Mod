@@ -34,7 +34,7 @@ public class EnderiteSword extends SwordItem {
         if (playerEntity.isSneaking()) {
             Double distance = 30.0d;
             double yaw = (double) playerEntity.headYaw;
-            double pitch = (double) playerEntity.pitch;
+            double pitch = (double) playerEntity.getPitch();
 
             // x: 1 = -90, -1 = 90
             // y: 1 = -90, -1 = 90
@@ -62,13 +62,13 @@ public class EnderiteSword extends SwordItem {
             double near = distance;
 
             int slot = 0;
-            if (playerEntity.getStackInHand(hand).getTag().contains("teleport_charge")) {
-                slot = Integer.parseInt(playerEntity.getStackInHand(hand).getTag().get("teleport_charge").asString());
+            if (playerEntity.getStackInHand(hand).getNbt().contains("teleport_charge")) {
+                slot = Integer.parseInt(playerEntity.getStackInHand(hand).getNbt().get("teleport_charge").asString());
 
             }
 
             // Check to Teleport
-            if (world.isChunkLoaded(blockPos) && (slot > 0 || playerEntity.abilities.creativeMode)) {
+            if (world.isChunkLoaded(blockPos) && (slot > 0 || playerEntity.getAbilities().creativeMode)) {
                 int foundSpace = 0;
 
                 while (foundSpace == 0 && (blockPoses[0].getY() > maxDown || blockPoses[1].getY() < maxUp)) {
@@ -126,11 +126,11 @@ public class EnderiteSword extends SwordItem {
                             break;
                     }
                     playerEntity.getItemCooldownManager().set(this, 30);
-                    // if (!playerEntity.abilities.creativeMode) {
+                    // if (!playerEntity.getAbilities().creativeMode) {
                     // playerEntity.inventory.getStack(slot).decrement(1);
                     // }
-                    if (!playerEntity.abilities.creativeMode) {
-                        playerEntity.getStackInHand(hand).getTag().putInt("teleport_charge", slot - 1);
+                    if (!playerEntity.getAbilities().creativeMode) {
+                        playerEntity.getStackInHand(hand).getNbt().putInt("teleport_charge", slot - 1);
                     }
                     world.sendEntityStatus(playerEntity, (byte) 46);
                     playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
@@ -157,8 +157,8 @@ public class EnderiteSword extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        if (itemStack.getTag().contains("teleport_charge")) {
-            String charge = itemStack.getTag().get("teleport_charge").toString();
+        if (itemStack.getNbt().contains("teleport_charge")) {
+            String charge = itemStack.getNbt().get("teleport_charge").toString();
             tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.charge")
                     .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(new LiteralText(": " + charge)));
         } else {

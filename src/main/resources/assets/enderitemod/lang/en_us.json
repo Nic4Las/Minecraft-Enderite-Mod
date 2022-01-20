@@ -73,5 +73,6 @@
   "option.enderitemod.restart.enderite_shovel.attack_damage": "Enderite Shovel attack damage",
   "option.enderitemod.restart.enderite_shovel.attack_damage.hover": "Netherite Shovel attack damage is 6.5",
   "option.enderitemod.restart.enderite_hoe.attack_damage": "Enderite Hoe attack damage",
-  "option.enderitemod.restart.enderite_hoe.attack_damage.hover": "Netherite Hoe attack damage is 1"
+  "option.enderitemod.restart.enderite_hoe.attack_damage.hover": "Netherite Hoe attack damage is 1",
+  "title.enderitemod.config": "Enderite Mod Config"
 }

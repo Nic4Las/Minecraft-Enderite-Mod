@@ -73,5 +73,6 @@
   "option.enderitemod.restart.enderite_shovel.attack_damage": "Enderitschaufel-Angriffsschaden",
   "option.enderitemod.restart.enderite_shovel.attack_damage.hover": "Netheritschaufel-Angriffsschaden ist 6.5",
   "option.enderitemod.restart.enderite_hoe.attack_damage": "Enderithacke-Angriffsschaden",
-  "option.enderitemod.restart.enderite_hoe.attack_damage.hover": "Netherithacke-Angriffsschaden ist 1"
+  "option.enderitemod.restart.enderite_hoe.attack_damage.hover": "Netherithacke-Angriffsschaden ist 1",
+  "title.enderitemod.config": "Enderite Mod Konfigurationseinstellungsdatei"
 }
