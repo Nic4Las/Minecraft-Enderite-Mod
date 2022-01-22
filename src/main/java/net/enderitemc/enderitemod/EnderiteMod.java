@@ -82,16 +82,16 @@ public class EnderiteMod implements ModInitializer {
 			new Item.Settings().group(ItemGroup.MISC).fireproof());
 
 	// Enderite Tools
-	public static final ToolItem ENDERITE_PICKAXE = new PickaxeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderitePickaxeAD-3, -2.8F,
+	public static final ToolItem ENDERITE_PICKAXE = new PickaxeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderitePickaxeAD, -2.8F,
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof());
-	public static final ToolItem ENDERITE_AXE = new AxeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteAxeAD-3, -3.0F,
+	public static final ToolItem ENDERITE_AXE = new AxeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteAxeAD, -3.0F,
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof());
-	public static final ToolItem ENDERITE_HOE = new HoeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteHoeAD-3, 0.0F,
+	public static final ToolItem ENDERITE_HOE = new HoeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteHoeAD, 0.0F,
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof());
 
-	public static final ToolItem ENDERITE_SHOVEL = new ShovelItem(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteShovelAD-3, -3.0F,
+	public static final ToolItem ENDERITE_SHOVEL = new ShovelItem(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteShovelAD, -3.0F,
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof());
-	public static final EnderiteSword ENDERITE_SWORD = new EnderiteSword(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteSwordAD-3, -2.4F,
+	public static final EnderiteSword ENDERITE_SWORD = new EnderiteSword(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteSwordAD, -2.4F,
 			new Item.Settings().group(ItemGroup.COMBAT).fireproof());
 
 	// Enderite Block
