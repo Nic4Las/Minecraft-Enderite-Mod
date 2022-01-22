@@ -6,19 +6,23 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PiglinBrain;
-import net.minecraft.entity.mob.ShulkerLidCollisions;
+import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.loot.context.LootContext.Builder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
@@ -26,6 +30,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -39,9 +44,14 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     }
 
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new EnderiteShulkerBoxBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new EnderiteShulkerBoxBlockEntity(pos,state);
     }
+
+    // @Override
+    // public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+    //     return EnderiteShulkerBoxBlockEntity::tick;
+    // }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
@@ -54,15 +64,8 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
                 EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) blockEntity;
-                boolean bl2;
-                if (shulkerBoxBlockEntity.getAnimationStage() == EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
-                    Direction direction = (Direction) state.get(FACING);
-                    bl2 = world.isSpaceEmpty(ShulkerLidCollisions.getLidCollisionBox(pos, direction));
-                } else {
-                    bl2 = true;
-                }
 
-                if (bl2) {
+                if (canOpen(state, world, pos, shulkerBoxBlockEntity)) {
                     player.openHandledScreen(shulkerBoxBlockEntity);
                     player.incrementStat(Stats.OPEN_SHULKER_BOX);
                     PiglinBrain.onGuardedBlockInteracted(player, true);
@@ -75,6 +78,15 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         }
     }
 
+    private static boolean canOpen(BlockState state, World world, BlockPos pos, EnderiteShulkerBoxBlockEntity entity) {
+        if (entity.getAnimationStage() != EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
+           return true;
+        } else {
+           Box box = ShulkerEntity.method_33347((Direction)state.get(FACING), 0.0F, 0.5F).offset(pos).contract(1.0E-6D);
+           return world.isSpaceEmpty(box);
+        }
+     }
+
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -82,7 +94,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
             EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) blockEntity;
             if (!world.isClient && player.isCreative() && !shulkerBoxBlockEntity.isEmpty()) {
                 ItemStack itemStack = getItemStack();
-                CompoundTag compoundTag = shulkerBoxBlockEntity.serializeInventory(new CompoundTag());
+                NbtCompound compoundTag = shulkerBoxBlockEntity.serializeInventory(new NbtCompound());
                 if (!compoundTag.isEmpty()) {
                     itemStack.putSubTag("BlockEntityTag", compoundTag);
                 }
@@ -155,7 +167,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         // ItemStack itemStack = super.getPickStack(world, pos, state);
         ItemStack itemStack = getItemStack();
         EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) world.getBlockEntity(pos);
-        CompoundTag compoundTag = shulkerBoxBlockEntity.serializeInventory(new CompoundTag());
+        NbtCompound compoundTag = shulkerBoxBlockEntity.serializeInventory(new NbtCompound());
         if (!compoundTag.isEmpty()) {
             itemStack.putSubTag("BlockEntityTag", compoundTag);
         }

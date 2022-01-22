@@ -34,7 +34,7 @@ public class EnderiteSword extends SwordItem {
         if (playerEntity.isSneaking()) {
             Double distance = 30.0d;
             double yaw = (double) playerEntity.headYaw;
-            double pitch = (double) playerEntity.pitch;
+            double pitch = (double) playerEntity.getPitch();
 
             // x: 1 = -90, -1 = 90
             // y: 1 = -90, -1 = 90
@@ -68,7 +68,7 @@ public class EnderiteSword extends SwordItem {
             }
 
             // Check to Teleport
-            if (world.isChunkLoaded(blockPos) && (slot > 0 || playerEntity.abilities.creativeMode)) {
+            if (world.isChunkLoaded(blockPos) && (slot > 0 || playerEntity.getAbilities().creativeMode)) {
                 int foundSpace = 0;
 
                 while (foundSpace == 0 && (blockPoses[0].getY() > maxDown || blockPoses[1].getY() < maxUp)) {
@@ -126,10 +126,10 @@ public class EnderiteSword extends SwordItem {
                             break;
                     }
                     playerEntity.getItemCooldownManager().set(this, 30);
-                    // if (!playerEntity.abilities.creativeMode) {
+                    // if (!playerEntity.getAbilities().creativeMode) {
                     // playerEntity.inventory.getStack(slot).decrement(1);
                     // }
-                    if (!playerEntity.abilities.creativeMode) {
+                    if (!playerEntity.getAbilities().creativeMode) {
                         playerEntity.getStackInHand(hand).getTag().putInt("teleport_charge", slot - 1);
                     }
                     world.sendEntityStatus(playerEntity, (byte) 46);

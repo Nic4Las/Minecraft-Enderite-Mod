@@ -33,7 +33,7 @@ public abstract class EnderiteArmorMixin extends LivingEntity {
     private void hasFullEnderiteArmor(CallbackInfo info) {
         boolean notFull = false;
         for (ItemStack item : getArmorItems()) {
-            if (!item.getItem().isIn(EnderiteTag.ENDERITE_ITEM) && item.getItem() != Items.ELYTRA) {
+            if (!(EnderiteTag.ENDERITE_ITEM.contains(item.getItem())) && item.getItem() != Items.ELYTRA) {
                 notFull = true;
             }
         }

@@ -35,8 +35,8 @@ public abstract class EnderiteDropDamageMixin extends Entity {
 			if (r < i / 3.0) {
 				survives = true;
 			}
-			if (getStack().getItem().isIn(EnderiteTag.ENDERITE_ITEM) || survives) {
-				this.removed = false;
+			if ((EnderiteTag.ENDERITE_ITEM.contains(getStack().getItem())) || survives) {
+				this.unsetRemoved(); //this.removed = false;
 				// ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), 10,
 				// this.getZ(), getStack());
 				this.requestTeleport(this.getX(), 10, this.getZ());

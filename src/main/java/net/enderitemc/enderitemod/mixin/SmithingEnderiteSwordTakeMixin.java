@@ -15,6 +15,7 @@ import net.minecraft.screen.SmithingScreenHandler;
 
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SmithingScreenHandler.class)
@@ -34,7 +35,7 @@ public abstract class SmithingEnderiteSwordTakeMixin extends ForgingScreenHandle
     }
 
     @Inject(at = @At("HEAD"), cancellable = true, method = "onTakeOutput")
-    private void nowTake(PlayerEntity player, ItemStack itemStack, CallbackInfoReturnable<Boolean> info) {
+    private void nowTake(PlayerEntity player, ItemStack itemStack, CallbackInfo info) {
         // Take all pearls
         if ((this.input.getStack(0).getItem() == EnderiteMod.ENDERITE_SWORD
                 || this.input.getStack(0).getItem() == EnderiteMod.ENDERITE_SHIELD)

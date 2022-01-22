@@ -1,5 +1,6 @@
 package net.enderitemc.enderitemod.tools;
 
+import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -46,7 +47,7 @@ public class EnderiteBow extends BowItem {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity) {
             PlayerEntity playerEntity = (PlayerEntity) user;
-            boolean bl = playerEntity.abilities.creativeMode
+            boolean bl = playerEntity.getAbilities().creativeMode
                     || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack itemStack = playerEntity.getArrowType(stack);
             if (!itemStack.isEmpty() || bl) {
@@ -67,7 +68,7 @@ public class EnderiteBow extends BowItem {
 
                         persistentProjectileEntity.setCustomName(new LiteralText("Enderite Arrow"));
 
-                        persistentProjectileEntity.setProperties(playerEntity, playerEntity.pitch, playerEntity.yaw,
+                        persistentProjectileEntity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(),
                                 0.0F, f * this.getSpeedMultiplier(), 1.0F);
                         if (f == 1.0F) {
                             persistentProjectileEntity.setCritical(true);
@@ -93,7 +94,7 @@ public class EnderiteBow extends BowItem {
                         stack.damage(1, (LivingEntity) playerEntity, (Consumer) ((p) -> {
                             ((LivingEntity) p).sendToolBreakStatus(playerEntity.getActiveHand());
                         }));
-                        if (bl2 || playerEntity.abilities.creativeMode && (itemStack.getItem() == Items.SPECTRAL_ARROW
+                        if (bl2 || playerEntity.getAbilities().creativeMode && (itemStack.getItem() == Items.SPECTRAL_ARROW
                                 || itemStack.getItem() == Items.TIPPED_ARROW)) {
                             persistentProjectileEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                         }
@@ -103,11 +104,11 @@ public class EnderiteBow extends BowItem {
 
                     world.playSound((PlayerEntity) null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(),
                             SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F,
-                            1.0F / (RANDOM.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-                    if (!bl2 && !playerEntity.abilities.creativeMode) {
+                            1.0F / (new Random().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                    if (!bl2 && !playerEntity.getAbilities().creativeMode) {
                         itemStack.decrement(1);
                         if (itemStack.isEmpty()) {
-                            playerEntity.inventory.removeOne(itemStack);
+                            playerEntity.getInventory().removeOne(itemStack);
                         }
                     }
 
@@ -142,7 +143,7 @@ public class EnderiteBow extends BowItem {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         boolean bl = !user.getArrowType(itemStack).isEmpty();
-        if (!user.abilities.creativeMode && !bl) {
+        if (!user.getAbilities().creativeMode && !bl) {
             return TypedActionResult.fail(itemStack);
         } else {
             user.setCurrentHand(hand);

@@ -86,7 +86,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                 double f = attacker.getZ();
 
                 double yaw = (double) this.headYaw;
-                double pitch = (double) this.pitch;
+                double pitch = (double) this.getPitch();
 
                 // x: 1 = -90, -1 = 90
                 // y: 1 = -90, -1 = 90
@@ -101,7 +101,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                     double g = attacker.getX() + dX * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                     double h = MathHelper.clamp(
                             attacker.getY() + dY * distance + (double) (attacker.getRandom().nextInt(16) - 8), 0.0D,
-                            (double) (world.getDimensionHeight() - 1));
+                            (double) (world.getHeight() - 1));
                     double j = attacker.getZ() + dZ * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                     if (attacker.hasVehicle()) {
                         attacker.stopRiding();

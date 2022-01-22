@@ -16,21 +16,22 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.World;
 
-public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity implements SidedInventory, Tickable {
+public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity implements SidedInventory {
     private static final int[] AVAILABLE_SLOTS = IntStream.range(0, 27).toArray();
     private DefaultedList<ItemStack> inventory;
     private int viewerCount;
@@ -38,13 +39,17 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     private float animationProgress;
     private float prevAnimationProgress;
 
-    public EnderiteShulkerBoxBlockEntity() {
-        super(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY);
+    public EnderiteShulkerBoxBlockEntity(BlockPos pos, BlockState state) {
+        super(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY,pos,state);
         this.inventory = DefaultedList.ofSize(45, ItemStack.EMPTY);
         this.animationStage = EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED;
     }
 
-    public void tick() {
+    public static void tick(World world, BlockPos pos, BlockState state, EnderiteShulkerBoxBlockEntity be) {
+        be.tick2();
+    }
+
+    public void tick2() {
         this.updateAnimation();
         if (this.animationStage == EnderiteShulkerBoxBlockEntity.AnimationStage.OPENING
                 || this.animationStage == EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSING) {
@@ -213,27 +218,27 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
         return new TranslatableText("container.enderitemod.enderiteShulkerBox");
     }
 
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
+    public void readNbt( NbtCompound tag) {
+        super.readNbt(tag);
         this.deserializeInventory(tag);
     }
 
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
+    public NbtCompound writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
         return this.serializeInventory(tag);
     }
 
-    public void deserializeInventory(CompoundTag tag) {
+    public void deserializeInventory(NbtCompound tag) {
         this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
         if (!this.deserializeLootTable(tag) && tag.contains("Items", 9)) {
-            Inventories.fromTag(tag, this.inventory);
+            Inventories.readNbt(tag, this.inventory);
         }
 
     }
 
-    public CompoundTag serializeInventory(CompoundTag tag) {
+    public NbtCompound serializeInventory(NbtCompound tag) {
         if (!this.serializeLootTable(tag)) {
-            Inventories.toTag(tag, this.inventory, false);
+            Inventories.writeNbt(tag, this.inventory, false);
         }
 
         return tag;

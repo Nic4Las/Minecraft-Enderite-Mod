@@ -26,7 +26,7 @@ public abstract class EndermanStopStaringMixin extends Entity {
     @Inject(at = @At("HEAD"), cancellable = true, method = "isPlayerStaring")
     private void dropItem(PlayerEntity player, CallbackInfoReturnable<Boolean> info) {
         // Implements enderite helmet ability to calm enderman (like carved pumpkin)
-        ItemStack itemStack = (ItemStack) player.inventory.armor.get(3);
+        ItemStack itemStack = (ItemStack) player.getInventory().armor.get(3);
         if (itemStack.getItem() == EnderiteMod.ENDERITE_HELMET) {
             info.setReturnValue(false);
         }
@@ -37,7 +37,7 @@ public abstract class EndermanStopStaringMixin extends Entity {
         if (source.getSource() != null && source.getSource().getCustomName() != null) {
             if (source instanceof ProjectileDamageSource
                     && source.getSource().getCustomName().getString().equals("Enderite Arrow")) {
-                source.getSource().remove();
+                source.getSource().remove(RemovalReason.DISCARDED);
                 info.setReturnValue(super.damage(source, amount));
             }
         }
