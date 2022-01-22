@@ -76,7 +76,7 @@ public class EnderiteShieldRenderer implements DynamicItemRenderer {
                         shieldModel.getHandle().render(matrices, vertexConsumer, light, overlay, 1.0F, 1.0F, 1.0F,
                                         1.0F);
                         List<Pair<BannerPattern, DyeColor>> list = BannerBlockEntity.getPatternsFromNbt(
-                                        ShieldItem.getColor(stack), BannerBlockEntity.getPatternListTag(stack));
+                                        ShieldItem.getColor(stack), BannerBlockEntity.getPatternListNbt(stack));
                         BannerBlockEntityRenderer.renderCanvas(matrices, vertexConsumers, light, overlay,
                                         shieldModel.getPlate(), spriteIdentifier, false, list, stack.hasGlint());
 
