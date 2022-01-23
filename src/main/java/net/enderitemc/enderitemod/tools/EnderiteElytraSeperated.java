@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod.tools;
 
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
+import net.fabricmc.fabric.api.entity.event.v1.FabricElytraItem;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ElytraItem;
@@ -9,7 +10,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class EnderiteElytraSeperated extends ElytraItem {
+public class EnderiteElytraSeperated extends ElytraItem implements FabricElytraItem {
 
     public EnderiteElytraSeperated(Settings settings) {
         super(settings);
@@ -20,7 +21,7 @@ public class EnderiteElytraSeperated extends ElytraItem {
     }
 
     public static boolean isUsable(ItemStack stack) {
-        return stack.getDamage() < stack.getMaxDamage() - 10;
+        return stack.getDamage() < stack.getMaxDamage() - 1;
     }
 
     @Override

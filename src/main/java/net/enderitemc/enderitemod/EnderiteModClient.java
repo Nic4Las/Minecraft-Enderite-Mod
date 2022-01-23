@@ -1,16 +1,26 @@
 package net.enderitemc.enderitemod;
 
+import net.enderitemc.enderitemod.misc.EnderiteElytraFeatureRender;
 import net.enderitemc.enderitemod.misc.EnderiteShieldRenderer;
+import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
 import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.item.UnclampedModelPredicateProvider;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
@@ -83,5 +93,17 @@ public class EnderiteModClient implements ClientModInitializer {
                     return EnderiteElytraSeperated.isUsable(itemStack) ? 0.0F : 1.0F;
                 });
 
+        LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
+                                registrationHelper.register(new EnderiteElytraFeatureRender<>(entityRenderer, context.getModelLoader()));
+        });
+        LivingEntityFeatureRenderEvents.ALLOW_CAPE_RENDER.register((player) -> this.allowCapeRender(player));
+
+        
     }
+
+    @Environment(EnvType.CLIENT)
+    private static final boolean allowCapeRender(AbstractClientPlayerEntity player) {
+        return !(EnderiteTag.ENDERITE_ELYTRA.contains(player.getEquippedStack(EquipmentSlot.CHEST).getItem()));
+    }
+
 }

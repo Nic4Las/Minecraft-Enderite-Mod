@@ -20,5 +20,8 @@ public class MobEntityMixin {
         if (item == EnderiteMod.ENDERITE_ELYTRA_SEPERATED) {
             info.setReturnValue(EquipmentSlot.CHEST);
         }
+        if (item == EnderiteMod.ENDERITE_SHIELD) {
+            info.setReturnValue(EquipmentSlot.OFFHAND);
+        }
     }
 }

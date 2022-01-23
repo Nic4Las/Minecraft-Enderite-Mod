@@ -20,6 +20,7 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.enderitemc.enderitemod.tools.AxeSubclass;
 import net.enderitemc.enderitemod.tools.EnderiteBow;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
+import net.enderitemc.enderitemod.tools.EnderiteElytraChestplate;
 import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteSword;
@@ -116,7 +117,7 @@ public class EnderiteMod implements ModInitializer {
 			(new Item.Settings().group(ItemGroup.COMBAT).fireproof()));
 
 	// Enderite Elytra
-	public static final ArmorItem ENDERITE_ELYTRA = new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.CHEST,
+	public static final ArmorItem ENDERITE_ELYTRA = new EnderiteElytraChestplate(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.CHEST,
 			(new Item.Settings().group(ItemGroup.COMBAT).fireproof().rarity(Rarity.EPIC)));
 	public static SpecialRecipeSerializer<EnderiteElytraSpecialRecipe> ENDERITE_EYLTRA_SPECIAL_RECIPE = new SpecialRecipeSerializer<>(
 			EnderiteElytraSpecialRecipe::new);

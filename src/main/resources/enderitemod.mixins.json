@@ -11,8 +11,6 @@
     "SmithingEnderiteSwordOutputMixin",
     "SmithingEnderiteSwordTakeMixin",
     "EnderiteRespawnAnchorMixin",
-    "ElytraPlayerEntityMixin",
-    "ElytraLivingEntityMixin",
     "EnderiteShieldPlayerEntityMixin",
     "MobEntityMixin",
     "EnderiteShearsSheepMixin",
@@ -25,9 +23,7 @@
     "SmithingEnderiteSwordMixin",
     "SmithingEnderiteSwordOutputMixin",
     "SmithingEnderiteSwordTakeMixin",
-    "EnderiteRespawnAnchorMixin",
-    "ElytraFeatureRendererMixin",
-    "ElytraClientPlayerEntityMixin"
+    "EnderiteRespawnAnchorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

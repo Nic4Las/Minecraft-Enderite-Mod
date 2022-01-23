@@ -11,12 +11,13 @@ import net.minecraft.text.TranslatableText;
 public class QuickShulkerImplementation implements RegisterQuickShulker {
         @Override
         public void registerProviders() {
-                QuickOpenableRegistry.register(EnderiteShulkerBoxBlock.class,
+                QuickOpenableRegistry.register(EnderiteShulkerBoxBlock.class,true,
                                 ((player, stack) -> player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i,
                                                 playerInventory, playerEntity) -> new EnderiteShulkerBoxScreenHandler(i,
                                                                 player.getInventory(), new ItemStackInventory(stack, 45)),
                                                 stack.hasCustomName() ? stack.getName()
                                                                 : new TranslatableText(
-                                                                                "container.enderitemod.enderiteShulkerBox")))));
+                                                                                "container.enderitemod.enderiteShulkerBox")))
+                                                ));
         }
 }
