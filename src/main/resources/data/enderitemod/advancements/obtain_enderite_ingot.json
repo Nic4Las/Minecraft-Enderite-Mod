@@ -1,0 +1,37 @@
+{
+  "display": {
+    "title": {
+      "text": "Exotic Matter"
+    },
+    "description": {
+      "text": "Forge an Enderite ingot using 4 Enderite shrapnel and 4 diamonds"
+    },
+    "icon": {
+      "item": "enderitemod:enderite_ingot"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtainenderiteingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "enderitemod:enderite_ingot"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "enderite_block.json"
+    ]
+  },
+  "parent": "enderitemod:enderite_scrap"
+}

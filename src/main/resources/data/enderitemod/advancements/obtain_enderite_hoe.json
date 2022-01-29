@@ -1,0 +1,35 @@
+{
+  "display": {
+    "title": {
+      "text": "Insane Dedication"
+    },
+    "description": {
+      "text": "Use an Enderite ingot to upgrade a Netherite hoe, and then live as a hero amongst men"
+    },
+    "icon": {
+      "item": "enderitemod:enderite_hoe"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enderitehoeobtained": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "enderitemod:enderite_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 100
+  },
+  "parent": "minecraft:husbandry/obtain_netherite_hoe"
+}
