@@ -36,7 +36,7 @@ public class DropEvent {
                             && stack.getTag().getAsString().indexOf("tconstruct:void_floating") >= 0))) {
                 entity.setNoGravity(true);
             }
-            if (entity.getY() < 0 && !world.isClientSide() && !stack.isEmpty()) {
+            if (entity.getY() < world.getMinBuildHeight() && !world.isClientSide() && !stack.isEmpty()) {
                 int i = EnchantmentHelper.getItemEnchantmentLevel(Registration.VOID_FLOATING.get(), stack);
                 // Mute NullPointerException if tag not present
                 try {
@@ -54,7 +54,7 @@ public class DropEvent {
                     entity.setNoGravity(true);
                     entity.revive();
                     entity.setGlowingTag(true);
-                    entity.setPos(entity.getX(), 5, entity.getZ());
+                    entity.setPos(entity.getX(), world.getMinBuildHeight()+5, entity.getZ());
                     entity.setDeltaMovement(0, 0, 0);
                 }
             }

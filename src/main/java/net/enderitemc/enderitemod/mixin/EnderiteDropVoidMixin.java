@@ -28,7 +28,7 @@ public abstract class EnderiteDropVoidMixin extends Entity {
 	@Inject(at = @At("TAIL"), method = "tick()V")
 	private void damageItem(CallbackInfo info) {
 		// Items in the void get telported up and will live on (because they float)
-		if (this.getY() < 0.0D) {
+		if (this.getY() < this.getLevel().getMinBuildHeight()) {
 			int i = EnchantmentHelper.getItemEnchantmentLevel(Registration.VOID_FLOATING.get(), getItem());
 			// Mute NullPointerException if tag not present
 			try {
@@ -45,7 +45,7 @@ public abstract class EnderiteDropVoidMixin extends Entity {
 				setNoGravity(true);
 				revive();
 				setGlowingTag(true);
-				setPos(getX(), 5, getZ());
+				setPos(getX(), this.getLevel().getMinBuildHeight()+5, getZ());
 				setDeltaMovement(0, 0, 0);
 			}
 		}

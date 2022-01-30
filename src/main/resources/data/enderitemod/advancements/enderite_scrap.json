@@ -1,0 +1,33 @@
+{
+  "display": {
+    "title": {
+      "translate": "advancements.enderitemod.enderite_scrap.title"
+    },
+    "description": {
+      "translate": "advancements.enderitemod.enderite_scrap.description"
+    },
+    "icon": {
+      "item": "enderitemod:enderite_scrap"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "unrefinedenderiteobtained": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["enderitemod:enderite_scrap"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": ["enderite_shrapnel_smelt.json", "enderite_shrapnel_blast.json"]
+  },
+  "parent": "minecraft:end/enter_end_gateway"
+}

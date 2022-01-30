@@ -12,6 +12,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.level.Level;
 
+import net.minecraft.world.entity.Entity.RemovalReason;
+
 @Mixin(EnderMan.class)
 public abstract class EndermanMixin extends Entity {
 

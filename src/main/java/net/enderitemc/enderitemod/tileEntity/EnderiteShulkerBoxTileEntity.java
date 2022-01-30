@@ -234,9 +234,11 @@ public class EnderiteShulkerBoxTileEntity extends RandomizableContainerBlockEnti
         this.loadFromNbt(p_230337_2_);
     }
 
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
-        return this.saveToNbt(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
+        if (!this.trySaveLootTable(compound)) {
+            ContainerHelper.saveAllItems(compound, this.items, false);
+        }
     }
 
     public void loadFromNbt(CompoundTag compound) {

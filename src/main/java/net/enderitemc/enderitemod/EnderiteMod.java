@@ -23,6 +23,7 @@ import net.minecraft.core.dispenser.ShulkerBoxDispenseBehavior;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -39,12 +40,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MOD_ID)
@@ -84,7 +85,7 @@ public class EnderiteMod {
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 
-        GenerationEvent.registerOres();
+        event.enqueueWork(() -> { GenerationEvent.registerOres(); });
         DispenserBlock.registerBehavior(Registration.ENDERITE_SHULKER_BOX.get().asItem(), new ShulkerBoxDispenseBehavior());
     }
 
@@ -109,7 +110,7 @@ public class EnderiteMod {
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
+    public void onServerStarting(FMLDedicatedServerSetupEvent event) {
         // do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
@@ -128,8 +129,8 @@ public class EnderiteMod {
 
         @SubscribeEvent
         public static void onTextureStitchEvent(TextureStitchEvent.Pre event) {
-            LOGGER.info("RSL" + event.getMap().location() + ", " + TextureAtlas.LOCATION_BLOCKS);
-            if (event.getMap().location() == TextureAtlas.LOCATION_BLOCKS) {
+            LOGGER.info("RSL" + event.getAtlas().location() + ", " + TextureAtlas.LOCATION_BLOCKS);
+            if (event.getAtlas().location() == InventoryMenu.BLOCK_ATLAS) {
                 event.addSprite(EnderiteShieldRenderer.LOCATION_ENDERITE_SHIELD_BASE_NO_PATTERN);
             }
         }

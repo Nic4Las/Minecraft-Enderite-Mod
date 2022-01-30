@@ -195,7 +195,7 @@ public class EnderiteShulkerBox extends ShulkerBoxBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos,
             Player player) {
         // ItemStack itemStack = super.getPickStack(world, pos, state);
         ItemStack itemStack = getCloneItemStack(world, pos, state);

@@ -1,0 +1,33 @@
+{
+  "display": {
+    "title": {
+      "translate": "advancements.enderitemod.obtain_enderite_ingot.title"
+    },
+    "description": {
+      "translate": "advancements.enderitemod.obtain_enderite_ingot.description"
+    },
+    "icon": {
+      "item": "enderitemod:enderite_ingot"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "obtainenderiteingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["enderitemod:enderite_ingot"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": ["enderite_block.json"]
+  },
+  "parent": "enderitemod:enderite_scrap"
+}

@@ -16,6 +16,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.Level;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class EnderiteBow extends BowItem {
 
     public float speedMulitplier = 4.0f; // 3.0

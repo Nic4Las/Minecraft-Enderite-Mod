@@ -20,6 +20,8 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.NonNullLazy;
 
+import net.minecraft.world.item.Item.Properties;
+
 public class EnderiteShield extends ShieldItem {
 
     public EnderiteShield(Properties builder) {
@@ -49,7 +51,6 @@ public class EnderiteShield extends ShieldItem {
         return EnderiteMaterial.ENDERITE.getRepairIngredient().test(ingredient);
     }
 
-    @Override
     public boolean isShield(ItemStack stack, LivingEntity entity) {
         return stack.getItem() instanceof EnderiteShield;
     }

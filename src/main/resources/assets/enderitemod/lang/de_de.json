@@ -44,5 +44,14 @@
   "item.enderitemod.enderite_shield.magenta": "Magenta Enderitschild",
   "item.enderitemod.enderite_shield.orange": "Orangenes Enderitschild",
   "item.enderitemod.enderite_shield.white": "Weißes Enderitschild",
-  "item.enderitemod.enderite_shield.tooltip3": "Teleportiere Angreifer mit schleichen + blocken!"
+  "item.enderitemod.enderite_shield.tooltip3": "Teleportiere Angreifer mit schleichen + blocken!",
+
+  "advancements.enderitemod.enderite_scrap.title": "Versteckt in der Leere",
+  "advancements.enderitemod.enderite_scrap.description": "Finde, sprenge und schmelze einen Block Enderiterz",
+  "advancements.enderitemod.explore_all_end_biomes.title": "Karge Touristenziele",
+  "advancements.enderitemod.explore_all_end_biomes.description": "Erkunde alle Biome des Endes",
+  "advancements.enderitemod.obtain_enderite_hoe.title": "Wahnsinnige Hingabe",
+  "advancements.enderitemod.obtain_enderite_hoe.description": "Benutze einen Enderitbarren, um eine Netherithacke zu verbessern und lebe dann als Held unter Menschen",
+  "advancements.enderitemod.obtain_enderite_ingot.title": "Exotisches Material",
+  "advancements.enderitemod.obtain_enderite_ingot.description": "Schmiede einen Enderitbarren aus 4 Enderitplatten und 4 Diamanten"
 }

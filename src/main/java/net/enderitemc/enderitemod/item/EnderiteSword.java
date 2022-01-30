@@ -54,14 +54,14 @@ public class EnderiteSword extends SwordItem {
             BlockPos[] blockPoses = { blockPos, blockPos.above(), blockPos };
 
             double down = endPosition.y;
-            double maxDown = down - distance - 1 > 0 ? down - distance - 1 : 0;
+            double maxDown = down - distance - 1 > world.getMinBuildHeight() ? down - distance - 1 : world.getMinBuildHeight();
             double up = endPosition.y + 1;
             double maxUp = 128;
             // if (playerEntity.getCommandSenderWorld().dimensionType().createDragonFight())
             // {
             // maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
             // } else {
-            maxUp = up + distance - 1 < 255 ? up + distance - 1 : 255;
+            maxUp = up + distance - 1 < world.getMaxBuildHeight() ? up + distance - 1 : world.getMaxBuildHeight();
             // }
             double near = distance;
 
