@@ -1,37 +1,32 @@
 {
   "display": {
     "title": {
-      "text": "Exotic Matter"
+      "text": "Fly Protected"
     },
     "description": {
-      "text": "Forge an Enderite ingot using 4 Enderite scraps and 4 diamonds"
+      "text": "Attach an Elytra to an Enderite Chestplate, and fly in perfect style"
     },
     "icon": {
-      "item": "enderitemod:enderite_ingot"
+      "item": "enderitemod:enderite_elytra"
     },
-    "frame": "task",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
   "criteria": {
-    "obtainenderiteingot": {
+    "flyprotected": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "enderitemod:enderite_ingot"
+              "enderitemod:enderite_elytra"
             ]
           }
         ]
       }
     }
   },
-  "rewards": {
-    "recipes": [
-      "enderite_block.json"
-    ]
-  },
-  "parent": "enderitemod:enderite_scrap"
+  "parent": "minecraft:end/elytra"
 }

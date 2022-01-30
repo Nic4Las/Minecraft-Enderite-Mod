@@ -1,0 +1,56 @@
+{
+  "parent": "enderitemod:obtain_enderite_ingot",
+  "display": {
+    "icon": {
+      "item": "enderitemod:enderite_chestplate",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "Total Protection"
+    },
+    "description": {
+      "translate": "Fully armor yourself with the End's finest metal"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 100
+  },
+  "criteria": {
+    "enderite_armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "enderitemod:enderite_helmet"
+            ]
+          },
+          {
+            "items": [
+              "enderitemod:enderite_chestplate"
+            ]
+          },
+          {
+            "items": [
+              "enderitemod:enderite_leggings"
+            ]
+          },
+          {
+            "items": [
+              "enderitemod:enderite_boots"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "enderite_armor"
+    ]
+  ]
+}

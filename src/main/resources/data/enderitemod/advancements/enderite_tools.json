@@ -1,0 +1,56 @@
+{
+  "parent": "enderitemod:obtain_enderite_ingot",
+  "display": {
+    "icon": {
+      "item": "enderitemod:enderite_shovel",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "True Builder"
+    },
+    "description": {
+      "translate": "Upgrade all of your tools to the quality of the End"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 100
+  },
+  "criteria": {
+    "enderite_tools": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "enderitemod:enderite_pickaxe"
+            ]
+          },
+          {
+            "items": [
+              "enderitemod:enderite_shovel"
+            ]
+          },
+          {
+            "items": [
+              "enderitemod:enderite_axe"
+            ]
+          },
+          {
+            "items": [
+              "enderitemod:enderite_shears"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "enderite_tools"
+    ]
+  ]
+}
