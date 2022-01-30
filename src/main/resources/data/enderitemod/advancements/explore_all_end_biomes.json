@@ -1,0 +1,64 @@
+{
+  "display": {
+    "title": {
+      "text": "Barren Tourist Destinations"
+    },
+    "description": {
+      "text": "Explore all End biomes"
+    },
+    "icon": {
+      "item": "enderitemod:enderite_boots",
+      "nbt": "{Damage:0}"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "endmidlands": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "minecraft:end_midlands"
+        }
+      }
+    },
+    "endhighlands": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "minecraft:end_highlands"
+        }
+      }
+    },
+    "endbarrens": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "minecraft:end_barrens"
+        }
+      }
+    },
+    "smallendislands": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "minecraft:small_end_islands"
+        }
+      }
+    },
+    "theend": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "minecraft:the_end"
+        }
+      }
+    }
+  },
+  "rewards": {
+    "experience": 500
+  },
+  "parent": "minecraft:end/enter_end_gateway"
+}
