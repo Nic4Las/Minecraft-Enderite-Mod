@@ -51,13 +51,13 @@ public class EnderiteSword extends SwordItem {
             BlockPos[] blockPoses = { blockPos, blockPos.up(), blockPos };
 
             double down = endPosition.y;
-            double maxDown = down - distance - 1 > 0 ? down - distance - 1 : 0;
+            double maxDown = down - distance - 1 > world.getBottomY() ? down - distance - 1 : world.getBottomY();
             double up = endPosition.y + 1;
             double maxUp = 128;
             if (playerEntity.getEntityWorld().getDimension().isRespawnAnchorWorking()) {
                 maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
             } else {
-                maxUp = up + distance - 1 < 255 ? up + distance - 1 : 255;
+                maxUp = up + distance - 1 < world.getTopY() ? up + distance - 1 : world.getTopY();
             }
             double near = distance;
 
@@ -121,7 +121,9 @@ public class EnderiteSword extends SwordItem {
                         case 4: // Air
                             near = distance / 2;
                         case 3: // Near
-                            playerEntity.teleport(position.x + dX * near, position.y + dY * near,
+                            down = position.y + dY * near;
+                            down = down > world.getBottomY() ? down :world.getBottomY()+1;
+                            playerEntity.teleport(position.x + dX * near, down,
                                     position.z + dZ * near);
                             break;
                     }
