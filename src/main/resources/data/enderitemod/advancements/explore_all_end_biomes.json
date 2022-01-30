@@ -1,10 +1,10 @@
 {
   "display": {
     "title": {
-      "text": "Barren Tourist Destinations"
+      "translate": "advancements.enderitemod.explore_all_end_biomes.title"
     },
     "description": {
-      "text": "Explore all End biomes"
+      "translate": "advancements.enderitemod.explore_all_end_biomes.description"
     },
     "icon": {
       "item": "enderitemod:enderite_boots",

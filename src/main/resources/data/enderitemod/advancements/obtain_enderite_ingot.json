@@ -1,10 +1,10 @@
 {
   "display": {
     "title": {
-      "text": "Exotic Matter"
+      "translate": "advancements.enderitemod.obtain_enderite_ingot.title"
     },
     "description": {
-      "text": "Forge an Enderite ingot using 4 Enderite shrapnel and 4 diamonds"
+      "translate": "advancements.enderitemod.obtain_enderite_ingot.description"
     },
     "icon": {
       "item": "enderitemod:enderite_ingot"
@@ -20,18 +20,14 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "enderitemod:enderite_ingot"
-            ]
+            "items": ["enderitemod:enderite_ingot"]
           }
         ]
       }
     }
   },
   "rewards": {
-    "recipes": [
-      "enderite_block.json"
-    ]
+    "recipes": ["enderite_block.json"]
   },
   "parent": "enderitemod:enderite_scrap"
 }

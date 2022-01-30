@@ -7,6 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.ShulkerBoxBlock;
@@ -52,6 +53,16 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     // public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
     //     return EnderiteShulkerBoxBlockEntity::tick;
     // }
+
+    // @Override
+    // public BlockRenderType getRenderType(BlockState state) {
+    //     // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
+    //     return BlockRenderType.MODEL;
+    // }
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+        return checkType(type, EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY, (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1, be));
+    }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
