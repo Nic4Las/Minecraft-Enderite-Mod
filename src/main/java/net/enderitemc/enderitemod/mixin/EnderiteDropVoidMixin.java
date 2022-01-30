@@ -2,12 +2,12 @@ package net.enderitemc.enderitemod.mixin;
 
 import net.enderitemc.enderitemod.init.Registration;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,7 +21,7 @@ public abstract class EnderiteDropVoidMixin extends Entity {
 	@Shadow
 	public abstract ItemStack getItem();
 
-	protected EnderiteDropVoidMixin(EntityType<?> type, World world) {
+	protected EnderiteDropVoidMixin(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 
@@ -41,10 +41,10 @@ public abstract class EnderiteDropVoidMixin extends Entity {
 			if (r < i / 3.0) {
 				survives = true;
 			}
-			if (getItem().getItem().is(EnderiteTag.ENDERITE_ITEM) || survives) {
+			if (getItem().is(EnderiteTag.ENDERITE_ITEM) || survives) {
 				setNoGravity(true);
 				revive();
-				setGlowing(true);
+				setGlowingTag(true);
 				setPos(getX(), 5, getZ());
 				setDeltaMovement(0, 0, 0);
 			}

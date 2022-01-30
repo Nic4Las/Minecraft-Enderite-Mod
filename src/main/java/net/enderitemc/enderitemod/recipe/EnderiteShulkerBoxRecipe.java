@@ -3,22 +3,22 @@ package net.enderitemc.enderitemod.recipe;
 import net.enderitemc.enderitemod.block.EnderiteShulkerBox;
 import net.enderitemc.enderitemod.init.Registration;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EnderiteShulkerBoxRecipe extends SpecialRecipe {
+public class EnderiteShulkerBoxRecipe extends CustomRecipe {
     public EnderiteShulkerBoxRecipe(ResourceLocation identifier) {
         super(identifier);
     }
 
-    public boolean matches(CraftingInventory craftingInventory, World world) {
+    public boolean matches(CraftingContainer craftingInventory, Level world) {
         int i = 0;
         int j = 0;
         int l = 0;
@@ -27,10 +27,10 @@ public class EnderiteShulkerBoxRecipe extends SpecialRecipe {
             ItemStack itemStack = craftingInventory.getItem(k);
             if (!itemStack.isEmpty()) {
                 if (!(itemStack.getItem() == Registration.ENDERITE_INGOT.get()
-                        || itemStack.getItem().is(EnderiteTag.CRAFTABLE_SHULKER_BOXES))) {
+                        || itemStack.is(EnderiteTag.CRAFTABLE_SHULKER_BOXES))) {
                     return false;
                 }
-                if (k == 4 && itemStack.getItem().is(EnderiteTag.CRAFTABLE_SHULKER_BOXES)) {
+                if (k == 4 && itemStack.is(EnderiteTag.CRAFTABLE_SHULKER_BOXES)) {
                     ++i;
                 }
                 if (itemStack.getItem() == Registration.ENDERITE_INGOT.get()
@@ -49,14 +49,14 @@ public class EnderiteShulkerBoxRecipe extends SpecialRecipe {
         return i == 1 && j == 4;
     }
 
-    public ItemStack assemble(CraftingInventory craftingInventory) {
+    public ItemStack assemble(CraftingContainer craftingInventory) {
         ItemStack itemStack = ItemStack.EMPTY;
 
         for (int i = 0; i < craftingInventory.getContainerSize(); ++i) {
             ItemStack itemStack2 = craftingInventory.getItem(i);
             if (!itemStack2.isEmpty()) {
                 Item item = itemStack2.getItem();
-                if (item.is(EnderiteTag.CRAFTABLE_SHULKER_BOXES)) {
+                if (item.getDefaultInstance().is(EnderiteTag.CRAFTABLE_SHULKER_BOXES)) {
                     itemStack = itemStack2;
                 }
             }
@@ -75,7 +75,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialRecipe {
         return width * height >= 9;
     }
 
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return Registration.ENDERITE_SHULKER_BOX_RECIPE.get();
     }
 }

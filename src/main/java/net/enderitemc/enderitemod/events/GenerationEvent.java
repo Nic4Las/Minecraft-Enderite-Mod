@@ -3,19 +3,21 @@ package net.enderitemc.enderitemod.events;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.init.EnderiteModConfig;
 import net.enderitemc.enderitemod.init.Registration;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
-import net.minecraft.world.gen.placement.Placement;
-import net.minecraft.world.gen.placement.TopSolidRangeConfig;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
+import net.minecraft.world.level.levelgen.placement.FeatureDecorator;
+import net.minecraft.world.level.levelgen.feature.configurations.RangeDecoratorConfiguration;
+import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -35,9 +37,9 @@ public class GenerationEvent {
         int topOffset = EnderiteModConfig.ENDERITE_TOP_OFFSET.get();
         int maximum = EnderiteModConfig.ENDERITE_MAXIMUM.get();
         enderOres.add(register("end_enderite_ore", Feature.ORE
-                .configured(new OreFeatureConfig(new BlockMatchRuleTest(Blocks.END_STONE),
+                .configured(new OreConfiguration(new BlockMatchTest(Blocks.END_STONE),
                         Registration.ENDERITE_ORE.get().defaultBlockState(), 3))
-                .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(bottomOffset, topOffset, maximum)))
+                .decorated(FeatureDecorator.RANGE.configured(new RangeDecoratorConfiguration(UniformHeight.of(VerticalAnchor.absolute(bottomOffset), VerticalAnchor.absolute(maximum-topOffset)))))
                 .squared() // spawn height
                 .count(count))); // spawn frequency per chunks
     }
@@ -45,17 +47,17 @@ public class GenerationEvent {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void gen(BiomeLoadingEvent event) {
         BiomeGenerationSettingsBuilder generation = event.getGeneration();
-        if (event.getCategory().equals(Biome.Category.THEEND)) {
+        if (event.getCategory().equals(Biome.BiomeCategory.THEEND)) {
             for (ConfiguredFeature<?, ?> ore : enderOres) {
                 if (ore != null)
-                    generation.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, ore);
+                    generation.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, ore);
             }
         }
     }
 
-    private static <FC extends IFeatureConfig> ConfiguredFeature<FC, ?> register(String name,
+    private static <FC extends FeatureConfiguration> ConfiguredFeature<FC, ?> register(String name,
             ConfiguredFeature<FC, ?> configureFeature) {
-        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE,
+        return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE,
                 new ResourceLocation(EnderiteMod.MOD_ID + ":" + name), configureFeature);
     }
 }

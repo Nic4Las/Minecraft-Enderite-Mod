@@ -1,20 +1,22 @@
 package net.enderitemc.enderitemod.item;
 
-import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class EnderiteHelmet extends ArmorItem {
 
-    public EnderiteHelmet(IArmorMaterial materialIn, EquipmentSlotType slot, Properties properties) {
+    public EnderiteHelmet(ArmorMaterial materialIn, EquipmentSlot slot, Properties properties) {
         super(materialIn, slot, properties);
     }
 
     @Override
-    public boolean isEnderMask(ItemStack stack, PlayerEntity player, EndermanEntity endermanEntity) {
+    public boolean isEnderMask(ItemStack stack, Player player, EnderMan endermanEntity) {
         return true;
     }
 

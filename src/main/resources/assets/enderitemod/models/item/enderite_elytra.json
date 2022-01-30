@@ -8,7 +8,7 @@
       "predicate": {
         "broken": 1
       },
-      "model": "item/broken_elytra"
+      "model": "enderitemod:item/enderite_elytra_broken"
     }
   ]
 }

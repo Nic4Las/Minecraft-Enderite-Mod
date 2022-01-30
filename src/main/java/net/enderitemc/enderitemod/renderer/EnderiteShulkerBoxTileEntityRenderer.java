@@ -1,37 +1,39 @@
 package net.enderitemc.enderitemod.renderer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.enderitemc.enderitemod.tileEntity.EnderiteShulkerBoxTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.model.ShulkerModel;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.model.ShulkerModel;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import com.mojang.math.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class EnderiteShulkerBoxTileEntityRenderer extends TileEntityRenderer<EnderiteShulkerBoxTileEntity> {
+public class EnderiteShulkerBoxTileEntityRenderer implements BlockEntityRenderer<EnderiteShulkerBoxTileEntity> {
     private final ShulkerModel<?> model;
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(
             "textures/entity/shulker/enderite_shulker.png");
     private static final RenderType ENDERITE_SHULKER;
 
-    public EnderiteShulkerBoxTileEntityRenderer(TileEntityRendererDispatcher p_i226013_2_) {
-        super(p_i226013_2_);
-        this.model = new ShulkerModel<>();
+    public EnderiteShulkerBoxTileEntityRenderer(BlockEntityRendererProvider.Context p_i226013_2_) {
+        this.model = new ShulkerModel(p_i226013_2_.bakeLayer(ModelLayers.SHULKER));
     }
 
-    public void render(EnderiteShulkerBoxTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn,
-            IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(EnderiteShulkerBoxTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn,
+            MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         Direction direction = Direction.UP;
         if (tileEntityIn.hasLevel()) {
             BlockState blockstate = tileEntityIn.getLevel().getBlockState(tileEntityIn.getBlockPos());
@@ -47,11 +49,14 @@ public class EnderiteShulkerBoxTileEntityRenderer extends TileEntityRenderer<End
         matrixStackIn.mulPose(direction.getRotation());
         matrixStackIn.scale(1.0F, -1.0F, -1.0F);
         matrixStackIn.translate(0.0D, -1.0D, 0.0D);
-        IVertexBuilder ivertexbuilder = bufferIn.getBuffer(ENDERITE_SHULKER);
-        this.model.getBase().render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
-        matrixStackIn.translate(0.0D, (double) (-tileEntityIn.getProgress(partialTicks) * 0.5F), 0.0D);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(270.0F * tileEntityIn.getProgress(partialTicks)));
-        this.model.getLid().render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
+        VertexConsumer ivertexbuilder = bufferIn.getBuffer(ENDERITE_SHULKER);
+        ModelPart modelpart = this.model.getLid();
+        modelpart.setPos(0.0F, 24.0F - tileEntityIn.getProgress(partialTicks) * 0.5F * 16.0F, 0.0F);
+        modelpart.yRot = 270.0F * tileEntityIn.getProgress(partialTicks) * ((float)Math.PI / 180F);
+        //matrixStackIn.translate(0.0D, (double) (-tileEntityIn.getProgress(partialTicks) * 0.5F), 0.0D);
+        //matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(270.0F * tileEntityIn.getProgress(partialTicks)));
+        //this.model.getLid().render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
+        this.model.renderToBuffer(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
         matrixStackIn.popPose();
     }
 

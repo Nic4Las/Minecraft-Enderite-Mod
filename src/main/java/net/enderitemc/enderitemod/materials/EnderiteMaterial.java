@@ -1,12 +1,12 @@
 package net.enderitemc.enderitemod.materials;
 
 import net.enderitemc.enderitemod.init.Registration;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.function.Supplier;
 
-public enum EnderiteMaterial implements IItemTier {
+public enum EnderiteMaterial implements Tier {
 
     ENDERITE(4, 4096, 15.0F, 2.0F, 17, () -> Ingredient.of(Registration.ENDERITE_INGOT.get()));
 

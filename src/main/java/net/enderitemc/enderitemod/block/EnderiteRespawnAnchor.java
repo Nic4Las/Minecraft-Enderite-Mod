@@ -1,19 +1,21 @@
 package net.enderitemc.enderitemod.block;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RespawnAnchorBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.RespawnAnchorBlock;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
 
@@ -26,44 +28,44 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
     }
 
     @Override
-    public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-            BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
+            BlockHitResult hit) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (hand == Hand.MAIN_HAND && !isChargeItem(itemStack) && isChargeItem(player.getItemInHand(Hand.OFF_HAND))) {
-            return ActionResultType.PASS;
+        if (hand == InteractionHand.MAIN_HAND && !isChargeItem(itemStack) && isChargeItem(player.getItemInHand(InteractionHand.OFF_HAND))) {
+            return InteractionResult.PASS;
         } else if (isChargeItem(itemStack) && canCharge(state)) {
             charge(world, pos, state);
-            if (!player.abilities.instabuild) {
+            if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
             }
 
-            return ActionResultType.sidedSuccess(world.isClientSide);
+            return InteractionResult.sidedSuccess(world.isClientSide);
         } else if ((Integer) state.getValue(CHARGE) == 0) {
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         } else if (!isNether(world)) {
             if (!world.isClientSide) {
                 this.explode(state, world, pos);
             }
 
-            return ActionResultType.sidedSuccess(world.isClientSide);
+            return InteractionResult.sidedSuccess(world.isClientSide);
         } else {
             if (!world.isClientSide) {
-                ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
+                ServerPlayer serverPlayerEntity = (ServerPlayer) player;
                 if (serverPlayerEntity.getRespawnDimension() != world.dimension()
                         || !serverPlayerEntity.getRespawnPosition().equals(pos)) {
                     serverPlayerEntity.setRespawnPosition(world.dimension(), pos, 0.0f, false, true);
-                    world.playSound((PlayerEntity) null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
-                            (double) pos.getZ() + 0.5D, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.BLOCKS,
+                    world.playSound((Player) null, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
+                            (double) pos.getZ() + 0.5D, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS,
                             1.0F, 1.0F);
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
 
-            return ActionResultType.CONSUME;
+            return InteractionResult.CONSUME;
         }
     }
 
-    public static boolean isNether(World world) {
+    public static boolean isNether(Level world) {
         return world.dimensionType().createDragonFight(); // world.getDimesnion().hasEnderDragonFight()
     }
 
@@ -71,9 +73,9 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
         return (Integer) state.getValue(CHARGE) < 4;
     }
 
-    private void explode(BlockState state, World world, final BlockPos explodedPos) {
+    private void explode(BlockState state, Level world, final BlockPos explodedPos) {
         world.removeBlock(explodedPos, false);
         world.explode(null, explodedPos.getX(), explodedPos.getY(), explodedPos.getZ(), 6.9F, true,
-                Explosion.Mode.DESTROY);
+                Explosion.BlockInteraction.DESTROY);
     }
 }

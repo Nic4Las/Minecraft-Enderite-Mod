@@ -1,13 +1,15 @@
 package net.enderitemc.enderitemod.misc;
 
-import net.minecraft.item.Item;
-import net.minecraft.tags.ITag;
+import net.minecraft.world.item.Item;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class EnderiteTag {
-        public static final ITag<Item> ENDERITE_ITEM = ItemTags.getAllTags()
+        public static final Tag<Item> ENDERITE_ITEM = ItemTags.getAllTags()
                         .getTagOrEmpty(new ResourceLocation("enderitemod", "enderite_items"));
-        public static final ITag<Item> CRAFTABLE_SHULKER_BOXES = ItemTags.getAllTags()
+        public static final Tag<Item> CRAFTABLE_SHULKER_BOXES = ItemTags.getAllTags()
                         .getTagOrEmpty(new ResourceLocation("enderitemod", "shulker_boxes"));
+        public static final Tag<Item> ENDERITE_ELYTRAS = ItemTags.getAllTags()
+                        .getTagOrEmpty(new ResourceLocation("enderitemod", "enderite_elytras"));
 }

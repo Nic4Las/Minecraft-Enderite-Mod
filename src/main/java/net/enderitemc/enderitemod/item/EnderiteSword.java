@@ -1,40 +1,42 @@
 package net.enderitemc.enderitemod.item;
 
-import net.minecraft.item.SwordItem;
+import net.minecraft.world.item.SwordItem;
 
 import java.util.List;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+
+import net.minecraft.world.item.Item.Properties;
 
 public class EnderiteSword extends SwordItem {
 
     public int superAufladung;
 
-    public EnderiteSword(IItemTier material, int attackDamage, float attackSpeed, Properties settings) {
+    public EnderiteSword(Tier material, int attackDamage, float attackSpeed, Properties settings) {
         super(material, attackDamage, attackSpeed, settings);
     }
 
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player playerEntity, InteractionHand hand) {
 
         if (playerEntity.isShiftKeyDown()) {
             Double distance = 30.0d;
-            double yaw = (double) playerEntity.yHeadRot;
-            double pitch = (double) playerEntity.xRot;
+            double yaw = (double) playerEntity.getYRot();
+            double pitch = (double) playerEntity.getXRot();
 
             // x: 1 = -90, -1 = 90
             // y: 1 = -90, -1 = 90
@@ -43,9 +45,9 @@ public class EnderiteSword extends SwordItem {
             double dX = temp * -Math.sin(Math.toRadians(yaw));
             double dY = -Math.sin(Math.toRadians(pitch));
             double dZ = temp * Math.cos(Math.toRadians(yaw));
-            Vector3d position = playerEntity.position().add(0,
+            Vec3 position = playerEntity.position().add(0,
                     playerEntity.getEyeHeight() - playerEntity.getMyRidingOffset(), 0);
-            Vector3d endPosition = new Vector3d(position.x + dX * distance, position.y + dY * distance,
+            Vec3 endPosition = new Vec3(position.x + dX * distance, position.y + dY * distance,
                     position.z + dZ * distance);
             BlockPos blockPos = new BlockPos(endPosition.x, endPosition.y, endPosition.z);
 
@@ -70,7 +72,7 @@ public class EnderiteSword extends SwordItem {
             }
 
             // Check to Teleport
-            if (world.isAreaLoaded(blockPos, 1) && (slot > 0 || playerEntity.abilities.instabuild)) {
+            if (world.isAreaLoaded(blockPos, 1) && (slot > 0 || playerEntity.getAbilities().instabuild)) {
                 int foundSpace = 0;
 
                 while (foundSpace == 0 && (blockPoses[0].getY() > maxDown || blockPoses[1].getY() < maxUp)) {
@@ -132,7 +134,7 @@ public class EnderiteSword extends SwordItem {
                     // if (!playerEntity.abilities.creativeMode) {
                     // playerEntity.inventory.getStack(slot).decrement(1);
                     // }
-                    if (!playerEntity.abilities.instabuild) {
+                    if (!playerEntity.getAbilities().instabuild) {
                         playerEntity.getItemInHand(hand).getTag().putInt("teleport_charge", slot - 1);
                     }
                     world.broadcastEntityEvent(playerEntity, (byte) 46);
@@ -140,17 +142,17 @@ public class EnderiteSword extends SwordItem {
                     playerEntity.fallDistance = 0;
                 }
             } else {
-                return new ActionResult<>(ActionResultType.FAIL, playerEntity.getItemInHand(hand));
+                return new InteractionResultHolder<>(InteractionResult.FAIL, playerEntity.getItemInHand(hand));
             }
 
         } else {
-            return new ActionResult<>(ActionResultType.FAIL, playerEntity.getItemInHand(hand));
+            return new InteractionResultHolder<>(InteractionResult.FAIL, playerEntity.getItemInHand(hand));
         }
 
-        return new ActionResult<>(ActionResultType.SUCCESS, playerEntity.getItemInHand(hand));
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, playerEntity.getItemInHand(hand));
     }
 
-    protected boolean checkBlocks(World world, BlockPos pos) {
+    protected boolean checkBlocks(Level world, BlockPos pos) {
         if (world.getBlockState(pos.below()).getMaterial().blocksMotion()
                 && !world.getBlockState(pos).getMaterial().blocksMotion()
                 && !world.getBlockState(pos.above()).getMaterial().blocksMotion()) {
@@ -160,29 +162,29 @@ public class EnderiteSword extends SwordItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack itemStack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(itemStack, worldIn, tooltip, flagIn);
         if (itemStack.getOrCreateTag().contains("teleport_charge")) {
             String charge = itemStack.getTag().get("teleport_charge").toString();
-            tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.charge")
-                    .withStyle(new TextFormatting[] { TextFormatting.DARK_AQUA })
-                    .append(new StringTextComponent(": " + charge)));
+            tooltip.add(new TranslatableComponent("item.enderitemod.enderite_sword.charge")
+                    .withStyle(new ChatFormatting[] { ChatFormatting.DARK_AQUA })
+                    .append(new TextComponent(": " + charge)));
         } else {
-            tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.charge")
-                    .withStyle(new TextFormatting[] { TextFormatting.DARK_AQUA })
-                    .append(new StringTextComponent(":0")));
+            tooltip.add(new TranslatableComponent("item.enderitemod.enderite_sword.charge")
+                    .withStyle(new ChatFormatting[] { ChatFormatting.DARK_AQUA })
+                    .append(new TextComponent(":0")));
         }
 
-        tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.tooltip1")
-                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
-        tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.tooltip2")
-                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
-        tooltip.add(new TranslationTextComponent("item.enderitemod.enderite_sword.tooltip3")
-                .withStyle(new TextFormatting[] { TextFormatting.GRAY, TextFormatting.ITALIC }));
+        tooltip.add(new TranslatableComponent("item.enderitemod.enderite_sword.tooltip1")
+                .withStyle(new ChatFormatting[] { ChatFormatting.GRAY, ChatFormatting.ITALIC }));
+        tooltip.add(new TranslatableComponent("item.enderitemod.enderite_sword.tooltip2")
+                .withStyle(new ChatFormatting[] { ChatFormatting.GRAY, ChatFormatting.ITALIC }));
+        tooltip.add(new TranslatableComponent("item.enderitemod.enderite_sword.tooltip3")
+                .withStyle(new ChatFormatting[] { ChatFormatting.GRAY, ChatFormatting.ITALIC }));
     }
 
     @Override
-    public void onCraftedBy(ItemStack stack, World world, PlayerEntity player) {
+    public void onCraftedBy(ItemStack stack, Level world, Player player) {
     }
 
 }

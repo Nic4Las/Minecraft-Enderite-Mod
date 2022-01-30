@@ -7,12 +7,12 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.init.EnderiteModConfig;
 import net.enderitemc.enderitemod.init.Registration;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,13 +26,13 @@ public class DropEvent {
     @SubscribeEvent
     public static void entityJoinEvent(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
-        World world = event.getWorld();
+        Level world = event.getWorld();
 
         if (entity instanceof ItemEntity) {
             ItemStack stack = ((ItemEntity) entity).getItem();
             Item item = stack.getItem();
             if (EnderiteModConfig.ENDERITE_ITEMS_NO_GRAVITY.get() && !entity.isNoGravity() && !world.isClientSide()
-                    && !stack.isEmpty() && (item.is(EnderiteTag.ENDERITE_ITEM) || (stack.getTag() != null
+                    && !stack.isEmpty() && (item.getDefaultInstance().is(EnderiteTag.ENDERITE_ITEM) || (stack.getTag() != null
                             && stack.getTag().getAsString().indexOf("tconstruct:void_floating") >= 0))) {
                 entity.setNoGravity(true);
             }
@@ -50,10 +50,10 @@ public class DropEvent {
                 if (r <= i / 3.0) {
                     survives = true;
                 }
-                if ((item.is(EnderiteTag.ENDERITE_ITEM) || survives)) {
+                if ((item.getDefaultInstance().is(EnderiteTag.ENDERITE_ITEM) || survives)) {
                     entity.setNoGravity(true);
                     entity.revive();
-                    entity.setGlowing(true);
+                    entity.setGlowingTag(true);
                     entity.setPos(entity.getX(), 5, entity.getZ());
                     entity.setDeltaMovement(0, 0, 0);
                 }

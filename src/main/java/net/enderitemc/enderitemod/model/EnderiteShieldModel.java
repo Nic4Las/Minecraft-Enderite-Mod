@@ -3,24 +3,19 @@ package net.enderitemc.enderitemod.model;
 import java.util.List;
 import java.util.Random;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.model.ShieldModel;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.ShieldModel;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.Direction;
+import net.minecraft.core.Direction;
 
-public class EnderiteShieldModel extends ShieldModel implements IBakedModel {
+public class EnderiteShieldModel extends ShieldModel implements BakedModel {
 
-    public EnderiteShieldModel() {
-        super();
+    public EnderiteShieldModel(ModelPart part) {
+        super(part);
     }
 
     @Override
@@ -38,7 +33,7 @@ public class EnderiteShieldModel extends ShieldModel implements IBakedModel {
     @Override
     public boolean isGui3d() {
         // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     @Override
@@ -59,7 +54,7 @@ public class EnderiteShieldModel extends ShieldModel implements IBakedModel {
     }
 
     @Override
-    public ItemOverrideList getOverrides() {
+    public ItemOverrides getOverrides() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -1,17 +1,17 @@
 package net.enderitemc.enderitemod.materials;
 
 import net.enderitemc.enderitemod.init.Registration;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.function.Supplier;
 
-public enum EnderiteArmorMaterial implements IArmorMaterial {
+public enum EnderiteArmorMaterial implements ArmorMaterial {
     ENDERITE("enderite", 8, new int[] { 4, 7, 9, 4 }, 17,SoundEvents.ARMOR_EQUIP_CHAIN, 4.0F, 0.1F, () -> {
         return Ingredient.of(Registration.ENDERITE_INGOT.get());
     });
@@ -38,11 +38,11 @@ public enum EnderiteArmorMaterial implements IArmorMaterial {
         this.repairIngredient = repairIngredient.get();
     }
 
-    public int getDurabilityForSlot(EquipmentSlotType equipmentSlot_1) {
+    public int getDurabilityForSlot(EquipmentSlot equipmentSlot_1) {
         return baseDurability[equipmentSlot_1.getIndex()] * this.durabilityMultiplier;
     }
 
-    public int getDefenseForSlot(EquipmentSlotType equipmentSlot_1) {
+    public int getDefenseForSlot(EquipmentSlot equipmentSlot_1) {
         return this.armorValues[equipmentSlot_1.getIndex()];
     }
 

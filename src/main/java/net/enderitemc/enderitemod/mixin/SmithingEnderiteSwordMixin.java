@@ -4,28 +4,28 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import net.enderitemc.enderitemod.init.Registration;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.AbstractRepairContainer;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.SmithingTableContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ItemCombinerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.SmithingMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(SmithingTableContainer.class)
-public abstract class SmithingEnderiteSwordMixin extends AbstractRepairContainer {
+@Mixin(SmithingMenu.class)
+public abstract class SmithingEnderiteSwordMixin extends ItemCombinerMenu {
 
     @Shadow
     public abstract void shrinkStackInSlot(int i);
 
-    public SmithingEnderiteSwordMixin(int syncId, PlayerInventory playerInventory, IWorldPosCallable context) {
-        super(ContainerType.SMITHING, syncId, playerInventory, context);
+    public SmithingEnderiteSwordMixin(int syncId, Inventory playerInventory, ContainerLevelAccess context) {
+        super(MenuType.SMITHING, syncId, playerInventory, context);
     }
 
     private void superDecrement(int i, int amount) {
@@ -60,7 +60,7 @@ public abstract class SmithingEnderiteSwordMixin extends AbstractRepairContainer
     }
 
     @Inject(at = @At("TAIL"), cancellable = true, method = "mayPickup")
-    private void alwaysTakeable(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> info) {
+    private void alwaysTakeable(Player player, boolean present, CallbackInfoReturnable<Boolean> info) {
         // If output is enderite sword, you can always take it out
         // used to make the enderpearl charging work
         if (this.resultSlots.getItem(0).getItem() == Registration.ENDERITE_SWORD.get()
@@ -70,7 +70,7 @@ public abstract class SmithingEnderiteSwordMixin extends AbstractRepairContainer
     }
 
     @Inject(at = @At("HEAD"), cancellable = true, method = "onTake")
-    private void nowTake(PlayerEntity player, ItemStack itemStack, CallbackInfoReturnable<Boolean> info) {
+    private void nowTake(Player player, ItemStack itemStack, CallbackInfo info) {
         // Take all pearls
         if ((this.inputSlots.getItem(0).getItem() == Registration.ENDERITE_SWORD.get()
                 || this.inputSlots.getItem(0).getItem() == Registration.ENDERITE_SHIELD.get())

@@ -1,19 +1,20 @@
 package net.enderitemc.enderitemod.item;
 
 import net.enderitemc.enderitemod.init.EnderiteModConfig;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.Level;
 
 public class EnderiteBow extends BowItem {
 
@@ -27,10 +28,10 @@ public class EnderiteBow extends BowItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
-        if (entityLiving instanceof PlayerEntity) {
-            PlayerEntity playerentity = (PlayerEntity) entityLiving;
-            boolean flag = playerentity.abilities.instabuild
+    public void releaseUsing(ItemStack stack, Level worldIn, LivingEntity entityLiving, int timeLeft) {
+        if (entityLiving instanceof Player) {
+            Player playerentity = (Player) entityLiving;
+            boolean flag = playerentity.getAbilities().instabuild
                     || EnchantmentHelper.getItemEnchantmentLevel(Enchantments.INFINITY_ARROWS, stack) > 0;
             ItemStack itemstack = playerentity.getProjectile(stack);
 
@@ -47,16 +48,17 @@ public class EnderiteBow extends BowItem {
 
                 float f = getArrowVelocity(i);
                 if (!((double) f < 0.1D)) {
-                    boolean flag1 = playerentity.abilities.instabuild || (itemstack.getItem() instanceof ArrowItem
+                    boolean flag1 = playerentity.getAbilities().instabuild || (itemstack.getItem() instanceof ArrowItem
                             && ((ArrowItem) itemstack.getItem()).isInfinite(itemstack, stack, playerentity));
                     if (!worldIn.isClientSide) {
                         ArrowItem arrowitem = (ArrowItem) (itemstack.getItem() instanceof ArrowItem
                                 ? itemstack.getItem()
                                 : Items.ARROW);
-                        AbstractArrowEntity abstractarrowentity = arrowitem.createArrow(worldIn, itemstack,
+                        AbstractArrow abstractarrowentity = arrowitem.createArrow(worldIn, itemstack,
                                 playerentity);
+
                         abstractarrowentity = customArrow(abstractarrowentity);
-                        abstractarrowentity.shootFromRotation(playerentity, playerentity.xRot, playerentity.yRot, 0.0F,
+                        abstractarrowentity.shootFromRotation(playerentity, playerentity.xRotO, playerentity.yRotO, 0.0F,
                                 f * this.speedMulitplier, 1.0F);
                         if (f == 1.0F) {
                             abstractarrowentity.setCritArrow(true);
@@ -80,21 +82,24 @@ public class EnderiteBow extends BowItem {
                         stack.hurtAndBreak(1, playerentity, (p_220009_1_) -> {
                             p_220009_1_.broadcastBreakEvent(playerentity.getUsedItemHand());
                         });
-                        if (flag1 || playerentity.abilities.instabuild && (itemstack.getItem() == Items.SPECTRAL_ARROW
+                        if (flag1 || playerentity.getAbilities().instabuild && (itemstack.getItem() == Items.SPECTRAL_ARROW
                                 || itemstack.getItem() == Items.TIPPED_ARROW)) {
-                            abstractarrowentity.pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+                            abstractarrowentity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                         }
+
+                        //abstractarrowentity.setCustomName(Component.nullToEmpty("Enderite Arrow"));
+                        abstractarrowentity.getPersistentData().putBoolean("IsEnderiteArrow", true);
 
                         worldIn.addFreshEntity(abstractarrowentity);
                     }
 
-                    worldIn.playSound((PlayerEntity) null, playerentity.getX(), playerentity.getY(),
-                            playerentity.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F,
-                            1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-                    if (!flag1 && !playerentity.abilities.instabuild) {
+                    worldIn.playSound((Player) null, playerentity.getX(), playerentity.getY(),
+                            playerentity.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F,
+                            1.0F / (worldIn.random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                    if (!flag1 && !playerentity.getAbilities().instabuild) {
                         itemstack.shrink(1);
                         if (itemstack.isEmpty()) {
-                            playerentity.inventory.removeItem(itemstack);
+                            playerentity.getInventory().removeItem(itemstack);
                         }
                     }
 
