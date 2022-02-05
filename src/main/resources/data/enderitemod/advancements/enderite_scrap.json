@@ -1,10 +1,10 @@
 {
   "display": {
     "title": {
-      "text": "Hidden in the Void"
+      "translate": "advancements.enderitemod.enderite_scrap.title"
     },
     "description": {
-      "text": "Find, explode, and smelt a piece of Enderite Ore"
+      "translate": "advancements.enderitemod.enderite_scrap.description"
     },
     "icon": {
       "item": "enderitemod:enderite_scrap"
@@ -20,19 +20,14 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "enderitemod:enderite_scrap"
-            ]
+            "items": ["enderitemod:enderite_scrap"]
           }
         ]
       }
     }
   },
   "rewards": {
-    "recipes": [
-      "enderite_shrapnel_smelt.json",
-      "enderite_shrapnel_blast.json"
-    ]
+    "recipes": ["enderite_shrapnel_smelt.json", "enderite_shrapnel_blast.json"]
   },
   "parent": "minecraft:end/enter_end_gateway"
 }

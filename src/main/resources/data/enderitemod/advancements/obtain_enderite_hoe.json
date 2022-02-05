@@ -1,10 +1,10 @@
 {
   "display": {
     "title": {
-      "text": "Insane Dedication"
+      "translate": "advancements.enderitemod.obtain_enderite_hoe.title"
     },
     "description": {
-      "text": "Use an Enderite ingot to upgrade a Netherite hoe, and then live as a hero amongst men"
+      "translate": "advancements.enderitemod.obtain_enderite_hoe.description"
     },
     "icon": {
       "item": "enderitemod:enderite_hoe"
@@ -20,9 +20,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "enderitemod:enderite_hoe"
-            ]
+            "items": ["enderitemod:enderite_hoe"]
           }
         ]
       }

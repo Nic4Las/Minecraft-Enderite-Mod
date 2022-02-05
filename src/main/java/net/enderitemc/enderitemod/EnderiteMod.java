@@ -22,6 +22,7 @@ import net.enderitemc.enderitemod.tools.EnderiteBow;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
 import net.enderitemc.enderitemod.tools.EnderiteElytraChestplate;
 import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
+import net.enderitemc.enderitemod.tools.EnderiteShears;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteSword;
 import net.enderitemc.enderitemod.tools.HoeSubclass;
@@ -35,8 +36,10 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
+import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.enchantment.Enchantment;
@@ -167,7 +170,7 @@ public class EnderiteMod implements ModInitializer {
 			HeightRangePlacementModifier.uniform(YOffset.fixed(12), YOffset.fixed(48)));
 
 	// MOST IMPORTANT
-	public static final ShearsItem ENDERITE_SHEAR = new ShearsItem(
+	public static final ShearsItem ENDERITE_SHEAR = new EnderiteShears(
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof().maxCount(1).maxDamage(2048).rarity(Rarity.RARE));
 
 	@Override
@@ -235,6 +238,8 @@ public class EnderiteMod implements ModInitializer {
 				"enderitemod:enderite_shulker_box_block_entity",
 				FabricBlockEntityTypeBuilder.create(EnderiteShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null));
 		FabricBlockEntityTypeBuilder.create(ShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null);
+
+		DispenserBlock.registerBehavior(ENDERITE_SHULKER_BOX.asItem(), new BlockPlacementDispenserBehavior());
 
 		// ENCHANTMENT
 		VOID_FLOATING_ENCHANTMENT = Registry.register(Registry.ENCHANTMENT,

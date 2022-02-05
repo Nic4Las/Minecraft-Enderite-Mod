@@ -44,6 +44,7 @@ Found on Curseforge at:
 - Nic4Las
 - Pianomanu (Forge)
 - kyrptonaught
+- Pale-Champion-Atom596
 
 ## Translation
 
