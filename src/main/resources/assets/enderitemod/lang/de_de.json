@@ -83,5 +83,13 @@
   "advancements.enderitemod.obtain_enderite_hoe.title": "Wahnsinnige Hingabe",
   "advancements.enderitemod.obtain_enderite_hoe.description": "Benutze einen Enderitbarren, um eine Netherithacke zu verbessern und lebe dann als Held unter Menschen",
   "advancements.enderitemod.obtain_enderite_ingot.title": "Exotisches Material",
-  "advancements.enderitemod.obtain_enderite_ingot.description": "Schmiede einen Enderitbarren aus 4 Enderitplatten und 4 Diamanten"
+  "advancements.enderitemod.obtain_enderite_ingot.description": "Schmiede einen Enderitbarren aus 4 Enderitplatten und 4 Diamanten",
+  "advancements.enderitemod.combine_enderite_elytra_chestplate.title": "Flieg geschützt",
+  "advancements.enderitemod.combine_enderite_elytra_chestplate.description": "Füge eine Elytra an einen Enderitharnisch, und flieg' in modischen Farben",
+  "advancements.enderitemod.obtain_full_enderite.title": "Totaler Schutz",
+  "advancements.enderitemod.obtain_full_enderite.description": "Schütze dich mit einer Rüstung aus dem feinsten Endmetall",
+  "advancements.enderitemod.obtain_all_enderite_tools.title": "Wahrer Erbauer",
+  "advancements.enderitemod.obtain_all_enderite_tools.description": "Rüste alle deine Werkzeuge bis Enderit-Qualität auf",
+  "advancements.enderitemod.obtain_all_enderite_weapons.title": "Des Drachens Faust",
+  "advancements.enderitemod.obtain_all_enderite_weapons.description": "Werte alle deine Kampfausrüstung mit Enderit auf, wie ein echter Kämpfer des Endes"
 }

@@ -83,5 +83,13 @@
   "advancements.enderitemod.obtain_enderite_hoe.title": "Insane Dedication",
   "advancements.enderitemod.obtain_enderite_hoe.description": "Use an Enderite ingot to upgrade a Netherite hoe, and then live as a hero amongst men",
   "advancements.enderitemod.obtain_enderite_ingot.title": "Exotic Matter",
-  "advancements.enderitemod.obtain_enderite_ingot.description": "Forge an Enderite ingot using 4 Enderite scrap and 4 diamonds"
+  "advancements.enderitemod.obtain_enderite_ingot.description": "Forge an Enderite ingot using 4 Enderite scrap and 4 diamonds",
+  "advancements.enderitemod.combine_enderite_elytra_chestplate.title": "Fly Protected",
+  "advancements.enderitemod.combine_enderite_elytra_chestplate.description": "Attach an Elytra to an Enderite Chestplate, and fly in perfect style",
+  "advancements.enderitemod.obtain_full_enderite.title": "Total Protection",
+  "advancements.enderitemod.obtain_full_enderite.description": "Fully armor yourself with the End's finest metal",
+  "advancements.enderitemod.obtain_all_enderite_tools.title": "True Builder",
+  "advancements.enderitemod.obtain_all_enderite_tools.description": "Upgrade all of your tools to the quality of the End",
+  "advancements.enderitemod.obtain_all_enderite_weapons.title": "The Dragon's Fist",
+  "advancements.enderitemod.obtain_all_enderite_weapons.description": "Upgrade your combat gear with Enderite as a true warrior of the End"
 }

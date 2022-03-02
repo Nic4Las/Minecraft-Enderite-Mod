@@ -258,6 +258,9 @@ public class EnderiteMod implements ModInitializer {
         RegistryKey.of(Registry.PLACED_FEATURE_KEY,
             new Identifier("enderitemod", "ore_enderite_end")));
 
+		//Loottables
+		EnderiteShears.registerLoottables();
+
 
 		System.out.println("-Initialized Enderitemod!-");
 	}
