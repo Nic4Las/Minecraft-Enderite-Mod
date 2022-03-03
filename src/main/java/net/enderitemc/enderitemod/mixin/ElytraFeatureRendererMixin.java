@@ -45,7 +45,7 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
             float f, float g, float h, float j, float k, float l, CallbackInfo info) {
         // If player is wearing enderite elytra, render it
         ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.CHEST);
-        if (EnderiteTag.ENDERITE_ELYTRA.contains(itemStack.getItem())) {
+        if (itemStack.isIn(EnderiteTag.ENDERITE_ELYTRA)) {
             Identifier identifier4;
             if (livingEntity instanceof AbstractClientPlayerEntity) {
                 AbstractClientPlayerEntity abstractClientPlayerEntity = (AbstractClientPlayerEntity) livingEntity;

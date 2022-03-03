@@ -26,10 +26,10 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
             ItemStack itemStack = inv.getStack(k);
             if (!itemStack.isEmpty()) {
                 if (!(itemStack.getItem() == EnderiteMod.ENDERITE_INGOT
-                        || (EnderiteTag.CRAFTABLE_SHULKER_BOXES.contains(itemStack.getItem())))) {
+                        || (itemStack.isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES)))) {
                     return false;
                 }
-                if (k == 4 && (EnderiteTag.CRAFTABLE_SHULKER_BOXES.contains(itemStack.getItem()))) {
+                if (k == 4 && (itemStack.isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES))) {
                     ++i;
                 }
                 if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT && (k == 1 || k == 3 || k == 5 || k == 7)) {
@@ -54,8 +54,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
         for (int i = 0; i < inv.size(); ++i) {
             ItemStack itemStack2 = inv.getStack(i);
             if (!itemStack2.isEmpty()) {
-                Item item = itemStack2.getItem();
-                if ((EnderiteTag.CRAFTABLE_SHULKER_BOXES.contains(item))) {
+                if ((itemStack2.isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES))) {
                     itemStack = itemStack2;
                 }
             }

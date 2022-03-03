@@ -9,16 +9,13 @@ import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
-import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Items;
@@ -28,7 +25,7 @@ public class EnderiteModClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        BlockEntityRendererRegistry.INSTANCE.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY,
+        BlockEntityRendererRegistry.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY,
                 EnderiteShulkerBoxBlockEntityRenderer::new);
         BuiltinItemRendererRegistry.INSTANCE.register(EnderiteMod.ENDERITE_SHIELD, new EnderiteShieldRenderer());
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE)
@@ -103,7 +100,7 @@ public class EnderiteModClient implements ClientModInitializer {
 
     @Environment(EnvType.CLIENT)
     private static final boolean allowCapeRender(AbstractClientPlayerEntity player) {
-        return !(EnderiteTag.ENDERITE_ELYTRA.contains(player.getEquippedStack(EquipmentSlot.CHEST).getItem()));
+        return !(player.getEquippedStack(EquipmentSlot.CHEST).isIn(EnderiteTag.ENDERITE_ELYTRA));
     }
 
 }

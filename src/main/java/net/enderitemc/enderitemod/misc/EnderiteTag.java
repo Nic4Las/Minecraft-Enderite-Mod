@@ -1,13 +1,12 @@
 package net.enderitemc.enderitemod.misc;
 
-import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.item.Item;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class EnderiteTag {
-    public static final Tag<Item> ENDERITE_ITEM = TagRegistry.item(new Identifier("enderitemod", "enderite_items"));
-    public static final Tag<Item> CRAFTABLE_SHULKER_BOXES = TagRegistry
-            .item(new Identifier("enderitemod", "shulker_boxes"));
-    public static final Tag<Item> ENDERITE_ELYTRA = TagRegistry.item(new Identifier("enderitemod", "enderite_elytras"));
+    public static final TagKey<Item> ENDERITE_ITEM = TagKey.of(Registry.ITEM_KEY, new Identifier("enderitemod", "enderite_items"));
+    public static final TagKey<Item> CRAFTABLE_SHULKER_BOXES = TagKey.of(Registry.ITEM_KEY, new Identifier("enderitemod", "shulker_boxes"));
+    public static final TagKey<Item> ENDERITE_ELYTRA = TagKey.of(Registry.ITEM_KEY, new Identifier("enderitemod", "enderite_elytras"));
 }
