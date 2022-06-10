@@ -108,6 +108,12 @@ public class EnderiteShears extends ShearsItem {
 
             tryBuildLootTable(id, table ,Blocks.WEEPING_VINES);
             tryBuildLootTable(id, table ,Blocks.WEEPING_VINES_PLANT);
+
+            
+            tryBuildLootTable(id, table ,Blocks.SMALL_DRIPLEAF);
+
+            tryBuildLootTable(id, table ,Blocks.MANGROVE_LEAVES);
+            tryBuildLootTable(id, table ,Blocks.HANGING_ROOTS);
         });
     }
 

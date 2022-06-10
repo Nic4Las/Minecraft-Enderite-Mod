@@ -19,44 +19,85 @@
     "endmidlands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "minecraft:end_midlands"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "minecraft:end_midlands"
+              }
+            }
+          }
+        ]
       }
     },
     "endhighlands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "minecraft:end_highlands"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "minecraft:end_highlands"
+              }
+            }
+          }
+        ]
       }
     },
     "endbarrens": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "minecraft:end_barrens"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "minecraft:end_barrens"
+              }
+            }
+          }
+        ]
       }
     },
     "smallendislands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "minecraft:small_end_islands"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "minecraft:small_end_islands"
+              }
+            }
+          }
+        ]
       }
     },
     "theend": {
       "trigger": "minecraft:location",
       "conditions": {
-        "location": {
-          "biome": "minecraft:the_end"
-        }
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biome": "minecraft:the_end"
+              }
+            }
+          }
+        ]
       }
     }
   },
+  "requirements": [["endmidlands"], ["endhighlands"], ["endbarrens"], ["smallendislands"], ["theend"]],
   "rewards": {
     "experience": 500
   },
