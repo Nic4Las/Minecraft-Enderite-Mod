@@ -4,7 +4,8 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 
 public class ClothConfig {
 
@@ -14,7 +15,7 @@ public class ClothConfig {
         public ClothConfig(Screen parent) {
 
                 ConfigBuilder builder = ConfigBuilder.create().setParentScreen(parent)
-                                .setTitle(new TranslatableText("title.enderitemod.config"));
+                                .setTitle(Text.translatable("title.enderitemod.config"));
 
                 Config currentConfig = ConfigLoader.get();
 
@@ -25,19 +26,19 @@ public class ClothConfig {
                 });
 
                 ConfigCategory general = builder
-                                .getOrCreateCategory(new TranslatableText("category.enderitemod.general"));
+                                .getOrCreateCategory(Text.translatable("category.enderitemod.general"));
                 ConfigCategory restart = builder
-                                .getOrCreateCategory(new TranslatableText("category.enderitemod.restart"));
+                                .getOrCreateCategory(Text.translatable("category.enderitemod.restart"));
 
                 ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
                 // Void floating enchantment
                 general.addEntry(entryBuilder
-                                .startBooleanToggle(new TranslatableText(
+                                .startBooleanToggle(Text.translatable(
                                                 "option.enderitemod.general.allow_void_floating_enchantment"),
                                                 currentConfig.general.allowVoidFloatingEnchantment)
                                 .setDefaultValue(DEFAULT.general.allowVoidFloatingEnchantment)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.general.allow_void_floating_enchantment.hover"))
                                 .setSaveConsumer(
                                                 newValue -> currentConfig.general.allowVoidFloatingEnchantment = newValue)
@@ -45,112 +46,112 @@ public class ClothConfig {
 
                 // BOW
                 general.addEntry(entryBuilder
-                                .startFloatField(new TranslatableText(
+                                .startFloatField(Text.translatable(
                                                 "option.enderitemod.general.enderite_bow.attack_damage"),
                                                 currentConfig.tools.enderiteBowAD)
                                 .setDefaultValue(DEFAULT.tools.enderiteBowAD).setMin(1.0f).setMax(16.0f)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.general.enderite_bow.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowAD = newValue).build());
                 general.addEntry(entryBuilder
                                 .startFloatField(
-                                                new TranslatableText(
+                                                Text.translatable(
                                                                 "option.enderitemod.general.enderite_bow.arrow_speed"),
                                                 currentConfig.tools.enderiteBowArrowSpeed)
                                 .setDefaultValue(DEFAULT.tools.enderiteBowArrowSpeed).setMin(1.0f).setMax(8.0f)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.general.enderite_bow.arrow_speed.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowArrowSpeed = newValue)
                                 .build());
 
                 // Crossbow
                 general.addEntry(entryBuilder
-                                .startFloatField(new TranslatableText(
+                                .startFloatField(Text.translatable(
                                                 "option.enderitemod.general.enderite_crossbow.attack_damage"),
                                                 currentConfig.tools.enderiteCrossbowAD)
                                 .setDefaultValue(DEFAULT.tools.enderiteCrossbowAD).setMin(1.0f).setMax(16.0f)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.general.enderite_crossbow.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteCrossbowAD = newValue)
                                 .build());
                 general.addEntry(entryBuilder
-                                .startFloatField(new TranslatableText(
+                                .startFloatField(Text.translatable(
                                                 "option.enderitemod.general.enderite_crossbow.arrow_speed"),
                                                 currentConfig.tools.enderiteCrossbowArrowSpeed)
                                 .setDefaultValue(DEFAULT.tools.enderiteCrossbowArrowSpeed).setMin(1.0f).setMax(8.0f)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.general.enderite_crossbow.arrow_speed.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteCrossbowArrowSpeed = newValue)
                                 .build());
 
                 // TOOLS
                 restart.addEntry(entryBuilder
-                                .startIntField(new TranslatableText(
+                                .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_ore.vein_size"),
                                                 currentConfig.worldGeneration.enderiteOre.veinSize)
                                 .setDefaultValue(DEFAULT.worldGeneration.enderiteOre.veinSize).setMin(2).setMax(16)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.restart.enderite_ore.vein_size.hover"))
                                 .setSaveConsumer(
                                                 newValue -> currentConfig.worldGeneration.enderiteOre.veinSize = newValue)
                                 .build());
 
                 restart.addEntry(entryBuilder
-                                .startIntField(new TranslatableText(
+                                .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_ore.vein_amount"),
                                                 currentConfig.worldGeneration.enderiteOre.veinAmount)
                                 .setDefaultValue(DEFAULT.worldGeneration.enderiteOre.veinAmount).setMin(2).setMax(16)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.restart.enderite_ore.vein_amount.hover"))
                                 .setSaveConsumer(
                                                 newValue -> currentConfig.worldGeneration.enderiteOre.veinAmount = newValue)
                                 .build());
 
                 restart.addEntry(entryBuilder
-                                .startIntField(new TranslatableText(
+                                .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_sword.attack_damage"),
                                                 currentConfig.tools.enderiteSwordAD + 3)
                                 .setDefaultValue(DEFAULT.tools.enderiteSwordAD + 3).setMin(1).setMax(16)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.restart.enderite_sword.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteSwordAD = newValue - 3)
                                 .build());
 
                 restart.addEntry(entryBuilder
-                                .startIntField(new TranslatableText(
+                                .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_pickaxe.attack_damage"),
                                                 currentConfig.tools.enderitePickaxeAD + 3)
                                 .setDefaultValue(DEFAULT.tools.enderitePickaxeAD + 3).setMin(1).setMax(16)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.restart.enderite_pickaxe.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderitePickaxeAD = newValue - 3)
                                 .build());
 
                 restart.addEntry(entryBuilder
-                                .startIntField(new TranslatableText(
+                                .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_axe.attack_damage"),
                                                 currentConfig.tools.enderiteAxeAD + 3)
                                 .setDefaultValue(DEFAULT.tools.enderiteAxeAD + 3).setMin(1).setMax(16)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.restart.enderite_axe.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteAxeAD = newValue - 3).build());
 
                 restart.addEntry(entryBuilder
-                                .startFloatField(new TranslatableText(
+                                .startFloatField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_shovel.attack_damage"),
                                                 currentConfig.tools.enderiteShovelAD + 3)
                                 .setDefaultValue(DEFAULT.tools.enderiteShovelAD + 3).setMin(1).setMax(16)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.restart.enderite_shovel.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteShovelAD = newValue - 3)
                                 .build());
 
                 restart.addEntry(entryBuilder
-                                .startIntField(new TranslatableText(
+                                .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_hoe.attack_damage"),
                                                 currentConfig.tools.enderiteHoeAD + 3)
                                 .setDefaultValue(DEFAULT.tools.enderiteHoeAD + 3).setMin(1).setMax(16)
-                                .setTooltip(new TranslatableText(
+                                .setTooltip(Text.translatable(
                                                 "option.enderitemod.restart.enderite_hoe.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - 3).build());
 

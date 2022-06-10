@@ -21,7 +21,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -215,7 +215,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     }
 
     protected Text getContainerName() {
-        return new TranslatableText("container.enderitemod.enderiteShulkerBox");
+        return Text.translatable("container.enderitemod.enderiteShulkerBox");
     }
 
     public void readNbt( NbtCompound tag) {

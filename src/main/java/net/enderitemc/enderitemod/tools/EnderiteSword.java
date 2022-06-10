@@ -9,9 +9,9 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -54,7 +54,7 @@ public class EnderiteSword extends SwordItem {
             double maxDown = down - distance - 1 > world.getBottomY() ? down - distance - 1 : world.getBottomY();
             double up = endPosition.y + 1;
             double maxUp = 128;
-            if (playerEntity.getEntityWorld().getDimension().isRespawnAnchorWorking()) {
+            if (playerEntity.getEntityWorld().getDimension().respawnAnchorWorks()) {
                 maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
             } else {
                 maxUp = up + distance - 1 < world.getTopY() ? up + distance - 1 : world.getTopY();
@@ -161,17 +161,17 @@ public class EnderiteSword extends SwordItem {
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
         if (itemStack.getNbt().contains("teleport_charge")) {
             String charge = itemStack.getNbt().get("teleport_charge").toString();
-            tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.charge")
-                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(new LiteralText(": " + charge)));
+            tooltip.add(Text.translatable("item.enderitemod.enderite_sword.charge")
+                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(Text.literal(": " + charge)));
         } else {
-            tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.charge")
-                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(new LiteralText(": 0")));
+            tooltip.add(Text.translatable("item.enderitemod.enderite_sword.charge")
+                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(Text.literal(": 0")));
         }
-        tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip1")
+        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip1")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
-        tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip2")
+        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip2")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
-        tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip3")
+        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip3")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
 
     }

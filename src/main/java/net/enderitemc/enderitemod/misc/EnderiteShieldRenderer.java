@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.registry.RegistryEntry;
 
 public class EnderiteShieldRenderer implements DynamicItemRenderer {
 
@@ -75,7 +76,7 @@ public class EnderiteShieldRenderer implements DynamicItemRenderer {
                                                         true, stack.hasGlint()));
                         shieldModel.getHandle().render(matrices, vertexConsumer, light, overlay, 1.0F, 1.0F, 1.0F,
                                         1.0F);
-                        List<Pair<BannerPattern, DyeColor>> list = BannerBlockEntity.getPatternsFromNbt(
+                        List<Pair<RegistryEntry<BannerPattern>, DyeColor>> list = BannerBlockEntity.getPatternsFromNbt(
                                         ShieldItem.getColor(stack), BannerBlockEntity.getPatternListNbt(stack));
                         BannerBlockEntityRenderer.renderCanvas(matrices, vertexConsumers, light, overlay,
                                         shieldModel.getPlate(), spriteIdentifier, false, list, stack.hasGlint());

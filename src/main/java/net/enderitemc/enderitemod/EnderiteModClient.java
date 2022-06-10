@@ -15,6 +15,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEven
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.entity.EquipmentSlot;
@@ -35,7 +36,7 @@ public class EnderiteModClient implements ClientModInitializer {
                     }
                 });
 
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_BOW.asItem(), new Identifier("pull"),
+        ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_BOW.asItem(), new Identifier("pull"),
                 (itemStack, clientWorld, livingEntity, seed) -> {
                     if (livingEntity == null) {
                         return 0.0F;
@@ -44,13 +45,13 @@ public class EnderiteModClient implements ClientModInitializer {
                                 : (float) (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / 20.0F;
                     }
                 });
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_BOW.asItem(), new Identifier("pulling"),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_BOW.asItem(), new Identifier("pulling"),
                 (itemStack, clientWorld, livingEntity, seed) -> {
                     return livingEntity != null && livingEntity.isUsingItem()
                             && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
                 });
 
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.asItem(), new Identifier("pull"),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.asItem(), new Identifier("pull"),
                 (itemStack, clientWorld, livingEntity, seed) -> {
                     if (livingEntity == null) {
                         return 0.0F;
@@ -60,32 +61,32 @@ public class EnderiteModClient implements ClientModInitializer {
                                         / (float) EnderiteCrossbow.getPullTime(itemStack);
                     }
                 });
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.asItem(), new Identifier("pulling"),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.asItem(), new Identifier("pulling"),
                 (itemStack, clientWorld, livingEntity, seed) -> {
                     return livingEntity != null && livingEntity.isUsingItem()
                             && livingEntity.getActiveItem() == itemStack && !EnderiteCrossbow.isCharged(itemStack)
                                     ? 1.0F
                                     : 0.0F;
                 });
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.asItem(), new Identifier("charged"),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.asItem(), new Identifier("charged"),
                 (itemStack, clientWorld, livingEntity, seed) -> {
                     return livingEntity != null && EnderiteCrossbow.isCharged(itemStack) ? 1.0F : 0.0F;
                 });
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.asItem(),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.asItem(),
                 new Identifier("firework"), (itemStack, clientWorld, livingEntity, seed) -> {
                     return livingEntity != null && EnderiteCrossbow.isCharged(itemStack)
                             && EnderiteCrossbow.hasProjectile(itemStack, Items.FIREWORK_ROCKET) ? 1.0F : 0.0F;
                 });
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_SHIELD.asItem(), new Identifier("blocking"),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_SHIELD.asItem(), new Identifier("blocking"),
                 (itemStack, clientWorld, livingEntity, seed) -> {
                     return livingEntity != null && livingEntity.isUsingItem()
                             && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
                 });
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA.asItem(), new Identifier("broken"),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA.asItem(), new Identifier("broken"),
                 (itemStack, clientWorld, livingEntity, seed) -> {
                     return EnderiteElytraSeperated.isUsable(itemStack) ? 0.0F : 1.0F;
                 });
-        FabricModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA_SEPERATED.asItem(),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA_SEPERATED.asItem(),
                 new Identifier("broken"), (itemStack, clientWorld, livingEntity, seed) -> {
                     return EnderiteElytraSeperated.isUsable(itemStack) ? 0.0F : 1.0F;
                 });

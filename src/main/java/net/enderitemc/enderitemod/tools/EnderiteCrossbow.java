@@ -2,7 +2,6 @@ package net.enderitemc.enderitemod.tools;
 
 import com.google.common.collect.Lists;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Predicate;
 
 import net.enderitemc.enderitemod.EnderiteMod;
@@ -32,9 +31,9 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -42,6 +41,7 @@ import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class EnderiteCrossbow extends CrossbowItem {
@@ -91,7 +91,7 @@ public class EnderiteCrossbow extends CrossbowItem {
             SoundCategory soundCategory = user instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
             world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(),
                     SoundEvents.ITEM_CROSSBOW_LOADING_END, soundCategory, 1.0F,
-                    1.0F / (new Random().nextFloat() * 0.5F + 1.0F) + 0.2F);
+                    1.0F / (world.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
         }
 
     }
@@ -242,7 +242,7 @@ public class EnderiteCrossbow extends CrossbowItem {
                 : Items.ARROW));
         PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, arrow, entity);
 
-        persistentProjectileEntity.setCustomName(new LiteralText("Enderite Arrow"));
+        persistentProjectileEntity.setCustomName(Text.literal("Enderite Arrow"));
 
         if (entity instanceof PlayerEntity) {
             persistentProjectileEntity.setCritical(true);
@@ -263,7 +263,7 @@ public class EnderiteCrossbow extends CrossbowItem {
     public static void shootAll(World world, LivingEntity entity, Hand hand, ItemStack stack, float speed,
             float divergence) {
         List<ItemStack> list = getProjectiles(stack);
-        float[] fs = getSoundPitches(entity.getRandom());
+        float[] fs = EnderiteCrossbow.getSoundPitches(entity.getRandom());
 
         for (int i = 0; i < list.size(); ++i) {
             ItemStack itemStack = (ItemStack) list.get(i);
@@ -284,12 +284,12 @@ public class EnderiteCrossbow extends CrossbowItem {
 
     private static float[] getSoundPitches(Random random) {
         boolean bl = random.nextBoolean();
-        return new float[] { 1.0F, getSoundPitch(bl), getSoundPitch(!bl) };
+        return new float[]{1.0f, getSoundPitch(bl, random), getSoundPitch(!bl, random)};
     }
 
-    private static float getSoundPitch(boolean flag) {
-        float f = flag ? 0.63F : 0.43F;
-        return 1.0F / (new Random().nextFloat() * 0.5F + 1.8F) + f;
+    private static float getSoundPitch(boolean flag, Random random) {
+        float f = flag ? 0.63f : 0.43f;
+        return 1.0f / (random.nextFloat() * 0.5f + 1.8f) + f;
     }
 
     private static void postShoot(World world, LivingEntity entity, ItemStack stack) {
@@ -375,14 +375,14 @@ public class EnderiteCrossbow extends CrossbowItem {
         List<ItemStack> list = getProjectiles(stack);
         if (isCharged(stack) && !list.isEmpty()) {
             ItemStack itemStack = (ItemStack) list.get(0);
-            tooltip.add((new TranslatableText("item.minecraft.crossbow.projectile")).append(" ")
+            tooltip.add((Text.translatable("item.minecraft.crossbow.projectile")).append(" ")
                     .append(itemStack.toHoverableText()));
             if (context.isAdvanced() && itemStack.getItem() == Items.FIREWORK_ROCKET) {
                 List<Text> list2 = Lists.newArrayList();
                 Items.FIREWORK_ROCKET.appendTooltip(itemStack, world, list2, context);
                 if (!list2.isEmpty()) {
                     for (int i = 0; i < list2.size(); ++i) {
-                        list2.set(i, (new LiteralText("  ")).append((Text) list2.get(i)).formatted(Formatting.GRAY));
+                        list2.set(i, (Text.literal("  ")).append((Text) list2.get(i)).formatted(Formatting.GRAY));
                     }
 
                     tooltip.addAll(list2);

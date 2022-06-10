@@ -1,11 +1,9 @@
 package net.enderitemc.enderitemod.tools;
 
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
-import net.fabricmc.fabric.api.loot.v1.FabricLootSupplierBuilder;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
+import net.fabricmc.fabric.api.loot.v2.FabricLootTableBuilder;
+import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.block.AbstractPlantStemBlock;
 import net.minecraft.block.BeehiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,13 +12,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.Items;
 import net.minecraft.item.ShearsItem;
-import net.minecraft.loot.condition.LootCondition;
+import net.minecraft.loot.LootPool;
 import net.minecraft.loot.condition.MatchToolLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.loot.provider.number.LootNumberProvider;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -64,7 +60,7 @@ public class EnderiteShears extends ShearsItem {
     }
 
     public static void registerLoottables() {
-        LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, table, setter) -> {
+        LootTableEvents.MODIFY.register((resourceManager, lootManager, id, table, setter) -> {
             
             tryBuildLootTable(id, table ,Blocks.ACACIA_LEAVES);
         
@@ -115,13 +111,14 @@ public class EnderiteShears extends ShearsItem {
         });
     }
 
-    public static void tryBuildLootTable(Identifier id, FabricLootSupplierBuilder table, Block block) { 
+    public static void tryBuildLootTable(Identifier id, FabricLootTableBuilder table, Block block) { 
         if(block.getLootTableId().equals(id)) {
-            FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
+            LootPool pool = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .withCondition(MatchToolLootCondition.builder(ItemPredicate.Builder.create().items(EnderiteMod.ENDERITE_SHEAR)).build())
-                    .with(ItemEntry.builder(block.asItem()));
-                    table.pool(poolBuilder);
+                    .conditionally(MatchToolLootCondition.builder(ItemPredicate.Builder.create().items(EnderiteMod.ENDERITE_SHEAR)).build())
+                    .with(ItemEntry.builder(block.asItem()))
+                    .build();
+                    table.pool(pool);
         }
     }
     

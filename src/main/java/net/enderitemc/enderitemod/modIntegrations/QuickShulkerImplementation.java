@@ -5,8 +5,11 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.kyrptonaught.quickshulker.api.ItemStackInventory;
 import net.kyrptonaught.quickshulker.api.QuickOpenableRegistry;
 import net.kyrptonaught.quickshulker.api.RegisterQuickShulker;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 
 public class QuickShulkerImplementation implements RegisterQuickShulker {
         @Override
@@ -16,7 +19,7 @@ public class QuickShulkerImplementation implements RegisterQuickShulker {
                                                 playerInventory, playerEntity) -> new EnderiteShulkerBoxScreenHandler(i,
                                                                 player.getInventory(), new ItemStackInventory(stack, 45)),
                                                 stack.hasCustomName() ? stack.getName()
-                                                                : new TranslatableText(
+                                                                : Text.translatable(
                                                                                 "container.enderitemod.enderiteShulkerBox")))
                                                 ));
         }

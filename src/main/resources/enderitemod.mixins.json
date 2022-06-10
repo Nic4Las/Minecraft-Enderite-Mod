@@ -23,7 +23,8 @@
     "SmithingEnderiteSwordMixin",
     "SmithingEnderiteSwordOutputMixin",
     "SmithingEnderiteSwordTakeMixin",
-    "EnderiteRespawnAnchorMixin"
+    "EnderiteRespawnAnchorMixin",
+    "EnderiteCrossbowPlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
