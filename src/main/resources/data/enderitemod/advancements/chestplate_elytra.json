@@ -1,0 +1,30 @@
+{
+  "display": {
+    "title": {
+      "translate": "advancements.enderitemod.combine_enderite_elytra_chestplate.title"
+    },
+    "description": {
+      "translate": "advancements.enderitemod.combine_enderite_elytra_chestplate.description"
+    },
+    "icon": {
+      "item": "enderitemod:enderite_elytra"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "flyprotected": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["enderitemod:enderite_elytra"]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "minecraft:end/elytra"
+}

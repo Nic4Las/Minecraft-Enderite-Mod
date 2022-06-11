@@ -1,0 +1,44 @@
+{
+  "parent": "enderitemod:obtain_enderite_ingot",
+  "display": {
+    "icon": {
+      "item": "enderitemod:enderite_sword",
+      "nbt": "{Damage:0}"
+    },
+    "title": {
+      "translate": "advancements.enderitemod.obtain_all_enderite_weapons.title"
+    },
+    "description": {
+      "translate": "advancements.enderitemod.obtain_all_enderite_weapons.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 100
+  },
+  "criteria": {
+    "enderite_weapons": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["enderitemod:enderite_sword"]
+          },
+          {
+            "items": ["enderitemod:enderite_shield"]
+          },
+          {
+            "items": ["enderitemod:enderite_bow"]
+          },
+          {
+            "items": ["enderitemod:enderite_crossbow"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [["enderite_weapons"]]
+}

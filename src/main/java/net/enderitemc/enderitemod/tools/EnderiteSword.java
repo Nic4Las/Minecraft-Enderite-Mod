@@ -9,9 +9,9 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -34,7 +34,7 @@ public class EnderiteSword extends SwordItem {
         if (playerEntity.isSneaking()) {
             Double distance = 30.0d;
             double yaw = (double) playerEntity.headYaw;
-            double pitch = (double) playerEntity.pitch;
+            double pitch = (double) playerEntity.getPitch();
 
             // x: 1 = -90, -1 = 90
             // y: 1 = -90, -1 = 90
@@ -51,24 +51,24 @@ public class EnderiteSword extends SwordItem {
             BlockPos[] blockPoses = { blockPos, blockPos.up(), blockPos };
 
             double down = endPosition.y;
-            double maxDown = down - distance - 1 > 0 ? down - distance - 1 : 0;
+            double maxDown = down - distance - 1 > world.getBottomY() ? down - distance - 1 : world.getBottomY();
             double up = endPosition.y + 1;
             double maxUp = 128;
-            if (playerEntity.getEntityWorld().getDimension().isRespawnAnchorWorking()) {
+            if (playerEntity.getEntityWorld().getDimension().respawnAnchorWorks()) {
                 maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
             } else {
-                maxUp = up + distance - 1 < 255 ? up + distance - 1 : 255;
+                maxUp = up + distance - 1 < world.getTopY() ? up + distance - 1 : world.getTopY();
             }
             double near = distance;
 
             int slot = 0;
-            if (playerEntity.getStackInHand(hand).getTag().contains("teleport_charge")) {
-                slot = Integer.parseInt(playerEntity.getStackInHand(hand).getTag().get("teleport_charge").asString());
+            if (playerEntity.getStackInHand(hand).getNbt().contains("teleport_charge")) {
+                slot = Integer.parseInt(playerEntity.getStackInHand(hand).getNbt().get("teleport_charge").asString());
 
             }
 
             // Check to Teleport
-            if (world.isChunkLoaded(blockPos) && (slot > 0 || playerEntity.abilities.creativeMode)) {
+            if (world.isChunkLoaded(blockPos) && (slot > 0 || playerEntity.getAbilities().creativeMode)) {
                 int foundSpace = 0;
 
                 while (foundSpace == 0 && (blockPoses[0].getY() > maxDown || blockPoses[1].getY() < maxUp)) {
@@ -121,16 +121,18 @@ public class EnderiteSword extends SwordItem {
                         case 4: // Air
                             near = distance / 2;
                         case 3: // Near
-                            playerEntity.teleport(position.x + dX * near, position.y + dY * near,
+                            down = position.y + dY * near;
+                            down = down > world.getBottomY() ? down :world.getBottomY()+1;
+                            playerEntity.teleport(position.x + dX * near, down,
                                     position.z + dZ * near);
                             break;
                     }
                     playerEntity.getItemCooldownManager().set(this, 30);
-                    // if (!playerEntity.abilities.creativeMode) {
+                    // if (!playerEntity.getAbilities().creativeMode) {
                     // playerEntity.inventory.getStack(slot).decrement(1);
                     // }
-                    if (!playerEntity.abilities.creativeMode) {
-                        playerEntity.getStackInHand(hand).getTag().putInt("teleport_charge", slot - 1);
+                    if (!playerEntity.getAbilities().creativeMode) {
+                        playerEntity.getStackInHand(hand).getNbt().putInt("teleport_charge", slot - 1);
                     }
                     world.sendEntityStatus(playerEntity, (byte) 46);
                     playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
@@ -157,19 +159,19 @@ public class EnderiteSword extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        if (itemStack.getTag().contains("teleport_charge")) {
-            String charge = itemStack.getTag().get("teleport_charge").toString();
-            tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.charge")
-                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(new LiteralText(": " + charge)));
+        if (itemStack.getNbt().contains("teleport_charge")) {
+            String charge = itemStack.getNbt().get("teleport_charge").toString();
+            tooltip.add(Text.translatable("item.enderitemod.enderite_sword.charge")
+                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(Text.literal(": " + charge)));
         } else {
-            tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.charge")
-                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(new LiteralText(": 0")));
+            tooltip.add(Text.translatable("item.enderitemod.enderite_sword.charge")
+                    .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(Text.literal(": 0")));
         }
-        tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip1")
+        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip1")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
-        tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip2")
+        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip2")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
-        tooltip.add(new TranslatableText("item.enderitemod.enderite_sword.tooltip3")
+        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip3")
                 .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
 
     }

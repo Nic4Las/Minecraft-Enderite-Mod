@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.enderitemc.enderitemod.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "EnderiteDropMixin",
     "EnderiteDropDamageMixin",
@@ -11,10 +11,7 @@
     "SmithingEnderiteSwordOutputMixin",
     "SmithingEnderiteSwordTakeMixin",
     "EnderiteRespawnAnchorMixin",
-    "ElytraPlayerEntityMixin",
-    "ElytraLivingEntityMixin",
     "EnderiteShieldPlayerEntityMixin",
-    "GenerationSettingsMixin",
     "MobEntityMixin",
     "EnderiteShearsSheepMixin",
     "ShulkerBoxColoringMixin"
@@ -27,9 +24,7 @@
     "SmithingEnderiteSwordOutputMixin",
     "SmithingEnderiteSwordTakeMixin",
     "EnderiteRespawnAnchorMixin",
-    "ElytraFeatureRendererMixin",
-    "ElytraClientPlayerEntityMixin",
-    "EnderiteRangedMixin"
+    "EnderiteCrossbowPlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

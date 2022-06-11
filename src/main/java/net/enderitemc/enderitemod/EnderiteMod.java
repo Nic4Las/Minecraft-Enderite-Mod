@@ -1,11 +1,6 @@
 package net.enderitemc.enderitemod;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 import net.enderitemc.enderitemod.blocks.CrackedEnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteBlock;
@@ -27,20 +22,25 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.enderitemc.enderitemod.tools.AxeSubclass;
 import net.enderitemc.enderitemod.tools.EnderiteBow;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
+import net.enderitemc.enderitemod.tools.EnderiteElytraChestplate;
 import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
+import net.enderitemc.enderitemod.tools.EnderiteShears;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteSword;
 import net.enderitemc.enderitemod.tools.HoeSubclass;
 import net.enderitemc.enderitemod.tools.PickaxeSubclass;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
+import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.enchantment.Enchantment;
@@ -56,19 +56,25 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.structure.rule.BlockStateMatchRuleTest;
+import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.math.intprovider.ConstantIntProvider;
+import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.decorator.Decorator;
-import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
+import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.OreFeature;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.RandomOffsetPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 
 public class EnderiteMod implements ModInitializer {
 
@@ -81,26 +87,26 @@ public class EnderiteMod implements ModInitializer {
 			new Item.Settings().group(ItemGroup.MISC).fireproof());
 
 	// Enderite Tools
-	public static final ToolItem ENDERITE_PICKAXE = new PickaxeSubclass(EnderiteMaterial.ENDERITE, 4, -2.8F,
+	public static final ToolItem ENDERITE_PICKAXE = new PickaxeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderitePickaxeAD, -2.8F,
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof());
-	public static final ToolItem ENDERITE_AXE = new AxeSubclass(EnderiteMaterial.ENDERITE, 8, -3.0F,
+	public static final ToolItem ENDERITE_AXE = new AxeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteAxeAD, -3.0F,
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof());
-	public static final ToolItem ENDERITE_HOE = new HoeSubclass(EnderiteMaterial.ENDERITE, -2, 0.0F,
+	public static final ToolItem ENDERITE_HOE = new HoeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteHoeAD, 0.0F,
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof());
 
-	public static final ToolItem ENDERITE_SHOVEL = new ShovelItem(EnderiteMaterial.ENDERITE, 4.5F, -3.0F,
+	public static final ToolItem ENDERITE_SHOVEL = new ShovelItem(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteShovelAD, -3.0F,
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof());
-	public static final EnderiteSword ENDERITE_SWORD = new EnderiteSword(EnderiteMaterial.ENDERITE, 6, -2.4F,
+	public static final EnderiteSword ENDERITE_SWORD = new EnderiteSword(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteSwordAD, -2.4F,
 			new Item.Settings().group(ItemGroup.COMBAT).fireproof());
 
 	// Enderite Block
 	public static final EnderiteBlock ENDERITE_BLOCK = new EnderiteBlock(
-			new FabricMaterialBuilder(MaterialColor.BLACK).build());
+			new FabricMaterialBuilder(MapColor.BLACK).build());
 	public static final EnderiteOre ENDERITE_ORE = new EnderiteOre();
 	public static final CrackedEnderiteOre CRACKED_ENDERITE_ORE = new CrackedEnderiteOre();
 
 	public static final EnderiteRespawnAnchor ENDERITE_RESPAWN_ANCHOR = new EnderiteRespawnAnchor(AbstractBlock.Settings
-			.of(Material.STONE, MaterialColor.BLACK).requiresTool().strength(50.0F, 1200.0F).luminance((state) -> {
+			.of(Material.STONE, MapColor.BLACK).requiresTool().strength(50.0F, 1200.0F).luminance((state) -> {
 				return EnderiteRespawnAnchor.getLightLevel(state, 15);
 			}));
 
@@ -115,7 +121,7 @@ public class EnderiteMod implements ModInitializer {
 			(new Item.Settings().group(ItemGroup.COMBAT).fireproof()));
 
 	// Enderite Elytra
-	public static final ArmorItem ENDERITE_ELYTRA = new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.CHEST,
+	public static final ArmorItem ENDERITE_ELYTRA = new EnderiteElytraChestplate(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.CHEST,
 			(new Item.Settings().group(ItemGroup.COMBAT).fireproof().rarity(Rarity.EPIC)));
 	public static SpecialRecipeSerializer<EnderiteElytraSpecialRecipe> ENDERITE_EYLTRA_SPECIAL_RECIPE = new SpecialRecipeSerializer<>(
 			EnderiteElytraSpecialRecipe::new);
@@ -126,8 +132,7 @@ public class EnderiteMod implements ModInitializer {
 	// Shulker Box
 	public static BlockEntityType<EnderiteShulkerBoxBlockEntity> ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
 	public static final EnderiteShulkerBoxBlock ENDERITE_SHULKER_BOX = new EnderiteShulkerBoxBlock((DyeColor) null,
-			FabricBlockSettings.of(Material.SHULKER_BOX).nonOpaque().strength(2.0f, 17.0f)
-					.breakByTool(FabricToolTags.PICKAXES, 1));
+			FabricBlockSettings.of(Material.SHULKER_BOX).nonOpaque().strength(2.0f, 17.0f));
 	public static SpecialRecipeSerializer<EnderiteShulkerBoxRecipe> ENDERITE_SHULKER_BOX_RECIPE = new SpecialRecipeSerializer<>(
 			EnderiteShulkerBoxRecipe::new);
 
@@ -149,14 +154,23 @@ public class EnderiteMod implements ModInitializer {
 
 	public static ScreenHandlerType<EnderiteShulkerBoxScreenHandler> ENDERITE_SHULKER_BOX_SCREEN_HANDLER;
 
-	public static ConfiguredFeature<?, ?> ENDERITE_ORE_FEATURE = OreFeature.ORE
-			.configure(new OreFeatureConfig(new BlockStateMatchRuleTest(Blocks.END_STONE.getDefaultState()),
-					ENDERITE_ORE.getDefaultState(), CONFIG.worldGeneration.enderiteOre.veinSize))
-			.decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(12, 12, 48))
-					.repeat(CONFIG.worldGeneration.enderiteOre.veinAmount));
+	//public static ConfiguredFeature<?, ?> ENDERITE_ORE_FEATURE = OreFeature.ORE
+	//		.configure(new OreFeatureConfig(new BlockStateMatchRuleTest(Blocks.END_STONE.getDefaultState()),
+	//				ENDERITE_ORE.getDefaultState(), CONFIG.worldGeneration.enderiteOre.veinSize))
+	//		.decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(UniformHeightProvider.create(YOffset.fixed(12), YOffset.fixed(48)))).repeat(CONFIG.worldGeneration.enderiteOre.veinAmount));
+
+	//NEW
+	private static ConfiguredFeature<?, ?> ENDERITE_ORE_CONFIGURED_FEATURE = new ConfiguredFeature<>(Feature.ORE, new OreFeatureConfig(
+				new BlockMatchRuleTest(Blocks.END_STONE),
+				ENDERITE_ORE.getDefaultState(),
+				CONFIG.worldGeneration.enderiteOre.veinSize));
+	   
+	// public static PlacedFeature ENDERITE_ORE_PLACED_FEATURE = new PlacedFeature(BuiltinRegistries.CONFIGURED_FEATURE.getEntry(BuiltinRegistries.CONFIGURED_FEATURE.getKey(ENDERITE_ORE_CONFIGURED_FEATURE).orElseThrow()).orElseThrow(),
+	// 		List.of(CountPlacementModifier.of(CONFIG.worldGeneration.enderiteOre.veinAmount),
+	// 		HeightRangePlacementModifier.uniform(YOffset.fixed(12), YOffset.fixed(48))) );
 
 	// MOST IMPORTANT
-	public static final ShearsItem ENDERITE_SHEAR = new ShearsItem(
+	public static final ShearsItem ENDERITE_SHEAR = new EnderiteShears(
 			new Item.Settings().group(ItemGroup.TOOLS).fireproof().maxCount(1).maxDamage(2048).rarity(Rarity.RARE));
 
 	@Override
@@ -222,43 +236,38 @@ public class EnderiteMod implements ModInitializer {
 				ENDERITE_SHULKER_BOX, new Item.Settings().group(ItemGroup.DECORATIONS).fireproof().maxCount(1)));
 		ENDERITE_SHULKER_BOX_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE,
 				"enderitemod:enderite_shulker_box_block_entity",
-				BlockEntityType.Builder.create(EnderiteShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null));
-		BlockEntityType.Builder.create(ShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null);
+				FabricBlockEntityTypeBuilder.create(EnderiteShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null));
+		FabricBlockEntityTypeBuilder.create(ShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null);
+
+		DispenserBlock.registerBehavior(ENDERITE_SHULKER_BOX.asItem(), new BlockPlacementDispenserBehavior());
 
 		// ENCHANTMENT
 		VOID_FLOATING_ENCHANTMENT = Registry.register(Registry.ENCHANTMENT,
 				new Identifier("enderitemod", "void_floating"), new VoidFloatingEnchantment());
 
-		// Loop over existing biomes
+		//RegistryKey<ConfiguredFeature<?, ?>> oreEnderiteEnd = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY,
+		//		new Identifier("enderitemod", "ore_enderite_end"));
+		//Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, oreEnderiteEnd.getValue(), ENDERITE_ORE_FEATURE);
+		//BiomeModifications.addFeature(BiomeSelectors.foundInTheEnd(), GenerationStep.Feature.UNDERGROUND_ORES,
+		//		oreEnderiteEnd);
 
-		BuiltinRegistries.add(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier("enderite_ore_feature"),
-				ENDERITE_ORE_FEATURE);
-		BuiltinRegistries.BIOME.forEach(this::handleBiome);
+		//NEW
+		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE,
+        				new Identifier("enderitemod", "ore_enderite_end"), ENDERITE_ORE_CONFIGURED_FEATURE);
+		PlacedFeature ENDERITE_ORE_PLACED_FEATURE = new PlacedFeature(BuiltinRegistries.CONFIGURED_FEATURE.getEntry(BuiltinRegistries.CONFIGURED_FEATURE.getKey(ENDERITE_ORE_CONFIGURED_FEATURE).orElseThrow()).orElseThrow(),
+						List.of(CountPlacementModifier.of(CONFIG.worldGeneration.enderiteOre.veinAmount),
+						HeightRangePlacementModifier.uniform(YOffset.fixed(12), YOffset.fixed(48)),
+						SquarePlacementModifier.of()/*RandomOffsetPlacementModifier.horizontally(ConstantIntProvider.create(16))*/ ));
+    	Registry.register(BuiltinRegistries.PLACED_FEATURE, new Identifier("enderitemod", "ore_enderite_end"),
+		ENDERITE_ORE_PLACED_FEATURE);
+    	BiomeModifications.addFeature(BiomeSelectors.foundInTheEnd(), GenerationStep.Feature.UNDERGROUND_ORES,
+        RegistryKey.of(Registry.PLACED_FEATURE_KEY,
+            new Identifier("enderitemod", "ore_enderite_end")));
 
-		// Listen for other biomes being registered
-		RegistryEntryAddedCallback.event(BuiltinRegistries.BIOME)
-				.register((i, identifier, biome) -> handleBiome(biome));
+		//Loottables
+		EnderiteShears.registerLoottables();
+
 
 		System.out.println("-Initialized Enderitemod!-");
-	}
-
-	private void handleBiome(Biome biome) {
-		if (biome.getCategory() == Biome.Category.THEEND) {
-			GenerationStep.Feature feature = GenerationStep.Feature.UNDERGROUND_ORES;
-			List<List<Supplier<ConfiguredFeature<?, ?>>>> features = biome.getGenerationSettings().getFeatures();
-
-			int stepIndex = feature.ordinal();
-
-			while (features.size() <= stepIndex) {
-				features.add(Lists.newArrayList());
-			}
-
-			List<Supplier<ConfiguredFeature<?, ?>>> stepList = features.get(feature.ordinal());
-			if (stepList instanceof ImmutableList) {
-				features.set(feature.ordinal(), stepList = new ArrayList<>(stepList));
-			}
-
-			stepList.add(() -> ENDERITE_ORE_FEATURE);
-		}
 	}
 }

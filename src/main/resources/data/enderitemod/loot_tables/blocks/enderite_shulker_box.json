@@ -3,9 +3,11 @@
   "pools": [
     {
       "rolls": 1,
+      "bonus_rolls": 0,
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "enderitemod:enderite_shulker_box",
           "functions": [
             {
               "function": "minecraft:copy_name",
@@ -34,6 +36,7 @@
             },
             {
               "function": "minecraft:set_contents",
+              "type": "minecraft:shulker_box",
               "entries": [
                 {
                   "type": "minecraft:dynamic",
@@ -41,8 +44,7 @@
                 }
               ]
             }
-          ],
-          "name": "enderitemod:enderite_shulker_box"
+          ]
         }
       ]
     }

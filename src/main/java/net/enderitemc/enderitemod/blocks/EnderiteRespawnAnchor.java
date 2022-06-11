@@ -14,6 +14,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
@@ -34,7 +35,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
             return ActionResult.PASS;
         } else if (isChargeItem(itemStack) && canCharge(state)) {
             charge(world, pos, state);
-            if (!player.abilities.creativeMode) {
+            if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }
 
@@ -65,7 +66,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
     }
 
     public static boolean isNether(World world) {
-        return world.getDimension().hasEnderDragonFight();
+        return world.getDimensionEntry().matchesKey(DimensionTypes.THE_END);// getDimension().hasEnderDragonFight();
     }
 
     private static boolean canCharge(BlockState state) {

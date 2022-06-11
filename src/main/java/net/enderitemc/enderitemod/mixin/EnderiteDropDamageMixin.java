@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemEntity.class)
 public abstract class EnderiteDropDamageMixin extends Entity {
@@ -25,21 +26,21 @@ public abstract class EnderiteDropDamageMixin extends Entity {
 		super(type, world);
 	}
 
-	@Inject(at = @At("TAIL"), method = "tick")
+	@Inject(at = @At("HEAD"), method = "tick")
 	private void damageItem(CallbackInfo info) {
 		// Items in the void get telported up and will live on (because they float)
-		if (this.getY() < 0.0D) {
+		if (this.getY() < this.world.getBottomY()) {
 			int i = EnchantmentHelper.getLevel(EnderiteMod.VOID_FLOATING_ENCHANTMENT, getStack());
 			boolean survives = false;
 			float r = random.nextFloat();
 			if (r < i / 3.0) {
 				survives = true;
 			}
-			if (getStack().getItem().isIn(EnderiteTag.ENDERITE_ITEM) || survives) {
-				this.removed = false;
+			if ((getStack().isIn(EnderiteTag.ENDERITE_ITEM)) || survives) {
+				this.unsetRemoved(); //this.removed = false;
 				// ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), 10,
 				// this.getZ(), getStack());
-				this.requestTeleport(this.getX(), 10, this.getZ());
+				this.requestTeleport(this.getX(), this.world.getBottomY()+10, this.getZ());
 				this.setVelocity(0, 0, 0);
 				this.setNoGravity(true);
 				this.setGlowing(true);

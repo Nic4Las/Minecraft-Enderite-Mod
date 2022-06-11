@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 public enum EnderiteEnchantmentTarget {
     NOT_ENDERITE {
         public boolean isAcceptableItem(Item item) {
-            return !item.isIn(EnderiteTag.ENDERITE_ITEM);
+            return !(item.getDefaultStack().isIn(EnderiteTag.ENDERITE_ITEM));
         }
     };
 
