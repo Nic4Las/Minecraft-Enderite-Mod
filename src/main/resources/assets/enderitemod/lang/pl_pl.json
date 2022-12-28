@@ -24,14 +24,6 @@
   "item.enderitemod.enderite_sword.tooltip2": "aby uzupełnić użycia teleportacji",
   "item.enderitemod.enderite_sword.tooltip3": "Teleportuj się wciskając Shift + PPM",
 
-  "item.enderitemod.enderite_elytra": "Elytra na napierśnik",
-  "category.enderitemod.keys": "Klucze modu Enderite",
-  "key.enderitemod.keyArmorEffect": "Wyłączanie efektów",
-  "item.enderitemod.enderite_sword.tooltip1": "Ulepsz w stole kowalskim za pomocą",
-  "item.enderitemod.enderite_sword.tooltip2": "enderpereł aby uzupełnić użycia teleportacji",
-  "item.enderitemod.enderite_sword.tooltip3": "Teleportuj się przy użyciu klawisza skradania sneaking + prawego przycisku myszy",
-  "item.enderitemod.enderite_sword.charge": "Naładowanie perłami",
-
   "enchantment.enderitemod.void_floating": "Unoszenie się w próżni",
   "item.enderitemod.enderite_bow": "Enderytowy łuk",
   "item.enderitemod.enderite_crossbow": "Enderytowa kusza",
@@ -54,7 +46,6 @@
   "item.enderitemod.enderite_shield.white": "Biała Enderytowa tarcza",
 
   "item.enderitemod.enderite_shield.tooltip3": "Teleportuj atakującego wciskając Shift + PPM",
-  "item.enderitemod.enderite_shield.tooltip3": "Teleportuj atakującego przy użyciu klawisza skradania + prawego przycisku myszy",
 
   "item.enderitemod.enderite_elytra_seperated": "Enderytowa elytra",
   "item.enderitemod.enderite_shears": "Enderytowe nożyce",
