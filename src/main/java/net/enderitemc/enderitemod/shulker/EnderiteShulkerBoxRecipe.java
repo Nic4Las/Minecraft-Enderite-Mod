@@ -3,17 +3,17 @@ package net.enderitemc.enderitemod.shulker;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
 
-    public EnderiteShulkerBoxRecipe(Identifier identifier) {
-        super(identifier);
+    public EnderiteShulkerBoxRecipe(Identifier identifier, CraftingRecipeCategory category) {
+        super(identifier, category);
     }
 
     @Override

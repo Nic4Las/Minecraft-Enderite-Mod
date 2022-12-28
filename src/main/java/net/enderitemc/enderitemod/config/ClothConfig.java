@@ -5,7 +5,6 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 
 public class ClothConfig {
 
@@ -84,29 +83,43 @@ public class ClothConfig {
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteCrossbowArrowSpeed = newValue)
                                 .build());
 
+                // ORE
+                restart.addEntry(entryBuilder
+                                .startTextDescription(Text.translatable(
+                                                "option.enderitemod.restart.enderite_ore.moved_to_json"))
+                                .setColor(0xFF1100)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.enderite_ore.moved_to_json.hover")
+                                                .append("\n- enderitemod/worldgen/configured_feature/ore_enderite_large.json")
+                                                .append("\n- enderitemod/worldgen/configured_feature/ore_enderite_small.json")
+                                                .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_large.json")
+                                                .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_small.json"))
+
+                                .build());
+
+                // restart.addEntry(entryBuilder
+                // .startIntField(Text.translatable(
+                // "option.enderitemod.restart.enderite_ore.vein_size"),
+                // currentConfig.worldGeneration.enderiteOre.veinSize)
+                // .setDefaultValue(DEFAULT.worldGeneration.enderiteOre.veinSize).setMin(2).setMax(16)
+                // .setTooltip(Text.translatable(
+                // "option.enderitemod.restart.enderite_ore.vein_size.hover"))
+                // .setSaveConsumer(
+                // newValue -> currentConfig.worldGeneration.enderiteOre.veinSize = newValue)
+                // .build());
+
+                // restart.addEntry(entryBuilder
+                // .startIntField(Text.translatable(
+                // "option.enderitemod.restart.enderite_ore.vein_amount"),
+                // currentConfig.worldGeneration.enderiteOre.veinAmount)
+                // .setDefaultValue(DEFAULT.worldGeneration.enderiteOre.veinAmount).setMin(2).setMax(16)
+                // .setTooltip(Text.translatable(
+                // "option.enderitemod.restart.enderite_ore.vein_amount.hover"))
+                // .setSaveConsumer(
+                // newValue -> currentConfig.worldGeneration.enderiteOre.veinAmount = newValue)
+                // .build());
+
                 // TOOLS
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_ore.vein_size"),
-                                                currentConfig.worldGeneration.enderiteOre.veinSize)
-                                .setDefaultValue(DEFAULT.worldGeneration.enderiteOre.veinSize).setMin(2).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_ore.vein_size.hover"))
-                                .setSaveConsumer(
-                                                newValue -> currentConfig.worldGeneration.enderiteOre.veinSize = newValue)
-                                .build());
-
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_ore.vein_amount"),
-                                                currentConfig.worldGeneration.enderiteOre.veinAmount)
-                                .setDefaultValue(DEFAULT.worldGeneration.enderiteOre.veinAmount).setMin(2).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_ore.vein_amount.hover"))
-                                .setSaveConsumer(
-                                                newValue -> currentConfig.worldGeneration.enderiteOre.veinAmount = newValue)
-                                .build());
-
                 restart.addEntry(entryBuilder
                                 .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_sword.attack_damage"),

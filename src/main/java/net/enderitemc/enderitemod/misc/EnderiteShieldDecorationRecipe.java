@@ -10,12 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
-    public EnderiteShieldDecorationRecipe(Identifier identifier) {
-        super(identifier);
+    public EnderiteShieldDecorationRecipe(Identifier identifier, CraftingRecipeCategory category) {
+        super(identifier, category);
     }
 
     public boolean matches(CraftingInventory craftingInventory, World world) {

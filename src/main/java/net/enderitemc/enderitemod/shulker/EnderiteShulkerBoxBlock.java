@@ -6,24 +6,21 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
@@ -46,22 +43,14 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
 
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new EnderiteShulkerBoxBlockEntity(pos,state);
+        return new EnderiteShulkerBoxBlockEntity(pos, state);
     }
 
-    // @Override
-    // public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-    //     return EnderiteShulkerBoxBlockEntity::tick;
-    // }
-
-    // @Override
-    // public BlockRenderType getRenderType(BlockState state) {
-    //     // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
-    //     return BlockRenderType.MODEL;
-    // }
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY, (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1, be));
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
+            BlockEntityType<T> type) {
+        return checkType(type, EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY,
+                (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1, be));
     }
 
     @Override
@@ -91,12 +80,13 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
 
     private static boolean canOpen(BlockState state, World world, BlockPos pos, EnderiteShulkerBoxBlockEntity entity) {
         if (entity.getAnimationStage() != EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
-           return true;
+            return true;
         } else {
-           Box box = ShulkerEntity.calculateBoundingBox((Direction)state.get(FACING), 0.0F, 0.5F).offset(pos).contract(1.0E-6D);
-           return world.isSpaceEmpty(box);
+            Box box = ShulkerEntity.calculateBoundingBox((Direction) state.get(FACING), 0.0F, 0.5F).offset(pos)
+                    .contract(1.0E-6D);
+            return world.isSpaceEmpty(box);
         }
-     }
+    }
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {

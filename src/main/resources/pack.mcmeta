@@ -1,7 +1,6 @@
-    {
-        "pack":{
-            "pack_format": 5,
-            "description": "Enderite Mod"
-        }
-    }
-
+{
+  "pack": {
+    "pack_format": 12,
+    "description": "Enderite Mod"
+  }
+}

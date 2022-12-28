@@ -12,12 +12,13 @@ import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
-    public EnderiteElytraSpecialRecipe(Identifier identifier) {
-        super(identifier);
+    public EnderiteElytraSpecialRecipe(Identifier identifier, CraftingRecipeCategory category) {
+        super(identifier, category);
     }
 
     public boolean matches(CraftingInventory craftingInventory, World world) {

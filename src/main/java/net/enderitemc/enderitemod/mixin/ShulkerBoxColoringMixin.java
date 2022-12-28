@@ -6,6 +6,7 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.ShulkerBoxColoringRecipe;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -17,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ShulkerBoxColoringRecipe.class)
 public abstract class ShulkerBoxColoringMixin extends SpecialCraftingRecipe {
 
-	protected ShulkerBoxColoringMixin(Identifier identifier) {
-		super(identifier);
+	protected ShulkerBoxColoringMixin(Identifier identifier, CraftingRecipeCategory category) {
+		super(identifier, category);
 	}
 
 	@Inject(at = @At("HEAD"), cancellable = true, method = "matches")

@@ -1,17 +1,14 @@
 package net.enderitemc.enderitemod.tools;
 
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterial;
-
 import java.util.List;
 
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -122,7 +119,7 @@ public class EnderiteSword extends SwordItem {
                             near = distance / 2;
                         case 3: // Near
                             down = position.y + dY * near;
-                            down = down > world.getBottomY() ? down :world.getBottomY()+1;
+                            down = down > world.getBottomY() ? down : world.getBottomY() + 1;
                             playerEntity.teleport(position.x + dX * near, down,
                                     position.z + dZ * near);
                             break;

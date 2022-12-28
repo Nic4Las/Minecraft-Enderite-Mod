@@ -91,5 +91,9 @@
   "advancements.enderitemod.obtain_all_enderite_tools.title": "True Builder",
   "advancements.enderitemod.obtain_all_enderite_tools.description": "Upgrade all of your tools to the quality of the End",
   "advancements.enderitemod.obtain_all_enderite_weapons.title": "The Dragon's Fist",
-  "advancements.enderitemod.obtain_all_enderite_weapons.description": "Upgrade your combat gear with Enderite as a true warrior of the End"
+  "advancements.enderitemod.obtain_all_enderite_weapons.description": "Upgrade your combat gear with Enderite as a true warrior of the End",
+
+  "itemGroup.enderitemod.enderite_group": "Enderite Items",
+  "option.enderitemod.restart.enderite_ore.moved_to_json": "Ore generation config via datapack",
+  "option.enderitemod.restart.enderite_ore.moved_to_json.hover": "Ore generation configuration has been moved to json (datapack)"
 }

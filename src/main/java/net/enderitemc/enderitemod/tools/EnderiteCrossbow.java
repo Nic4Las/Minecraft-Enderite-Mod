@@ -1,8 +1,12 @@
 package net.enderitemc.enderitemod.tools;
 
-import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.function.Predicate;
+
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
+import com.google.common.collect.Lists;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
@@ -31,16 +35,12 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
-import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
@@ -219,12 +219,13 @@ public class EnderiteCrossbow extends CrossbowItem {
                 crossbowUser.shoot(crossbowUser.getTarget(), crossbow, (ProjectileEntity) projectileEntity2, simulated);
             } else {
                 Vec3d vec3d = shooter.getOppositeRotationVector(1.0F);
-                Quaternion quaternion = new Quaternion(new Vec3f(vec3d), simulated, true);
+                Quaternionf quaternion = new Quaternionf().setAngleAxis((double) (simulated * ((float) Math.PI / 180)),
+                        vec3d.x, vec3d.y, vec3d.z);
                 Vec3d vec3d2 = shooter.getRotationVec(1.0F);
-                Vec3f vector3f = new Vec3f(vec3d2);
+                Vector3f vector3f = vec3d2.toVector3f();
                 vector3f.rotate(quaternion);
-                ((ProjectileEntity) projectileEntity2).setVelocity((double) vector3f.getX(), (double) vector3f.getY(),
-                        (double) vector3f.getZ(), speed, divergence);
+                ((ProjectileEntity) projectileEntity2).setVelocity((double) vector3f.x(), (double) vector3f.y(),
+                        (double) vector3f.z(), speed, divergence);
             }
 
             crossbow.damage(bl ? 3 : 1, shooter, (e) -> {
@@ -284,7 +285,7 @@ public class EnderiteCrossbow extends CrossbowItem {
 
     private static float[] getSoundPitches(Random random) {
         boolean bl = random.nextBoolean();
-        return new float[]{1.0f, getSoundPitch(bl, random), getSoundPitch(!bl, random)};
+        return new float[] { 1.0f, getSoundPitch(bl, random), getSoundPitch(!bl, random) };
     }
 
     private static float getSoundPitch(boolean flag, Random random) {

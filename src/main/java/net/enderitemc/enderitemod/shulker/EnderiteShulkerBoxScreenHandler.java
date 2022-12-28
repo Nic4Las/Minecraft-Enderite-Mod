@@ -23,8 +23,6 @@ public class EnderiteShulkerBoxScreenHandler extends ScreenHandler {
         checkSize(inventory, 45);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
-        int i;
-        int j;
 
         int o;
         int n;
@@ -50,7 +48,7 @@ public class EnderiteShulkerBoxScreenHandler extends ScreenHandler {
         return this.inventory.canPlayerUse(player);
     }
 
-    public ItemStack transferSlot(PlayerEntity player, int index) {
+    public ItemStack quickMove(PlayerEntity player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = (Slot) this.slots.get(index);
         if (slot != null && slot.hasStack()) {
