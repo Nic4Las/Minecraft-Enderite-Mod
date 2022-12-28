@@ -49,6 +49,7 @@ Found on Curseforge at:
 - ES: CamoloQlo
 - ZH_CN: Samekichi, WuzgXY
 - RU: temac000
+- PL: zealoussentinel512 
 
 ## License
 
