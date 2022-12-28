@@ -16,6 +16,14 @@
   "item.enderitemod.enderite_chestplate": "Enderytowy napierśnik",
   "item.enderitemod.enderite_leggings": "Enderytowe nogawice",
   "item.enderitemod.enderite_boots": "Enderytowe buty",
+
+  "item.enderitemod.enderite_elytra": "Enderytowa Elytra na napierśniku",
+  "category.enderitemod.keys": "Klucze modu Enderite",
+  "key.enderitemod.keyArmorEffect": "Wyłączanie efektów",
+  "item.enderitemod.enderite_sword.tooltip1": "Ulepsz w stole kowalskim enderperłami",
+  "item.enderitemod.enderite_sword.tooltip2": "aby uzupełnić użycia teleportacji",
+  "item.enderitemod.enderite_sword.tooltip3": "Teleportuj się wciskając Shift + PPM",
+
   "item.enderitemod.enderite_elytra": "Elytra na napierśnik",
   "category.enderitemod.keys": "Klucze modu Enderite",
   "key.enderitemod.keyArmorEffect": "Wyłączanie efektów",
@@ -44,6 +52,8 @@
   "item.enderitemod.enderite_shield.magenta": "Karmazynowa Enderytowa tarcza",
   "item.enderitemod.enderite_shield.orange": "Pomarańczowa Enderytowa tarcza",
   "item.enderitemod.enderite_shield.white": "Biała Enderytowa tarcza",
+
+  "item.enderitemod.enderite_shield.tooltip3": "Teleportuj atakującego wciskając Shift + PPM",
   "item.enderitemod.enderite_shield.tooltip3": "Teleportuj atakującego przy użyciu klawisza skradania + prawego przycisku myszy",
 
   "item.enderitemod.enderite_elytra_seperated": "Enderytowa elytra",
