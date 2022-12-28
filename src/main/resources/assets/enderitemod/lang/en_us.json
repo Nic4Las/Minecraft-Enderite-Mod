@@ -25,6 +25,7 @@
   "item.enderitemod.enderite_sword.charge": "Charge",
 
   "enchantment.enderitemod.void_floating": "Void Floating",
+  "enchantment.enderitemod.void_floating.desc": "The item becomes fireproof, unaffected by gravity, and floats above the void when dropped in the world.",
   "item.enderitemod.enderite_bow": "Enderite Bow",
   "item.enderitemod.enderite_crossbow": "Enderite Crossbow",
   "item.enderitemod.enderite_shield": "Enderite Shield",
