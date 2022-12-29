@@ -34,21 +34,25 @@ public class EnderiteShieldRenderer implements DynamicItemRenderer {
 
         // private static ItemStack shieldStack = new
         // ItemStack(EnderiteMod.ENDERITE_BLOCK, 1);
-        
-             private ModelPart pl =new ModelPart((List)ModelPartBuilder.create().uv(0, 0).cuboid(-6.0F, -11.0F, -2.0F, 12.0F, 22.0F, 1.0F).build().stream().map((modelCuboidData) -> {
-                return modelCuboidData.createCuboid(64, 64);
-             }).collect(ImmutableList.toImmutableList()), Collections.<String, ModelPart>emptyMap());
-             private ModelPart ha =new ModelPart((List)ModelPartBuilder.create().uv(26, 0).cuboid(-1.0F, -3.0F, -1.0F, 2.0F, 6.0F, 6.0F).build().stream().map((modelCuboidData) -> {
-                return modelCuboidData.createCuboid(64, 64);
-             }).collect(ImmutableList.toImmutableList()), Collections.<String, ModelPart>emptyMap());
-        
-             private Map<String, ModelPart> m = Map.of("plate", pl, "handle", ha); 
-        private final ShieldEntityModel shieldModel = new ShieldEntityModel(new ModelPart((List)ModelPartBuilder.create().build().stream().map((modelCuboidData) -> {
-                return modelCuboidData.createCuboid(64, 64);
-             }).collect(ImmutableList.toImmutableList()), /*Collections.<String, ModelPart>emptyMap()*/m));
+
+        private ModelPart pl = new ModelPart((List) ModelPartBuilder.create().uv(0, 0)
+                        .cuboid(-6.0F, -11.0F, -2.0F, 12.0F, 22.0F, 1.0F).build().stream().map((modelCuboidData) -> {
+                                return modelCuboidData.createCuboid(64, 64);
+                        }).collect(ImmutableList.toImmutableList()), Collections.<String, ModelPart>emptyMap());
+        private ModelPart ha = new ModelPart((List) ModelPartBuilder.create().uv(26, 0)
+                        .cuboid(-1.0F, -3.0F, -1.0F, 2.0F, 6.0F, 6.0F).build().stream().map((modelCuboidData) -> {
+                                return modelCuboidData.createCuboid(64, 64);
+                        }).collect(ImmutableList.toImmutableList()), Collections.<String, ModelPart>emptyMap());
+
+        private Map<String, ModelPart> m = Map.of("plate", pl, "handle", ha);
+        private final ShieldEntityModel shieldModel = new ShieldEntityModel(
+                        new ModelPart((List) ModelPartBuilder.create().build().stream().map((modelCuboidData) -> {
+                                return modelCuboidData.createCuboid(64, 64);
+                        }).collect(ImmutableList.toImmutableList()), /* Collections.<String, ModelPart>emptyMap() */m));
 
         @Override
-        public void render(ItemStack stack, ModelTransformation.Mode mode,MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light,
+        public void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices,
+                        VertexConsumerProvider vertexConsumers, int light,
                         int overlay) {
                 matrices.push();
 
