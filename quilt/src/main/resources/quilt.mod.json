@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "mixin": ["enderitemod.mixins.json", "enderitemod-common.mixins.json"],
+  "quilt_loader": {
+    "group": "${group}",
+    "id": "enderitemod",
+    "version": "${version}",
+    "name": "Example Mod",
+    "description": "This is an example description! Tell everyone what your mod is about!",
+    "authors": ["Me!"],
+    "contact": {
+      "sources": "https://github.com/architectury/architectury-templates"
+    },
+    "license": "Insert License Here",
+    "icon": "assets/enderitemod/icon.png",
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "environment": "*",
+    "entrypoints": {
+      "init": ["net.enderitemc.enderitemod.quilt.EnderiteModQuilt"]
+    },
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "version": "*"
+      },
+      {
+        "id": "quilt_base",
+        "version": "*"
+      },
+      {
+        "id": "minecraft",
+        "version": ">=1.19.2"
+      },
+      {
+        "id": "architectury",
+        "version": ">=6.2.43"
+      }
+    ]
+  }
+}
