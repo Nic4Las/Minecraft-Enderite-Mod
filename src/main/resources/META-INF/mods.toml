@@ -41,7 +41,7 @@ The Enderite Mod adds new armor and tools, which are successors of Netherite too
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[39,)" #mandatory
+    versionRange="[40,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -50,6 +50,6 @@ The Enderite Mod adds new armor and tools, which are successors of Netherite too
 [[dependencies.examplemod]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.1]"
+    versionRange="[1.18.2]"
     ordering="NONE"
     side="BOTH"
