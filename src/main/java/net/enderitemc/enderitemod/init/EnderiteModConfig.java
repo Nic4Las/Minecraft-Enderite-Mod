@@ -61,7 +61,7 @@ public class EnderiteModConfig {
                 COMMON_BUILDER.comment("Enderite settings").push(SUBCATEGORY_ENDERITE_GENERATION);
                 ENDERITE_COUNT = COMMON_BUILDER
                                 .comment("\nHow many enderite ore should be generated per chunk (default: 3)")
-                                .defineInRange("count", 3, 1, 255);
+                                .defineInRange("count", 2, 1, 255);
                 ENDERITE_BOTTOM_OFFSET = COMMON_BUILDER.comment(
                                 "\nBottom offset for enderite ore generation, e.g. if you choose this value as '12' (default value), ore will only be generated above y = 12")
                                 .defineInRange("bottom_offset", 12, 0, 255);

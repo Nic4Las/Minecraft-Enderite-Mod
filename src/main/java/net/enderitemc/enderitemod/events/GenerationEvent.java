@@ -42,34 +42,41 @@ import java.util.List;
 @Mod.EventBusSubscriber
 public class GenerationEvent {
 
-    //private static final ArrayList<ConfiguredFeature<?, ?>> enderOres = new ArrayList<ConfiguredFeature<?, ?>>();
+    // private static final ArrayList<ConfiguredFeature<?, ?>> enderOres = new
+    // ArrayList<ConfiguredFeature<?, ?>>();
     private static final ArrayList<Holder<PlacedFeature>> enderOres = new ArrayList<Holder<PlacedFeature>>();
 
     public static void registerOres() {
-        int veinsize = EnderiteModConfig.ENDERITE_VEIN_SIZE.get()+2;
+        int veinsize = EnderiteModConfig.ENDERITE_VEIN_SIZE.get() + 2;
         int count = EnderiteModConfig.ENDERITE_COUNT.get();
         int bottomOffset = EnderiteModConfig.ENDERITE_BOTTOM_OFFSET.get();
         int topOffset = EnderiteModConfig.ENDERITE_TOP_OFFSET.get();
         int maximum = EnderiteModConfig.ENDERITE_MAXIMUM.get();
 
         RuleTest END_STONE = new TagMatchTest(Tags.Blocks.END_STONES);
-        OreConfiguration EnderiteOreConfig = new OreConfiguration(END_STONE, Registration.ENDERITE_ORE.get().defaultBlockState(), veinsize);
-        Holder<ConfiguredFeature<OreConfiguration, ?>> configFeature = FeatureUtils.register("end_enderite_ore", Feature.ORE, EnderiteOreConfig);
-        Holder<PlacedFeature> ORE_ENDERITE = PlacementUtils.register("end_enderite_ore", configFeature, InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.absolute(bottomOffset), VerticalAnchor.absolute(maximum-topOffset)), BiomeFilter.biome());
+        OreConfiguration EnderiteOreConfig = new OreConfiguration(END_STONE,
+                Registration.ENDERITE_ORE.get().defaultBlockState(), veinsize);
+        Holder<ConfiguredFeature<OreConfiguration, ?>> configFeature = FeatureUtils.register("end_enderite_ore",
+                Feature.ORE, EnderiteOreConfig);
+        Holder<PlacedFeature> ORE_ENDERITE = PlacementUtils.register("end_enderite_ore", configFeature,
+                CountPlacement.of(count), InSquarePlacement.spread(), HeightRangePlacement
+                        .uniform(VerticalAnchor.absolute(bottomOffset), VerticalAnchor.absolute(maximum - topOffset)),
+                BiomeFilter.biome());
         enderOres.add(ORE_ENDERITE);
-        // Holder<PlacedFeature> ORE_ANCIENT_DEBRIS_SMALL = PlacementUtils.register("ore_debris_small", OreFeatures.ORE_ANCIENT_DEBRIS_SMALL, InSquarePlacement.spread(), PlacementUtils.RANGE_8_8, BiomeFilter.biome());
-        
-        
-        //         .configured(new OreConfiguration(new TagMatchTest(Tags.Blocks.END_STONES),
-        //                 Registration.ENDERITE_ORE.get().defaultBlockState(), veinsize));
+        // Holder<PlacedFeature> ORE_ANCIENT_DEBRIS_SMALL =
+        // PlacementUtils.register("ore_debris_small",
+        // OreFeatures.ORE_ANCIENT_DEBRIS_SMALL, InSquarePlacement.spread(),
+        // PlacementUtils.RANGE_8_8, BiomeFilter.biome());
+
+        // .configured(new OreConfiguration(new TagMatchTest(Tags.Blocks.END_STONES),
+        // Registration.ENDERITE_ORE.get().defaultBlockState(), veinsize));
         // enderOres.add(registerPlacedFeature("end_enderite_ore",
         // configFeature,
         // CountPlacement.of(count),
-        // InSquarePlacement.spread(), 
-        // HeightRangePlacement.uniform(VerticalAnchor.absolute(bottomOffset), 
+        // InSquarePlacement.spread(),
+        // HeightRangePlacement.uniform(VerticalAnchor.absolute(bottomOffset),
         // VerticalAnchor.absolute(maximum-topOffset)), BiomeFilter.biome()));
-        
-        
+
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -83,16 +90,20 @@ public class GenerationEvent {
         }
     }
 
-    // private static <FC extends FeatureConfiguration> ConfiguredFeature<FC, ?> register(String name,
-    //         ConfiguredFeature<FC, ?> configureFeature) {
-    //     return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE,
-    //             new ResourceLocation(EnderiteMod.MOD_ID + ":" + name), configureFeature);
+    // private static <FC extends FeatureConfiguration> ConfiguredFeature<FC, ?>
+    // register(String name,
+    // ConfiguredFeature<FC, ?> configureFeature) {
+    // return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE,
+    // new ResourceLocation(EnderiteMod.MOD_ID + ":" + name), configureFeature);
     // }
 
-    // private static <C extends FeatureConfiguration, F extends Feature<C>> PlacedFeature registerPlacedFeature(String registryName,
-    //            ConfiguredFeature<C, F> feature, PlacementModifier... placementModifiers) {
-    //     PlacedFeature placed = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, new ResourceLocation(EnderiteMod.MOD_ID + ":" + registryName), feature)
-    //            .placed(placementModifiers);
-    //     return PlacementUtils.register(registryName, placed);
+    // private static <C extends FeatureConfiguration, F extends Feature<C>>
+    // PlacedFeature registerPlacedFeature(String registryName,
+    // ConfiguredFeature<C, F> feature, PlacementModifier... placementModifiers) {
+    // PlacedFeature placed =
+    // BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, new
+    // ResourceLocation(EnderiteMod.MOD_ID + ":" + registryName), feature)
+    // .placed(placementModifiers);
+    // return PlacementUtils.register(registryName, placed);
     // }
 }
