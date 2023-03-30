@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 
 public class EnderiteElytraChestplate extends ArmorItem implements FabricElytraItem {
 
-    public EnderiteElytraChestplate(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
-        super(material, slot, settings);
+    public EnderiteElytraChestplate(ArmorMaterial material, ArmorItem.Type type, Settings settings) {
+        super(material, type, settings);
     }
 
     public static boolean isUsable(ItemStack stack) {

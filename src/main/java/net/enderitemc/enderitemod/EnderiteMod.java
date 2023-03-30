@@ -109,18 +109,18 @@ public class EnderiteMod implements ModInitializer {
 			}));
 
 	// Enderite Armor
-	public static final ArmorItem ENDERITE_HELMET = new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.HEAD,
+	public static final ArmorItem ENDERITE_HELMET = new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.HELMET,
 			(new Item.Settings().fireproof()));
 	public static final ArmorItem ENDERITE_CHESTPLATE = new ArmorItem(EnderiteArmorMaterial.ENDERITE,
-			EquipmentSlot.CHEST, (new Item.Settings().fireproof()));
-	public static final ArmorItem ENDERITE_LEGGINGS = new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.LEGS,
+			ArmorItem.Type.CHESTPLATE, (new Item.Settings().fireproof()));
+	public static final ArmorItem ENDERITE_LEGGINGS = new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.LEGGINGS,
 			(new Item.Settings().fireproof()));
-	public static final ArmorItem ENDERITE_BOOTS = new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.FEET,
+	public static final ArmorItem ENDERITE_BOOTS = new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.BOOTS,
 			(new Item.Settings().fireproof()));
 
 	// Enderite Elytra
 	public static final ArmorItem ENDERITE_ELYTRA = new EnderiteElytraChestplate(EnderiteArmorMaterial.ENDERITE,
-			EquipmentSlot.CHEST,
+			ArmorItem.Type.CHESTPLATE,
 			(new Item.Settings().fireproof().rarity(Rarity.EPIC)));
 	public static SpecialRecipeSerializer<EnderiteElytraSpecialRecipe> ENDERITE_EYLTRA_SPECIAL_RECIPE = new SpecialRecipeSerializer<>(
 			EnderiteElytraSpecialRecipe::new);

@@ -43,7 +43,7 @@ public class EnderiteSword extends SwordItem {
             Vec3d position = playerEntity.getPos().add(0, playerEntity.getEyeY() - playerEntity.getY(), 0);
             Vec3d endPosition = new Vec3d(position.x + dX * distance, position.y + dY * distance,
                     position.z + dZ * distance);
-            BlockPos blockPos = new BlockPos(endPosition.x, endPosition.y, endPosition.z);
+            BlockPos blockPos = BlockPos.ofFloored(endPosition.x, endPosition.y, endPosition.z);
 
             BlockPos[] blockPoses = { blockPos, blockPos.up(), blockPos };
 
@@ -93,7 +93,9 @@ public class EnderiteSword extends SwordItem {
                             foundSpace = 3;
                         } else {
                             --near;
-                            blockPoses[2] = blockPoses[2].add(-dX, -dY, -dZ);
+                            blockPoses[2] = blockPoses[2].add((int) Math.floor(-dX),
+                                    (int) Math.floor(-dY),
+                                    (int) Math.floor(-dZ));
                         }
                     }
                 }
