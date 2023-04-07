@@ -19,7 +19,6 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -69,7 +68,8 @@ public class EnderiteBow extends BowItem {
 
                         persistentProjectileEntity.setCustomName(Text.literal("Enderite Arrow"));
 
-                        persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(),
+                        persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(),
+                                playerEntity.getYaw(),
                                 0.0F, f * this.getSpeedMultiplier(), 1.0F);
                         if (f == 1.0F) {
                             persistentProjectileEntity.setCritical(true);
@@ -95,8 +95,9 @@ public class EnderiteBow extends BowItem {
                         stack.damage(1, (LivingEntity) playerEntity, (Consumer) ((p) -> {
                             ((LivingEntity) p).sendToolBreakStatus(playerEntity.getActiveHand());
                         }));
-                        if (bl2 || playerEntity.getAbilities().creativeMode && (itemStack.getItem() == Items.SPECTRAL_ARROW
-                                || itemStack.getItem() == Items.TIPPED_ARROW)) {
+                        if (bl2 || playerEntity.getAbilities().creativeMode
+                                && (itemStack.getItem() == Items.SPECTRAL_ARROW
+                                        || itemStack.getItem() == Items.TIPPED_ARROW)) {
                             persistentProjectileEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                         }
 

@@ -9,12 +9,12 @@ import net.enderitemc.enderitemod.tools.EnderiteElytraSeperated;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -23,7 +23,7 @@ public class EnderiteModClient implements ClientModInitializer {
 
         @Override
         public void onInitializeClient() {
-                BlockEntityRendererRegistry.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY,
+                BlockEntityRendererFactories.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY,
                                 EnderiteShulkerBoxBlockEntityRenderer::new);
                 BuiltinItemRendererRegistry.INSTANCE.register(EnderiteMod.ENDERITE_SHIELD,
                                 new EnderiteShieldRenderer());
@@ -106,7 +106,7 @@ public class EnderiteModClient implements ClientModInitializer {
                                                         .register(new EnderiteElytraFeatureRender<>(entityRenderer,
                                                                         context.getModelLoader()));
                                 });
-                LivingEntityFeatureRenderEvents.ALLOW_CAPE_RENDER.register((player) -> this.allowCapeRender(player));
+                LivingEntityFeatureRenderEvents.ALLOW_CAPE_RENDER.register((player) -> allowCapeRender(player));
 
         }
 

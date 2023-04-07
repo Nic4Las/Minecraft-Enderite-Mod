@@ -43,7 +43,6 @@ import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.BowItem;
@@ -113,7 +112,8 @@ public class EnderiteMod implements ModInitializer {
 			(new Item.Settings().fireproof()));
 	public static final ArmorItem ENDERITE_CHESTPLATE = new ArmorItem(EnderiteArmorMaterial.ENDERITE,
 			ArmorItem.Type.CHESTPLATE, (new Item.Settings().fireproof()));
-	public static final ArmorItem ENDERITE_LEGGINGS = new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.LEGGINGS,
+	public static final ArmorItem ENDERITE_LEGGINGS = new ArmorItem(EnderiteArmorMaterial.ENDERITE,
+			ArmorItem.Type.LEGGINGS,
 			(new Item.Settings().fireproof()));
 	public static final ArmorItem ENDERITE_BOOTS = new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.BOOTS,
 			(new Item.Settings().fireproof()));

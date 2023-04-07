@@ -1,7 +1,6 @@
 package net.enderitemc.enderitemod.tools;
 
 import net.fabricmc.fabric.api.entity.event.v1.FabricElytraItem;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
@@ -19,12 +18,12 @@ public class EnderiteElytraChestplate extends ArmorItem implements FabricElytraI
 
     @Override
     public boolean useCustomElytra(LivingEntity entity, ItemStack chestStack, boolean tickElytra) {
-		if (this.isUsable(chestStack)) {
-			if (tickElytra) {
-				doVanillaElytraTick(entity, chestStack);
-			}
-			return true;
-		}
-		return false;
-	}
+        if (isUsable(chestStack)) {
+            if (tickElytra) {
+                doVanillaElytraTick(entity, chestStack);
+            }
+            return true;
+        }
+        return false;
+    }
 }

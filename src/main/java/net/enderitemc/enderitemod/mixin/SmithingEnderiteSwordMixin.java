@@ -7,15 +7,15 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ForgingScreenHandler;
+import net.minecraft.screen.LegacySmithingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.SmithingScreenHandler;
 
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(SmithingScreenHandler.class)
+@Mixin(LegacySmithingScreenHandler.class)
 public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
 
     public SmithingEnderiteSwordMixin(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
@@ -27,8 +27,8 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
         // Overwrites smithing screen to accept enderpearls as charge for sword
         ItemStack sword = this.input.getStack(0);
         ItemStack pearls = this.input.getStack(1);
-        if ((sword.getItem() == EnderiteMod.ENDERITE_SWORD || sword.getItem() == EnderiteMod.ENDERITE_SHIELD)
-                && pearls.getItem() == Items.ENDER_PEARL) {
+        if ((sword.isOf(EnderiteMod.ENDERITE_SWORD) || sword.isOf(EnderiteMod.ENDERITE_SHIELD))
+                && (pearls.isOf(Items.ENDER_PEARL))) {
             // If new sword, basic charge is enderpearl count
             int teleport_charge = pearls.getCount();
             // Read the charge of sword

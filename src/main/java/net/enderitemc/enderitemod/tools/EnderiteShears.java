@@ -43,14 +43,14 @@ public class EnderiteShears extends ShearsItem {
         if (block instanceof BeehiveBlock && blockstate.get(BeehiveBlock.HONEY_LEVEL) >= 5) {
             PlayerEntity playerEntity = context.getPlayer();
             ItemStack itemStack = context.getStack();
-            beehiveBlock = ((BeehiveBlock)block);
+            beehiveBlock = ((BeehiveBlock) block);
             if (playerEntity instanceof ServerPlayerEntity) {
-                Criteria.ITEM_USED_ON_BLOCK.trigger((ServerPlayerEntity)playerEntity, blockPos, itemStack);
+                Criteria.ITEM_USED_ON_BLOCK.trigger((ServerPlayerEntity) playerEntity, blockPos, itemStack);
             }
-            beehiveBlock.dropHoneycomb(world, blockPos);
+            BeehiveBlock.dropHoneycomb(world, blockPos);
             beehiveBlock.takeHoney(world, blockstate, blockPos);
             world.playSound(playerEntity, blockPos, SoundEvents.BLOCK_BEEHIVE_SHEAR, SoundCategory.NEUTRAL, 1.0f, 1.0f);
-            world.emitGameEvent((Entity)playerEntity, GameEvent.SHEAR, blockPos);
+            world.emitGameEvent((Entity) playerEntity, GameEvent.SHEAR, blockPos);
             if (playerEntity != null) {
                 itemStack.damage(1, playerEntity, player -> player.sendToolBreakStatus(context.getHand()));
             }
@@ -61,71 +61,71 @@ public class EnderiteShears extends ShearsItem {
 
     public static void registerLoottables() {
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, table, setter) -> {
-            
-            tryBuildLootTable(id, table ,Blocks.ACACIA_LEAVES);
-        
-            tryBuildLootTable(id, table ,Blocks.AZALEA_LEAVES);
-        
-            tryBuildLootTable(id, table ,Blocks.BIRCH_LEAVES);
-        
-            tryBuildLootTable(id, table ,Blocks.CAVE_VINES);        
-            tryBuildLootTable(id, table ,Blocks.CAVE_VINES_PLANT);
-        
-            tryBuildLootTable(id, table ,Blocks.COBWEB);
-        
-            tryBuildLootTable(id, table ,Blocks.DARK_OAK_LEAVES);
-        
-            tryBuildLootTable(id, table ,Blocks.DEAD_BUSH);
-        
-            tryBuildLootTable(id, table ,Blocks.FERN);
-        
-            tryBuildLootTable(id, table ,Blocks.FLOWERING_AZALEA_LEAVES);
-        
-            tryBuildLootTable(id, table ,Blocks.GLOW_LICHEN);
-        
-            tryBuildLootTable(id, table ,Blocks.GRASS);
-        
-            tryBuildLootTable(id, table ,Blocks.JUNGLE_LEAVES);
-        
-            tryBuildLootTable(id, table ,Blocks.LARGE_FERN);
-        
-            tryBuildLootTable(id, table ,Blocks.NETHER_SPROUTS);
-        
-            tryBuildLootTable(id, table ,Blocks.OAK_LEAVES);
-        
-            tryBuildLootTable(id, table ,Blocks.SEAGRASS);
-        
-            tryBuildLootTable(id, table ,Blocks.SPRUCE_LEAVES);
 
-            tryBuildLootTable(id, table ,Blocks.TALL_GRASS);
+            tryBuildLootTable(id, table, Blocks.ACACIA_LEAVES);
 
-            tryBuildLootTable(id, table ,Blocks.TALL_SEAGRASS);
+            tryBuildLootTable(id, table, Blocks.AZALEA_LEAVES);
 
-            tryBuildLootTable(id, table ,Blocks.TWISTING_VINES);
-            tryBuildLootTable(id, table ,Blocks.TWISTING_VINES_PLANT);
+            tryBuildLootTable(id, table, Blocks.BIRCH_LEAVES);
 
-            tryBuildLootTable(id, table ,Blocks.VINE);
+            tryBuildLootTable(id, table, Blocks.CAVE_VINES);
+            tryBuildLootTable(id, table, Blocks.CAVE_VINES_PLANT);
 
-            tryBuildLootTable(id, table ,Blocks.WEEPING_VINES);
-            tryBuildLootTable(id, table ,Blocks.WEEPING_VINES_PLANT);
+            tryBuildLootTable(id, table, Blocks.COBWEB);
 
-            
-            tryBuildLootTable(id, table ,Blocks.SMALL_DRIPLEAF);
+            tryBuildLootTable(id, table, Blocks.DARK_OAK_LEAVES);
 
-            tryBuildLootTable(id, table ,Blocks.MANGROVE_LEAVES);
-            tryBuildLootTable(id, table ,Blocks.HANGING_ROOTS);
+            tryBuildLootTable(id, table, Blocks.DEAD_BUSH);
+
+            tryBuildLootTable(id, table, Blocks.FERN);
+
+            tryBuildLootTable(id, table, Blocks.FLOWERING_AZALEA_LEAVES);
+
+            tryBuildLootTable(id, table, Blocks.GLOW_LICHEN);
+
+            tryBuildLootTable(id, table, Blocks.GRASS);
+
+            tryBuildLootTable(id, table, Blocks.JUNGLE_LEAVES);
+
+            tryBuildLootTable(id, table, Blocks.LARGE_FERN);
+
+            tryBuildLootTable(id, table, Blocks.NETHER_SPROUTS);
+
+            tryBuildLootTable(id, table, Blocks.OAK_LEAVES);
+
+            tryBuildLootTable(id, table, Blocks.SEAGRASS);
+
+            tryBuildLootTable(id, table, Blocks.SPRUCE_LEAVES);
+
+            tryBuildLootTable(id, table, Blocks.TALL_GRASS);
+
+            tryBuildLootTable(id, table, Blocks.TALL_SEAGRASS);
+
+            tryBuildLootTable(id, table, Blocks.TWISTING_VINES);
+            tryBuildLootTable(id, table, Blocks.TWISTING_VINES_PLANT);
+
+            tryBuildLootTable(id, table, Blocks.VINE);
+
+            tryBuildLootTable(id, table, Blocks.WEEPING_VINES);
+            tryBuildLootTable(id, table, Blocks.WEEPING_VINES_PLANT);
+
+            tryBuildLootTable(id, table, Blocks.SMALL_DRIPLEAF);
+
+            tryBuildLootTable(id, table, Blocks.MANGROVE_LEAVES);
+            tryBuildLootTable(id, table, Blocks.HANGING_ROOTS);
         });
     }
 
-    public static void tryBuildLootTable(Identifier id, FabricLootTableBuilder table, Block block) { 
-        if(block.getLootTableId().equals(id)) {
+    public static void tryBuildLootTable(Identifier id, FabricLootTableBuilder table, Block block) {
+        if (block.getLootTableId().equals(id)) {
             LootPool pool = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(MatchToolLootCondition.builder(ItemPredicate.Builder.create().items(EnderiteMod.ENDERITE_SHEAR)).build())
+                    .conditionally(MatchToolLootCondition
+                            .builder(ItemPredicate.Builder.create().items(EnderiteMod.ENDERITE_SHEAR)).build())
                     .with(ItemEntry.builder(block.asItem()))
                     .build();
-                    table.pool(pool);
+            table.pool(pool);
         }
     }
-    
+
 }
