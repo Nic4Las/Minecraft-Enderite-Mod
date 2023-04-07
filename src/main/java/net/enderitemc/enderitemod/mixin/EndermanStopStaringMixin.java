@@ -1,12 +1,12 @@
 package net.enderitemc.enderitemod.mixin;
 
+import net.minecraft.registry.tag.DamageTypeTags;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -35,7 +35,7 @@ public abstract class EndermanStopStaringMixin extends Entity {
     @Inject(at = @At("HEAD"), method = "damage", cancellable = true)
     private void damageThem(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         if (source.getSource() != null && source.getSource().getCustomName() != null) {
-            if (source instanceof ProjectileDamageSource
+            if (source.isIn(DamageTypeTags.IS_PROJECTILE)
                     && source.getSource().getCustomName().getString().equals("Enderite Arrow")) {
                 source.getSource().remove(RemovalReason.DISCARDED);
                 info.setReturnValue(super.damage(source, amount));

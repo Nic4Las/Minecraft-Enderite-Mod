@@ -20,6 +20,7 @@ import net.minecraft.client.render.entity.model.ShieldEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -49,9 +50,9 @@ public class EnderiteShieldRenderer implements DynamicItemRenderer {
                         }).collect(ImmutableList.toImmutableList()), /* Collections.<String, ModelPart>emptyMap() */m));
 
         @Override
-        public void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices,
-                        VertexConsumerProvider vertexConsumers, int light,
-                        int overlay) {
+        public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices,
+                           VertexConsumerProvider vertexConsumers, int light,
+                           int overlay) {
                 matrices.push();
 
                 boolean bl = stack.getSubNbt("BlockEntityTag") != null;

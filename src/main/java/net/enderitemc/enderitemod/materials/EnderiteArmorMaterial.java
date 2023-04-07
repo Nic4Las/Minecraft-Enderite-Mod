@@ -7,6 +7,7 @@ import net.enderitemc.enderitemod.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvent;
@@ -41,12 +42,12 @@ public enum EnderiteArmorMaterial implements ArmorMaterial {
         this.repairIngredient = new Lazy<Ingredient>(repairIngredient);
     }
 
-    public int getDurability(EquipmentSlot equipmentSlot_1) {
-        return baseDurability[equipmentSlot_1.getEntitySlotId()] * this.durabilityMultiplier;
+    public int getDurability(ArmorItem.Type type) {
+        return baseDurability[type.getEquipmentSlot().getEntitySlotId()] * this.durabilityMultiplier;
     }
 
-    public int getProtectionAmount(EquipmentSlot equipmentSlot_1) {
-        return this.armorValues[equipmentSlot_1.getEntitySlotId()];
+    public int getProtection(ArmorItem.Type type) {
+        return this.armorValues[type.getEquipmentSlot().getEntitySlotId()];
     }
 
     public int getEnchantability() {
