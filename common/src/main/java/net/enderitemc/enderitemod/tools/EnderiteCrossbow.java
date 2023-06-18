@@ -67,7 +67,7 @@ public class EnderiteCrossbow extends CrossbowItem {
             shootAll(world, user, hand, itemStack, getSpeed(itemStack), 1.0F);
             setCharged(itemStack, false);
             return TypedActionResult.consume(itemStack);
-        } else if (!user.getArrowType(itemStack).isEmpty()) {
+        } else if (!user.getProjectileType(itemStack).isEmpty()) {
             if (!isCharged(itemStack)) {
                 this.charged = false;
                 this.loaded = false;
@@ -98,7 +98,7 @@ public class EnderiteCrossbow extends CrossbowItem {
         int i = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, projectile);
         int j = i == 0 ? 1 : 3;
         boolean bl = shooter instanceof PlayerEntity && ((PlayerEntity) shooter).getAbilities().creativeMode;
-        ItemStack itemStack = shooter.getArrowType(projectile);
+        ItemStack itemStack = shooter.getProjectileType(projectile);
         ItemStack itemStack2 = itemStack.copy();
 
         for (int k = 0; k < j; ++k) {

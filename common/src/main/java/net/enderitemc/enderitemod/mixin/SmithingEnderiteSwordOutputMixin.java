@@ -9,11 +9,12 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ForgingScreenHandler;
+import net.minecraft.screen.LegacySmithingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.SmithingScreenHandler;
 
-@Mixin(SmithingScreenHandler.class)
+@Mixin(LegacySmithingScreenHandler.class)
 public abstract class SmithingEnderiteSwordOutputMixin extends ForgingScreenHandler {
 
     public SmithingEnderiteSwordOutputMixin(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {

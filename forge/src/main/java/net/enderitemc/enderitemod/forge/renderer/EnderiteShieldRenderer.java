@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.joml.Vector3f;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 
@@ -25,14 +23,13 @@ import net.minecraft.client.render.entity.model.ShieldEntityModel;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.ModelLoader;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
 
 public class EnderiteShieldRenderer extends BuiltinModelItemRenderer {
 
@@ -67,7 +64,7 @@ public class EnderiteShieldRenderer extends BuiltinModelItemRenderer {
                         }).collect(ImmutableList.toImmutableList()), /* Collections.<String, ModelPart>emptyMap() */m));
 
         @Override
-        public void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices,
+        public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices,
                         VertexConsumerProvider vertexConsumers, int light,
                         int overlay) {
                 matrices.push();

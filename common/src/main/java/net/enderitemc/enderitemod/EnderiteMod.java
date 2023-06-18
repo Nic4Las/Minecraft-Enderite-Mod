@@ -42,7 +42,6 @@ import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -137,17 +136,17 @@ public class EnderiteMod {
 
         // Enderite Armor
         public static final RegistrySupplier<Item> ENDERITE_HELMET = ITEMS.register("enderite_helmet",
-                        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.HEAD,
+                        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.HELMET,
                                         (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof())));
         public static final RegistrySupplier<Item> ENDERITE_CHESTPLATE = ITEMS.register("enderite_chestplate",
                         () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE,
-                                        EquipmentSlot.CHEST,
+                                        ArmorItem.Type.CHESTPLATE,
                                         (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof())));
         public static final RegistrySupplier<Item> ENDERITE_LEGGINGS = ITEMS.register("enderite_leggings",
-                        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.LEGS,
+                        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.LEGGINGS,
                                         (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof())));
         public static final RegistrySupplier<Item> ENDERITE_BOOTS = ITEMS.register("enderite_boots",
-                        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentSlot.FEET,
+                        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.BOOTS,
                                         (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof())));
 
         // Enderite Elytra
@@ -241,7 +240,5 @@ public class EnderiteMod {
                 });
 
                 EnderiteShears.registerLoottables();
-
-                System.out.println(ExampleExpectPlatform.getConfigDirectory().toAbsolutePath().normalize().toString());
         }
 }

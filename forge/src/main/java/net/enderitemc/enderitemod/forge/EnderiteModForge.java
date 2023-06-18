@@ -2,7 +2,6 @@ package net.enderitemc.enderitemod.forge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.builder.api.Component;
 
 import com.misterpemodder.shulkerboxtooltip.api.forge.ShulkerBoxTooltipPlugin;
 
@@ -27,14 +26,13 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -53,7 +51,7 @@ public class EnderiteModForge {
         // Enderite Elytra
         public static final RegistrySupplier<Item> ENDERITE_ELYTRA = EnderiteMod.ITEMS.register("enderite_elytra",
                         () -> new EnderiteElytraChestplate(EnderiteArmorMaterial.ENDERITE,
-                                        EquipmentSlot.CHEST,
+                                        ArmorItem.Type.CHESTPLATE,
                                         EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS));
 
         public static final RegistrySupplier<Item> ENDERITE_ELYTRA_SEPERATED = EnderiteMod.ITEMS.register(
