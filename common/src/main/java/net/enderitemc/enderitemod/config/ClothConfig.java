@@ -1,8 +1,8 @@
 package net.enderitemc.enderitemod.config;
 
-import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.api.ConfigCategory;
-import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+// import me.shedaniel.clothconfig2.api.ConfigBuilder;
+// import me.shedaniel.clothconfig2.api.ConfigCategory;
+// import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
@@ -13,6 +13,11 @@ public class ClothConfig {
 
         public ClothConfig(Screen parent) {
 
+                //REMOVE screen=null; //Update to 1.19.4 level (remove ore config)
+                screen = null;/*
+
+
+                
                 ConfigBuilder builder = ConfigBuilder.create().setParentScreen(parent)
                                 .setTitle(Text.translatable("title.enderitemod.config"));
 
@@ -155,7 +160,7 @@ public class ClothConfig {
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - 3).build());
 
                 this.screen = builder.build();
-
+                */
         }
 
         public Screen getScreen() {

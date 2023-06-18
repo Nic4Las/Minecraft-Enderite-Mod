@@ -3,7 +3,7 @@ package net.enderitemc.enderitemod.forge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.misterpemodder.shulkerboxtooltip.api.forge.ShulkerBoxTooltipPlugin;
+//import com.misterpemodder.shulkerboxtooltip.api.forge.ShulkerBoxTooltipPlugin;
 
 import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
@@ -16,7 +16,7 @@ import net.enderitemc.enderitemod.forge.tools.EnderiteElytraChestplate;
 import net.enderitemc.enderitemod.forge.tools.EnderiteElytraSeperated;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteElytraFeatureRender;
-import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
+//import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.minecraft.block.DispenserBlock;
@@ -103,18 +103,18 @@ public class EnderiteModForge {
                         BlockEntityRendererRegistry.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
                                         EnderiteShulkerBoxBlockEntityRenderer::new);
 
-                        if (ModList.get().isLoaded("cloth_config")) {
-                                ModLoadingContext.get().registerExtensionPoint(
-                                                ConfigScreenHandler.ConfigScreenFactory.class,
-                                                () -> new ConfigScreenHandler.ConfigScreenFactory(
-                                                                (mc, screen) -> new ClothConfig(screen).getScreen()));
-                        }
+                        // if (ModList.get().isLoaded("cloth_config")) {
+                        //         ModLoadingContext.get().registerExtensionPoint(
+                        //                         ConfigScreenHandler.ConfigScreenFactory.class,
+                        //                         () -> new ConfigScreenHandler.ConfigScreenFactory(
+                        //                                         (mc, screen) -> new ClothConfig(screen).getScreen()));
+                        // }
 
-                        if (ModList.get().isLoaded("shulkerboxtooltip")) {
-                                ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
-                                                () -> new ShulkerBoxTooltipPlugin(
-                                                                ShulkerBoxTooltipApiImplementation::new));
-                        }
+                        // if (ModList.get().isLoaded("shulkerboxtooltip")) {
+                        //         ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
+                        //                         () -> new ShulkerBoxTooltipPlugin(
+                        //                                         ShulkerBoxTooltipApiImplementation::new));
+                        // }
                 }
 
                 @SubscribeEvent(priority = EventPriority.LOW)

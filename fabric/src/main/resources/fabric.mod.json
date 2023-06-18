@@ -19,15 +19,15 @@
       {
         "value": "net.enderitemc.enderitemod.fabriclike.EnderiteModClient"
       }
-    ],
-    "modmenu": ["net.enderitemc.enderitemod.fabriclike.config.EnderiteModModMenuIntegration"],
-    "shulkerboxtooltip": ["net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation"]
+    ]
   },
-  "mixins": ["enderitemod.mixins.json", "enderitemod-common.mixins.json"],
+  "mixins": [
+    "enderitemod.mixins.json",
+    "enderitemod-common.mixins.json"
+  ],
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19.4",
-    "architectury": ">=8.1.79",
-    "fabric-api": ">=0.78.0"
+    "architectury": ">=8.1.79"
   }
 }

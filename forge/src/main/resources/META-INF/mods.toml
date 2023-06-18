@@ -1,17 +1,17 @@
 modLoader = "javafml"
 loaderVersion = "[45,)"
 #issueTrackerURL = ""
-license="All rights reserved"
+license = "All rights reserved"
 
 [[mods]]
 modId = "enderitemod"
 version = "${version}"
-displayName="Enderite Mod" #mandatory
-authors="Nic4Las, Pitti11, PianoManu" #optional
-description='''
+displayName = "Enderite Mod"
+authors = "Nic4Las, Pitti11, PianoManu"
+description = '''
 The Enderite Mod adds new armor and tools, which are successors of Netherite tools. Enderite ore can be found in the End and needs to be blown up before it can be mined. You can smelt the ore in a blast furnace to get scraps, which can be craft with diamonds to Enderite Ingots (similar to Netherite). With these ingots you can craft Enderite tools and blocks, which all have the void floating ability.
 '''
-logoFile="icon.png" #optional
+#logoFile = "icon.png"
 
 [[dependencies.enderitemod]]
 modId = "forge"
