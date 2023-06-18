@@ -2,6 +2,7 @@ package net.enderitemc.enderitemod.forge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.builder.api.Component;
 
 import com.misterpemodder.shulkerboxtooltip.api.forge.ShulkerBoxTooltipPlugin;
 
@@ -25,18 +26,15 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -56,15 +54,11 @@ public class EnderiteModForge {
         public static final RegistrySupplier<Item> ENDERITE_ELYTRA = EnderiteMod.ITEMS.register("enderite_elytra",
                         () -> new EnderiteElytraChestplate(EnderiteArmorMaterial.ENDERITE,
                                         EquipmentSlot.CHEST,
-                                        (new Item.Settings().group(EnderiteMod.ENDERITE_TAB).fireproof()
-                                                        .rarity(Rarity.EPIC))));
+                                        EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS));
 
         public static final RegistrySupplier<Item> ENDERITE_ELYTRA_SEPERATED = EnderiteMod.ITEMS.register(
                         "enderite_elytra_seperated",
-                        () -> new EnderiteElytraSeperated(
-                                        (new Item.Settings().group(EnderiteMod.ENDERITE_TAB).fireproof().maxCount(1)
-                                                        .maxDamage(1024))
-                                                        .rarity(Rarity.EPIC)));
+                        () -> new EnderiteElytraSeperated(EnderiteMod.ENDERITE_ELYTRA_SEPERATED_ITEM_SETTINGS));
 
         public static final RegistrySupplier<BlockEntityType<EnderiteShulkerBoxBlockEntity>> ENDERITE_SHULKER_BOX_BLOCK_ENTITY = EnderiteMod.BLOCK_ENTITY_TYPES
                         .register("enderite_shulker_box_block_entity",
@@ -75,9 +69,7 @@ public class EnderiteModForge {
         public static final RegistrySupplier<Item> ENDERITE_SHIELD_FORGE = EnderiteMod.ITEMS
                         .register("enderite_shield",
                                         () -> new EnderiteShieldForge(
-                                                        new Item.Settings().group(EnderiteMod.ENDERITE_TAB).fireproof()
-                                                                        .maxCount(1)
-                                                                        .maxDamage(768)));
+                                                        EnderiteMod.ENDERITE_SHIELD_ITEM_SETTINGS));
 
         public EnderiteModForge() {
                 // Submit our event bus to let architectury register our content on the right
@@ -106,15 +98,6 @@ public class EnderiteModForge {
                 public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
                         // WorldFeatures.init();
                         AnimationFeatures.init();
-                }
-
-                @SubscribeEvent
-                public static void onTextureStitchEvent(TextureStitchEvent.Pre event) {
-                        LOGGER.info("RSL" + event.getAtlas().getId() + ", " + SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
-
-                        if (event.getAtlas().getId() == SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE) {
-                                event.addSprite(new Identifier("enderitemod:entity/enderite_shield_base"));
-                        }
                 }
 
                 @SubscribeEvent

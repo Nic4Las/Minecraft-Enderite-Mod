@@ -91,5 +91,9 @@
   "advancements.enderitemod.obtain_all_enderite_tools.title": "Wahrer Erbauer",
   "advancements.enderitemod.obtain_all_enderite_tools.description": "Rüste alle deine Werkzeuge bis Enderit-Qualität auf",
   "advancements.enderitemod.obtain_all_enderite_weapons.title": "Des Drachens Faust",
-  "advancements.enderitemod.obtain_all_enderite_weapons.description": "Werte alle deine Kampfausrüstung mit Enderit auf, wie ein echter Kämpfer des Endes"
+  "advancements.enderitemod.obtain_all_enderite_weapons.description": "Werte alle deine Kampfausrüstung mit Enderit auf, wie ein echter Kämpfer des Endes",
+
+  "itemGroup.enderitemod.enderite_group": "Enderititems",
+  "option.enderitemod.restart.enderite_ore.moved_to_json": "Konfiguration der Erzgeneration im datapack",
+  "option.enderitemod.restart.enderite_ore.moved_to_json.hover": "Die Erzgenerationskonfiguration wurde nach json (datapack) verschoben"
 }

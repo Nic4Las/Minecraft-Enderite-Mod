@@ -15,7 +15,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionTypes;
-import net.minecraft.world.explosion.Explosion.DestructionType;
 
 public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
 
@@ -76,7 +75,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
     private void explode(BlockState state, World world, final BlockPos explodedPos) {
         world.removeBlock(explodedPos, false);
         world.createExplosion(null, explodedPos.getX(), explodedPos.getY(), explodedPos.getZ(), 6.9F, true,
-                DestructionType.DESTROY);
+                World.ExplosionSourceType.BLOCK);
     }
 
 }

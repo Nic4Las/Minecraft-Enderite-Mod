@@ -1,11 +1,5 @@
 package net.enderitemc.enderitemod.mixin;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,6 +8,13 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemEntity.class)
 public abstract class EnderiteDropDamageMixin extends Entity {
@@ -36,10 +37,10 @@ public abstract class EnderiteDropDamageMixin extends Entity {
 				survives = true;
 			}
 			if ((getStack().isIn(EnderiteTag.ENDERITE_ITEM)) || survives) {
-				this.unsetRemoved(); // this.removed = false;
+				this.unsetRemoved(); //this.removed = false;
 				// ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), 10,
 				// this.getZ(), getStack());
-				this.requestTeleport(this.getX(), this.world.getBottomY() + 10, this.getZ());
+				this.requestTeleport(this.getX(), this.world.getBottomY()+10, this.getZ());
 				this.setVelocity(0, 0, 0);
 				this.setNoGravity(true);
 				this.setGlowing(true);

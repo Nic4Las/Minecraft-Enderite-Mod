@@ -6,19 +6,15 @@ import net.enderitemc.enderitemod.fabriclike.tools.EnderiteElytraChestplate;
 import net.enderitemc.enderitemod.fabriclike.tools.EnderiteElytraSeperated;
 import net.enderitemc.enderitemod.misc.EnderiteElytraFeatureRender;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -27,19 +23,10 @@ public class EnderiteModClient implements ClientModInitializer {
 
         @Override
         public void onInitializeClient() {
-                BlockEntityRendererRegistry.register(
-                                (BlockEntityType<EnderiteShulkerBoxBlockEntity>) EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY
-                                                .get(),
+                BlockEntityRendererFactories.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
                                 EnderiteShulkerBoxBlockEntityRenderer::new);
                 BuiltinItemRendererRegistry.INSTANCE.register(EnderiteMod.ENDERITE_SHIELD.get(),
                                 new EnderiteShieldRenderer());
-                ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE)
-                                .register((atlaxTexture, registry) -> {
-                                        if (atlaxTexture.getId() == SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE) {
-                                                registry.register(new Identifier(
-                                                                "enderitemod:entity/enderite_shield_base"));
-                                        }
-                                });
 
                 ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_BOW.get().asItem(), new Identifier("pull"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {

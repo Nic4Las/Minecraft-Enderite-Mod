@@ -10,6 +10,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.item.ShieldItem;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.model.ModelPartBuilder;
 import net.minecraft.client.render.VertexConsumer;
@@ -25,8 +26,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3f;
-import net.minecraft.util.registry.RegistryEntry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry.DynamicItemRenderer;
 
 public class EnderiteShieldRenderer implements DynamicItemRenderer {
@@ -56,7 +55,7 @@ public class EnderiteShieldRenderer implements DynamicItemRenderer {
 
                 if (!bl) {
 
-                        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
+                        matrices.scale(1.0f, -1.0f, -1.0f);
                         VertexConsumer vertexConsumer2 = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers,
                                         shieldModel.getLayer(new Identifier(
                                                         "enderitemod:textures/entity/enderite_shield_base_nopattern.png")),
@@ -66,7 +65,7 @@ public class EnderiteShieldRenderer implements DynamicItemRenderer {
                         shieldModel.render(matrices, vertexConsumer2, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
 
                 } else {
-                        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
+                        matrices.scale(1.0f, -1.0f, -1.0f);
                         SpriteIdentifier spriteIdentifier = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE,
                                         new Identifier("enderitemod:entity/enderite_shield_base"));
 

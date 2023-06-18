@@ -26,7 +26,8 @@
   "mixins": ["enderitemod.mixins.json", "enderitemod-common.mixins.json"],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.19.2",
-    "architectury": ">=6.2.43"
+    "minecraft": ">=1.19.3",
+    "architectury": ">=7.1.78",
+    "fabric-api": ">=0.76.0"
   }
 }

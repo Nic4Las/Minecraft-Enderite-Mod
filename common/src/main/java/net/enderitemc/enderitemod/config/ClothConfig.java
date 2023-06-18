@@ -3,7 +3,6 @@ package net.enderitemc.enderitemod.config;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
-import net.enderitemc.enderitemod.config.ConfigLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 

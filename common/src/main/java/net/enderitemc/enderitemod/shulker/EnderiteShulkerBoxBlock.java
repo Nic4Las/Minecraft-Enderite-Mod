@@ -44,24 +44,11 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         return new EnderiteShulkerBoxBlockEntity(pos, state);
     }
 
-    // @Override
-    // public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world,
-    // BlockState state, BlockEntityType<T> type) {
-    // return EnderiteShulkerBoxBlockEntity::tick;
-    // }
-
-    // @Override
-    // public BlockRenderType getRenderType(BlockState state) {
-    // // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we
-    // need to change that!
-    // return BlockRenderType.MODEL;
-    // }
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
             BlockEntityType<T> type) {
         return checkType(type, EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
-                (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1,
-                        (EnderiteShulkerBoxBlockEntity) be));
+                (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1, be));
     }
 
     @Override
