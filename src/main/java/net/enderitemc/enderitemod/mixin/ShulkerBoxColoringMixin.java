@@ -2,7 +2,7 @@ package net.enderitemc.enderitemod.mixin;
 
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.ShulkerBoxColoringRecipe;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -23,7 +23,7 @@ public abstract class ShulkerBoxColoringMixin extends SpecialCraftingRecipe {
 	}
 
 	@Inject(at = @At("HEAD"), cancellable = true, method = "matches")
-	private void dropItem(CraftingInventory craftingInventory, World world, CallbackInfoReturnable<Boolean> info) {
+	private void dropItem(RecipeInputInventory craftingInventory, World world, CallbackInfoReturnable<Boolean> info) {
 		// If one item is EnderiteShulkerBox abort color recipe
 		for (int k = 0; k < craftingInventory.size(); ++k) {
 			ItemStack itemStack = craftingInventory.getStack(k);

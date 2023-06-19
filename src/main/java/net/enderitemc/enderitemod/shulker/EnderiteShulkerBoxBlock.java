@@ -18,7 +18,7 @@ import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext.Builder;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.stat.Stats;
@@ -117,18 +117,16 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
-        BlockEntity blockEntity = (BlockEntity) builder.getNullable(LootContextParameters.BLOCK_ENTITY);
+    public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+        BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
         if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
-            EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) blockEntity;
-            builder = builder.putDrop(CONTENTS, (lootContext, consumer) -> {
+            EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity)blockEntity;
+            builder = builder.addDynamicDrop(CONTENTS_DYNAMIC_DROP_ID, lootConsumer -> {
                 for (int i = 0; i < shulkerBoxBlockEntity.size(); ++i) {
-                    consumer.accept(shulkerBoxBlockEntity.getStack(i));
+                    lootConsumer.accept(shulkerBoxBlockEntity.getStack(i));
                 }
-
             });
         }
-
         return super.getDroppedStacks(state, builder);
     }
 

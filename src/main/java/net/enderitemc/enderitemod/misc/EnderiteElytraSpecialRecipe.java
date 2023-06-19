@@ -7,7 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
@@ -22,7 +22,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         super(identifier, category);
     }
 
-    public boolean matches(CraftingInventory craftingInventory, World world) {
+    public boolean matches(RecipeInputInventory craftingInventory, World world) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
@@ -57,7 +57,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory craftingInventory, DynamicRegistryManager registryManager) {
+    public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager registryManager) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 

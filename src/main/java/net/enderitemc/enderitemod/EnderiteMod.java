@@ -33,15 +33,13 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricMaterialBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
 import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
@@ -59,6 +57,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -74,9 +73,7 @@ public class EnderiteMod implements ModInitializer {
 	public static final EnderiteScrap ENDERITE_SCRAP = new EnderiteScrap(
 			new Item.Settings().fireproof());
 
-	private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder(new Identifier("enderitemod", "enderite_group"))
-			.icon(() -> new ItemStack(ENDERITE_INGOT))
-			.build();
+	private static final RegistryKey<ItemGroup> ITEM_GROUP = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier("enderitemod", "enderite_group"));
 
 	// Enderite Tools
 	public static final ToolItem ENDERITE_PICKAXE = new PickaxeSubclass(EnderiteMaterial.ENDERITE,
@@ -97,13 +94,12 @@ public class EnderiteMod implements ModInitializer {
 			new Item.Settings().fireproof());
 
 	// Enderite Block
-	public static final EnderiteBlock ENDERITE_BLOCK = new EnderiteBlock(
-			new FabricMaterialBuilder(MapColor.BLACK).build());
+	public static final EnderiteBlock ENDERITE_BLOCK = new EnderiteBlock();
 	public static final EnderiteOre ENDERITE_ORE = new EnderiteOre();
 	public static final CrackedEnderiteOre CRACKED_ENDERITE_ORE = new CrackedEnderiteOre();
 
 	public static final EnderiteRespawnAnchor ENDERITE_RESPAWN_ANCHOR = new EnderiteRespawnAnchor(AbstractBlock.Settings
-			.of(Material.STONE, MapColor.BLACK).requiresTool().strength(50.0F, 1200.0F).luminance((state) -> {
+			.create().mapColor(MapColor.BLACK).requiresTool().strength(50.0F, 1200.0F).luminance((state) -> {
 				return EnderiteRespawnAnchor.getLightLevel(state, 15);
 			}));
 
@@ -131,7 +127,7 @@ public class EnderiteMod implements ModInitializer {
 	// Shulker Box
 	public static BlockEntityType<EnderiteShulkerBoxBlockEntity> ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
 	public static final EnderiteShulkerBoxBlock ENDERITE_SHULKER_BOX = new EnderiteShulkerBoxBlock((DyeColor) null,
-			FabricBlockSettings.of(Material.SHULKER_BOX).nonOpaque().strength(2.0f, 17.0f));
+			FabricBlockSettings.copyOf(Blocks.SHULKER_BOX).nonOpaque().strength(2.0f, 17.0f));
 	public static SpecialRecipeSerializer<EnderiteShulkerBoxRecipe> ENDERITE_SHULKER_BOX_RECIPE = new SpecialRecipeSerializer<>(
 			EnderiteShulkerBoxRecipe::new);
 
@@ -224,7 +220,7 @@ public class EnderiteMod implements ModInitializer {
 				"enderitemod:enderite_shulker_box_block_entity",
 				FabricBlockEntityTypeBuilder.create(EnderiteShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX)
 						.build(null));
-		FabricBlockEntityTypeBuilder.create(ShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null);
+		//FabricBlockEntityTypeBuilder<ShulkerBoxBlockEntity>.create(ShulkerBoxBlockEntity::new, ENDERITE_SHULKER_BOX).build(null);
 
 		DispenserBlock.registerBehavior(ENDERITE_SHULKER_BOX.asItem(), new BlockPlacementDispenserBehavior());
 
@@ -233,6 +229,10 @@ public class EnderiteMod implements ModInitializer {
 				new Identifier("enderitemod", "void_floating"), new VoidFloatingEnchantment());
 
 		// ItemGroup
+		Registry.register(Registries.ITEM_GROUP,  ITEM_GROUP, FabricItemGroup.builder()
+			.displayName(Text.translatable("itemGroup.enderitemod.enderite_group"))
+			.icon(() -> new ItemStack(ENDERITE_INGOT))
+			.build());
 		ItemGroupEvents.modifyEntriesEvent(ITEM_GROUP).register(content -> {
 			content.add(ENDERITE_ORE);
 			content.add(CRACKED_ENDERITE_ORE);
@@ -255,9 +255,12 @@ public class EnderiteMod implements ModInitializer {
 			content.add(ENDERITE_LEGGINGS);
 			content.add(ENDERITE_BOOTS);
 
-			content.add(ENDERITE_ELYTRA);
+			content.add(ENDERITE_ELYTRA);			
+			content.add(ENDERITE_ELYTRA_SEPERATED);
 			content.add(ENDERITE_SHULKER_BOX);
-			content.add(ENDERITE_RESPAWN_ANCHOR);
+			content.add(ENDERITE_RESPAWN_ANCHOR);			
+			content.add(ENDERITE_SHEAR);
+
 		});
 
 		// Ore configuration

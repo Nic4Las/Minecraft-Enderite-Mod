@@ -6,15 +6,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.enderitemc.enderitemod.EnderiteMod;
+import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.ForgingScreenHandler;
-import net.minecraft.screen.LegacySmithingScreenHandler;
+import net.minecraft.screen.SmithingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.SmithingScreenHandler;
 
-@Mixin(LegacySmithingScreenHandler.class)
+@Mixin(SmithingScreenHandler.class)
 public abstract class SmithingEnderiteSwordOutputMixin extends ForgingScreenHandler {
 
     public SmithingEnderiteSwordOutputMixin(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {

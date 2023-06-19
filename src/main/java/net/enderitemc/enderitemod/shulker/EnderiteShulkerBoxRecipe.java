@@ -2,7 +2,7 @@ package net.enderitemc.enderitemod.shulker;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -18,7 +18,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world) {
+    public boolean matches(RecipeInputInventory inv, World world) {
         int i = 0;
         int j = 0;
         int l = 0;
@@ -49,7 +49,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv, DynamicRegistryManager registryManager) {
+    public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager registryManager) {
         ItemStack itemStack = ItemStack.EMPTY;
 
         for (int i = 0; i < inv.size(); ++i) {
