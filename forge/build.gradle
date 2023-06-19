@@ -34,6 +34,10 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+
+    modImplementation("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
+
+    // modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-forge:${rootProject.shulker_box_tooltip_version}")
 }
 
 processResources {

@@ -38,6 +38,19 @@ allprojects {
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
+        maven {
+			name = "Jitpack"
+			url 'https://jitpack.io/'
+		}
+
+        maven {
+            url "https://maven.terraformersmc.com/releases/"
+            content {
+                includeGroup "com.terraformersmc"
+            }
+        }
+
+        maven {url "https://maven.misterpemodder.com/libs-release/"}
     }
 
     tasks.withType(JavaCompile) {
