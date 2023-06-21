@@ -33,7 +33,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
         if (hand == Hand.MAIN_HAND && !isChargeItem(itemStack) && isChargeItem(player.getStackInHand(Hand.OFF_HAND))) {
             return ActionResult.PASS;
         } else if (isChargeItem(itemStack) && canCharge(state)) {
-            charge(world, pos, state);
+            charge(player, world, pos, state);
             if (!player.getAbilities().creativeMode) {
                 itemStack.decrement(1);
             }

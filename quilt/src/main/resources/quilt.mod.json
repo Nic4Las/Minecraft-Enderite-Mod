@@ -1,6 +1,9 @@
 {
   "schema_version": 1,
-  "mixin": ["enderitemod.mixins.json", "enderitemod-common.mixins.json"],
+  "mixin": [
+    "enderitemod.mixins.json",
+    "enderitemod-common.mixins.json"
+  ],
   "quilt_loader": {
     "group": "${group}",
     "id": "enderitemod",
@@ -16,7 +19,9 @@
     "intermediate_mappings": "net.fabricmc:intermediary",
     "environment": "*",
     "entrypoints": {
-      "init": ["net.enderitemc.enderitemod.quilt.EnderiteModQuilt"]
+      "init": [
+        "net.enderitemc.enderitemod.quilt.EnderiteModQuilt"
+      ]
     },
     "depends": [
       {
@@ -29,11 +34,11 @@
       },
       {
         "id": "minecraft",
-        "version": ">=1.19.2"
+        "version": ">=1.19.4"
       },
       {
         "id": "architectury",
-        "version": ">=6.2.43"
+        "version": ">=8.1.79"
       }
     ]
   }

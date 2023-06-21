@@ -13,13 +13,8 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
-
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") {//4.8.3 //4.11.26
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-	modImplementation "com.terraformersmc:modmenu:${rootProject.modmenu_version}"
-
-    modImplementation ("com.misterpemodder:shulkerboxtooltip-common:${rootProject.sbtt_version}")
+    modImplementation("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}")
+    modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-common:${rootProject.shulker_box_tooltip_version}")
 }
 
 publishing {

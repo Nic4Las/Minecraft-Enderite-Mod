@@ -19,7 +19,6 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -50,7 +49,7 @@ public class EnderiteBow extends BowItem {
             PlayerEntity playerEntity = (PlayerEntity) user;
             boolean bl = playerEntity.getAbilities().creativeMode
                     || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
-            ItemStack itemStack = playerEntity.getArrowType(stack);
+            ItemStack itemStack = playerEntity.getProjectileType(stack);
             if (!itemStack.isEmpty() || bl) {
                 if (itemStack.isEmpty()) {
                     itemStack = new ItemStack(Items.ARROW);
@@ -92,7 +91,7 @@ public class EnderiteBow extends BowItem {
                             persistentProjectileEntity.setOnFireFor(100);
                         }
 
-                        stack.damage(1, (LivingEntity) playerEntity, (Consumer) ((p) -> {
+                        stack.damage(1, (LivingEntity) playerEntity, (Consumer<LivingEntity>) ((p) -> {
                             ((LivingEntity) p).sendToolBreakStatus(playerEntity.getActiveHand());
                         }));
                         if (bl2 || playerEntity.getAbilities().creativeMode && (itemStack.getItem() == Items.SPECTRAL_ARROW
@@ -143,7 +142,7 @@ public class EnderiteBow extends BowItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        boolean bl = !user.getArrowType(itemStack).isEmpty();
+        boolean bl = !user.getProjectileType(itemStack).isEmpty();
         if (!user.getAbilities().creativeMode && !bl) {
             return TypedActionResult.fail(itemStack);
         } else {

@@ -21,7 +21,7 @@ loom {
 
 configurations {
     common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
@@ -35,9 +35,9 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    
-	modImplementation("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
-    modImplementation ("com.misterpemodder:shulkerboxtooltip-forge:${rootProject.sbtt_version}")
+    modImplementation("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
+
+    // modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-forge:${rootProject.shulker_box_tooltip_version}")
 }
 
 processResources {

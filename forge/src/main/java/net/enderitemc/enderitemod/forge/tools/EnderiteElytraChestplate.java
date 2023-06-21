@@ -13,8 +13,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 public class EnderiteElytraChestplate extends ArmorItem {
-    public EnderiteElytraChestplate(ArmorMaterial materialIn, EquipmentSlot slot, Settings properties) {
-        super(materialIn, slot, properties);
+    public EnderiteElytraChestplate(ArmorMaterial materialIn, ArmorItem.Type type, Settings properties) {
+        super(materialIn, type, properties);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
 

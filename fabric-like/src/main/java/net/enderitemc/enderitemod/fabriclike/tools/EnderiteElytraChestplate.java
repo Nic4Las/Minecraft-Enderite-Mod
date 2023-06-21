@@ -2,7 +2,6 @@ package net.enderitemc.enderitemod.fabriclike.tools;
 
 import net.fabricmc.fabric.api.entity.event.v1.FabricElytraItem;
 import net.minecraft.block.DispenserBlock;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
@@ -10,8 +9,8 @@ import net.minecraft.item.ItemStack;
 
 public class EnderiteElytraChestplate extends ArmorItem implements FabricElytraItem {
 
-    public EnderiteElytraChestplate(ArmorMaterial material, EquipmentSlot slot, Settings settings) {
-        super(material, slot, settings);
+    public EnderiteElytraChestplate(ArmorMaterial material, ArmorItem.Type type, Settings settings) {
+        super(material, type, settings);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
 

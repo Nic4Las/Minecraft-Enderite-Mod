@@ -2,9 +2,8 @@ package net.enderitemc.enderitemod.forge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.builder.api.Component;
 
-import com.misterpemodder.shulkerboxtooltip.api.forge.ShulkerBoxTooltipPlugin;
+// import com.misterpemodder.shulkerboxtooltip.api.forge.ShulkerBoxTooltipPlugin;
 
 import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
@@ -17,7 +16,7 @@ import net.enderitemc.enderitemod.forge.tools.EnderiteElytraChestplate;
 import net.enderitemc.enderitemod.forge.tools.EnderiteElytraSeperated;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteElytraFeatureRender;
-import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
+// import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.minecraft.block.DispenserBlock;
@@ -27,14 +26,13 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -53,7 +51,7 @@ public class EnderiteModForge {
         // Enderite Elytra
         public static final RegistrySupplier<Item> ENDERITE_ELYTRA = EnderiteMod.ITEMS.register("enderite_elytra",
                         () -> new EnderiteElytraChestplate(EnderiteArmorMaterial.ENDERITE,
-                                        EquipmentSlot.CHEST,
+                                        ArmorItem.Type.CHESTPLATE,
                                         EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS));
 
         public static final RegistrySupplier<Item> ENDERITE_ELYTRA_SEPERATED = EnderiteMod.ITEMS.register(
@@ -112,11 +110,11 @@ public class EnderiteModForge {
                                                                 (mc, screen) -> new ClothConfig(screen).getScreen()));
                         }
 
-                        if (ModList.get().isLoaded("shulkerboxtooltip")) {
-                                ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
-                                                () -> new ShulkerBoxTooltipPlugin(
-                                                                ShulkerBoxTooltipApiImplementation::new));
-                        }
+                        // if (ModList.get().isLoaded("shulkerboxtooltip")) {
+                        //         ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
+                        //                         () -> new ShulkerBoxTooltipPlugin(
+                        //                                         ShulkerBoxTooltipApiImplementation::new));
+                        // }
                 }
 
                 @SubscribeEvent(priority = EventPriority.LOW)
