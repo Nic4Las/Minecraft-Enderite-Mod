@@ -53,7 +53,7 @@ public class EnderiteElytraChestplate extends ArmorItem {
 
     @Override
     public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-        if (!entity.world.isClient() && (flightTicks + 1) % 20 == 0) {
+        if (!entity.getWorld().isClient() && (flightTicks + 1) % 20 == 0) {
             stack.damage(1, entity, e -> ((LivingEntity) e).sendEquipmentBreakStatus(EquipmentSlot.CHEST));
         }
         return isUsable(stack);

@@ -3,6 +3,7 @@ package net.enderitemc.enderitemod.shulker;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -18,7 +19,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world) {
+    public boolean matches(RecipeInputInventory inv, World world) {
         int i = 0;
         int j = 0;
         int l = 0;
@@ -26,17 +27,17 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
         for (int k = 0; k < inv.size(); ++k) {
             ItemStack itemStack = inv.getStack(k);
             if (!itemStack.isEmpty()) {
-                if (!(itemStack.getItem() == EnderiteMod.ENDERITE_INGOT.get()
+                if (!(itemStack.getItem() == EnderiteMod.ENDERITE_INGOT
                         || (itemStack.isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES)))) {
                     return false;
                 }
                 if (k == 4 && (itemStack.isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES))) {
                     ++i;
                 }
-                if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT.get() && (k == 1 || k == 3 || k == 5 || k == 7)) {
+                if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT && (k == 1 || k == 3 || k == 5 || k == 7)) {
                     ++j;
                 }
-                if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT.get()) {
+                if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT) {
                     ++l;
                 }
                 if (l > 4 || i > 1) {
@@ -49,7 +50,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv, DynamicRegistryManager manager) {
+    public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager registryManager) {
         ItemStack itemStack = ItemStack.EMPTY;
 
         for (int i = 0; i < inv.size(); ++i) {

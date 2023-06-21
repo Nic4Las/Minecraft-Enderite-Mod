@@ -3,9 +3,11 @@ package net.enderitemc.enderitemod.misc;
 import java.util.Map;
 
 import net.enderitemc.enderitemod.EnderiteMod;
+import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
@@ -20,14 +22,14 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         super(identifier, category);
     }
 
-    public boolean matches(CraftingInventory craftingInventory, World world) {
+    public boolean matches(RecipeInputInventory craftingInventory, World world) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
         for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack3 = craftingInventory.getStack(i);
             if (!itemStack3.isEmpty()) {
-                if (itemStack3.getItem() == EnderiteMod.ENDERITE_CHESTPLATE.get()) {
+                if (itemStack3.getItem() == EnderiteMod.ENDERITE_CHESTPLATE) {
                     if (!itemStack2.isEmpty()) {
                         return false;
                     }
@@ -54,14 +56,15 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    public ItemStack craft(CraftingInventory craftingInventory, DynamicRegistryManager manager) {
+    @Override
+    public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager registryManager) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
         for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack3 = craftingInventory.getStack(i);
             if (!itemStack3.isEmpty()) {
-                if (itemStack3.getItem() == EnderiteMod.ENDERITE_CHESTPLATE.get()) {
+                if (itemStack3.getItem() == EnderiteMod.ENDERITE_CHESTPLATE) {
                     itemStack = itemStack3;
                 } else if (itemStack3.getItem() instanceof ElytraItem) {
                     itemStack2 = itemStack3.copy();

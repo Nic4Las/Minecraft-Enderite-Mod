@@ -13,6 +13,9 @@ import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 
 public class EnderiteModFabricLike {
 
@@ -40,10 +43,10 @@ public class EnderiteModFabricLike {
                 EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY = ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
 
                 // ItemGroup
-		ItemGroupEvents.modifyEntriesEvent(EnderiteMod.ENDERITE_TAB.get()).register(content -> {
-			content.add(ENDERITE_ELYTRA.get());			
+                ItemGroupEvents.modifyEntriesEvent(EnderiteMod.ENDERITE_TAB.getKey()).register(content -> {
+                        content.add(ENDERITE_ELYTRA.get());			
                         content.add(ENDERITE_ELYTRA_SEPERATED.get());
-		});
+                });
 
                 DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHULKER_BOX.get().asItem(),
                                 new BlockPlacementDispenserBehavior());

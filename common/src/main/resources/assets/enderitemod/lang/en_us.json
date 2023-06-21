@@ -96,5 +96,7 @@
 
   "itemGroup.enderitemod.enderite_group": "Enderite Items",
   "option.enderitemod.restart.enderite_ore.moved_to_json": "Ore generation config via datapack",
-  "option.enderitemod.restart.enderite_ore.moved_to_json.hover": "Ore generation configuration has been moved to json (datapack)"
+  "option.enderitemod.restart.enderite_ore.moved_to_json.hover": "Ore generation configuration has been moved to json (datapack)",
+
+  "trim_material.enderitemod.enderite": "Enderite Material (acts like Void Floating I)"
 }

@@ -3,6 +3,7 @@ package net.enderitemc.enderitemod.misc;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -18,7 +19,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         super(identifier, category);
     }
 
-    public boolean matches(CraftingInventory craftingInventory, World world) {
+    public boolean matches(RecipeInputInventory craftingInventory, World world) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
@@ -56,7 +57,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    public ItemStack craft(CraftingInventory craftingInventory, DynamicRegistryManager manager) {
+    public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager dynamicRegistryManager) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 

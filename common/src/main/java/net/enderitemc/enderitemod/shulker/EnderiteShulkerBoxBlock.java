@@ -3,12 +3,15 @@ package net.enderitemc.enderitemod.shulker;
 import java.util.List;
 
 import net.enderitemc.enderitemod.EnderiteMod;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -35,8 +38,8 @@ import net.minecraft.world.World;
 
 public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
 
-    public EnderiteShulkerBoxBlock(DyeColor color, Settings settings) {
-        super(color, settings);
+    public EnderiteShulkerBoxBlock() {
+        super((DyeColor) null, Settings.copy(Blocks.SHULKER_BOX).nonOpaque().strength(2.0f,17.0f));
     }
 
     @Override
@@ -115,18 +118,16 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, Builder builder) {
-        BlockEntity blockEntity = (BlockEntity) builder.getNullable(LootContextParameters.BLOCK_ENTITY);
+    public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+        BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
         if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
-            EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) blockEntity;
-            builder = builder.putDrop(CONTENTS, (lootContext, consumer) -> {
+            EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity)blockEntity;
+            builder = builder.addDynamicDrop(CONTENTS_DYNAMIC_DROP_ID, lootConsumer -> {
                 for (int i = 0; i < shulkerBoxBlockEntity.size(); ++i) {
-                    consumer.accept(shulkerBoxBlockEntity.getStack(i));
+                    lootConsumer.accept(shulkerBoxBlockEntity.getStack(i));
                 }
-
             });
         }
-
         return super.getDroppedStacks(state, builder);
     }
 

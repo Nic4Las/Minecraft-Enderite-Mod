@@ -27,16 +27,16 @@ public abstract class EnderiteShearsSheepMixin extends LivingEntity {
     }
 
     @Shadow
-    abstract boolean isShearable();
+    public abstract boolean isShearable();
 
     @Shadow
-    abstract void sheared(SoundCategory cat);
+    public abstract void sheared(SoundCategory cat);
 
     @Inject(at = @At(value = "HEAD"), method = "interactMob", cancellable = true)
     private void onShear(final PlayerEntity player, final Hand hand, final CallbackInfoReturnable<ActionResult> info) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (itemStack.getItem() == EnderiteMod.ENDERITE_SHEAR.get()) {
-            if (!this.world.isClient && this.isShearable()) {
+        if (itemStack.getItem() == EnderiteMod.ENDERITE_SHEAR) {
+            if (!this.getWorld().isClient && this.isShearable()) {
                 this.sheared(SoundCategory.PLAYERS);
                 itemStack.damage(1, (LivingEntity) player, (Consumer<LivingEntity>) ((playerEntity) -> {
                     playerEntity.sendToolBreakStatus(hand);

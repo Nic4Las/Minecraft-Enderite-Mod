@@ -2,7 +2,9 @@ package net.enderitemc.enderitemod.blocks;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.RespawnAnchorBlock;
+import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -18,8 +20,9 @@ import net.minecraft.world.dimension.DimensionTypes;
 
 public class EnderiteRespawnAnchor extends RespawnAnchorBlock {
 
-    public EnderiteRespawnAnchor(AbstractBlock.Settings settings) {
-        super(settings);
+
+    public EnderiteRespawnAnchor() {
+        super(AbstractBlock.Settings.create().mapColor(MapColor.BLACK).instrument(Instrument.BASEDRUM).requiresTool().strength(50.0f, 1200.0f).luminance(state -> RespawnAnchorBlock.getLightLevel(state, 15)));
     }
 
     private static boolean isChargeItem(ItemStack stack) {

@@ -15,8 +15,8 @@ public interface EnderiteCrossbowUser extends CrossbowUser {
         Hand hand = ProjectileUtil.getHandPossiblyHolding(entity, EnderiteMod.ENDERITE_CROSSBOW.get());
         ItemStack itemStack = entity.getStackInHand(hand);
         if (entity.isHolding(EnderiteMod.ENDERITE_CROSSBOW.get())) {
-            EnderiteCrossbow.shootAll(entity.world, entity, hand, itemStack, speed,
-                    (float) (14 - entity.world.getDifficulty().getId() * 4));
+            EnderiteCrossbow.shootAll(entity.getWorld(), entity, hand, itemStack, speed,
+                    (float) (14 - entity.getWorld().getDifficulty().getId() * 4));
         }
 
         this.postShoot();

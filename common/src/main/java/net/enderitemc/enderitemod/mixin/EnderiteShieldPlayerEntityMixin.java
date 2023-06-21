@@ -44,7 +44,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
     @Inject(at = @At("HEAD"), method = "damageShield")
     private void damageIt(float amount, CallbackInfo info) {
         if (this.activeItemStack.getItem() instanceof EnderiteShield) {
-            if (!this.world.isClient) {
+            if (!this.getWorld().isClient) {
                 this.incrementStat(Stats.USED.getOrCreateStat(this.activeItemStack.getItem()));
             }
 
@@ -62,7 +62,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                     }
 
                     this.activeItemStack = ItemStack.EMPTY;
-                    this.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + this.world.random.nextFloat() * 0.4F);
+                    this.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + this.getWorld().random.nextFloat() * 0.4F);
                 }
             }
 
@@ -79,7 +79,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                 charge = Integer.parseInt(this.activeItemStack.getNbt().get("teleport_charge").asString());
             }
 
-            if (!world.isClient && charge > 0 && !(attacker instanceof EnderDragonEntity
+            if (!getWorld().isClient && charge > 0 && !(attacker instanceof EnderDragonEntity
                     || attacker instanceof WitherEntity || attacker instanceof ElderGuardianEntity)) {
                 double d = attacker.getX();
                 double e = attacker.getY();
@@ -101,7 +101,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                     double g = attacker.getX() + dX * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                     double h = MathHelper.clamp(
                             attacker.getY() + dY * distance + (double) (attacker.getRandom().nextInt(16) - 8), 0.0D,
-                            (double) (world.getHeight() - 1));
+                            (double) (getWorld().getHeight() - 1));
                     double j = attacker.getZ() + dZ * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                     if (attacker.hasVehicle()) {
                         attacker.stopRiding();
@@ -110,7 +110,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                     if (attacker.teleport(g, h, j, true)) {
                         SoundEvent soundEvent = attacker instanceof FoxEntity ? SoundEvents.ENTITY_FOX_TELEPORT
                                 : SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
-                        world.playSound((PlayerEntity) null, d, e, f, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                        getWorld().playSound((PlayerEntity) null, d, e, f, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
                         attacker.playSound(soundEvent, 1.0F, 1.0F);
 
                         this.activeItemStack.getNbt().putInt("teleport_charge", charge - 1);

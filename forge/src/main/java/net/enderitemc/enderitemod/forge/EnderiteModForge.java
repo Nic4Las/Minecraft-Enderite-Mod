@@ -42,6 +42,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.common.MinecraftForge;
 
 @Mod(EnderiteMod.MOD_ID)
 public class EnderiteModForge {
@@ -73,8 +74,9 @@ public class EnderiteModForge {
                 // Submit our event bus to let architectury register our content on the right
                 // time
                 EventBuses.registerModEventBus(EnderiteMod.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
-
                 EnderiteMod.init();
+
+
 
                 EnderiteMod.ENDERITE_ELYTRA = ENDERITE_ELYTRA;
                 EnderiteMod.ENDERITE_ELYTRA_SEPERATED = ENDERITE_ELYTRA_SEPERATED;
@@ -89,12 +91,11 @@ public class EnderiteModForge {
                                 new BlockPlacementDispenserBehavior());
         }
 
-        @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+        @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT, modid = EnderiteMod.MOD_ID)
         public static class RegistryEventsClient {
 
                 @SubscribeEvent
                 public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
-                        // WorldFeatures.init();
                         AnimationFeatures.init();
                 }
 
