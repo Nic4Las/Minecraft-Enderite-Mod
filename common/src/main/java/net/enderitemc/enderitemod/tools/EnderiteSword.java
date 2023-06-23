@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -99,8 +100,8 @@ public class EnderiteSword extends SwordItem {
                         }
                     }
                 }
-                if (foundSpace == 0 && !world.getBlockState(blockPos).getMaterial().blocksMovement()
-                        && !world.getBlockState(blockPos.up()).getMaterial().blocksMovement()) {
+                if (foundSpace == 0 && !world.getBlockState(blockPos).blocksMovement()
+                        && !world.getBlockState(blockPos.up()).blocksMovement()) {
                     foundSpace = 4;
                 }
                 // world.rayTraceBlock(position, endPosition, blockPos, playerEntity.shape,
@@ -112,10 +113,10 @@ public class EnderiteSword extends SwordItem {
                     playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
                     switch (foundSpace) {
                         case 1: // Down
-                            playerEntity.teleport(endPosition.x, down > maxDown ? down : maxDown, endPosition.z);
+                            playerEntity.teleport(endPosition.x, down > maxDown ? down : maxDown, endPosition.z, true);
                             break;
                         case 2: // Up
-                            playerEntity.teleport(endPosition.x, up < maxUp ? up : maxUp, endPosition.z);
+                            playerEntity.teleport(endPosition.x, up < maxUp ? up : maxUp, endPosition.z, true);
                             break;
                         case 4: // Air
                             near = distance / 2;
@@ -123,7 +124,7 @@ public class EnderiteSword extends SwordItem {
                             down = position.y + dY * near;
                             down = down > world.getBottomY() ? down : world.getBottomY() + 1;
                             playerEntity.teleport(position.x + dX * near, down,
-                                    position.z + dZ * near);
+                                    position.z + dZ * near, true);
                             break;
                     }
                     playerEntity.getItemCooldownManager().set(this, 30);
@@ -134,6 +135,7 @@ public class EnderiteSword extends SwordItem {
                         playerEntity.getStackInHand(hand).getNbt().putInt("teleport_charge", slot - 1);
                     }
                     world.sendEntityStatus(playerEntity, (byte) 46);
+                    world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
                     playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
                 }
             } else {
@@ -148,9 +150,9 @@ public class EnderiteSword extends SwordItem {
     }
 
     protected boolean checkBlocks(World world, BlockPos pos) {
-        if (world.getBlockState(pos.down()).getMaterial().blocksMovement()
-                && !world.getBlockState(pos).getMaterial().blocksMovement()
-                && !world.getBlockState(pos.up()).getMaterial().blocksMovement()) {
+        if (world.getBlockState(pos.down()).blocksMovement()
+                && !world.getBlockState(pos).blocksMovement()
+                && !world.getBlockState(pos.up()).blocksMovement()) {
             return true;
         }
         return false;

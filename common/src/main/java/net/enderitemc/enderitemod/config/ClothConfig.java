@@ -101,6 +101,29 @@ public class ClothConfig {
                                                 .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_small.json"))
                                 .build());
 
+                // restart.addEntry(entryBuilder
+                // .startIntField(Text.translatable(
+                // "option.enderitemod.restart.enderite_ore.vein_size"),
+                // currentConfig.worldGeneration.enderiteOre.veinSize)
+                // .setDefaultValue(DEFAULT.worldGeneration.enderiteOre.veinSize).setMin(2).setMax(16)
+                // .setTooltip(Text.translatable(
+                // "option.enderitemod.restart.enderite_ore.vein_size.hover"))
+                // .setSaveConsumer(
+                // newValue -> currentConfig.worldGeneration.enderiteOre.veinSize = newValue)
+                // .build());
+
+                // restart.addEntry(entryBuilder
+                // .startIntField(Text.translatable(
+                // "option.enderitemod.restart.enderite_ore.vein_amount"),
+                // currentConfig.worldGeneration.enderiteOre.veinAmount)
+                // .setDefaultValue(DEFAULT.worldGeneration.enderiteOre.veinAmount).setMin(2).setMax(16)
+                // .setTooltip(Text.translatable(
+                // "option.enderitemod.restart.enderite_ore.vein_amount.hover"))
+                // .setSaveConsumer(
+                // newValue -> currentConfig.worldGeneration.enderiteOre.veinAmount = newValue)
+                // .build());
+
+                // TOOLS
                 restart.addEntry(entryBuilder
                                 .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_sword.attack_damage"),

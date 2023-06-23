@@ -29,23 +29,6 @@ public class EnderiteElytraChestplate extends ArmorItem {
         return repair.getItem() == Items.PHANTOM_MEMBRANE;
     }
 
-    /**
-     * Called to trigger the item's "innate" right click behavior. To handle when
-     * this item is used on a Block, see {@link #onItemUse}.
-     */
-    public TypedActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack itemstack = playerIn.getStackInHand(handIn);
-        EquipmentSlot equipmentslottype = EquipmentSlot.CHEST;
-        ItemStack itemstack1 = playerIn.getEquippedStack(equipmentslottype);
-        if (itemstack1.isEmpty()) {
-            playerIn.equipStack(equipmentslottype, itemstack.copy());
-            itemstack.setCount(0);
-            return TypedActionResult.success(itemstack, worldIn.isClient());
-        } else {
-            return TypedActionResult.fail(itemstack);
-        }
-    }
-
     @Override
     public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
         return true;
@@ -53,7 +36,7 @@ public class EnderiteElytraChestplate extends ArmorItem {
 
     @Override
     public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-        if (!entity.world.isClient() && (flightTicks + 1) % 20 == 0) {
+        if (!entity.getWorld().isClient() && (flightTicks + 1) % 20 == 0) {
             stack.damage(1, entity, e -> ((LivingEntity) e).sendEquipmentBreakStatus(EquipmentSlot.CHEST));
         }
         return isUsable(stack);

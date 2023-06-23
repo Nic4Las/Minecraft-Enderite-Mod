@@ -1,1 +1,3 @@
 accessWidener   v2  named
+accessible  method   net/minecraft/item/SmithingTemplateItem   getNetheriteUpgradeEmptyBaseSlotTextures   ()Ljava/util/List;
+accessible  method   net/minecraft/item/SmithingTemplateItem   getNetheriteUpgradeEmptyAdditionsSlotTextures   ()Ljava/util/List;

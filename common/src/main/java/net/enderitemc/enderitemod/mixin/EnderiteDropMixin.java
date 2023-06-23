@@ -27,7 +27,7 @@ public abstract class EnderiteDropMixin extends Entity {
 	@Inject(at = @At("TAIL"), method = "tick()V")
 	private void dropItem(CallbackInfo info) {
 		// If enderite item entity has gravity, turn it off
-		if (!hasNoGravity() && !world.isClient && !getStack().isEmpty()
+		if (!hasNoGravity() && !getWorld().isClient && !getStack().isEmpty()
 				&& (getStack().isIn(EnderiteTag.ENDERITE_ITEM))) {
 			setNoGravity(true);
 		}

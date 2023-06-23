@@ -12,4 +12,6 @@ public class EnderiteTag {
             new Identifier("enderitemod", "shulker_boxes"));
     public static final TagKey<Item> ENDERITE_ELYTRA = TagKey.of(RegistryKeys.ITEM,
             new Identifier("enderitemod", "enderite_elytras"));
+    public static final TagKey<Item> ENDERITE_ARMOR = TagKey.of(RegistryKeys.ITEM,
+            new Identifier("enderitemod", "enderite_armor"));
 }

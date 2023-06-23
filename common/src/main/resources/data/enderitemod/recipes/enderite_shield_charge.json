@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": {
+    "item": "minecraft:ender_pearl"
+  },
+  "base": {
+    "item": "enderitemod:enderite_shield"
+  },
+  "addition": {
+    "item": "minecraft:ender_pearl"
+  },
+  "result": {
+    "item": "enderitemod:enderite_shield"
+  }
+}

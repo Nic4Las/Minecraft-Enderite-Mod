@@ -1,0 +1,9 @@
+{
+    "asset_name": "enderite_darker",
+    "description": {
+      "color": "#14423A",
+      "translate": "trim_material.enderitemod.enderite"
+    },
+    "ingredient": "enderitemod:enderite_ingot",
+    "item_model_index": 0.71337
+  }

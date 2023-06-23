@@ -1,5 +1,8 @@
 package net.enderitemc.enderitemod.fabriclike;
 
+import com.google.common.base.Suppliers;
+
+import dev.architectury.registry.registries.RegistrarManager;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.fabriclike.misc.EnderiteShieldRenderer;
 import net.enderitemc.enderitemod.fabriclike.tools.EnderiteElytraChestplate;
@@ -12,9 +15,15 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
+import net.minecraft.block.SkullBlock;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.client.render.block.entity.SkullBlockEntityModel;
+import net.minecraft.client.render.entity.model.EntityModelLoader;
+import net.minecraft.client.render.entity.model.ShieldEntityModel;
+import net.minecraft.client.render.entity.model.TridentEntityModel;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -27,6 +36,7 @@ public class EnderiteModClient implements ClientModInitializer {
                                 EnderiteShulkerBoxBlockEntityRenderer::new);
                 BuiltinItemRendererRegistry.INSTANCE.register(EnderiteMod.ENDERITE_SHIELD.get(),
                                 new EnderiteShieldRenderer());
+                                
 
                 ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_BOW.get().asItem(), new Identifier("pull"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {

@@ -37,18 +37,4 @@ public class EnderiteElytraSeperated extends ElytraItem implements FabricElytraI
         return EnderiteMaterial.ENDERITE.getRepairIngredient().test(ingredient);
     }
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        EquipmentSlot equipmentSlot = getSlotType();
-        ItemStack itemStack2 = user.getEquippedStack(equipmentSlot);
-        if (itemStack2.isEmpty()) {
-            user.equipStack(equipmentSlot, itemStack.copy());
-            itemStack.setCount(0);
-            return TypedActionResult.success(itemStack);
-        } else {
-            return TypedActionResult.fail(itemStack);
-        }
-    }
-
 }

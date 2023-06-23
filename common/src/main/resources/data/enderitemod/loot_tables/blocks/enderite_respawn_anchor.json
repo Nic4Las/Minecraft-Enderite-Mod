@@ -2,6 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
+      "name":"enderitemod:enderite_respawn_anchor",
       "rolls": 1,
       "entries": [
         {

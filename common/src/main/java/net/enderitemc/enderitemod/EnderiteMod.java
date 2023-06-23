@@ -6,7 +6,6 @@ import com.google.common.base.Suppliers;
 
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.registry.CreativeTabRegistry;
-import dev.architectury.registry.CreativeTabRegistry.TabSupplier;
 import dev.architectury.registry.level.biome.BiomeModifications;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrarManager;
@@ -24,6 +23,7 @@ import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
+import net.enderitemc.enderitemod.misc.EnderiteUpgradeSmithingTemplate;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxRecipe;
@@ -36,36 +36,34 @@ import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteSword;
 import net.enderitemc.enderitemod.tools.HoeSubclass;
 import net.enderitemc.enderitemod.tools.PickaxeSubclass;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.Settings;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShovelItem;
-import net.minecraft.item.Item.Settings;
+import net.minecraft.item.SmithingTemplateItem;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.DyeColor;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.Util;
 import net.minecraft.world.gen.GenerationStep;
 
 public class EnderiteMod {
         public static final String MOD_ID = "enderitemod";
         // We can use this if we don't want to use DeferredRegister
         public static final Supplier<RegistrarManager> REGISTRIES = Suppliers.memoize(() -> RegistrarManager.get(MOD_ID));
-        // Registering a new creative tab
-        public static final TabSupplier ENDERITE_TAB = CreativeTabRegistry.create(new Identifier(MOD_ID, "enderite_group"),
-                        () -> new ItemStack(EnderiteMod.ENDERITE_INGOT.get()));
 
         public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, RegistryKeys.ITEM);
         public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(MOD_ID, RegistryKeys.BLOCK);
@@ -75,6 +73,20 @@ public class EnderiteMod {
                         RegistryKeys.BLOCK_ENTITY_TYPE);
         public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(MOD_ID,
                         RegistryKeys.ENCHANTMENT);
+        public static final DeferredRegister<ItemGroup> TABS =
+                DeferredRegister.create(MOD_ID, RegistryKeys.ITEM_GROUP);
+
+        
+
+        public static final RegistrySupplier<ItemGroup> ENDERITE_TAB = TABS.register("enderite_group",
+                () -> CreativeTabRegistry.create(
+                        Text.translatable("itemGroup.enderitemod.enderite_group"),
+                        () ->new ItemStack(EnderiteMod.ENDERITE_INGOT.get())
+                )
+        );
+
+
+
 
         public static Config CONFIG = ConfigLoader.get();
 
@@ -83,6 +95,8 @@ public class EnderiteMod {
                         () -> new EnderiteIngot(new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
         public static final RegistrySupplier<Item> ENDERITE_SCRAP = ITEMS.register("enderite_scrap",
                         () -> new EnderiteScrap(new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
+
+
 
         // Enderite Tools
         public static final RegistrySupplier<Item> ENDERITE_PICKAXE = ITEMS.register("enderite_pickaxe",
@@ -107,12 +121,14 @@ public class EnderiteMod {
                                         CONFIG.tools.enderiteSwordAD, -2.4F,
                                         new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
 
+
         // Enderite Block
         public static final Supplier<Item.Settings> BASE_ENDERITE_ITEM_SETTINGS = () -> new Item.Settings()
                         .arch$tab(ENDERITE_TAB).fireproof();
+
+
         public static final RegistrySupplier<Block> ENDERITE_BLOCK = BLOCKS.register("enderite_block",
-                        () -> new EnderiteBlock(
-                                        new Material.Builder(MapColor.BLACK).build()));
+                        () -> new EnderiteBlock());
         public static final RegistrySupplier<Item> ENDERITE_BLOCK_ITEM = ITEMS.register("enderite_block",
                         () -> new BlockItem(ENDERITE_BLOCK.get(), BASE_ENDERITE_ITEM_SETTINGS.get()));
         public static final RegistrySupplier<Block> ENDERITE_ORE = BLOCKS.register("enderite_ore",
@@ -125,11 +141,7 @@ public class EnderiteMod {
                         () -> new BlockItem(CRACKED_ENDERITE_ORE.get(), BASE_ENDERITE_ITEM_SETTINGS.get()));
 
         public static final RegistrySupplier<Block> ENDERITE_RESPAWN_ANCHOR = BLOCKS.register("enderite_respawn_anchor",
-                        () -> new EnderiteRespawnAnchor(AbstractBlock.Settings
-                                        .of(Material.STONE, MapColor.BLACK).requiresTool().strength(50.0F, 1200.0F)
-                                        .luminance((state) -> {
-                                                return EnderiteRespawnAnchor.getLightLevel(state, 15);
-                                        })));
+                        () -> new EnderiteRespawnAnchor());
         public static final RegistrySupplier<Item> ENDERITE_RESPAWN_ANCHOR_ITEM = ITEMS.register(
                         "enderite_respawn_anchor",
                         () -> new BlockItem(ENDERITE_RESPAWN_ANCHOR.get(), BASE_ENDERITE_ITEM_SETTINGS.get()));
@@ -174,9 +186,7 @@ public class EnderiteMod {
 
         // Shulker Box
         public static final RegistrySupplier<Block> ENDERITE_SHULKER_BOX = BLOCKS.register("enderite_shulker_box",
-                        () -> new EnderiteShulkerBoxBlock((DyeColor) null,
-                                        AbstractBlock.Settings.of(Material.SHULKER_BOX).nonOpaque().strength(2.0f,
-                                                        17.0f)));
+                        () -> new EnderiteShulkerBoxBlock());
         public static final RegistrySupplier<Item> ENDERITE_SHULKER_BOX_ITEM = ITEMS.register("enderite_shulker_box",
                         () -> new BlockItem(ENDERITE_SHULKER_BOX.get(), BASE_ENDERITE_ITEM_SETTINGS.get().maxCount(1)));
         public static RegistrySupplier<RecipeSerializer<?>> ENDERITE_SHULKER_BOX_RECIPE = RECIPES
@@ -217,12 +227,24 @@ public class EnderiteMod {
                                                         .maxDamage(2048)
                                                         .rarity(Rarity.RARE)));
 
+        // Trims
+        public static final RegistrySupplier<Item> ENDERITE_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("enderite_upgrade_smithing_template",
+                        () -> new SmithingTemplateItem(
+                                Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.applies_to"))).formatted(Formatting.BLUE),
+                                Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.ingredients"))).formatted(Formatting.BLUE),
+                                Text.translatable(Util.createTranslationKey("upgrade", new Identifier(MOD_ID,"enderite_upgrade"))).formatted(Formatting.GRAY),
+                                Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.base_slot_description"))),
+                                Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.additions_slot_description"))),
+                                SmithingTemplateItem.getNetheriteUpgradeEmptyBaseSlotTextures(),
+                                SmithingTemplateItem.getNetheriteUpgradeEmptyAdditionsSlotTextures()));
+
         public static void init() {
                 BLOCKS.register();
                 ITEMS.register();
                 RECIPES.register();
                 BLOCK_ENTITY_TYPES.register();
                 ENCHANTMENTS.register();
+                TABS.register();
 
                 LifecycleEvent.SETUP.register(() -> {
                         BiomeModifications.addProperties((ctx, mutable) -> {
@@ -237,8 +259,10 @@ public class EnderiteMod {
                                                         new Identifier("enderitemod","ore_enderite_small")));
                                 }
                         });
+                        CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
                 });
 
                 EnderiteShears.registerLoottables();
+                EnderiteUpgradeSmithingTemplate.registerLoottables();
         }
 }
