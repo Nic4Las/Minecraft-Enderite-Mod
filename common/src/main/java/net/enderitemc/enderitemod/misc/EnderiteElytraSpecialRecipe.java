@@ -57,7 +57,6 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    @Override
     public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager registryManager) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;

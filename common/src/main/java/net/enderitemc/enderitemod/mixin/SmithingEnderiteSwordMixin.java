@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(SmithingScreenHandler.class)
+@Mixin(LegacySmithingScreenHandler.class)
 public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
     private final String ENDERITE_ARMOR_TRIM_UPGRADE_NAME = "Enderite Trim Armor Up";
 

@@ -16,7 +16,7 @@ import net.minecraft.screen.SmithingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 
-@Mixin(SmithingScreenHandler.class)
+@Mixin(LegacySmithingScreenHandler.class)
 public abstract class SmithingEnderiteSwordOutputMixin extends ForgingScreenHandler {
 
     public SmithingEnderiteSwordOutputMixin(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {

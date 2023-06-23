@@ -13,6 +13,11 @@ public class ClothConfig {
 
         public ClothConfig(Screen parent) {
 
+                //REMOVE screen=null; //Update to 1.19.4 level (remove ore config)
+                // screen = null;
+
+
+                
                 ConfigBuilder builder = ConfigBuilder.create().setParentScreen(parent)
                                 .setTitle(Text.translatable("title.enderitemod.config"));
 
@@ -94,7 +99,6 @@ public class ClothConfig {
                                                 .append("\n- enderitemod/worldgen/configured_feature/ore_enderite_small.json")
                                                 .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_large.json")
                                                 .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_small.json"))
-
                                 .build());
 
                 // restart.addEntry(entryBuilder
@@ -130,6 +134,7 @@ public class ClothConfig {
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteSwordAD = newValue - 3)
                                 .build());
 
+                // TOOLS
                 restart.addEntry(entryBuilder
                                 .startIntField(Text.translatable(
                                                 "option.enderitemod.restart.enderite_pickaxe.attack_damage"),
@@ -169,7 +174,7 @@ public class ClothConfig {
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - 3).build());
 
                 this.screen = builder.build();
-
+                
         }
 
         public Screen getScreen() {
