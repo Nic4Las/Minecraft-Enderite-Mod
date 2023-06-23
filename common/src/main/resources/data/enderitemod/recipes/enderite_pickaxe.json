@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smithing_transform",
   "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
+    "item": "enderitemod:enderite_upgrade_smithing_template"
   },
   "base": {
     "item": "minecraft:netherite_pickaxe"

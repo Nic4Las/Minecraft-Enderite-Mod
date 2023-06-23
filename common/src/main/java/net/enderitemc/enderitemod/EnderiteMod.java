@@ -2,8 +2,6 @@ package net.enderitemc.enderitemod;
 
 import java.util.function.Supplier;
 
-import org.apache.logging.log4j.core.config.builder.api.Component;
-
 import com.google.common.base.Suppliers;
 
 import dev.architectury.event.events.common.LifecycleEvent;
@@ -25,6 +23,7 @@ import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
+import net.enderitemc.enderitemod.misc.EnderiteUpgradeSmithingTemplate;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxRecipe;
@@ -37,34 +36,29 @@ import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteSword;
 import net.enderitemc.enderitemod.tools.HoeSubclass;
 import net.enderitemc.enderitemod.tools.PickaxeSubclass;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
 import net.minecraft.item.Item.Settings;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.SmithingTemplateItem;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
-import net.minecraft.util.DyeColor;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.Util;
 import net.minecraft.world.gen.GenerationStep;
-
-import dev.architectury.registry.CreativeTabRegistry;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
 
 public class EnderiteMod {
         public static final String MOD_ID = "enderitemod";
@@ -80,7 +74,7 @@ public class EnderiteMod {
         public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(MOD_ID,
                         RegistryKeys.ENCHANTMENT);
         public static final DeferredRegister<ItemGroup> TABS =
-                DeferredRegister.create("enderite", RegistryKeys.ITEM_GROUP);
+                DeferredRegister.create(MOD_ID, RegistryKeys.ITEM_GROUP);
 
         
 
@@ -233,13 +227,24 @@ public class EnderiteMod {
                                                         .maxDamage(2048)
                                                         .rarity(Rarity.RARE)));
 
+        // Trims
+        public static final RegistrySupplier<Item> ENDERITE_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("enderite_upgrade_smithing_template",
+                        () -> new SmithingTemplateItem(
+                                Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.applies_to"))).formatted(Formatting.BLUE),
+                                Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.ingredients"))).formatted(Formatting.BLUE),
+                                Text.translatable(Util.createTranslationKey("upgrade", new Identifier(MOD_ID,"enderite_upgrade"))).formatted(Formatting.GRAY),
+                                Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.base_slot_description"))),
+                                Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.additions_slot_description"))),
+                                SmithingTemplateItem.getNetheriteUpgradeEmptyBaseSlotTextures(),
+                                SmithingTemplateItem.getNetheriteUpgradeEmptyAdditionsSlotTextures()));
+
         public static void init() {
                 BLOCKS.register();
                 ITEMS.register();
                 RECIPES.register();
                 BLOCK_ENTITY_TYPES.register();
                 ENCHANTMENTS.register();
-                // TABS.register();
+                TABS.register();
 
                 LifecycleEvent.SETUP.register(() -> {
                         BiomeModifications.addProperties((ctx, mutable) -> {
@@ -254,8 +259,11 @@ public class EnderiteMod {
                                                         new Identifier("enderitemod","ore_enderite_small")));
                                 }
                         });
+                        CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
                 });
 
+
                 EnderiteShears.registerLoottables();
+                EnderiteUpgradeSmithingTemplate.registerLoottables();
         }
 }

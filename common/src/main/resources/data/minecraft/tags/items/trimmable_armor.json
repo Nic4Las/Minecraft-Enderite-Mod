@@ -5,8 +5,6 @@
     "enderitemod:enderite_chestplate",
     "enderitemod:enderite_leggings",
     "enderitemod:enderite_boots",
-    "enderitemod:enderite_elytra",
-    "enderitemod:enderite_sword",
-    "enderitemod:enderite_shield"
+    "enderitemod:enderite_elytra"
   ]
 }

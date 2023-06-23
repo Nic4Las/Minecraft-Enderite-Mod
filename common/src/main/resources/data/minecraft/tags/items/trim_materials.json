@@ -1,8 +1,7 @@
 {
     "replace": false,
     "values": [
-      "enderitemod:enderite_ingot",
-      "minecraft:ender_pearl"
+      "enderitemod:enderite_ingot"
     ]
   }
   

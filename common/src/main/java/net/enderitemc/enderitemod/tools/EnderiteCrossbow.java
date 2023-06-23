@@ -391,7 +391,7 @@ public class EnderiteCrossbow extends CrossbowItem {
     }
 
     private static float getSpeed(ItemStack stack) {
-        return stack.getItem() == EnderiteMod.ENDERITE_CROSSBOW.get() && hasProjectile(stack, Items.FIREWORK_ROCKET) ? 2.1F
+        return stack.isOf(EnderiteMod.ENDERITE_CROSSBOW.get()) && hasProjectile(stack, Items.FIREWORK_ROCKET) ? 2.1F
                 : EnderiteMod.CONFIG.tools.enderiteCrossbowArrowSpeed;
     }
 

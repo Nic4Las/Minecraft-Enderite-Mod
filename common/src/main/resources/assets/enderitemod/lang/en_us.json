@@ -98,5 +98,11 @@
   "option.enderitemod.restart.enderite_ore.moved_to_json": "Ore generation config via datapack",
   "option.enderitemod.restart.enderite_ore.moved_to_json.hover": "Ore generation configuration has been moved to json (datapack)",
 
-  "trim_material.enderitemod.enderite": "Enderite Material (acts like Void Floating I)"
+  "trim_material.enderitemod.enderite": "Enderite Material (acts like Void Floating I)",
+
+  "upgrade.enderitemod.enderite_upgrade": "Enderite Upgrade",
+  "item.enderitemod.smithing_template.enderite_upgrade.additions_slot_description": "Add Enderite Ingot",
+  "item.enderitemod.smithing_template.enderite_upgrade.applies_to": "Netherite Equipment",
+  "item.enderitemod.smithing_template.enderite_upgrade.base_slot_description": "Add netherite armor, weapon, or tool",
+  "item.enderitemod.smithing_template.enderite_upgrade.ingredients": "Enderite Ingot"
 }

@@ -6,74 +6,162 @@
   },
   "overrides": [
     {
-      "predicate": {
-        "broken": 1
-      },
-      "model": "enderitemod:item/enderite_elytra_broken"
-    },
-    {
       "model": "enderitemod:item/enderite_elytra_quartz_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.1
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_iron_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.2
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_netherite_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.3
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_redstone_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.4
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_copper_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.5
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_gold_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.6
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_emerald_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.7
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_enderite_darker_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.71337
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_diamond_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.8
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_lapis_trim",
       "predicate": {
+        "broken": 0,
         "trim_type": 0.9
       }
     },
     {
       "model": "enderitemod:item/enderite_elytra_amethyst_trim",
       "predicate": {
+        "broken": 0,
+        "trim_type": 1.0
+      }
+    },
+    {
+      "predicate": {
+        "broken": 1
+      },
+      "model": "enderitemod:item/enderite_elytra_broken"
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_quartz_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.1
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_iron_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.2
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_netherite_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.3
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_redstone_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.4
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_copper_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.5
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_gold_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.6
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_emerald_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.7
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_enderite_darker_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.71337
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_diamond_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.8
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_lapis_trim",
+      "predicate": {
+        "broken": 1,
+        "trim_type": 0.9
+      }
+    },
+    {
+      "model": "enderitemod:item/enderite_elytra_broken_amethyst_trim",
+      "predicate": {
+        "broken": 1,
         "trim_type": 1.0
       }
     }

@@ -40,17 +40,17 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
     @Inject(at = @At("TAIL"), cancellable = true, method = "updateResult")
     private void update(CallbackInfo info) {
         // Overwrites smithing screen to accept enderpearls as charge for sword
-        ItemStack sword = this.input.getStack(1);
-        ItemStack pearls = this.input.getStack(2);
+        ItemStack sword = this.input.getStack(1);    
+        ItemStack pearls1 = this.input.getStack(0);
+        ItemStack pearls2 = this.input.getStack(2);
         if ((sword.isOf(EnderiteMod.ENDERITE_SWORD.get()) || sword.isOf(EnderiteMod.ENDERITE_SHIELD.get()))
-                && (pearls.isOf(Items.ENDER_PEARL))) {
+                && (pearls1.isOf(Items.ENDER_PEARL) || pearls1.isEmpty()) && (pearls2.isOf(Items.ENDER_PEARL))) {
             // If new sword, basic charge is enderpearl count
-            int teleport_charge = pearls.getCount();
+            int teleport_charge = pearls1.getCount() + pearls2.getCount();
             // Read the charge of sword
             if (sword.getNbt().contains("teleport_charge")) {
                 // Charge is old charge + amount of enderpearls
-                teleport_charge = Integer.parseInt(sword.getNbt().get("teleport_charge").asString())
-                        + pearls.getCount();
+                teleport_charge += sword.getNbt().getInt("teleport_charge");
             }
             if (teleport_charge > 64) {
                 teleport_charge = 64;
@@ -61,17 +61,17 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
             this.output.setStack(0, newSword);
         }
         ItemStack outputStack = this.output.getStack(0);
-        if(outputStack.isIn(EnderiteTag.ENDERITE_ITEM) && outputStack.isIn(ItemTags.TRIMMABLE_ARMOR)) {
+        if(outputStack.isIn(EnderiteTag.ENDERITE_ARMOR) && outputStack.isIn(ItemTags.TRIMMABLE_ARMOR)) {
             NbtCompound nbt = outputStack.getNbt();
             if(nbt!=null) {
                 NbtCompound trim_nbt = nbt.getCompound("Trim");
                 if(trim_nbt!=null) {
                     if(trim_nbt.getString("material").equals("enderitemod:enderite")) {
                         trim_nbt.putString("material","enderitemod:enderite_darker");
+                        nbt.put("Trim", trim_nbt);
+                        outputStack.setNbt(nbt);
                     }
-                    nbt.put("Trim", trim_nbt);
                 }
-                outputStack.setNbt(nbt);
             }
         }
     }

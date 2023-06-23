@@ -97,5 +97,11 @@
   "option.enderitemod.restart.enderite_ore.moved_to_json": "Konfiguration der Erzgeneration im datapack",
   "option.enderitemod.restart.enderite_ore.moved_to_json.hover": "Die Erzgenerationskonfiguration wurde nach json (datapack) verschoben",
 
-  "trim_material.enderitemod.enderite": "Enderitmaterial (fungiert wie Leereschwebe I)"
+  "trim_material.enderitemod.enderite": "Enderitmaterial (fungiert wie Leereschwebe I)",
+
+  "upgrade.enderitemod.enderite_upgrade": "Enderitaufwertung",
+  "item.enderitemod.smithing_template.enderite_upgrade.additions_slot_description": "Enderitbarren hinzufügen",
+  "item.enderitemod.smithing_template.enderite_upgrade.applies_to": "Netheritausrüstung",
+  "item.enderitemod.smithing_template.enderite_upgrade.base_slot_description": "Rüstungsteil, Werkzeug oder Schwert aus Netherit hinzufügen",
+  "item.enderitemod.smithing_template.enderite_upgrade.ingredients": "Enderitbarren"
 }

@@ -10,6 +10,7 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
+import net.minecraft.block.dispenser.ShearsDispenserBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
@@ -37,19 +38,22 @@ public class EnderiteModFabricLike {
                                                         .build(null));
 
         public static void init() {
-                EnderiteMod.init();
                 EnderiteMod.ENDERITE_ELYTRA = ENDERITE_ELYTRA;
                 EnderiteMod.ENDERITE_ELYTRA_SEPERATED = ENDERITE_ELYTRA_SEPERATED;
                 EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY = ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
+                
+                EnderiteMod.init();
 
                 // ItemGroup
-                ItemGroupEvents.modifyEntriesEvent(EnderiteMod.ENDERITE_TAB.getKey()).register(content -> {
-                        content.add(ENDERITE_ELYTRA.get());			
-                        content.add(ENDERITE_ELYTRA_SEPERATED.get());
-                });
+                // ItemGroupEvents.modifyEntriesEvent(EnderiteMod.ENDERITE_TAB.getKey()).register(content -> {
+                //         content.add(ENDERITE_ELYTRA.get());			
+                //         content.add(ENDERITE_ELYTRA_SEPERATED.get());
+                // });
 
                 DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHULKER_BOX.get().asItem(),
                                 new BlockPlacementDispenserBehavior());
+                DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHEAR.get().asItem(),
+                                new ShearsDispenserBehavior());
 
         }
 }

@@ -35,6 +35,7 @@ dependencies {
 	modImplementation("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") { transitive = false }
 
     modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-fabric:${rootProject.shulker_box_tooltip_version}")
+    //modCompileOnly modRuntimeOnly("curse.maven:quick-shulker-${rootProject.curse_quickshulker_file}:4592296")
 }
 
 processResources {

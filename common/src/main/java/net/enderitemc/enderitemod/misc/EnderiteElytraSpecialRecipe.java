@@ -10,6 +10,7 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
@@ -29,7 +30,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack3 = craftingInventory.getStack(i);
             if (!itemStack3.isEmpty()) {
-                if (itemStack3.getItem() == EnderiteMod.ENDERITE_CHESTPLATE) {
+                if (itemStack3.isOf(EnderiteMod.ENDERITE_CHESTPLATE.get())) {
                     if (!itemStack2.isEmpty()) {
                         return false;
                     }
@@ -64,7 +65,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack3 = craftingInventory.getStack(i);
             if (!itemStack3.isEmpty()) {
-                if (itemStack3.getItem() == EnderiteMod.ENDERITE_CHESTPLATE) {
+                if (itemStack3.isOf(EnderiteMod.ENDERITE_CHESTPLATE.get())) {
                     itemStack = itemStack3;
                 } else if (itemStack3.getItem() instanceof ElytraItem) {
                     itemStack2 = itemStack3.copy();
@@ -84,6 +85,16 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
             }
 
             EnchantmentHelper.set(map1, stackO);
+
+            NbtCompound nbt = stackO.getNbt();
+            NbtCompound nbt_get = itemStack.getNbt();
+            if(nbt_get!=null) {
+                NbtCompound trim_nbt = nbt_get.getCompound("Trim");
+                if(trim_nbt!=null) {
+                    nbt.put("Trim", trim_nbt);
+                    stackO.setNbt(nbt);
+                }
+            }
 
             return stackO;
         }

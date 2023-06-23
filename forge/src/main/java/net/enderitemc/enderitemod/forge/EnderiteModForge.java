@@ -21,6 +21,7 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
+import net.minecraft.block.dispenser.ShearsDispenserBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
@@ -89,6 +90,8 @@ public class EnderiteModForge {
         private void setup(final FMLCommonSetupEvent event) {
                 DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHULKER_BOX.get().asItem(),
                                 new BlockPlacementDispenserBehavior());
+                DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHEAR.get().asItem(),
+                                new ShearsDispenserBehavior());
         }
 
         @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT, modid = EnderiteMod.MOD_ID)

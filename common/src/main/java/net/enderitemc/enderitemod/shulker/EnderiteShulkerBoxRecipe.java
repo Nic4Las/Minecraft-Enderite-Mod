@@ -27,17 +27,17 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
         for (int k = 0; k < inv.size(); ++k) {
             ItemStack itemStack = inv.getStack(k);
             if (!itemStack.isEmpty()) {
-                if (!(itemStack.getItem() == EnderiteMod.ENDERITE_INGOT
+                if (!(itemStack.isOf(EnderiteMod.ENDERITE_INGOT.get())
                         || (itemStack.isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES)))) {
                     return false;
                 }
                 if (k == 4 && (itemStack.isIn(EnderiteTag.CRAFTABLE_SHULKER_BOXES))) {
                     ++i;
                 }
-                if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT && (k == 1 || k == 3 || k == 5 || k == 7)) {
+                if (itemStack.isOf(EnderiteMod.ENDERITE_INGOT.get()) && (k == 1 || k == 3 || k == 5 || k == 7)) {
                     ++j;
                 }
-                if (itemStack.getItem() == EnderiteMod.ENDERITE_INGOT) {
+                if (itemStack.isOf(EnderiteMod.ENDERITE_INGOT.get())) {
                     ++l;
                 }
                 if (l > 4 || i > 1) {

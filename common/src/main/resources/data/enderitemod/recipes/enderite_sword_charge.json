@@ -1,13 +1,13 @@
 {
   "type": "minecraft:smithing_transform",
   "template": {
-    "item": "enderitemod:enderite_upgrade_smithing_template"
+    "item": "minecraft:ender_pearl"
   },
   "base": {
-    "item": "minecraft:netherite_sword"
+    "item": "enderitemod:enderite_sword"
   },
   "addition": {
-    "item": "enderitemod:enderite_ingot"
+    "item": "minecraft:ender_pearl"
   },
   "result": {
     "item": "enderitemod:enderite_sword"
