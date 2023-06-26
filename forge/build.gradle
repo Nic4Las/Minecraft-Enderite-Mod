@@ -37,7 +37,7 @@ dependencies {
 
     modImplementation("me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_config_version}")
 
-    // modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-forge:${rootProject.shulker_box_tooltip_version}")
+    modImplementation("com.misterpemodder:shulkerboxtooltip-forge:${rootProject.shulker_box_tooltip_version}") { transitive false }
 }
 
 processResources {
