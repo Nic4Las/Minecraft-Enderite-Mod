@@ -34,7 +34,7 @@ dependencies {
 	modImplementation("me.shedaniel.cloth:cloth-config:${rootProject.cloth_config_version}")
 	modImplementation("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_version}") { transitive = false }
 
-    modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-fabric:${rootProject.shulker_box_tooltip_version}")
+    modImplementation("com.misterpemodder:shulkerboxtooltip-fabric:${rootProject.shulker_box_tooltip_version}") { transitive false }
 }
 
 processResources {
