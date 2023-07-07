@@ -103,5 +103,8 @@
   "item.enderitemod.smithing_template.enderite_upgrade.additions_slot_description": "Enderitbarren hinzufügen",
   "item.enderitemod.smithing_template.enderite_upgrade.applies_to": "Netheritausrüstung",
   "item.enderitemod.smithing_template.enderite_upgrade.base_slot_description": "Rüstungsteil, Werkzeug oder Schwert aus Netherit hinzufügen",
-  "item.enderitemod.smithing_template.enderite_upgrade.ingredients": "Enderitbarren"
+  "item.enderitemod.smithing_template.enderite_upgrade.ingredients": "Enderitbarren",
+
+  "shulkerboxtooltip.colors.enderitemod.enderite_category": "Enderite Mod Farben",
+  "shulkerboxtooltip.colors.enderitemod.enderite_category.enderite_color": "Enderite Farbe"
 }

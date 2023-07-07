@@ -104,5 +104,8 @@
   "item.enderitemod.smithing_template.enderite_upgrade.additions_slot_description": "Add Enderite Ingot",
   "item.enderitemod.smithing_template.enderite_upgrade.applies_to": "Netherite Equipment",
   "item.enderitemod.smithing_template.enderite_upgrade.base_slot_description": "Add netherite armor, weapon, or tool",
-  "item.enderitemod.smithing_template.enderite_upgrade.ingredients": "Enderite Ingot"
+  "item.enderitemod.smithing_template.enderite_upgrade.ingredients": "Enderite Ingot",
+
+  "shulkerboxtooltip.colors.enderitemod.enderite_category": "Enderite Mod Colors",
+  "shulkerboxtooltip.colors.enderitemod.enderite_category.enderite_color": "Enderite Color"
 }

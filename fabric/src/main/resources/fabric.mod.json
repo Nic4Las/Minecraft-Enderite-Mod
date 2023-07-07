@@ -21,7 +21,8 @@
       }
     ],
     "modmenu": ["net.enderitemc.enderitemod.fabriclike.config.EnderiteModModMenuIntegration"],
-    "shulkerboxtooltip": ["net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation"]
+    "shulkerboxtooltip": ["net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation"],
+    "quickshulker": ["net.enderitemc.enderitemod.fabric.modIntegrations.QuickShulkerImplementation"]
   },
   "mixins": [
     "enderitemod.mixins.json",

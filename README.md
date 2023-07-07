@@ -36,6 +36,10 @@ Found on Curseforge at:
 - **Fabric** https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-fabric
 - **Forge** https://www.curseforge.com/minecraft/mc-mods/enderite-mod-for-forge
 
+Found on Modrinth at:
+
+- **Fabric**/**Forge** https://modrinth.com/mod/enderite-mod
+
 ## Developers
 
 - Pitti11
@@ -57,21 +61,27 @@ Enderite Mod is licensed under MIT. The full license can be found in the license
 
 ## Fabric
 
+### 1.5.0
+
+- [x] Updated to Minecraft 1.20
+- [x] Architectury API is now needed
+- [x] Added Armor trims
+- [x] Added Enderite Upgrade Smithing Template (found in End Cities)
+- [x] Bugfixes
+
 ### 1.4.0
 
 - [x] Updated to Minecraft 1.19
 - [x] Bugfixes
 
-### 1.3.0
-
-- [x] Updated to Minecraft 1.18.1
-- [x] Bugfixes
-
-Tooltips
-
 <details>
   <summary>Open Old Versions</summary>
-  
+
+  ### 1.3.0
+
+  - [x] Updated to Minecraft 1.18.1
+  - [x] Bugfixes
+
   ### 1.2.0
 
 - [x] Enderite Bow/Crossbow have ability to shoot enderman

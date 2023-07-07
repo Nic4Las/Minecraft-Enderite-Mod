@@ -51,6 +51,14 @@ allprojects {
         }
 
         maven {url "https://maven.misterpemodder.com/libs-release/"}
+        
+	    maven { url 'https://maven.kyrptonaught.dev' }
+        maven {
+            url "https://www.cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
     }
 
     tasks.withType(JavaCompile) {
