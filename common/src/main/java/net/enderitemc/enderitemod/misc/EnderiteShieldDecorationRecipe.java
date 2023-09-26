@@ -2,7 +2,6 @@ package net.enderitemc.enderitemod.misc;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
@@ -11,12 +10,11 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
-    public EnderiteShieldDecorationRecipe(Identifier identifier, CraftingRecipeCategory category) {
-        super(identifier, category);
+    public EnderiteShieldDecorationRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     public boolean matches(RecipeInputInventory craftingInventory, World world) {

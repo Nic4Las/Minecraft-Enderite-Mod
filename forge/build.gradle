@@ -15,7 +15,7 @@ loom {
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
         mixinConfig "enderitemod-common.mixins.json"
-        mixinConfig "enderitemod.mixins.json"
+        //mixinConfig "enderitemod.mixins.json"
     }
 }
 

@@ -20,6 +20,7 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.util.SkinTextures;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -46,22 +47,9 @@ public abstract class ElytraFeatureRendererMixin<T extends LivingEntity, M exten
         // If player is wearing enderite elytra, render it
         ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.CHEST);
         if (itemStack.isIn(EnderiteTag.ENDERITE_ELYTRA)) {
-            Identifier identifier4;
-            if (livingEntity instanceof AbstractClientPlayerEntity) {
-                AbstractClientPlayerEntity abstractClientPlayerEntity = (AbstractClientPlayerEntity) livingEntity;
-                if (abstractClientPlayerEntity.canRenderElytraTexture()
-                        && abstractClientPlayerEntity.getElytraTexture() != null) {
-                    identifier4 = abstractClientPlayerEntity.getElytraTexture();
-                } else if (abstractClientPlayerEntity.canRenderCapeTexture()
-                        && abstractClientPlayerEntity.getCapeTexture() != null
-                        && abstractClientPlayerEntity.isPartVisible(PlayerModelPart.CAPE)) {
-                    identifier4 = abstractClientPlayerEntity.getCapeTexture();
-                } else {
-                    identifier4 = ELYTRA_SKIN;
-                }
-            } else {
-                identifier4 = ELYTRA_SKIN;
-            }
+            AbstractClientPlayerEntity abstractClientPlayerEntity;
+            SkinTextures skinTextures;
+            Identifier identifier4 = livingEntity instanceof AbstractClientPlayerEntity ? ((skinTextures = (abstractClientPlayerEntity = (AbstractClientPlayerEntity)livingEntity).getSkinTextures()).elytraTexture() != null ? skinTextures.elytraTexture() : (skinTextures.capeTexture() != null && abstractClientPlayerEntity.isPartVisible(PlayerModelPart.CAPE) ? skinTextures.capeTexture() : ELYTRA_SKIN)) : ELYTRA_SKIN;
 
             matrixStack.push();
             matrixStack.translate(0.0D, 0.0D, 0.125D);

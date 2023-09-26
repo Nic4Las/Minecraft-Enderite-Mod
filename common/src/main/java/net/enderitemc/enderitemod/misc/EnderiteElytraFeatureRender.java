@@ -13,10 +13,10 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.util.SkinTextures;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
@@ -27,42 +27,29 @@ public class EnderiteElytraFeatureRender<T extends LivingEntity, M extends Entit
 
         public EnderiteElytraFeatureRender(FeatureRendererContext<T, M> context, EntityModelLoader loader) {
                 super(context);
-                this.elytra = new ElytraEntityModel(loader.getModelPart(EntityModelLayers.ELYTRA));
+                this.elytra = new ElytraEntityModel<>(loader.getModelPart(EntityModelLayers.ELYTRA));
         }
 
         @Override
         public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i,
                         T livingEntity,
                         float f, float g, float h, float j, float k, float l) {
-                Object abstractClientPlayerEntity;
                 ItemStack itemStack = ((LivingEntity) livingEntity).getEquippedStack(EquipmentSlot.CHEST);
                 if (!itemStack.isIn(EnderiteTag.ENDERITE_ELYTRA)) {
                         return;
                 }
-                Identifier identifier = livingEntity instanceof AbstractClientPlayerEntity
-                                ? (((AbstractClientPlayerEntity) (abstractClientPlayerEntity = (AbstractClientPlayerEntity) livingEntity))
-                                                .canRenderElytraTexture()
-                                                && ((AbstractClientPlayerEntity) abstractClientPlayerEntity)
-                                                                .getElytraTexture() != null
-                                                                                ? ((AbstractClientPlayerEntity) abstractClientPlayerEntity)
-                                                                                                .getElytraTexture()
-                                                                                : (((AbstractClientPlayerEntity) abstractClientPlayerEntity)
-                                                                                                .canRenderCapeTexture()
-                                                                                                && ((AbstractClientPlayerEntity) abstractClientPlayerEntity)
-                                                                                                                .getCapeTexture() != null
-                                                                                                && ((PlayerEntity) abstractClientPlayerEntity)
-                                                                                                                .isPartVisible(PlayerModelPart.CAPE)
-                                                                                                                                ? ((AbstractClientPlayerEntity) abstractClientPlayerEntity)
-                                                                                                                                                .getCapeTexture()
-                                                                                                                                : SKIN))
-                                : SKIN;
+                
+                AbstractClientPlayerEntity abstractClientPlayerEntity;
+                SkinTextures skinTextures;
+                Identifier identifier = livingEntity instanceof AbstractClientPlayerEntity ? ((skinTextures = (abstractClientPlayerEntity = (AbstractClientPlayerEntity)livingEntity).getSkinTextures()).elytraTexture() != null ? skinTextures.elytraTexture() : (skinTextures.capeTexture() != null && abstractClientPlayerEntity.isPartVisible(PlayerModelPart.CAPE) ? skinTextures.capeTexture() : SKIN)) : SKIN;
+                
                 matrixStack.push();
                 matrixStack.translate(0.0, 0.0, 0.125);
-                ((EntityModel) this.getContextModel()).copyStateTo(this.elytra);
+                this.getContextModel().copyStateTo(this.elytra);
                 this.elytra.setAngles(livingEntity, f, g, j, k, l);
-                abstractClientPlayerEntity = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider,
+                VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider,
                                 RenderLayer.getArmorCutoutNoCull(identifier), false, itemStack.hasGlint());
-                this.elytra.render(matrixStack, (VertexConsumer) abstractClientPlayerEntity, i,
+                this.elytra.render(matrixStack, (VertexConsumer) vertexConsumer, i,
                                 OverlayTexture.DEFAULT_UV, 1.0f,
                                 1.0f, 1.0f, 1.0f);
                 matrixStack.pop();

@@ -106,5 +106,7 @@
   "item.enderitemod.smithing_template.enderite_upgrade.ingredients": "Enderitbarren",
 
   "shulkerboxtooltip.colors.enderitemod.enderite_category": "Enderite Mod Farben",
-  "shulkerboxtooltip.colors.enderitemod.enderite_category.enderite_color": "Enderite Farbe"
+  "shulkerboxtooltip.colors.enderitemod.enderite_category.enderite_color": "Enderitfarbe",
+
+  "item.enderitemod.enderite_upgrade_smithing_template": "Enderitschmiedevorlage"
 }

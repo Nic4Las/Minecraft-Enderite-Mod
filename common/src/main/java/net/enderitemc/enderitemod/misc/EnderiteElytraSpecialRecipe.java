@@ -3,10 +3,8 @@ package net.enderitemc.enderitemod.misc;
 import java.util.Map;
 
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
@@ -15,12 +13,11 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
-    public EnderiteElytraSpecialRecipe(Identifier identifier, CraftingRecipeCategory category) {
-        super(identifier, category);
+    public EnderiteElytraSpecialRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     public boolean matches(RecipeInputInventory craftingInventory, World world) {

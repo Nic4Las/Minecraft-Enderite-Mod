@@ -36,7 +36,7 @@ public abstract class EnderiteShearsSheepMixin extends LivingEntity {
     private void onShear(final PlayerEntity player, final Hand hand, final CallbackInfoReturnable<ActionResult> info) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (itemStack.isOf(EnderiteMod.ENDERITE_SHEAR.get())) {
-            if (!this.getWorld().isClient && this.isShearable()) {
+            if (!this.getWorld().isClient() && this.isShearable()) {
                 this.sheared(SoundCategory.PLAYERS);
                 itemStack.damage(1, (LivingEntity) player, (Consumer<LivingEntity>) ((playerEntity) -> {
                     playerEntity.sendToolBreakStatus(hand);

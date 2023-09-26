@@ -44,7 +44,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
     @Inject(at = @At("HEAD"), method = "damageShield")
     private void damageIt(float amount, CallbackInfo info) {
         if (this.activeItemStack.getItem() instanceof EnderiteShield) {
-            if (!this.getWorld().isClient) {
+            if (!this.getWorld().isClient()) {
                 this.incrementStat(Stats.USED.getOrCreateStat(this.activeItemStack.getItem()));
             }
 
@@ -62,7 +62,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                     }
 
                     this.activeItemStack = ItemStack.EMPTY;
-                    this.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + this.getWorld().random.nextFloat() * 0.4F);
+                    this.playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + this.getWorld().getRandom().nextFloat() * 0.4F);
                 }
             }
 
@@ -79,7 +79,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                 charge = Integer.parseInt(this.activeItemStack.getNbt().get("teleport_charge").asString());
             }
 
-            if (!getWorld().isClient && charge > 0 && !(attacker instanceof EnderDragonEntity
+            if (!getWorld().isClient() && charge > 0 && !(attacker instanceof EnderDragonEntity
                     || attacker instanceof WitherEntity || attacker instanceof ElderGuardianEntity)) {
                 double d = attacker.getX();
                 double e = attacker.getY();

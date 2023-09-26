@@ -50,7 +50,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
             BlockEntityType<T> type) {
-        return checkType(type, EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
+        return validateTicker(type, EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
                 (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1, be));
     }
 

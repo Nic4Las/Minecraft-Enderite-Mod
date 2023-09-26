@@ -26,6 +26,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
+import net.minecraft.client.util.SkinTextures;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -125,7 +126,7 @@ public class EnderiteModForge {
                 public static void renderPlayer(final EntityRenderersEvent.AddLayers event) {
                         // default
                         LivingEntityRenderer<PlayerEntity, PlayerEntityModel<PlayerEntity>> renderer = event
-                                        .getSkin("default");
+                                        .getSkin(SkinTextures.Model.WIDE);
                         EnderiteElytraFeatureRender<PlayerEntity, PlayerEntityModel<PlayerEntity>> layer = new EnderiteElytraFeatureRender<>(
                                         renderer, event.getEntityModels());
                         if (renderer != null) {
@@ -135,7 +136,7 @@ public class EnderiteModForge {
                                 LOGGER.error("Couldn't get renderer");
                         }
                         // Slim
-                        renderer = event.getSkin("slim");
+                        renderer = event.getSkin(SkinTextures.Model.SLIM);
                         layer = new EnderiteElytraFeatureRender<>(renderer, event.getEntityModels());
                         if (renderer != null) {
 
