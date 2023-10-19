@@ -14,7 +14,7 @@ public class EnderiteOre extends Block {
 
     public EnderiteOre() {
         super(AbstractBlock.Settings.create().mapColor(MapColor.BLACK).sounds(BlockSoundGroup.STONE)
-                .strength(-1.0f, 9.0F).dropsNothing());
+                .strength(-1.0f, 30.0F).dropsNothing());
     }
 
     @Override
