@@ -82,7 +82,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    @Environment(EnvType.CLIENT)
+    @Override
     public boolean fits(int width, int height) {
         return width * height >= 2;
     }
