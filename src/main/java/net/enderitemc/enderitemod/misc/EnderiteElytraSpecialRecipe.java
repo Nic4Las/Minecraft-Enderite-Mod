@@ -86,7 +86,6 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    @Environment(EnvType.CLIENT)
     public boolean fits(int width, int height) {
         return width * height >= 2;
     }
