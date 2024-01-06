@@ -14,7 +14,11 @@ import net.minecraft.sound.SoundEvents;
 
 public enum EnderiteArmorMaterial implements ArmorMaterial {
 
-    ENDERITE("enderite", 8, new int[] { 4, 7, 9, 4 }, 17, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0F, 0.1F, () -> {
+    ENDERITE("enderite", EnderiteMod.CONFIG.armor.durabilityMultiplier,
+            new int[] { EnderiteMod.CONFIG.armor.bootsProtection, EnderiteMod.CONFIG.armor.leggingsProtection, 
+                        EnderiteMod.CONFIG.armor.chestplateProtection, EnderiteMod.CONFIG.armor.helmetProtection },
+            EnderiteMod.CONFIG.armor.enchantability, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
+            EnderiteMod.CONFIG.armor.toughness, EnderiteMod.CONFIG.armor.knockbackResistance, () -> {
         return Ingredient.ofItems(EnderiteMod.ENDERITE_INGOT.get());
     });
 

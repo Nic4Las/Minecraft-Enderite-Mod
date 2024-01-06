@@ -173,6 +173,88 @@ public class ClothConfig {
                                                 "option.enderitemod.restart.enderite_hoe.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - 3).build());
 
+                
+                // ARMOR
+                restart.addEntry(entryBuilder
+                                .startIntField(Text.translatable(
+                                                "option.enderitemod.restart.enderite_helmet.protection"),
+                                                currentConfig.armor.helmetProtection)
+                                .setDefaultValue(DEFAULT.armor.helmetProtection).setMin(1).setMax(16)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.enderite_helmet.protection.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.armor.helmetProtection = newValue)
+                                .build());
+
+                restart.addEntry(entryBuilder
+                                .startIntField(Text.translatable(
+                                                "option.enderitemod.restart.enderite_chestplate.protection"),
+                                                currentConfig.armor.chestplateProtection)
+                                .setDefaultValue(DEFAULT.armor.chestplateProtection).setMin(1).setMax(16)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.enderite_chestplate.protection.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.armor.chestplateProtection = newValue)
+                                .build());
+
+                restart.addEntry(entryBuilder
+                                .startIntField(Text.translatable(
+                                                "option.enderitemod.restart.enderite_leggings.protection"),
+                                                currentConfig.armor.leggingsProtection)
+                                .setDefaultValue(DEFAULT.armor.leggingsProtection).setMin(1).setMax(16)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.enderite_leggings.protection.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.armor.leggingsProtection = newValue)
+                                .build());
+
+                restart.addEntry(entryBuilder
+                                .startIntField(Text.translatable(
+                                                "option.enderitemod.restart.enderite_boots.protection"),
+                                                currentConfig.armor.bootsProtection)
+                                .setDefaultValue(DEFAULT.armor.bootsProtection).setMin(1).setMax(16)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.enderite_boots.protection.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.armor.bootsProtection = newValue)
+                                .build());
+
+                restart.addEntry(entryBuilder
+                                .startFloatField(Text.translatable(
+                                                "option.enderitemod.restart.armor.toughness"),
+                                                currentConfig.armor.toughness)
+                                .setDefaultValue(DEFAULT.armor.toughness).setMin(0).setMax(16)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.armor.toughness.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.armor.toughness = newValue)
+                                .build());
+
+                restart.addEntry(entryBuilder
+                                .startFloatField(Text.translatable(
+                                                "option.enderitemod.restart.armor.knockbackResistance"),
+                                                currentConfig.armor.knockbackResistance)
+                                .setDefaultValue(DEFAULT.armor.knockbackResistance).setMin(0).setMax(1)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.armor.knockbackResistance.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.armor.knockbackResistance = newValue)
+                                .build());
+
+                restart.addEntry(entryBuilder
+                                .startIntField(Text.translatable(
+                                                "option.enderitemod.restart.armor.durabilityMultiplier"),
+                                                currentConfig.armor.durabilityMultiplier)
+                                .setDefaultValue(DEFAULT.armor.durabilityMultiplier).setMin(1).setMax(99)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.armor.durabilityMultiplier.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.armor.durabilityMultiplier = newValue)
+                                .build());
+
+                restart.addEntry(entryBuilder
+                                .startIntField(Text.translatable(
+                                                "option.enderitemod.restart.armor.enchantability"),
+                                                currentConfig.armor.enchantability)
+                                .setDefaultValue(DEFAULT.armor.enchantability).setMin(1).setMax(99)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.armor.enchantability.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.armor.enchantability = newValue)
+                                .build());
+
                 this.screen = builder.build();
                 
         }

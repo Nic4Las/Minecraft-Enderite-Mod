@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[48,)"
 #issueTrackerURL = ""
 license = "All rights reserved"
 
@@ -16,20 +16,20 @@ logoFile = "icon.png"
 [[dependencies.enderitemod]]
 modId = "forge"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "[48,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.0,)"
+versionRange = "[1.20.2,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "architectury"
 mandatory = true
-versionRange = "[9.0.8,)"
+versionRange = "[10.0.17,)"
 ordering = "AFTER"
 side = "BOTH"
