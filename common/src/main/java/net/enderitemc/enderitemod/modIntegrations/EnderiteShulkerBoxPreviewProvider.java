@@ -18,6 +18,6 @@ public class EnderiteShulkerBoxPreviewProvider extends BlockEntityPreviewProvide
 
     @Environment(EnvType.CLIENT)
     public ColorKey getWindowColorKey(PreviewContext context) {
-        return ShulkerBoxTooltipApiImplementation.ENDERITE_COLOR_KEY;
+        return ShulkerBoxTooltipApiImplementation.ClientOnly.ENDERITE_COLOR_KEY;
     }
 }
