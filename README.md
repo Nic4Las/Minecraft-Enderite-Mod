@@ -45,14 +45,18 @@ Found on Modrinth at:
 - Pitti11
 - Nic4Las
 - Pianomanu (Forge)
+
+Special thanks to:
 - kyrptonaught
 - Pale-Champion-Atom596
+- MisterPeModder
 
 ## Translation
 
+Thanks to:
 - ES: CamoloQlo
 - ZH_CN: Samekichi, WuzgXY
-- RU: temac000
+- RU: temac000, mpustovoi
 - PL: zealoussentinel512 
 
 ## License
@@ -60,6 +64,11 @@ Found on Modrinth at:
 Enderite Mod is licensed under MIT. The full license can be found in the license file.
 
 ## Fabric
+
+### 1.5.1
+
+- [x] Added config for the Enderite Armor
+- [x] Bugfixes
 
 ### 1.5.0
 

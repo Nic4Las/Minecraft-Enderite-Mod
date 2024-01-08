@@ -5,6 +5,7 @@ public class Config {
     public General general = new General();
     public Tools tools = new Tools();
     public WorldGeneration worldGeneration = new WorldGeneration();
+    public Armor armor = new Armor();
 
     public static class General {
         public boolean allowVoidFloatingEnchantment = true;
@@ -21,6 +22,8 @@ public class Config {
         public float enderiteBowArrowSpeed = 3.5f;
         public float enderiteCrossbowAD = 3.0f;
         public float enderiteCrossbowArrowSpeed = 3.65f;
+
+        public int durability = 4096;
     }
 
     public static class WorldGeneration {
@@ -30,6 +33,18 @@ public class Config {
             public int veinSize = 3;
             public int veinAmount = 3;
         }
+    }
+
+    public static class Armor {
+        public int bootsProtection = 4;
+        public int leggingsProtection = 7;
+        public int chestplateProtection = 9;
+        public int helmetProtection = 4;
+
+        public int durabilityMultiplier = 8;
+        public int enchantability = 17;
+        public float toughness = 4.0f;
+        public float knockbackResistance = 0.1f;
     }
 
 }
