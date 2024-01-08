@@ -173,6 +173,16 @@ public class ClothConfig {
                                                 "option.enderitemod.restart.enderite_hoe.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - 3).build());
 
+                restart.addEntry(entryBuilder
+                                .startIntField(Text.translatable(
+                                                "option.enderitemod.restart.enderite_tools.durability"),
+                                                currentConfig.tools.durability)
+                                .setDefaultValue(DEFAULT.tools.durability).setMin(1)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.restart.enderite_tools.durability.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.tools.durability = newValue)
+                                .build());
+
                 
                 // ARMOR
                 restart.addEntry(entryBuilder

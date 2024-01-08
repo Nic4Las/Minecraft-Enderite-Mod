@@ -125,5 +125,8 @@
   "option.enderitemod.restart.armor.durabilityMultiplier": "Haltbarkeitsfaktor der Enderitrüstung",
   "option.enderitemod.restart.armor.durabilityMultiplier.hover": "Wird mit der Grundhaltbarkeit jedes Rüstungsteils multipliziert, Grundwert: 8",
   "option.enderitemod.restart.armor.enchantability": "Enderit-Verzauberbarkeit",
-  "option.enderitemod.restart.armor.enchantability.hover": "Verzauberbarkeit von Werkzeugen und Rüstung, Grundwert: 17"
+  "option.enderitemod.restart.armor.enchantability.hover": "Verzauberbarkeit von Werkzeugen und Rüstung, Grundwert: 17",
+
+  "option.enderitemod.restart.enderite_tools.durability": "Haltbarkeit der Enderitwerkzeuge",
+  "option.enderitemod.restart.enderite_tools.durability.hover": "Grundwert: 4096"
 }

@@ -126,5 +126,8 @@
   "option.enderitemod.restart.armor.durabilityMultiplier": "Enderite Armor durability multiplier",
   "option.enderitemod.restart.armor.durabilityMultiplier.hover": "Multiplies with base durability of each armor piece, Base value: 8",
   "option.enderitemod.restart.armor.enchantability": "Enderite Tools/Armor enchantability",
-  "option.enderitemod.restart.armor.enchantability.hover": "Enchantability for both tools and armor, Base value: 17"
+  "option.enderitemod.restart.armor.enchantability.hover": "Enchantability for both tools and armor, Base value: 17",
+
+  "option.enderitemod.restart.enderite_tools.durability": "Enderite tools durability",
+  "option.enderitemod.restart.enderite_tools.durability.hover": "Base value: 4096"
 }
