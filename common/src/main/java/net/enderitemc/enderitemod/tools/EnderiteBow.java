@@ -47,7 +47,7 @@ public class EnderiteBow extends BowItem {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity) {
             PlayerEntity playerEntity = (PlayerEntity) user;
-            boolean bl = playerEntity.getAbilities().creativeMode
+            boolean bl = canUseWithoutArrow(stack, playerEntity)
                     || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
             ItemStack itemStack = playerEntity.getProjectileType(stack);
             if (!itemStack.isEmpty() || bl) {
@@ -143,12 +143,17 @@ public class EnderiteBow extends BowItem {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         boolean bl = !user.getProjectileType(itemStack).isEmpty();
-        if (!user.getAbilities().creativeMode && !bl) {
+        if (!bl && !canUseWithoutArrow(itemStack, user)) {
             return TypedActionResult.fail(itemStack);
         } else {
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
         }
+    }
+
+    private static boolean canUseWithoutArrow(ItemStack bow, PlayerEntity user) {
+        return user.getAbilities().creativeMode || !EnderiteMod.CONFIG.tools.enderiteBowNeedsArrow
+            || (!EnderiteMod.CONFIG.tools.enderiteBowWithInfinityNeedsArrow && EnchantmentHelper.getLevel(Enchantments.INFINITY, bow) > 0);
     }
 
     @Override

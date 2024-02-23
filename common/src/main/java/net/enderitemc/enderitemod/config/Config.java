@@ -20,6 +20,8 @@ public class Config {
 
         public float enderiteBowAD = 2.5f;
         public float enderiteBowArrowSpeed = 3.5f;
+        public boolean enderiteBowNeedsArrow = true;
+        public boolean enderiteBowWithInfinityNeedsArrow = false;
         public float enderiteCrossbowAD = 3.0f;
         public float enderiteCrossbowArrowSpeed = 3.65f;
 

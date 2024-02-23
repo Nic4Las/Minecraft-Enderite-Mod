@@ -67,6 +67,23 @@ public class ClothConfig {
                                                 "option.enderitemod.general.enderite_bow.arrow_speed.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowArrowSpeed = newValue)
                                 .build());
+                general.addEntry(entryBuilder.startBooleanToggle(
+                                                                Text.translatable(
+                                                                                "option.enderitemod.general.enderite_bow.needs_arrow"),
+                                                                currentConfig.tools.enderiteBowNeedsArrow)
+                                .setDefaultValue(DEFAULT.tools.enderiteBowNeedsArrow)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.general.enderite_bow.needs_arrow.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowNeedsArrow = newValue)
+                                .build());
+                general.addEntry(entryBuilder.startBooleanToggle(
+                                                                Text.translatable("option.enderitemod.general.enderite_bow.infinity_needs_arrow"),
+                                                                currentConfig.tools.enderiteBowWithInfinityNeedsArrow)
+                                .setDefaultValue(DEFAULT.tools.enderiteBowWithInfinityNeedsArrow)
+                                .setTooltip(Text.translatable(
+                                                "option.enderitemod.general.enderite_bow.infinity_needs_arrow.hover"))
+                                .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowWithInfinityNeedsArrow = newValue)
+                                .build());
 
                 // Crossbow
                 general.addEntry(entryBuilder
