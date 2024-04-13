@@ -83,7 +83,7 @@ public class EnderiteShears extends ShearsItem {
 
             tryBuildLootTable(id, table, Blocks.GLOW_LICHEN);
 
-            tryBuildLootTable(id, table, Blocks.GRASS);
+            tryBuildLootTable(id, table, Blocks.SHORT_GRASS);
 
             tryBuildLootTable(id, table, Blocks.JUNGLE_LEAVES);
 
