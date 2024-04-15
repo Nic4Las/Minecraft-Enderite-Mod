@@ -4,14 +4,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import net.enderitemc.enderitemod.forge.renderer.EnderiteShieldRenderer;
-import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.common.util.NonNullLazy;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.item.ShieldItem;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.common.util.NonNullLazy;
 
 public class EnderiteShieldForge extends EnderiteShield {
 

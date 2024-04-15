@@ -15,21 +15,24 @@ logoFile = "icon.png"
 
 [[dependencies.enderitemod]]
 modId = "forge"
-mandatory = true
+type = "required"
 versionRange = "[49,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "minecraft"
-mandatory = true
+type = "required"
 versionRange = "[1.20.4,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "architectury"
-mandatory = true
+type = "required"
 versionRange = "[11.1.17,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[mixins]]
+config="enderitemod-common.mixins.json"

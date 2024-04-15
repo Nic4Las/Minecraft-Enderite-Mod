@@ -1,11 +1,21 @@
 package net.enderitemc.enderitemod.forge;
 
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.ConfigScreenHandler;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.bus.api.EventPriority;
 
-import com.misterpemodder.shulkerboxtooltip.api.forge.ShulkerBoxTooltipPlugin;
-
-import dev.architectury.platform.forge.EventBuses;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
@@ -16,7 +26,6 @@ import net.enderitemc.enderitemod.forge.tools.EnderiteElytraChestplate;
 import net.enderitemc.enderitemod.forge.tools.EnderiteElytraSeperated;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteElytraFeatureRender;
-import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.minecraft.block.DispenserBlock;
@@ -32,19 +41,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ConfigScreenHandler;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.common.MinecraftForge;
 
 @Mod(EnderiteMod.MOD_ID)
 public class EnderiteModForge {
@@ -72,11 +68,14 @@ public class EnderiteModForge {
                                         () -> new EnderiteShieldForge(
                                                         EnderiteMod.ENDERITE_SHIELD_ITEM_SETTINGS));
 
-        public EnderiteModForge() {
+        public EnderiteModForge(IEventBus modBus) {
                 // Submit our event bus to let architectury register our content on the right
                 // time
-                EventBuses.registerModEventBus(EnderiteMod.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+//                EventBuses.registerModEventBus(EnderiteMod.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+                
                 EnderiteMod.init();
+
+                LOGGER.info("TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST");
 
 
 
@@ -85,7 +84,7 @@ public class EnderiteModForge {
                 EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY = ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
                 EnderiteMod.ENDERITE_SHIELD = ENDERITE_SHIELD_FORGE;
 
-                FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+                NeoForge.EVENT_BUS.addListener(this::setup);
         }
 
         private void setup(final FMLCommonSetupEvent event) {
@@ -115,11 +114,11 @@ public class EnderiteModForge {
                                                                 (mc, screen) -> new ClothConfig(screen).getScreen()));
                         }
 
-                        if (ModList.get().isLoaded("shulkerboxtooltip")) {
-                                ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
-                                                () -> new ShulkerBoxTooltipPlugin(
-                                                                ShulkerBoxTooltipApiImplementation::new));
-                        }
+//                        if (ModList.get().isLoaded("shulkerboxtooltip")) {
+//                                ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
+//                                                () -> new ShulkerBoxTooltipPlugin(
+//                                                                ShulkerBoxTooltipApiImplementation::new));
+//                        }
                 }
 
                 @SubscribeEvent(priority = EventPriority.LOW)
