@@ -2,6 +2,7 @@ package net.enderitemc.enderitemod.tools;
 
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.LootEvent.LootTableModificationContext;
+import dev.architectury.injectables.targets.ArchitecturyTarget;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BeehiveBlock;
@@ -60,6 +61,13 @@ public class EnderiteShears extends ShearsItem {
     }
 
     public static void registerLoottables() {
+        switch (ArchitecturyTarget.getCurrentTarget()) {
+            case "forge", "neoforge" -> {
+                // Forges do not need shear's loot tables patch
+                return;
+            }
+        }
+
         LootEvent.MODIFY_LOOT_TABLE.register((lootTables, id, table, builtin) -> {
 
             tryBuildLootTable(id, table, Blocks.ACACIA_LEAVES);

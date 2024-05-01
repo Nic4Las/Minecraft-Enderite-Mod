@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_end",
+  "features": [
+    "enderitemod:ore_enderite_large",
+    "enderitemod:ore_enderite_small"
+  ],
+  "step": "underground_ores"
+}

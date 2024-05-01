@@ -50,9 +50,9 @@ dependencies {
     modImplementation("com.misterpemodder:shulkerboxtooltip-fabric:${rootProject.shulker_box_tooltip_version}") { transitive false }
 
 
-    modImplementation "net.kyrptonaught:kyrptconfig:${project.kyrptconfig_version}"
-    modImplementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
-    modCompileOnly modRuntimeOnly("curse.maven:quick-shulker-${rootProject.curse_quickshulker_file}:4592296") { transitive false }
+    //modImplementation "net.kyrptonaught:kyrptconfig:${project.kyrptconfig_version}"
+    //modImplementation "net.kyrptonaught:shulkerutils:${project.shulkerutils_version}"
+    //modCompileOnly modRuntimeOnly("curse.maven:quick-shulker-${rootProject.curse_quickshulker_file}:4592296") { transitive false }
 }
 
 processResources {

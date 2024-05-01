@@ -1,6 +1,5 @@
 package net.enderitemc.enderitemod.forge.item;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 import net.enderitemc.enderitemod.forge.renderer.EnderiteShieldRenderer;
