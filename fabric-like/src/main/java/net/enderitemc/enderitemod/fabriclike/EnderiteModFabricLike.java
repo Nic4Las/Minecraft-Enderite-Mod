@@ -1,5 +1,6 @@
 package net.enderitemc.enderitemod.fabriclike;
 
+import net.enderitemc.enderitemod.tools.EnderiteShears;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
@@ -43,6 +44,7 @@ public class EnderiteModFabricLike {
                 EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY = ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
                 
                 EnderiteMod.init();
+                EnderiteShears.registerLoottables_Fabric();
 
                 // ItemGroup
                 // ItemGroupEvents.modifyEntriesEvent(EnderiteMod.ENDERITE_TAB.getKey()).register(content -> {

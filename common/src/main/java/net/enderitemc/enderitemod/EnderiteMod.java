@@ -260,7 +260,7 @@ public class EnderiteMod {
             CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
         });
 
-        EnderiteShears.registerLoottables();
+        //EnderiteShears.registerLoottables_Fabric();
         EnderiteUpgradeSmithingTemplate.registerLoottables();
     }
 }

@@ -60,14 +60,7 @@ public class EnderiteShears extends ShearsItem {
         return super.useOnBlock(context);
     }
 
-    public static void registerLoottables() {
-        switch (ArchitecturyTarget.getCurrentTarget()) {
-            case "forge", "neoforge" -> {
-                // Forges do not need shear's loot tables patch
-                return;
-            }
-        }
-
+    public static void registerLoottables_Fabric() {
         LootEvent.MODIFY_LOOT_TABLE.register((lootTables, id, table, builtin) -> {
 
             tryBuildLootTable(id, table, Blocks.ACACIA_LEAVES);
