@@ -1,7 +1,7 @@
 package net.enderitemc.enderitemod.forge;
 
 import net.enderitemc.enderitemod.ExampleExpectPlatform;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 

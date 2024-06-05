@@ -77,7 +77,9 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
             Map<Enchantment, Integer> map2 = EnchantmentHelper.get(itemStack2);
 
             for (Map.Entry<Enchantment, Integer> entry2 : map2.entrySet()) {
-                map1.merge(entry2.getKey(), entry2.getValue(), (v1, v2) -> v1 < v2 ? v2 : v1);
+                // Merge new enchantment with old, if same level: level up, else: take higher level
+                map1.merge(entry2.getKey(), entry2.getValue(),
+                        (v1, v2) -> v1.equals(v2) ? Math.min(v1+1, entry2.getKey().getMaxLevel()) : Math.max(v1,v2));
             }
 
             EnchantmentHelper.set(map1, stackO);

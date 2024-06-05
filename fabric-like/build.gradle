@@ -2,6 +2,14 @@ architectury {
     common(rootProject.enabled_platforms.split(","))
 }
 
+configurations {
+    common
+    shadowCommon
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}
+
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 }
@@ -10,7 +18,9 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
     // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_api_version}"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
 
     // Config dependencies
 	modImplementation("com.terraformersmc:modmenu:${rootProject.mod_menu_version}") { transitive = false }
@@ -19,6 +29,4 @@ dependencies {
 
     modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-fabric:${rootProject.shulker_box_tooltip_version}")
     //modCompileOnly modRuntimeOnly("curse.maven:quick-shulker-${rootProject.curse_quickshulker_file}:4592296")
-
-    compileClasspath(project(path: ":common", configuration: "namedElements")) { transitive false }
 }

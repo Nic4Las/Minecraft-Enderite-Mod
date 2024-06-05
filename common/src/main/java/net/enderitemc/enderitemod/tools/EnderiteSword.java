@@ -177,8 +177,4 @@ public class EnderiteSword extends SwordItem {
 
     }
 
-    @Override
-    public void onCraft(ItemStack stack, World world, PlayerEntity player) {
-    }
-
 }

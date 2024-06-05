@@ -17,6 +17,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -30,6 +31,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+
+import static net.minecraft.block.entity.ShulkerBoxBlockEntity.ITEMS_KEY;
 
 public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity implements SidedInventory {
     private static final int[] AVAILABLE_SLOTS = IntStream.range(0, 27).toArray();
@@ -218,37 +221,31 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
         return Text.translatable("container.enderitemod.enderiteShulkerBox");
     }
 
-    public void readNbt(NbtCompound tag) {
-        super.readNbt(tag);
-        this.deserializeInventory(tag);
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        this.readInventoryNbt(nbt);
     }
 
-    public void writeNbt(NbtCompound tag) {
-        super.writeNbt(tag);
-        if (!this.serializeLootTable(tag)) {
-            Inventories.writeNbt(tag, this.inventory, false);
+    public void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
+        if (!this.writeLootTable(nbt)) {
+            Inventories.writeNbt(nbt, this.inventory, false);
         }
     }
 
-    public void deserializeInventory(NbtCompound tag) {
+    public void readInventoryNbt(NbtCompound nbt) {
         this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-        if (!this.deserializeLootTable(tag) && tag.contains("Items", 9)) {
-            Inventories.readNbt(tag, this.inventory);
+        if (!this.readLootTable(nbt) && nbt.contains(ITEMS_KEY, NbtElement.LIST_TYPE)) {
+            Inventories.readNbt(nbt, this.inventory);
         }
-
     }
 
-    public NbtCompound serializeInventory(NbtCompound tag) {
-        if (!this.serializeLootTable(tag)) {
-            Inventories.writeNbt(tag, this.inventory, false);
-        }
-
-        return tag;
-    }
 
     protected DefaultedList<ItemStack> getInvStackList() {
         return this.inventory;
     }
+
 
     protected void setInvStackList(DefaultedList<ItemStack> list) {
         this.inventory = list;
@@ -282,5 +279,10 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
 
     public static enum AnimationStage {
         CLOSED, OPENING, OPENED, CLOSING;
+    }
+
+    @Override
+    protected DefaultedList<ItemStack> method_11282() {
+        return this.inventory;
     }
 }

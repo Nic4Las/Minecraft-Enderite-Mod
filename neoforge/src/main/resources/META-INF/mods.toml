@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[48,)"
+loaderVersion = "[2,)"
 #issueTrackerURL = ""
 license = "All rights reserved"
 
@@ -14,22 +14,25 @@ The Enderite Mod adds new armor and tools, which are successors of Netherite too
 logoFile = "icon.png"
 
 [[dependencies.enderitemod]]
-modId = "forge"
-mandatory = true
-versionRange = "[48,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[20.4,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.2,)"
+type = "required"
+versionRange = "[1.20.3,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "architectury"
-mandatory = true
-versionRange = "[10.0.17,)"
+type = "required"
+versionRange = "[11.1.17,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[mixins]]
+config="enderitemod-common.mixins.json"

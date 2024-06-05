@@ -3,7 +3,6 @@ package net.enderitemc.enderitemod.shulker;
 import java.util.List;
 
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,9 +18,7 @@ import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext.Builder;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
@@ -90,16 +87,13 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     }
 
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
-            EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) blockEntity;
+        if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
             if (!world.isClient && player.isCreative() && !shulkerBoxBlockEntity.isEmpty()) {
                 ItemStack itemStack = getItemStack();
-                NbtCompound compoundTag = shulkerBoxBlockEntity.serializeInventory(new NbtCompound());
-                if (!compoundTag.isEmpty()) {
-                    itemStack.setSubNbt("BlockEntityTag", compoundTag);
-                }
+                blockEntity.setStackNbt(itemStack);
+
 
                 if (shulkerBoxBlockEntity.hasCustomName()) {
                     itemStack.setCustomName(shulkerBoxBlockEntity.getCustomName());
@@ -110,11 +104,11 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
                 itemEntity.setToDefaultPickupDelay();
                 world.spawnEntity(itemEntity);
             } else {
-                shulkerBoxBlockEntity.checkLootInteraction(player);
+                shulkerBoxBlockEntity.generateLoot(player);
             }
         }
 
-        super.onBreak(world, pos, state, player);
+        return super.onBreak(world, pos, state, player);
     }
 
     @Override
@@ -159,19 +153,6 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         return blockEntity instanceof EnderiteShulkerBoxBlockEntity
                 ? VoxelShapes.cuboid(((EnderiteShulkerBoxBlockEntity) blockEntity).getBoundingBox(state))
                 : VoxelShapes.fullCube();
-    }
-
-    @Override
-    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        // ItemStack itemStack = super.getPickStack(world, pos, state);
-        ItemStack itemStack = getItemStack();
-        EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) world.getBlockEntity(pos);
-        NbtCompound compoundTag = shulkerBoxBlockEntity.serializeInventory(new NbtCompound());
-        if (!compoundTag.isEmpty()) {
-            itemStack.setSubNbt("BlockEntityTag", compoundTag);
-        }
-
-        return itemStack;
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {

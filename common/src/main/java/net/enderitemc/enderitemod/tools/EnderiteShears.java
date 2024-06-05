@@ -2,6 +2,7 @@ package net.enderitemc.enderitemod.tools;
 
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.LootEvent.LootTableModificationContext;
+import dev.architectury.injectables.targets.ArchitecturyTarget;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BeehiveBlock;
@@ -59,7 +60,7 @@ public class EnderiteShears extends ShearsItem {
         return super.useOnBlock(context);
     }
 
-    public static void registerLoottables() {
+    public static void registerLoottables_Fabric() {
         LootEvent.MODIFY_LOOT_TABLE.register((lootTables, id, table, builtin) -> {
 
             tryBuildLootTable(id, table, Blocks.ACACIA_LEAVES);
@@ -83,7 +84,7 @@ public class EnderiteShears extends ShearsItem {
 
             tryBuildLootTable(id, table, Blocks.GLOW_LICHEN);
 
-            tryBuildLootTable(id, table, Blocks.GRASS);
+            tryBuildLootTable(id, table, Blocks.SHORT_GRASS);
 
             tryBuildLootTable(id, table, Blocks.JUNGLE_LEAVES);
 
