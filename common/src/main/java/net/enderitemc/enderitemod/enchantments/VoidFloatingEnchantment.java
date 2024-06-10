@@ -2,28 +2,24 @@ package net.enderitemc.enderitemod.enchantments;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.ItemTags;
 
 public class VoidFloatingEnchantment extends Enchantment {
 
     public final EnderiteEnchantmentTarget type;
 
     public VoidFloatingEnchantment() {
-        super(Enchantment.Rarity.VERY_RARE, EnchantmentTarget.BREAKABLE,
-                new EquipmentSlot[] { EquipmentSlot.MAINHAND });
+        super(Enchantment.properties(
+                ItemTags.DURABILITY_ENCHANTABLE,
+                2,
+                3,
+                Enchantment.leveledCost(15, 5),
+                Enchantment.leveledCost(20, 5),
+                4,
+                EquipmentSlot.MAINHAND));
         this.type = EnderiteEnchantmentTarget.NOT_ENDERITE;
-    }
-
-    @Override
-    public int getMinPower(int level) {
-        return 5 * level + 15;
-    }
-
-    @Override
-    public int getMaxLevel() {
-        return 3;
     }
 
     @Override

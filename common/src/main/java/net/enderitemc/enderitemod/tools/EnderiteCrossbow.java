@@ -1,46 +1,37 @@
 package net.enderitemc.enderitemod.tools;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
-
-import com.google.common.collect.Lists;
-
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
-import net.enderitemc.enderitemod.misc.EnderiteCrossbowUser;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ChargedProjectilesComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.FireworkRocketEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ArrowItem;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
+import java.util.List;
 
 public class EnderiteCrossbow extends CrossbowItem {
     private boolean charged = false;
@@ -51,257 +42,101 @@ public class EnderiteCrossbow extends CrossbowItem {
     }
 
     @Override
-    public Predicate<ItemStack> getHeldProjectiles() {
-        return CROSSBOW_HELD_PROJECTILES;
-    }
-
-    @Override
-    public Predicate<ItemStack> getProjectiles() {
-        return BOW_PROJECTILES;
-    }
-
-    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        if (isCharged(itemStack)) {
-            shootAll(world, user, hand, itemStack, getSpeed(itemStack), 1.0F);
-            setCharged(itemStack, false);
+        ChargedProjectilesComponent chargedProjectilesComponent = itemStack.get(DataComponentTypes.CHARGED_PROJECTILES);
+        if (chargedProjectilesComponent != null && !chargedProjectilesComponent.isEmpty()) {
+            this.shootAll(world, user, hand, itemStack, EnderiteCrossbow.getSpeed(chargedProjectilesComponent), 1.0f, null);
             return TypedActionResult.consume(itemStack);
-        } else if (!user.getProjectileType(itemStack).isEmpty()) {
-            if (!isCharged(itemStack)) {
-                this.charged = false;
-                this.loaded = false;
-                user.setCurrentHand(hand);
-            }
-
-            return TypedActionResult.consume(itemStack);
-        } else {
-            return TypedActionResult.fail(itemStack);
         }
+        if (!user.getProjectileType(itemStack).isEmpty()) {
+            this.charged = false;
+            this.loaded = false;
+            user.setCurrentHand(hand);
+            return TypedActionResult.consume(itemStack);
+        }
+        return TypedActionResult.fail(itemStack);
     }
+
+    private static float getSpeed(ChargedProjectilesComponent stack) {
+        return stack.contains(Items.FIREWORK_ROCKET) ? 2.1F
+                : EnderiteMod.CONFIG.tools.enderiteCrossbowArrowSpeed;
+    }
+
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         int i = this.getMaxUseTime(stack) - remainingUseTicks;
-        float f = getPullProgress(i, stack);
-        if (f >= 1.0F && !isCharged(stack) && loadProjectiles(user, stack)) {
-            setCharged(stack, true);
-            SoundCategory soundCategory = user instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
-            world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(),
-                    SoundEvents.ITEM_CROSSBOW_LOADING_END, soundCategory, 1.0F,
-                    1.0F / (world.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
+        float f = EnderiteCrossbow.getPullProgress(i, stack);
+        if (f >= 1.0f && !EnderiteCrossbow.isCharged(stack) && EnderiteCrossbow.loadProjectiles(user, stack)) {
+            world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, user.getSoundCategory(), 1.0f, 1.0f / (world.getRandom().nextFloat() * 0.5f + 1.0f) + 0.2f);
         }
-
     }
 
-    private static boolean loadProjectiles(LivingEntity shooter, ItemStack projectile) {
-        int i = EnchantmentHelper.getLevel(Enchantments.MULTISHOT, projectile);
-        int j = i == 0 ? 1 : 3;
-        boolean bl = shooter instanceof PlayerEntity && ((PlayerEntity) shooter).getAbilities().creativeMode;
-        ItemStack itemStack = shooter.getProjectileType(projectile);
-        ItemStack itemStack2 = itemStack.copy();
-
-        for (int k = 0; k < j; ++k) {
-            if (k > 0) {
-                itemStack = itemStack2.copy();
-            }
-
-            if (itemStack.isEmpty() && bl) {
-                itemStack = new ItemStack(Items.ARROW);
-                itemStack2 = itemStack.copy();
-            }
-
-            if (!loadProjectile(shooter, projectile, itemStack, k > 0, bl)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static boolean loadProjectile(LivingEntity shooter, ItemStack crossbow, ItemStack projectile,
-            boolean simulated, boolean creative) {
-        if (projectile.isEmpty()) {
-            return false;
-        } else {
-            boolean bl = creative && projectile.getItem() instanceof ArrowItem;
-            ItemStack itemStack2;
-            if (!bl && !creative && !simulated) {
-                itemStack2 = projectile.split(1);
-                if (projectile.isEmpty() && shooter instanceof PlayerEntity) {
-                    ((PlayerEntity) shooter).getInventory().removeOne(projectile);
-                }
-            } else {
-                itemStack2 = projectile.copy();
-            }
-
-            putProjectile(crossbow, itemStack2);
+    private static boolean loadProjectiles(LivingEntity shooter, ItemStack crossbow) {
+        List<ItemStack> list = EnderiteCrossbow.load(crossbow, shooter.getProjectileType(crossbow), shooter);
+        if (!list.isEmpty()) {
+            crossbow.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.of(list));
             return true;
         }
+        return false;
     }
 
-    public static boolean isCharged(ItemStack stack) {
-        NbtCompound compoundTag = stack.getNbt();
-        return compoundTag != null && compoundTag.getBoolean("Charged");
-    }
-
-    public static void setCharged(ItemStack stack, boolean charged) {
-        NbtCompound compoundTag = stack.getOrCreateNbt();
-        compoundTag.putBoolean("Charged", charged);
-    }
-
-    private static void putProjectile(ItemStack crossbow, ItemStack projectile) {
-        NbtCompound compoundTag = crossbow.getOrCreateNbt();
-        NbtList listTag2;
-        if (compoundTag.contains("ChargedProjectiles", 9)) {
-            listTag2 = compoundTag.getList("ChargedProjectiles", 10);
+    @Override
+    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+        Vector3f vector3f;
+        if (target != null) {
+            double d = target.getX() - shooter.getX();
+            double e = target.getZ() - shooter.getZ();
+            double f = Math.sqrt(d * d + e * e);
+            double g = target.getBodyY(0.3333333333333333) - projectile.getY() + f * (double)0.2f;
+            vector3f = EnderiteCrossbow.calcVelocity(shooter, new Vec3d(d, g, e), yaw);
         } else {
-            listTag2 = new NbtList();
+            Vec3d vec3d = shooter.getOppositeRotationVector(1.0f);
+            Quaternionf quaternionf = new Quaternionf().setAngleAxis((double)(yaw * ((float)Math.PI / 180)), vec3d.x, vec3d.y, vec3d.z);
+            Vec3d vec3d2 = shooter.getRotationVec(1.0f);
+            vector3f = vec3d2.toVector3f().rotate(quaternionf);
         }
-
-        NbtCompound compoundTag2 = new NbtCompound();
-        projectile.writeNbt(compoundTag2);
-        listTag2.add(compoundTag2);
-        compoundTag.put("ChargedProjectiles", listTag2);
+        projectile.setVelocity(vector3f.x(), vector3f.y(), vector3f.z(), speed, divergence);
+        float h = EnderiteCrossbow.getSoundPitch(shooter.getRandom(), index);
+        shooter.getWorld().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, shooter.getSoundCategory(), 1.0f, h);
     }
 
-    private static List<ItemStack> getProjectiles(ItemStack crossbow) {
-        List<ItemStack> list = Lists.newArrayList();
-        NbtCompound compoundTag = crossbow.getNbt();
-        if (compoundTag != null && compoundTag.contains("ChargedProjectiles", 9)) {
-            NbtList listTag = compoundTag.getList("ChargedProjectiles", 10);
-            if (listTag != null) {
-                for (int i = 0; i < listTag.size(); ++i) {
-                    NbtCompound compoundTag2 = listTag.getCompound(i);
-                    list.add(ItemStack.fromNbt(compoundTag2));
-                }
-            }
+    private static Vector3f calcVelocity(LivingEntity shooter, Vec3d direction, float yaw) {
+        Vector3f vector3f = direction.toVector3f().normalize();
+        Vector3f vector3f2 = new Vector3f(vector3f).cross(new Vector3f(0.0f, 1.0f, 0.0f));
+        if ((double)vector3f2.lengthSquared() <= 1.0E-7) {
+            Vec3d vec3d = shooter.getOppositeRotationVector(1.0f);
+            vector3f2 = new Vector3f(vector3f).cross(vec3d.toVector3f());
         }
-
-        return list;
+        Vector3f vector3f3 = new Vector3f(vector3f).rotateAxis(1.5707964f, vector3f2.x, vector3f2.y, vector3f2.z);
+        return new Vector3f(vector3f).rotateAxis(yaw * ((float)Math.PI / 180), vector3f3.x, vector3f3.y, vector3f3.z);
     }
 
-    private static void clearProjectiles(ItemStack crossbow) {
-        NbtCompound compoundTag = crossbow.getNbt();
-        if (compoundTag != null) {
-            NbtList listTag = compoundTag.getList("ChargedProjectiles", 9);
-            listTag.clear();
-            compoundTag.put("ChargedProjectiles", listTag);
+    @Override
+    protected ProjectileEntity createArrowEntity(World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
+        ProjectileEntity weakArrow = super.createArrowEntity(world, shooter, weaponStack, projectileStack, critical);
+        if(weakArrow instanceof PersistentProjectileEntity projectileEntity) {
+            NbtCompound nbt = new NbtCompound();
+            projectileEntity.writeNbt(nbt);
+            nbt.putBoolean("IsEnderiteArrow", true);
+            projectileEntity.readNbt(nbt);
+            projectileEntity.setDamage(EnderiteMod.CONFIG.tools.enderiteCrossbowAD);
+            return projectileEntity;
         }
-
+        return weakArrow;
     }
 
-    public static boolean hasProjectile(ItemStack crossbow, Item projectile) {
-        return getProjectiles(crossbow).stream().anyMatch((s) -> {
-            return s.getItem() == projectile;
-        });
-    }
-
-    private static void shoot(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile,
-            float soundPitch, boolean creative, float speed, float divergence, float simulated) {
-        if (!world.isClient) {
-            boolean bl = projectile.getItem() == Items.FIREWORK_ROCKET;
-            Object projectileEntity2;
-            if (bl) {
-                projectileEntity2 = new FireworkRocketEntity(world, projectile, shooter, shooter.getX(),
-                        shooter.getEyeY() - 0.15000000596046448D, shooter.getZ(), true);
-            } else {
-                projectileEntity2 = createArrow(world, shooter, crossbow, projectile);
-                if (creative || simulated != 0.0F) {
-                    ((PersistentProjectileEntity) projectileEntity2).pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
-                }
-            }
-
-            if (shooter instanceof EnderiteCrossbowUser) {
-                EnderiteCrossbowUser crossbowUser = (EnderiteCrossbowUser) shooter;
-                crossbowUser.shoot(crossbowUser.getTarget(), crossbow, (ProjectileEntity) projectileEntity2, simulated);
-            } else {
-                Vec3d vec3d = shooter.getOppositeRotationVector(1.0F);
-                Quaternionf quaternion = new Quaternionf().setAngleAxis((double) (simulated * ((float) Math.PI / 180)),
-                        vec3d.x, vec3d.y, vec3d.z);
-                Vec3d vec3d2 = shooter.getRotationVec(1.0F);
-                Vector3f vector3f = vec3d2.toVector3f();
-                vector3f.rotate(quaternion);
-                ((ProjectileEntity) projectileEntity2).setVelocity((double) vector3f.x(), (double) vector3f.y(),
-                        (double) vector3f.z(), speed, divergence);
-            }
-
-            crossbow.damage(bl ? 3 : 1, shooter, (e) -> {
-                e.sendToolBreakStatus(hand);
-            });
-            world.spawnEntity((Entity) projectileEntity2);
-            world.playSound((PlayerEntity) null, shooter.getX(), shooter.getY(), shooter.getZ(),
-                    SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
+    private static float getSoundPitch(Random random, int index) {
+        if (index == 0) {
+            return 1.0f;
         }
-    }
-
-    private static PersistentProjectileEntity createArrow(World world, LivingEntity entity, ItemStack crossbow,
-            ItemStack arrow) {
-        ArrowItem arrowItem = (ArrowItem) ((ArrowItem) (arrow.getItem() instanceof ArrowItem ? arrow.getItem()
-                : Items.ARROW));
-        PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, arrow, entity);
-
-        persistentProjectileEntity.setCustomName(Text.literal("Enderite Arrow"));
-
-        if (entity instanceof PlayerEntity) {
-            persistentProjectileEntity.setCritical(true);
-        }
-
-        persistentProjectileEntity.setDamage(EnderiteMod.CONFIG.tools.enderiteCrossbowAD);
-
-        persistentProjectileEntity.setSound(SoundEvents.ITEM_CROSSBOW_HIT);
-        persistentProjectileEntity.setShotFromCrossbow(true);
-        int i = EnchantmentHelper.getLevel(Enchantments.PIERCING, crossbow);
-        if (i > 0) {
-            persistentProjectileEntity.setPierceLevel((byte) i);
-        }
-
-        return persistentProjectileEntity;
-    }
-
-    public static void shootAll(World world, LivingEntity entity, Hand hand, ItemStack stack, float speed,
-            float divergence) {
-        List<ItemStack> list = getProjectiles(stack);
-        float[] fs = EnderiteCrossbow.getSoundPitches(entity.getRandom());
-
-        for (int i = 0; i < list.size(); ++i) {
-            ItemStack itemStack = (ItemStack) list.get(i);
-            boolean bl = entity instanceof PlayerEntity && ((PlayerEntity) entity).getAbilities().creativeMode;
-            if (!itemStack.isEmpty()) {
-                if (i == 0) {
-                    shoot(world, entity, hand, stack, itemStack, fs[i], bl, speed, divergence, 0.0F);
-                } else if (i == 1) {
-                    shoot(world, entity, hand, stack, itemStack, fs[i], bl, speed, divergence, -10.0F);
-                } else if (i == 2) {
-                    shoot(world, entity, hand, stack, itemStack, fs[i], bl, speed, divergence, 10.0F);
-                }
-            }
-        }
-
-        postShoot(world, entity, stack);
-    }
-
-    private static float[] getSoundPitches(Random random) {
-        boolean bl = random.nextBoolean();
-        return new float[] { 1.0f, getSoundPitch(bl, random), getSoundPitch(!bl, random) };
+        return EnderiteCrossbow.getSoundPitch((index & 1) == 1, random);
     }
 
     private static float getSoundPitch(boolean flag, Random random) {
         float f = flag ? 0.63f : 0.43f;
         return 1.0f / (random.nextFloat() * 0.5f + 1.8f) + f;
-    }
-
-    private static void postShoot(World world, LivingEntity entity, ItemStack stack) {
-        if (entity instanceof ServerPlayerEntity) {
-            ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) entity;
-            if (!world.isClient) {
-                Criteria.SHOT_CROSSBOW.trigger(serverPlayerEntity, stack);
-            }
-
-            serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-        }
-
-        clearProjectiles(stack);
     }
 
     @Override
@@ -310,26 +145,20 @@ public class EnderiteCrossbow extends CrossbowItem {
             int i = EnchantmentHelper.getLevel(Enchantments.QUICK_CHARGE, stack);
             SoundEvent soundEvent = this.getQuickChargeSound(i);
             SoundEvent soundEvent2 = i == 0 ? SoundEvents.ITEM_CROSSBOW_LOADING_MIDDLE : null;
-            float f = (float) (stack.getMaxUseTime() - remainingUseTicks) / (float) getPullTime(stack);
-            if (f < 0.2F) {
+            float f = (float)(stack.getMaxUseTime() - remainingUseTicks) / (float)EnderiteCrossbow.getPullTime(stack);
+            if (f < 0.2f) {
                 this.charged = false;
                 this.loaded = false;
             }
-
-            if (f >= 0.2F && !this.charged) {
+            if (f >= 0.2f && !this.charged) {
                 this.charged = true;
-                world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(), soundEvent,
-                        SoundCategory.PLAYERS, 0.5F, 1.0F);
+                world.playSound(null, user.getX(), user.getY(), user.getZ(), soundEvent, SoundCategory.PLAYERS, 0.5f, 1.0f);
             }
-
-            if (f >= 0.5F && soundEvent2 != null && !this.loaded) {
+            if (f >= 0.5f && soundEvent2 != null && !this.loaded) {
                 this.loaded = true;
-                world.playSound((PlayerEntity) null, user.getX(), user.getY(), user.getZ(), soundEvent2,
-                        SoundCategory.PLAYERS, 0.5F, 1.0F);
+                world.playSound(null, user.getX(), user.getY(), user.getZ(), soundEvent2, SoundCategory.PLAYERS, 0.5f, 1.0f);
             }
-
         }
-
     }
 
     @Override
@@ -342,62 +171,27 @@ public class EnderiteCrossbow extends CrossbowItem {
         return i == 0 ? 35 : 35 - 5 * i;
     }
 
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.CROSSBOW;
-    }
-
     private SoundEvent getQuickChargeSound(int stage) {
         switch (stage) {
-            case 1:
+            case 1: {
                 return SoundEvents.ITEM_CROSSBOW_QUICK_CHARGE_1;
-            case 2:
+            }
+            case 2: {
                 return SoundEvents.ITEM_CROSSBOW_QUICK_CHARGE_2;
-            case 3:
+            }
+            case 3: {
                 return SoundEvents.ITEM_CROSSBOW_QUICK_CHARGE_3;
-            default:
-                return SoundEvents.ITEM_CROSSBOW_LOADING_START;
+            }
         }
+        return SoundEvents.ITEM_CROSSBOW_LOADING_START;
     }
 
     private static float getPullProgress(int useTicks, ItemStack stack) {
-        float f = (float) useTicks / (float) getPullTime(stack);
-        if (f > 1.0F) {
-            f = 1.0F;
+        float f = (float)useTicks / (float)EnderiteCrossbow.getPullTime(stack);
+        if (f > 1.0f) {
+            f = 1.0f;
         }
-
         return f;
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        List<ItemStack> list = getProjectiles(stack);
-        if (isCharged(stack) && !list.isEmpty()) {
-            ItemStack itemStack = (ItemStack) list.get(0);
-            tooltip.add((Text.translatable("item.minecraft.crossbow.projectile")).append(" ")
-                    .append(itemStack.toHoverableText()));
-            if (context.isAdvanced() && itemStack.getItem() == Items.FIREWORK_ROCKET) {
-                List<Text> list2 = Lists.newArrayList();
-                Items.FIREWORK_ROCKET.appendTooltip(itemStack, world, list2, context);
-                if (!list2.isEmpty()) {
-                    for (int i = 0; i < list2.size(); ++i) {
-                        list2.set(i, (Text.literal("  ")).append((Text) list2.get(i)).formatted(Formatting.GRAY));
-                    }
-
-                    tooltip.addAll(list2);
-                }
-            }
-
-        }
-    }
-
-    private static float getSpeed(ItemStack stack) {
-        return stack.isOf(EnderiteMod.ENDERITE_CROSSBOW.get()) && hasProjectile(stack, Items.FIREWORK_ROCKET) ? 2.1F
-                : EnderiteMod.CONFIG.tools.enderiteCrossbowArrowSpeed;
-    }
-
-    @Override
-    public int getRange() {
-        return 8;
     }
 
     @Override
@@ -409,4 +203,5 @@ public class EnderiteCrossbow extends CrossbowItem {
     public boolean canRepair(ItemStack stack, ItemStack ingredient) {
         return EnderiteMaterial.ENDERITE.getRepairIngredient().test(ingredient);
     }
+
 }

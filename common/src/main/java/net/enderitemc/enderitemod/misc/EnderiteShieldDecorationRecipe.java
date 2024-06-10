@@ -1,15 +1,19 @@
 package net.enderitemc.enderitemod.misc;
 
-import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
+import net.enderitemc.enderitemod.tools.EnderiteTools;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BannerItem;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
 public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
@@ -39,7 +43,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
                         return false;
                     }
 
-                    if (itemStack3.getSubNbt("BlockEntityTag") != null) {
+                    if (itemStack3.get(DataComponentTypes.BLOCK_ENTITY_DATA) != null) {
                         return false;
                     }
 
@@ -55,7 +59,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager dynamicRegistryManager) {
+    public ItemStack craft(RecipeInputInventory craftingInventory, RegistryWrapper.WrapperLookup registryManager) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
@@ -73,10 +77,9 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         if (itemStack2.isEmpty()) {
             return itemStack2;
         } else {
-            NbtCompound compoundTag = itemStack.getSubNbt("BlockEntityTag");
-            NbtCompound compoundTag2 = compoundTag == null ? new NbtCompound() : compoundTag.copy();
+            NbtCompound compoundTag2 = itemStack.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.of(new NbtCompound())).copyNbt();
             compoundTag2.putInt("Base", ((BannerItem) itemStack.getItem()).getColor().getId());
-            itemStack2.setSubNbt("BlockEntityTag", compoundTag2);
+            itemStack2.set(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.of(compoundTag2));
             return itemStack2;
         }
     }
@@ -86,6 +89,6 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
     }
 
     public RecipeSerializer<?> getSerializer() {
-        return EnderiteMod.ENDERITE_SHIELD_DECORATION_RECIPE.get();
+        return EnderiteTools.ENDERITE_SHIELD_DECORATION_RECIPE.get();
     }
 }

@@ -18,6 +18,8 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -31,8 +33,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-
-import static net.minecraft.block.entity.ShulkerBoxBlockEntity.ITEMS_KEY;
 
 public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity implements SidedInventory {
     private static final int[] AVAILABLE_SLOTS = IntStream.range(0, 27).toArray();
@@ -222,22 +222,22 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        this.readInventoryNbt(nbt);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+        super.readNbt(nbt, lookup);
+        this.readInventoryNbt(nbt, lookup);
     }
 
-    public void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+        super.writeNbt(nbt, lookup);
         if (!this.writeLootTable(nbt)) {
-            Inventories.writeNbt(nbt, this.inventory, false);
+            Inventories.writeNbt(nbt, this.inventory, false, lookup);
         }
     }
 
-    public void readInventoryNbt(NbtCompound nbt) {
+    public void readInventoryNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
         this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-        if (!this.readLootTable(nbt) && nbt.contains(ITEMS_KEY, NbtElement.LIST_TYPE)) {
-            Inventories.readNbt(nbt, this.inventory);
+        if (!this.readLootTable(nbt) && nbt.contains("Items", NbtElement.LIST_TYPE)) {
+            Inventories.readNbt(nbt, this.inventory, lookup);
         }
     }
 
@@ -247,7 +247,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     }
 
 
-    protected void setInvStackList(DefaultedList<ItemStack> list) {
+    protected void setHeldStacks(DefaultedList<ItemStack> list) {
         this.inventory = list;
     }
 
@@ -282,7 +282,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     }
 
     @Override
-    protected DefaultedList<ItemStack> method_11282() {
+    protected DefaultedList<ItemStack> getHeldStacks() {
         return this.inventory;
     }
 }

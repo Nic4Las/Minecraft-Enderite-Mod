@@ -10,6 +10,8 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.component.DataComponentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ItemEntity;
@@ -21,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
@@ -52,8 +55,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-            BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient) {
             return ActionResult.SUCCESS;
         } else if (player.isSpectator()) {
@@ -80,7 +82,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         if (entity.getAnimationStage() != EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
             return true;
         } else {
-            Box box = ShulkerEntity.calculateBoundingBox((Direction) state.get(FACING), 0.0F, 0.5F).offset(pos)
+            Box box = ShulkerEntity.calculateBoundingBox(0.0F, (Direction) state.get(FACING), 0.5F).offset(pos)
                     .contract(1.0E-6D);
             return world.isSpaceEmpty(box);
         }
@@ -92,11 +94,11 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
             if (!world.isClient && player.isCreative() && !shulkerBoxBlockEntity.isEmpty()) {
                 ItemStack itemStack = getItemStack();
-                blockEntity.setStackNbt(itemStack);
+                blockEntity.setStackNbt(itemStack, world.getRegistryManager());
 
 
                 if (shulkerBoxBlockEntity.hasCustomName()) {
-                    itemStack.setCustomName(shulkerBoxBlockEntity.getCustomName());
+                    itemStack.set(DataComponentTypes.CUSTOM_NAME, shulkerBoxBlockEntity.getCustomName());
                 }
 
                 ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
@@ -123,16 +125,6 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
             });
         }
         return super.getDroppedStacks(state, builder);
-    }
-
-    @Override
-    public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-        if (itemStack.hasCustomName()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
-                ((EnderiteShulkerBoxBlockEntity) blockEntity).setCustomName(itemStack.getName());
-            }
-        }
     }
 
     @Override

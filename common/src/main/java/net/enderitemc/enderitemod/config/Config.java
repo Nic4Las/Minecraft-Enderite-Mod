@@ -26,6 +26,8 @@ public class Config {
         public float enderiteCrossbowArrowSpeed = 3.65f;
 
         public int durability = 4096;
+
+        public int maxTeleportCharge = 64;
     }
 
     public static class WorldGeneration {
@@ -42,6 +44,7 @@ public class Config {
         public int leggingsProtection = 7;
         public int chestplateProtection = 9;
         public int helmetProtection = 4;
+        public int bodyProtection = 12;
 
         public int durabilityMultiplier = 8;
         public int enchantability = 17;

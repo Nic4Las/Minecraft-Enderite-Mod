@@ -11,18 +11,18 @@ import net.minecraft.util.Identifier;
 
 public abstract class EnderiteUpgradeSmithingTemplate {
     public static void registerLoottables() {
-        LootEvent.MODIFY_LOOT_TABLE.register((lootTables, id, table, builtin) -> {
+        LootEvent.MODIFY_LOOT_TABLE.register((baseTable, table, builtin) -> {
+            Identifier id = baseTable.getValue();
 
-            tryBuildLootTable(id, table, LootTables.END_CITY_TREASURE_CHEST);
+            tryBuildLootTable(id, table, LootTables.END_CITY_TREASURE_CHEST.getValue());
         });
     }
 
     public static void tryBuildLootTable(Identifier id, LootTableModificationContext table, Identifier name) {
         if (name.equals(id)) {
-            LootPool pool = LootPool.builder()
+            LootPool.Builder pool = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
-                    .with(ItemEntry.builder(EnderiteMod.ENDERITE_UPGRADE_SMITHING_TEMPLATE.get().asItem()))
-                    .build();
+                    .with(ItemEntry.builder(EnderiteMod.ENDERITE_UPGRADE_SMITHING_TEMPLATE.get().asItem()));
             table.addPool(pool);
         }
     }

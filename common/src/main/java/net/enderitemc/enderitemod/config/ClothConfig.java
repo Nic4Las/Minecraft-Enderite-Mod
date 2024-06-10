@@ -200,6 +200,16 @@ public class ClothConfig {
                                 .setSaveConsumer(newValue -> currentConfig.tools.durability = newValue)
                                 .build());
 
+                restart.addEntry(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_tools.max_teleport_charge"),
+                                currentConfig.tools.maxTeleportCharge)
+                        .setDefaultValue(DEFAULT.tools.maxTeleportCharge).setMin(0)
+                        .setTooltip(Text.translatable(
+                                "option.enderitemod.restart.enderite_tools.max_teleport_charge.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.maxTeleportCharge = newValue)
+                        .build());
+
                 
                 // ARMOR
                 restart.addEntry(entryBuilder
@@ -241,6 +251,16 @@ public class ClothConfig {
                                                 "option.enderitemod.restart.enderite_boots.protection.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.armor.bootsProtection = newValue)
                                 .build());
+
+                restart.addEntry(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_body.protection"),
+                                currentConfig.armor.bodyProtection)
+                        .setDefaultValue(DEFAULT.armor.bodyProtection).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                "option.enderitemod.restart.enderite_body.protection.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.bodyProtection = newValue)
+                        .build());
 
                 restart.addEntry(entryBuilder
                                 .startFloatField(Text.translatable(

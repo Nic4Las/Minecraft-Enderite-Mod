@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod.fabriclike.misc;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -21,6 +22,8 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BannerPatternsComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
@@ -38,15 +41,16 @@ public class EnderiteShieldRenderer implements DynamicItemRenderer {
         public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices,
                         VertexConsumerProvider vertexConsumers, int light,
                         int overlay) {
-                boolean bl = BlockItem.getBlockEntityNbt(stack) != null;
+                BannerPatternsComponent bannerPatternsComponent = stack.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT);
+                DyeColor dyeColor2 = stack.get(DataComponentTypes.BASE_COLOR);
+                boolean bl = !bannerPatternsComponent.layers().isEmpty() || dyeColor2 != null;
                 matrices.push();
                 matrices.scale(1.0f, -1.0f, -1.0f);
                 SpriteIdentifier spriteIdentifier = bl ? SHIELD_BASE : SHIELD_BASE_NO_PATTERN;
                 VertexConsumer vertexConsumer = spriteIdentifier.getSprite().getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.shieldModel.get().getLayer(spriteIdentifier.getAtlasId()), true, stack.hasGlint()));
                 this.shieldModel.get().getHandle().render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
                 if (bl) {
-                        List<Pair<RegistryEntry<BannerPattern>, DyeColor>> list = BannerBlockEntity.getPatternsFromNbt(ShieldItem.getColor(stack), BannerBlockEntity.getPatternListNbt(stack));
-                        BannerBlockEntityRenderer.renderCanvas(matrices, vertexConsumers, light, overlay, this.shieldModel.get().getPlate(), spriteIdentifier, false, list, stack.hasGlint());
+                        BannerBlockEntityRenderer.renderCanvas(matrices, vertexConsumers, light, overlay, this.shieldModel.get().getPlate(), spriteIdentifier, false, Objects.requireNonNullElse(dyeColor2, DyeColor.WHITE), bannerPatternsComponent, stack.hasGlint());
                 } else {
                         this.shieldModel.get().getPlate().render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
                 }

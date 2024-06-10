@@ -133,5 +133,10 @@
   "option.enderitemod.restart.armor.enchantability.hover": "Enchantability for both tools and armor, Base value: 17",
 
   "option.enderitemod.restart.enderite_tools.durability": "Enderite tools durability",
-  "option.enderitemod.restart.enderite_tools.durability.hover": "Base value: 4096"
+  "option.enderitemod.restart.enderite_tools.durability.hover": "Base value: 4096",
+
+  "option.enderitemod.restart.enderite_body.protection": "Enderite Body armor",
+  "option.enderitemod.restart.enderite_body.protection.hover": "Base value: 12, (Animal armors)",
+  "option.enderitemod.restart.enderite_tools.max_teleport_charge": "Maximum allowed teleport charge",
+  "option.enderitemod.restart.enderite_tools.max_teleport_charge.hover": "Applies to Sword and Shield (0 disables it)"
 }

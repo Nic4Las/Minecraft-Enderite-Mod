@@ -2,13 +2,13 @@ package net.enderitemc.enderitemod.mixin;
 
 import java.util.function.Consumer;
 
+import net.enderitemc.enderitemod.tools.EnderiteTools;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.SheepEntity;
@@ -35,12 +35,10 @@ public abstract class EnderiteShearsSheepMixin extends LivingEntity {
     @Inject(at = @At(value = "HEAD"), method = "interactMob", cancellable = true)
     private void onShear(final PlayerEntity player, final Hand hand, final CallbackInfoReturnable<ActionResult> info) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (itemStack.isOf(EnderiteMod.ENDERITE_SHEAR.get())) {
+        if (itemStack.isOf(EnderiteTools.ENDERITE_SHEAR.get())) {
             if (!this.getWorld().isClient() && this.isShearable()) {
                 this.sheared(SoundCategory.PLAYERS);
-                itemStack.damage(1, (LivingEntity) player, (Consumer<LivingEntity>) ((playerEntity) -> {
-                    playerEntity.sendToolBreakStatus(hand);
-                }));
+                itemStack.damage(1, player, SheepEntity.getSlotForHand(hand));
                 info.setReturnValue(ActionResult.SUCCESS);
             } else {
                 info.setReturnValue(ActionResult.CONSUME);

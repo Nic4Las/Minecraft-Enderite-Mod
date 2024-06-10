@@ -1,7 +1,7 @@
 package net.enderitemc.enderitemod.fabriclike;
 
 import net.enderitemc.enderitemod.tools.EnderiteShears;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.enderitemc.enderitemod.tools.EnderiteTools;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.fabriclike.tools.EnderiteElytraChestplate;
@@ -15,15 +15,12 @@ import net.minecraft.block.dispenser.ShearsDispenserBehavior;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 
 public class EnderiteModFabricLike {
 
         // Enderite Elytra
         public static final RegistrySupplier<Item> ENDERITE_ELYTRA = EnderiteMod.ITEMS.register("enderite_elytra",
-                        () -> new EnderiteElytraChestplate(EnderiteArmorMaterial.ENDERITE,
+                        () -> new EnderiteElytraChestplate(EnderiteMod.ENDERITE_ARMOR_MATERIAL,
                                         ArmorItem.Type.CHESTPLATE,
                                         EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS));
         public static final RegistrySupplier<Item> ENDERITE_ELYTRA_SEPERATED = EnderiteMod.ITEMS.register(
@@ -54,7 +51,7 @@ public class EnderiteModFabricLike {
 
                 DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHULKER_BOX.get().asItem(),
                                 new BlockPlacementDispenserBehavior());
-                DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHEAR.get().asItem(),
+                DispenserBlock.registerBehavior(EnderiteTools.ENDERITE_SHEAR.get().asItem(),
                                 new ShearsDispenserBehavior());
 
         }

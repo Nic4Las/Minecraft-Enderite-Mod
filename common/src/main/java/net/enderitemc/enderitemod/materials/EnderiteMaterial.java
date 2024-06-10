@@ -4,8 +4,12 @@ import java.util.function.Supplier;
 
 import net.enderitemc.enderitemod.*;
 
+import net.enderitemc.enderitemod.misc.EnderiteTag;
+import net.minecraft.block.Block;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Lazy;
 
 public enum EnderiteMaterial implements ToolMaterial {
@@ -45,8 +49,8 @@ public enum EnderiteMaterial implements ToolMaterial {
     }
 
     @Override
-    public int getMiningLevel() {
-        return this.miningLevel;
+    public TagKey<Block> getInverseTag() {
+        return EnderiteTag.INCORRECT_FOR_ENDERITE_TOOL;
     }
 
     @Override

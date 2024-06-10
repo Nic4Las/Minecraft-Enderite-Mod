@@ -1,8 +1,5 @@
 package net.enderitemc.enderitemod.fabriclike;
 
-import com.google.common.base.Suppliers;
-
-import dev.architectury.registry.registries.RegistrarManager;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.fabriclike.misc.EnderiteShieldRenderer;
 import net.enderitemc.enderitemod.fabriclike.tools.EnderiteElytraChestplate;
@@ -11,19 +8,16 @@ import net.enderitemc.enderitemod.misc.EnderiteElytraFeatureRender;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
+import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
-import net.minecraft.block.SkullBlock;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.client.render.block.entity.SkullBlockEntityModel;
-import net.minecraft.client.render.entity.model.EntityModelLoader;
-import net.minecraft.client.render.entity.model.ShieldEntityModel;
-import net.minecraft.client.render.entity.model.TridentEntityModel;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ChargedProjectilesComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -34,11 +28,11 @@ public class EnderiteModClient implements ClientModInitializer {
         public void onInitializeClient() {
                 BlockEntityRendererFactories.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
                                 EnderiteShulkerBoxBlockEntityRenderer::new);
-                BuiltinItemRendererRegistry.INSTANCE.register(EnderiteMod.ENDERITE_SHIELD.get(),
+                BuiltinItemRendererRegistry.INSTANCE.register(EnderiteTools.ENDERITE_SHIELD.get(),
                                 new EnderiteShieldRenderer());
                                 
 
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_BOW.get().asItem(), new Identifier("pull"),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_BOW.get().asItem(), new Identifier("pull"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         if (livingEntity == null) {
                                                 return 0.0F;
@@ -49,14 +43,14 @@ public class EnderiteModClient implements ClientModInitializer {
                                                                                 / 20.0F;
                                         }
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_BOW.get().asItem(),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_BOW.get().asItem(),
                                 new Identifier("pulling"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
                                 });
 
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.get().asItem(),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get().asItem(),
                                 new Identifier("pull"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         if (livingEntity == null) {
@@ -69,7 +63,7 @@ public class EnderiteModClient implements ClientModInitializer {
                                                                                                 .getPullTime(itemStack);
                                         }
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.get().asItem(),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get().asItem(),
                                 new Identifier("pulling"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
@@ -78,19 +72,18 @@ public class EnderiteModClient implements ClientModInitializer {
                                                                         ? 1.0F
                                                                         : 0.0F;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.get().asItem(),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get().asItem(),
                                 new Identifier("charged"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return livingEntity != null && EnderiteCrossbow.isCharged(itemStack) ? 1.0F
                                                         : 0.0F;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.get().asItem(),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get().asItem(),
                                 new Identifier("firework"), (itemStack, clientWorld, livingEntity, seed) -> {
-                                        return livingEntity != null && EnderiteCrossbow.isCharged(itemStack)
-                                                        && EnderiteCrossbow.hasProjectile(itemStack,
-                                                                        Items.FIREWORK_ROCKET) ? 1.0F : 0.0F;
+                                    ChargedProjectilesComponent chargedProjectilesComponent = itemStack.get(DataComponentTypes.CHARGED_PROJECTILES);
+                                    return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.FIREWORK_ROCKET) ? 1.0f : 0.0f;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_SHIELD.get().asItem(),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_SHIELD.get().asItem(),
                                 new Identifier("blocking"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()

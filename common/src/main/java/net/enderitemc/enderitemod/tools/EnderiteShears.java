@@ -2,14 +2,14 @@ package net.enderitemc.enderitemod.tools;
 
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.LootEvent.LootTableModificationContext;
-import dev.architectury.injectables.targets.ArchitecturyTarget;
-import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BeehiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -53,7 +53,7 @@ public class EnderiteShears extends ShearsItem {
             world.playSound(playerEntity, blockPos, SoundEvents.BLOCK_BEEHIVE_SHEAR, SoundCategory.NEUTRAL, 1.0f, 1.0f);
             world.emitGameEvent((Entity) playerEntity, GameEvent.SHEAR, blockPos);
             if (playerEntity != null) {
-                itemStack.damage(1, playerEntity, player -> player.sendToolBreakStatus(context.getHand()));
+                itemStack.damage(1, playerEntity, LivingEntity.getSlotForHand(context.getHand()));
             }
             return ActionResult.success(world.isClient);
         }
@@ -61,7 +61,8 @@ public class EnderiteShears extends ShearsItem {
     }
 
     public static void registerLoottables_Fabric() {
-        LootEvent.MODIFY_LOOT_TABLE.register((lootTables, id, table, builtin) -> {
+        LootEvent.MODIFY_LOOT_TABLE.register((baseTable, table, builtin) -> {
+            Identifier id = baseTable.getValue();
 
             tryBuildLootTable(id, table, Blocks.ACACIA_LEAVES);
 
@@ -118,13 +119,12 @@ public class EnderiteShears extends ShearsItem {
     }
 
     public static void tryBuildLootTable(Identifier id, LootTableModificationContext table, Block block) {
-        if (block.getLootTableId().equals(id)) {
-            LootPool pool = LootPool.builder()
+        if (block.getLootTableKey().equals(id)) {
+            LootPool.Builder pool = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
                     .conditionally(MatchToolLootCondition
-                            .builder(ItemPredicate.Builder.create().items(EnderiteMod.ENDERITE_SHEAR.get())))
-                    .with(ItemEntry.builder(block.asItem()))
-                    .build();
+                            .builder(ItemPredicate.Builder.create().items(EnderiteTools.ENDERITE_SHEAR.get())))
+                    .with(ItemEntry.builder(block.asItem()));
             table.addPool(pool);
         }
     }

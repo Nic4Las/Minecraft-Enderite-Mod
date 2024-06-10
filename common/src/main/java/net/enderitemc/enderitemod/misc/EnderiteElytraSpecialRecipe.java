@@ -2,17 +2,24 @@ package net.enderitemc.enderitemod.misc;
 
 import java.util.Map;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.enderitemc.enderitemod.EnderiteMod;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.World;
 
 public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
@@ -54,47 +61,46 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    public ItemStack craft(RecipeInputInventory craftingInventory, DynamicRegistryManager registryManager) {
-        ItemStack itemStack = ItemStack.EMPTY;
-        ItemStack itemStack2 = ItemStack.EMPTY;
+    @Override
+    public ItemStack craft(RecipeInputInventory craftingInventory, RegistryWrapper.WrapperLookup registryManager) {
+        ItemStack chestplate_stack = ItemStack.EMPTY;
+        ItemStack elytra_stack = ItemStack.EMPTY;
 
         for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack3 = craftingInventory.getStack(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.isOf(EnderiteMod.ENDERITE_CHESTPLATE.get())) {
-                    itemStack = itemStack3;
+                    chestplate_stack = itemStack3;
                 } else if (itemStack3.getItem() instanceof ElytraItem) {
-                    itemStack2 = itemStack3.copy();
+                    elytra_stack = itemStack3.copy();
                 }
             }
         }
 
-        if (itemStack2.isEmpty()) {
-            return itemStack2;
+        if (elytra_stack.isEmpty()) {
+            return elytra_stack;
         } else {
-            ItemStack stackO = new ItemStack(EnderiteMod.ENDERITE_ELYTRA.get());
-            Map<Enchantment, Integer> map1 = EnchantmentHelper.get(itemStack);
-            Map<Enchantment, Integer> map2 = EnchantmentHelper.get(itemStack2);
+            ItemStack result_stack = new ItemStack(EnderiteMod.ENDERITE_ELYTRA.get());
+            ItemEnchantmentsComponent map1 = EnchantmentHelper.getEnchantments(chestplate_stack);
+            ItemEnchantmentsComponent map2 = EnchantmentHelper.getEnchantments(elytra_stack);
 
-            for (Map.Entry<Enchantment, Integer> entry2 : map2.entrySet()) {
-                // Merge new enchantment with old, if same level: level up, else: take higher level
-                map1.merge(entry2.getKey(), entry2.getValue(),
-                        (v1, v2) -> v1.equals(v2) ? Math.min(v1+1, entry2.getKey().getMaxLevel()) : Math.max(v1,v2));
+            ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(map1);
+            // Merge new enchantment with old, if same level: level up, else: take higher level
+            for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry2 : map2.getEnchantmentsMap()) {
+                Enchantment enchant = entry2.getKey().value();
+                int level1 = entry2.getIntValue();
+                int level2 = builder.getLevel(enchant);
+                int level = level1 == level2 ? Math.min(level1 + 1, enchant.getMaxLevel()) : Math.max(level1, level2);
+                builder.set(enchant, level);
+            }
+            EnchantmentHelper.set(result_stack, builder.build());
+
+            ArmorTrim trim = chestplate_stack.getOrDefault(DataComponentTypes.TRIM, null);
+            if(trim != null) {
+                result_stack.set(DataComponentTypes.TRIM, trim);
             }
 
-            EnchantmentHelper.set(map1, stackO);
-
-            NbtCompound nbt = stackO.getNbt();
-            NbtCompound nbt_get = itemStack.getNbt();
-            if(nbt_get!=null) {
-                NbtCompound trim_nbt = nbt_get.getCompound("Trim");
-                if(trim_nbt!=null) {
-                    nbt.put("Trim", trim_nbt);
-                    stackO.setNbt(nbt);
-                }
-            }
-
-            return stackO;
+            return result_stack;
         }
     }
 

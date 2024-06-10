@@ -8,6 +8,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
 public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
@@ -48,7 +49,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager registryManager) {
+    public ItemStack craft(RecipeInputInventory inv, RegistryWrapper.WrapperLookup registryManager) {
         ItemStack itemStack = ItemStack.EMPTY;
 
         for (int i = 0; i < inv.size(); ++i) {
@@ -61,8 +62,8 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
         }
 
         ItemStack itemStack3 = EnderiteShulkerBoxBlock.getItemStack();
-        if (itemStack.hasNbt()) {
-            itemStack3.setNbt(itemStack.getNbt().copy());
+        if (!itemStack.getComponentChanges().isEmpty()) {
+            itemStack3 = itemStack3.copyComponentsToNewStack(itemStack3.getItem(), itemStack3.getCount());
         }
 
         return itemStack3;

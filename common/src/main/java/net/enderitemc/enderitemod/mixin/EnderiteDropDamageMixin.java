@@ -2,11 +2,13 @@ package net.enderitemc.enderitemod.mixin;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 
@@ -29,26 +31,23 @@ public abstract class EnderiteDropDamageMixin extends Entity {
 
 	@Inject(at = @At("HEAD"), method = "tick")
 	private void damageItem(CallbackInfo info) {
-		// Items in the void get telported up and will live on (because they float)
+		// Items in the void get teleported up and will live on (because they float)
 		if (this.getY() < this.getWorld().getBottomY()) {
+			// Survival rate with Void Floating Enchantment
 			int i = EnchantmentHelper.getLevel(EnderiteMod.VOID_FLOATING_ENCHANTMENT.get(), getStack());
-			if(i==0) {
-				NbtCompound nbt = getStack().getNbt();
-				if(nbt!=null) {
-					NbtCompound trim_nbt = nbt.getCompound("Trim");
-					if(trim_nbt!=null) {
-						if(trim_nbt.getString("material").equals("enderitemod:enderite")) {
-							i = 1;
-						}
-					}
-				}
+
+			// Survival rate with Enderite Armor Trim
+			ArmorTrim trim = getStack().get(DataComponentTypes.TRIM);
+			if(trim != null && trim.getMaterial().getIdAsString().equals("enderitemod:enderite")) {
+				i += 1;
 			}
-			boolean survives = false;
+
+			// Calculate survival for chance
 			float r = random.nextFloat();
-			if (r < i / 3.0) {
-				survives = true;
-			}
-			if ((getStack().isIn(EnderiteTag.ENDERITE_ITEM)) || survives) {
+			boolean survives = r < i / 3.0f;
+
+			// Always survives if in Enderite Item Tag
+			if (getStack().isIn(EnderiteTag.ENDERITE_ITEM) || survives) {
 				this.unsetRemoved(); //this.removed = false;
 				// ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), 10,
 				// this.getZ(), getStack());

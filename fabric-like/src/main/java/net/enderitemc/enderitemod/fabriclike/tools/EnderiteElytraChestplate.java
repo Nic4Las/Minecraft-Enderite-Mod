@@ -6,10 +6,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 
 public class EnderiteElytraChestplate extends ArmorItem implements FabricElytraItem {
 
-    public EnderiteElytraChestplate(ArmorMaterial material, ArmorItem.Type type, Settings settings) {
+    public EnderiteElytraChestplate(RegistryEntry<ArmorMaterial> material, ArmorItem.Type type, Settings settings) {
         super(material, type, settings);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }

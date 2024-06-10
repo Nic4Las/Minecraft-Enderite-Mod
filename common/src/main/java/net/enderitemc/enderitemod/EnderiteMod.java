@@ -1,9 +1,11 @@
 package net.enderitemc.enderitemod;
 
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import com.google.common.base.Suppliers;
 
+import com.mojang.serialization.Codec;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.level.biome.BiomeModifications;
@@ -20,33 +22,21 @@ import net.enderitemc.enderitemod.enchantments.VoidFloatingEnchantment;
 import net.enderitemc.enderitemod.items.EnderiteIngot;
 import net.enderitemc.enderitemod.items.EnderiteScrap;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
-import net.enderitemc.enderitemod.materials.EnderiteMaterial;
+import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
 import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
-import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteUpgradeSmithingTemplate;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxRecipe;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
-import net.enderitemc.enderitemod.tools.AxeSubclass;
-import net.enderitemc.enderitemod.tools.EnderiteBow;
-import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
-import net.enderitemc.enderitemod.tools.EnderiteShears;
-import net.enderitemc.enderitemod.tools.EnderiteShield;
-import net.enderitemc.enderitemod.tools.EnderiteSword;
-import net.enderitemc.enderitemod.tools.HoeSubclass;
-import net.enderitemc.enderitemod.tools.PickaxeSubclass;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.DataComponentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.item.Item.Settings;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.SmithingTemplateItem;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.RegistryKey;
@@ -58,6 +48,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.Util;
+import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.gen.GenerationStep;
 
 public class EnderiteMod {
@@ -75,9 +66,15 @@ public class EnderiteMod {
         RegistryKeys.ENCHANTMENT);
     public static final DeferredRegister<ItemGroup> TABS =
         DeferredRegister.create(MOD_ID, RegistryKeys.ITEM_GROUP);
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIAL =
+            DeferredRegister.create(MOD_ID, RegistryKeys.ARMOR_MATERIAL);
+    public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES =
+            DeferredRegister.create(MOD_ID, RegistryKeys.DATA_COMPONENT_TYPE);
 
 
+    public static Config CONFIG = ConfigLoader.get();
 
+    // Tab
     public static final RegistrySupplier<ItemGroup> ENDERITE_TAB = TABS.register("enderite_group",
         () -> CreativeTabRegistry.create(
             Text.translatable("itemGroup.enderitemod.enderite_group"),
@@ -85,41 +82,14 @@ public class EnderiteMod {
         )
     );
 
-
-
-
-    public static Config CONFIG = ConfigLoader.get();
-
     // Enderite Ingot
     public static final RegistrySupplier<Item> ENDERITE_INGOT = ITEMS.register("enderite_ingot",
         () -> new EnderiteIngot(new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
     public static final RegistrySupplier<Item> ENDERITE_SCRAP = ITEMS.register("enderite_scrap",
         () -> new EnderiteScrap(new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
 
-
-
-    // Enderite Tools
-    public static final RegistrySupplier<Item> ENDERITE_PICKAXE = ITEMS.register("enderite_pickaxe",
-        () -> new PickaxeSubclass(EnderiteMaterial.ENDERITE,
-            CONFIG.tools.enderitePickaxeAD, -2.8F,
-            new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
-    public static final RegistrySupplier<Item> ENDERITE_AXE = ITEMS.register("enderite_axe",
-        () -> new AxeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteAxeAD,
-            -3.0F,
-            new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
-    public static final RegistrySupplier<Item> ENDERITE_HOE = ITEMS.register("enderite_hoe",
-        () -> new HoeSubclass(EnderiteMaterial.ENDERITE, CONFIG.tools.enderiteHoeAD,
-            0.0F,
-            new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
-
-    public static final RegistrySupplier<Item> ENDERITE_SHOVEL = ITEMS.register("enderite_shovel",
-        () -> new ShovelItem(EnderiteMaterial.ENDERITE,
-            CONFIG.tools.enderiteShovelAD, -3.0F,
-            new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
-    public static final RegistrySupplier<Item> ENDERITE_SWORD = ITEMS.register("enderite_sword",
-        () -> new EnderiteSword(EnderiteMaterial.ENDERITE,
-            CONFIG.tools.enderiteSwordAD, -2.4F,
-            new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
+    public static final RegistrySupplier<ArmorMaterial> ENDERITE_ARMOR_MATERIAL = ARMOR_MATERIAL.register(EnderiteArmorMaterial.ID.getPath(),
+            () -> EnderiteArmorMaterial.ENDERITE);
 
 
     // Enderite Block
@@ -148,18 +118,18 @@ public class EnderiteMod {
 
     // Enderite Armor
     public static final RegistrySupplier<Item> ENDERITE_HELMET = ITEMS.register("enderite_helmet",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.HELMET,
-            (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof())));
+        () -> new ArmorItem(ENDERITE_ARMOR_MATERIAL, ArmorItem.Type.HELMET,
+            (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof().maxDamage(ArmorItem.Type.HELMET.getMaxDamage(CONFIG.armor.durabilityMultiplier)))));
     public static final RegistrySupplier<Item> ENDERITE_CHESTPLATE = ITEMS.register("enderite_chestplate",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE,
+        () -> new ArmorItem(ENDERITE_ARMOR_MATERIAL,
             ArmorItem.Type.CHESTPLATE,
-            (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof())));
+            (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof().maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(CONFIG.armor.durabilityMultiplier)))));
     public static final RegistrySupplier<Item> ENDERITE_LEGGINGS = ITEMS.register("enderite_leggings",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.LEGGINGS,
-            (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof())));
+        () -> new ArmorItem(ENDERITE_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS,
+            (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof().maxDamage(ArmorItem.Type.LEGGINGS.getMaxDamage(CONFIG.armor.durabilityMultiplier)))));
     public static final RegistrySupplier<Item> ENDERITE_BOOTS = ITEMS.register("enderite_boots",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, ArmorItem.Type.BOOTS,
-            (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof())));
+        () -> new ArmorItem(ENDERITE_ARMOR_MATERIAL, ArmorItem.Type.BOOTS,
+            (new Item.Settings().arch$tab(ENDERITE_TAB).fireproof().maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(CONFIG.armor.durabilityMultiplier)))));
 
     // Enderite Elytra
     // Seperated to fabric-like and forge
@@ -195,37 +165,11 @@ public class EnderiteMod {
                 EnderiteShulkerBoxRecipe::new));
     public static RegistrySupplier<BlockEntityType<EnderiteShulkerBoxBlockEntity>> ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
 
-    // Bows
-    public static final RegistrySupplier<Item> ENDERITE_CROSSBOW = ITEMS.register("enderite_crossbow",
-        () -> new EnderiteCrossbow(
-            new Item.Settings().arch$tab(ENDERITE_TAB).fireproof().maxCount(1)
-                .maxDamage(768)));
-    public static final RegistrySupplier<Item> ENDERITE_BOW = ITEMS.register("enderite_bow", () -> new EnderiteBow(
-        new Item.Settings().arch$tab(ENDERITE_TAB).fireproof().maxCount(1).maxDamage(768)));
-
-    // Shield
-    public static final Settings ENDERITE_SHIELD_ITEM_SETTINGS = new Item.Settings().arch$tab(ENDERITE_TAB).fireproof().maxCount(1).maxDamage(768);
-    public static RegistrySupplier<Item> ENDERITE_SHIELD = ITEMS.register("enderite_shield",
-        () -> new EnderiteShield(
-            ENDERITE_SHIELD_ITEM_SETTINGS));
-
-    public static RegistrySupplier<RecipeSerializer<?>> ENDERITE_SHIELD_DECORATION_RECIPE = RECIPES
-        .register("crafting_special_enderiteshielddecoration",
-            () -> new SpecialRecipeSerializer<EnderiteShieldDecorationRecipe>(
-                EnderiteShieldDecorationRecipe::new));
-
     // Enchantment
     public static RegistrySupplier<Enchantment> VOID_FLOATING_ENCHANTMENT = ENCHANTMENTS.register("void_floating",
         () -> new VoidFloatingEnchantment());
 
     public static ScreenHandlerType<EnderiteShulkerBoxScreenHandler> ENDERITE_SHULKER_BOX_SCREEN_HANDLER;
-
-    // MOST IMPORTANT
-    public static final RegistrySupplier<Item> ENDERITE_SHEAR = ITEMS.register("enderite_shears",
-        () -> new EnderiteShears(
-            new Item.Settings().arch$tab(ENDERITE_TAB).fireproof().maxCount(1)
-                .maxDamage(2048)
-                .rarity(Rarity.RARE)));
 
     // Trims
     public static final RegistrySupplier<Item> ENDERITE_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("enderite_upgrade_smithing_template",
@@ -245,6 +189,8 @@ public class EnderiteMod {
         BLOCK_ENTITY_TYPES.register();
         ENCHANTMENTS.register();
         TABS.register();
+        ARMOR_MATERIAL.register();
+        EnderiteDataComponents.init();
 
         LifecycleEvent.SETUP.register(() -> {
             BiomeModifications.addProperties((ctx) -> ctx.hasTag(BiomeTags.IS_END), (ctx, mutable) -> {

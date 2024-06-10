@@ -2,6 +2,8 @@ package net.enderitemc.enderitemod.mixin;
 
 import java.util.function.Consumer;
 
+import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
+import net.minecraft.entity.passive.SheepEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -51,9 +53,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
             if (amount >= 3.0F) {
                 int i = 1 + MathHelper.floor(amount);
                 Hand hand = this.getActiveHand();
-                this.activeItemStack.damage(i, (LivingEntity) this, (Consumer<LivingEntity>) ((playerEntity) -> {
-                    playerEntity.sendToolBreakStatus(hand);
-                }));
+                this.activeItemStack.damage(i, this, PlayerEntity.getSlotForHand(hand));
                 if (this.activeItemStack.isEmpty()) {
                     if (hand == Hand.MAIN_HAND) {
                         this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -74,10 +74,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
         if (this.isSneaking() && this.activeItemStack.getItem() instanceof EnderiteShield
                 && !this.getItemCooldownManager().isCoolingDown(this.activeItemStack.getItem())) {
 
-            int charge = 0;
-            if (this.activeItemStack.getNbt().contains("teleport_charge")) {
-                charge = Integer.parseInt(this.activeItemStack.getNbt().get("teleport_charge").asString());
-            }
+            int charge = this.activeItemStack.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
 
             if (!getWorld().isClient() && charge > 0 && !(attacker instanceof EnderDragonEntity
                     || attacker instanceof WitherEntity || attacker instanceof ElderGuardianEntity)) {
@@ -113,7 +110,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                         getWorld().playSound((PlayerEntity) null, d, e, f, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
                         attacker.playSound(soundEvent, 1.0F, 1.0F);
 
-                        this.activeItemStack.getNbt().putInt("teleport_charge", charge - 1);
+                        this.activeItemStack.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), charge - 1);
                         this.getItemCooldownManager().set(this.activeItemStack.getItem(), 128);
                         break;
                     }

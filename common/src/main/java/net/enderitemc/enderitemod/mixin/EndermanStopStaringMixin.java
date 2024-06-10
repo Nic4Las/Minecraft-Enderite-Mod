@@ -1,5 +1,6 @@
 package net.enderitemc.enderitemod.mixin;
 
+import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.enderitemc.enderitemod.EnderiteMod;
@@ -36,10 +37,13 @@ public abstract class EndermanStopStaringMixin extends Entity {
     @Inject(at = @At("HEAD"), method = "damage", cancellable = true)
     private void damageThem(DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
         if (source.getSource() != null && source.getSource().getCustomName() != null) {
-            if (source.isIn(DamageTypeTags.IS_PROJECTILE)
-                    && source.getSource().getCustomName().getString().equals("Enderite Arrow")) {
-                source.getSource().remove(RemovalReason.DISCARDED);
-                info.setReturnValue(super.damage(source, amount));
+            if (source.isIn(DamageTypeTags.IS_PROJECTILE)) {
+                NbtCompound nbt = new NbtCompound();
+                source.getSource().writeNbt(nbt);
+                if (nbt.contains("IsEnderiteArrow") && nbt.getBoolean("IsEnderiteArrow")) {
+                    source.getSource().remove(RemovalReason.DISCARDED);
+                    info.setReturnValue(super.damage(source, amount));
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -66,7 +67,10 @@ public class EnderiteBow extends BowItem {
                         PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack,
                                 playerEntity);
 
-                        persistentProjectileEntity.setCustomName(Text.literal("Enderite Arrow"));
+                        NbtCompound nbt = new NbtCompound();
+                        persistentProjectileEntity.writeNbt(nbt);
+                        nbt.putBoolean("IsEnderiteArrow", true);
+                        persistentProjectileEntity.readNbt(nbt);
 
                         persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(),
                                 0.0F, f * this.getSpeedMultiplier(), 1.0F);
@@ -91,9 +95,7 @@ public class EnderiteBow extends BowItem {
                             persistentProjectileEntity.setOnFireFor(100);
                         }
 
-                        stack.damage(1, (LivingEntity) playerEntity, (Consumer<LivingEntity>) ((p) -> {
-                            ((LivingEntity) p).sendToolBreakStatus(playerEntity.getActiveHand());
-                        }));
+                        stack.damage(this.getWeaponStackDamage(itemStack), (LivingEntity) playerEntity, LivingEntity.getSlotForHand(playerEntity.getActiveHand()));
                         if (bl2 || playerEntity.getAbilities().creativeMode && (itemStack.getItem() == Items.SPECTRAL_ARROW
                                 || itemStack.getItem() == Items.TIPPED_ARROW)) {
                             persistentProjectileEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
