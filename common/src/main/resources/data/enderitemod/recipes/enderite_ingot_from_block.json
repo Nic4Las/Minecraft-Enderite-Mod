@@ -6,7 +6,7 @@
     }
   ],
   "result": {
-    "item": "enderitemod:enderite_ingot",
+    "id": "enderitemod:enderite_ingot",
     "count": 9
   },
   "group": "enderite_ingot"

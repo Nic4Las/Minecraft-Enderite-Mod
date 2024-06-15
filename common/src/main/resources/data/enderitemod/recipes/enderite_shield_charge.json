@@ -10,6 +10,6 @@
     "item": "minecraft:ender_pearl"
   },
   "result": {
-    "item": "enderitemod:enderite_shield"
+    "id": "enderitemod:enderite_shield"
   }
 }

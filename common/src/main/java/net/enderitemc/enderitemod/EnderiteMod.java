@@ -1,11 +1,9 @@
 package net.enderitemc.enderitemod;
 
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 
 import com.google.common.base.Suppliers;
 
-import com.mojang.serialization.Codec;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.level.biome.BiomeModifications;
@@ -32,11 +30,9 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.component.DataComponentType;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.Settings;
-import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.RegistryKey;
@@ -44,11 +40,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.Util;
-import net.minecraft.util.dynamic.Codecs;
+import net.minecraft.util.*;
 import net.minecraft.world.gen.GenerationStep;
 
 public class EnderiteMod {
@@ -88,9 +80,9 @@ public class EnderiteMod {
     public static final RegistrySupplier<Item> ENDERITE_SCRAP = ITEMS.register("enderite_scrap",
         () -> new EnderiteScrap(new Item.Settings().arch$tab(ENDERITE_TAB).fireproof()));
 
+    // Enderite Armor
     public static final RegistrySupplier<ArmorMaterial> ENDERITE_ARMOR_MATERIAL = ARMOR_MATERIAL.register(EnderiteArmorMaterial.ID.getPath(),
             () -> EnderiteArmorMaterial.ENDERITE);
-
 
     // Enderite Block
     public static final Supplier<Item.Settings> BASE_ENDERITE_ITEM_SETTINGS = () -> new Item.Settings()

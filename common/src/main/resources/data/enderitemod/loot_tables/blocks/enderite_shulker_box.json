@@ -2,52 +2,27 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name":"enderitemod:enderite_shulker_box",
-      "rolls": 1,
-      "bonus_rolls": 0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "enderitemod:enderite_shulker_box",
           "functions": [
             {
-              "function": "minecraft:copy_name",
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name",
+                "minecraft:container",
+                "minecraft:lock",
+                "minecraft:container_loot"
+              ],
               "source": "block_entity"
-            },
-            {
-              "function": "minecraft:copy_nbt",
-              "source": "block_entity",
-              "ops": [
-                {
-                  "source": "Lock",
-                  "target": "BlockEntityTag.Lock",
-                  "op": "replace"
-                },
-                {
-                  "source": "LootTable",
-                  "target": "BlockEntityTag.LootTable",
-                  "op": "replace"
-                },
-                {
-                  "source": "LootTableSeed",
-                  "target": "BlockEntityTag.LootTableSeed",
-                  "op": "replace"
-                }
-              ]
-            },
-            {
-              "function": "minecraft:set_contents",
-              "type": "minecraft:shulker_box",
-              "entries": [
-                {
-                  "type": "minecraft:dynamic",
-                  "name": "minecraft:contents"
-                }
-              ]
             }
-          ]
+          ],
+          "name": "enderitemod:enderite_shulker_box"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "minecraft:blocks/shulker_box"
 }

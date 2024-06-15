@@ -18,8 +18,8 @@
     "###"
   ],
   "result": {
-    "count": 2,
-    "item": "enderitemod:enderite_upgrade_smithing_template"
+    "id": "enderitemod:enderite_upgrade_smithing_template",
+    "count": 2
   },
   "show_notification": true
 }

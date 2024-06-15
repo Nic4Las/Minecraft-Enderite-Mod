@@ -3,7 +3,9 @@
   "ingredient": {
     "item": "enderitemod:cracked_enderite_ore"
   },
-  "result": "enderitemod:enderite_scrap",
+  "result": {
+    "id": "enderitemod:enderite_scrap"
+  },
   "experience": 4,
   "cookingtime": 400
 }

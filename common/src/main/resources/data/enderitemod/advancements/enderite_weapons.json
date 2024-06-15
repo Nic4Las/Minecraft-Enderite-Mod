@@ -2,7 +2,7 @@
   "parent": "enderitemod:obtain_enderite_ingot",
   "display": {
     "icon": {
-      "item": "enderitemod:enderite_sword",
+    "id": "enderitemod:enderite_sword",
       "nbt": "{Damage:0}"
     },
     "title": {

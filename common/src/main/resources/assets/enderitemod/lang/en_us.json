@@ -135,8 +135,14 @@
   "option.enderitemod.restart.enderite_tools.durability": "Enderite tools durability",
   "option.enderitemod.restart.enderite_tools.durability.hover": "Base value: 4096",
 
+  "tag.block.enderitemod.incorrect_for_enderite_tool": "Incorrect for Enderite Tools",
   "option.enderitemod.restart.enderite_body.protection": "Enderite Body armor",
   "option.enderitemod.restart.enderite_body.protection.hover": "Base value: 12, (Animal armors)",
   "option.enderitemod.restart.enderite_tools.max_teleport_charge": "Maximum allowed teleport charge",
-  "option.enderitemod.restart.enderite_tools.max_teleport_charge.hover": "Applies to Sword and Shield (0 disables it)"
+  "option.enderitemod.restart.enderite_tools.max_teleport_charge.hover": "Applies to Sword and Shield (0 disables it)",
+  "tag.item.enderitemod.enderite_items": "Enderite Items",
+  "tag.item.enderitemod.shulker_boxes": "Shulker Boxes (Enderitemod)",
+  "tag.item.enderitemod.enderite_elytras":  "Enderite Elytras",
+  "tag.item.enderitemod.enderite_armor": "Enderite Armor",
+  "tag.item.enderitemod.enderite_tools": "Enderite Tools"
 }

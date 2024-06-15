@@ -65,20 +65,5 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
             newSword.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), teleport_charge);
             this.output.setStack(0, newSword);
         }
-        ItemStack outputStack = this.output.getStack(0);
-        if(false && outputStack.isIn(EnderiteTag.ENDERITE_ARMOR) && outputStack.isIn(ItemTags.TRIMMABLE_ARMOR)) {
-            ArmorTrim trim = outputStack.get(DataComponentTypes.TRIM);
-            if(trim != null) {
-                if(trim.getMaterial().getIdAsString().equals(EnderiteArmorMaterial.ENDERITE_ARMOR_TRIM_ID.toString())) {
-                    Optional<RegistryEntry.Reference<ArmorTrimMaterial>> darker =
-                            this.world.getRegistryManager().get(RegistryKeys.TRIM_MATERIAL)
-                            .getEntry(EnderiteArmorMaterial.DARKER_ENDERITE_ARMOR_TRIM_ID);
-                    if(darker.isPresent()) {
-                        new ArmorTrim(darker.get(), trim.getPattern());
-                        outputStack.set(DataComponentTypes.TRIM, trim);
-                    }
-                }
-            }
-        }
     }
 }

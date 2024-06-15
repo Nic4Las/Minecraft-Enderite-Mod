@@ -39,7 +39,8 @@
         "palette_key": "trims/color_palettes/trim_palette",
         "permutations": {
           "enderite": "enderitemod:trims/color_palettes/enderite",
-          "enderite_darker": "enderitemod:trims/color_palettes/enderite_darker"
+          "enderite_darker": "enderitemod:trims/color_palettes/enderite_darker",
+          "enderite_lighter": "enderitemod:trims/color_palettes/enderite_lighter"
         }
       }
     ]

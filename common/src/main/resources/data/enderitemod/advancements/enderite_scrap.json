@@ -7,7 +7,7 @@
       "translate": "advancements.enderitemod.enderite_scrap.description"
     },
     "icon": {
-      "item": "enderitemod:enderite_scrap"
+    "id": "enderitemod:enderite_scrap"
     },
     "frame": "task",
     "show_toast": true,

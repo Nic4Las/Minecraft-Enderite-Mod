@@ -16,6 +16,8 @@ public class EnderiteTag {
             new Identifier(EnderiteMod.MOD_ID, "enderite_elytras"));
     public static final TagKey<Item> ENDERITE_ARMOR = TagKey.of(RegistryKeys.ITEM,
             new Identifier(EnderiteMod.MOD_ID, "enderite_armor"));
+    public static final TagKey<Item> ENDERITE_TOOLS = TagKey.of(RegistryKeys.ITEM,
+            new Identifier(EnderiteMod.MOD_ID, "enderite_tools"));
 
     public static final TagKey<Block> INCORRECT_FOR_ENDERITE_TOOL = TagKey.of(RegistryKeys.BLOCK,
             new Identifier(EnderiteMod.MOD_ID, "incorrect_for_enderite_tool"));
