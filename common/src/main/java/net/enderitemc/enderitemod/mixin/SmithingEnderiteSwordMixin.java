@@ -52,18 +52,20 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
         if ((sword.isOf(EnderiteTools.ENDERITE_SWORD.get()) || sword.isOf(EnderiteTools.ENDERITE_SHIELD.get()))
                 && (pearls1.isOf(Items.ENDER_PEARL) || pearls1.isEmpty()) && (pearls2.isOf(Items.ENDER_PEARL))) {
             // If new sword, basic charge is enderpearl count
-            int teleport_charge = pearls1.getCount() + pearls2.getCount();
+            int pearls = pearls1.getCount() + pearls2.getCount();
 
-            // Read the charge of sword, Charge is old charge + amount of enderpearls
-            teleport_charge += sword.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
-            if (teleport_charge > EnderiteMod.CONFIG.tools.maxTeleportCharge) {
-                teleport_charge = EnderiteMod.CONFIG.tools.maxTeleportCharge;
+            // Read the charge of sword
+            int teleport_charge = sword.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
+            if (teleport_charge < EnderiteMod.CONFIG.tools.maxTeleportCharge) {
+                // Charge is old charge + amount of enderpearls
+                teleport_charge = Math.min(teleport_charge + pearls, EnderiteMod.CONFIG.tools.maxTeleportCharge);
+                // Copy the same sword and put charge into it
+                ItemStack newSword = sword.copy();
+                newSword.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), teleport_charge);
+                this.output.setStack(0, newSword);
+            } else {
+                this.output.clear();
             }
-
-            // Copy the same sword and put charge into it
-            ItemStack newSword = sword.copy();
-            newSword.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), teleport_charge);
-            this.output.setStack(0, newSword);
         }
     }
 }

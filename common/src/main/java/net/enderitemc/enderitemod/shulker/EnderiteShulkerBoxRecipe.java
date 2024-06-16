@@ -63,7 +63,7 @@ public class EnderiteShulkerBoxRecipe extends SpecialCraftingRecipe {
 
         ItemStack itemStack3 = EnderiteShulkerBoxBlock.getItemStack();
         if (!itemStack.getComponentChanges().isEmpty()) {
-            itemStack3 = itemStack3.copyComponentsToNewStack(itemStack3.getItem(), itemStack3.getCount());
+            itemStack3 = itemStack.copyComponentsToNewStack(itemStack3.getItem(), itemStack3.getCount());
         }
 
         return itemStack3;

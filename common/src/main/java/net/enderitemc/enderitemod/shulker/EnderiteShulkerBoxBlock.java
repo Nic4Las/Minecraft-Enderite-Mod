@@ -62,9 +62,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
             return ActionResult.CONSUME;
         } else {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
-                EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) blockEntity;
-
+            if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
                 if (canOpen(state, world, pos, shulkerBoxBlockEntity)) {
                     player.openHandledScreen(shulkerBoxBlockEntity);
                     player.incrementStat(Stats.OPEN_SHULKER_BOX);
@@ -82,8 +80,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         if (entity.getAnimationStage() != EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
             return true;
         } else {
-            Box box = ShulkerEntity.calculateBoundingBox(0.0F, (Direction) state.get(FACING), 0.5F).offset(pos)
-                    .contract(1.0E-6D);
+            Box box = ShulkerEntity.calculateBoundingBox(1.0f, state.get(FACING), 0.0f, 0.5f).offset(pos).contract(1.0E-6);
             return world.isSpaceEmpty(box);
         }
     }

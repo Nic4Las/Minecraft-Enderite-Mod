@@ -14,6 +14,7 @@ import net.enderitemc.enderitemod.blocks.CrackedEnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteBlock;
 import net.enderitemc.enderitemod.blocks.EnderiteOre;
 import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
+import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
 import net.enderitemc.enderitemod.config.Config;
 import net.enderitemc.enderitemod.config.ConfigLoader;
 import net.enderitemc.enderitemod.enchantments.VoidFloatingEnchantment;
@@ -102,11 +103,14 @@ public class EnderiteMod {
     public static final RegistrySupplier<Item> CRACKED_ENDERITE_ORE_ITEM = ITEMS.register("cracked_enderite_ore",
         () -> new BlockItem(CRACKED_ENDERITE_ORE.get(), BASE_ENDERITE_ITEM_SETTINGS.get()));
 
+    // Respawn Anchor
     public static final RegistrySupplier<Block> ENDERITE_RESPAWN_ANCHOR = BLOCKS.register("enderite_respawn_anchor",
         () -> new EnderiteRespawnAnchor());
     public static final RegistrySupplier<Item> ENDERITE_RESPAWN_ANCHOR_ITEM = ITEMS.register(
         "enderite_respawn_anchor",
         () -> new BlockItem(ENDERITE_RESPAWN_ANCHOR.get(), BASE_ENDERITE_ITEM_SETTINGS.get()));
+    public static final RegistrySupplier<BlockEntityType<EnderiteRespawnAnchorBlockEntity>> ENDERITE_RESPAWN_ANCHOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("enderite_respawn_anchor",
+            () -> BlockEntityType.Builder.create(EnderiteRespawnAnchorBlockEntity::new, ENDERITE_RESPAWN_ANCHOR.get()).build(null));
 
     // Enderite Armor
     public static final RegistrySupplier<Item> ENDERITE_HELMET = ITEMS.register("enderite_helmet",

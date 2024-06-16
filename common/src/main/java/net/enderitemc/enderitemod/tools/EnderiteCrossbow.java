@@ -117,10 +117,7 @@ public class EnderiteCrossbow extends CrossbowItem {
     protected ProjectileEntity createArrowEntity(World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
         ProjectileEntity weakArrow = super.createArrowEntity(world, shooter, weaponStack, projectileStack, critical);
         if(weakArrow instanceof PersistentProjectileEntity projectileEntity) {
-            NbtCompound nbt = new NbtCompound();
-            projectileEntity.writeNbt(nbt);
-            nbt.putBoolean("IsEnderiteArrow", true);
-            projectileEntity.readNbt(nbt);
+            projectileEntity.setCustomName(Text.literal("Enderite Arrow"));
             projectileEntity.setDamage(EnderiteMod.CONFIG.tools.enderiteCrossbowAD);
             return projectileEntity;
         }

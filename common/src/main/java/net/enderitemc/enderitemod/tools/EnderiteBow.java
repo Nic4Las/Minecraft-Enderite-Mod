@@ -67,10 +67,7 @@ public class EnderiteBow extends BowItem {
                         PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack,
                                 playerEntity);
 
-                        NbtCompound nbt = new NbtCompound();
-                        persistentProjectileEntity.writeNbt(nbt);
-                        nbt.putBoolean("IsEnderiteArrow", true);
-                        persistentProjectileEntity.readNbt(nbt);
+                        persistentProjectileEntity.setCustomName(Text.literal("Enderite Arrow"));
 
                         persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(),
                                 0.0F, f * this.getSpeedMultiplier(), 1.0F);

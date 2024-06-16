@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod.fabriclike;
 
 import net.enderitemc.enderitemod.EnderiteMod;
+import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorRenderer;
 import net.enderitemc.enderitemod.fabriclike.misc.EnderiteShieldRenderer;
 import net.enderitemc.enderitemod.fabriclike.tools.EnderiteElytraChestplate;
 import net.enderitemc.enderitemod.fabriclike.tools.EnderiteElytraSeperated;
@@ -10,11 +11,13 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
@@ -30,6 +33,10 @@ public class EnderiteModClient implements ClientModInitializer {
                                 EnderiteShulkerBoxBlockEntityRenderer::new);
                 BuiltinItemRendererRegistry.INSTANCE.register(EnderiteTools.ENDERITE_SHIELD.get(),
                                 new EnderiteShieldRenderer());
+
+                BlockEntityRendererFactories.register(EnderiteMod.ENDERITE_RESPAWN_ANCHOR_BLOCK_ENTITY.get(),
+                                EnderiteRespawnAnchorRenderer::new);
+                BlockRenderLayerMap.INSTANCE.putBlock(EnderiteMod.ENDERITE_RESPAWN_ANCHOR.get(), RenderLayer.getCutout());
                                 
 
                 ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_BOW.get().asItem(), new Identifier("pull"),
