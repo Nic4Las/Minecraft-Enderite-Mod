@@ -1,9 +1,11 @@
 package net.enderitemc.enderitemod.forge;
 
+import net.enderitemc.enderitemod.tools.EnderiteTools;
+import net.minecraft.item.SmithingTemplateItem;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.ConfigScreenHandler;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +50,7 @@ public class EnderiteModForge {
 
     // Enderite Elytra
     public static final RegistrySupplier<Item> ENDERITE_ELYTRA = EnderiteMod.ITEMS.register("enderite_elytra",
-            () -> new EnderiteElytraChestplate(EnderiteArmorMaterial.ENDERITE,
+            () -> new EnderiteElytraChestplate(EnderiteMod.ENDERITE_ARMOR_MATERIAL,
                     ArmorItem.Type.CHESTPLATE,
                     EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS));
 
@@ -56,16 +58,10 @@ public class EnderiteModForge {
             "enderite_elytra_seperated",
             () -> new EnderiteElytraSeperated(EnderiteMod.ENDERITE_ELYTRA_SEPERATED_ITEM_SETTINGS));
 
-    public static final RegistrySupplier<BlockEntityType<EnderiteShulkerBoxBlockEntity>> ENDERITE_SHULKER_BOX_BLOCK_ENTITY = EnderiteMod.BLOCK_ENTITY_TYPES
-            .register("enderite_shulker_box_block_entity",
-                    () -> BlockEntityType.Builder.create(EnderiteShulkerBoxBlockEntity::new,
-                                    EnderiteMod.ENDERITE_SHULKER_BOX.get())
-                            .build(null));
-
     public static final RegistrySupplier<Item> ENDERITE_SHIELD_FORGE = EnderiteMod.ITEMS
             .register("enderite_shield",
                     () -> new EnderiteShieldForge(
-                            EnderiteMod.ENDERITE_SHIELD_ITEM_SETTINGS));
+                            EnderiteTools.ENDERITE_SHIELD_ITEM_SETTINGS));
 
     public EnderiteModForge(IEventBus modBus) {
         // Submit our event bus to let architectury register our content on the right
@@ -76,8 +72,7 @@ public class EnderiteModForge {
 
         EnderiteMod.ENDERITE_ELYTRA = ENDERITE_ELYTRA;
         EnderiteMod.ENDERITE_ELYTRA_SEPERATED = ENDERITE_ELYTRA_SEPERATED;
-        EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY = ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
-        EnderiteMod.ENDERITE_SHIELD = ENDERITE_SHIELD_FORGE;
+        EnderiteTools.ENDERITE_SHIELD = ENDERITE_SHIELD_FORGE;
 
         modBus.addListener(this::setup);
     }
@@ -85,11 +80,11 @@ public class EnderiteModForge {
     private void setup(final FMLCommonSetupEvent event) {
         DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHULKER_BOX.get().asItem(),
                 new BlockPlacementDispenserBehavior());
-        DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHEAR.get().asItem(),
+        DispenserBlock.registerBehavior(EnderiteTools.ENDERITE_SHEAR.get().asItem(),
                 new ShearsDispenserBehavior());
     }
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT, modid = EnderiteMod.MOD_ID)
+    @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT, modid = EnderiteMod.MOD_ID)
     public static class RegistryEventsClient {
 
         @SubscribeEvent
@@ -103,10 +98,10 @@ public class EnderiteModForge {
                     EnderiteShulkerBoxBlockEntityRenderer::new);
 
             if (ModList.get().isLoaded("cloth_config")) {
-                ModLoadingContext.get().registerExtensionPoint(
-                        ConfigScreenHandler.ConfigScreenFactory.class,
-                        () -> new ConfigScreenHandler.ConfigScreenFactory(
-                                (mc, screen) -> new ClothConfig(screen).getScreen()));
+//                ModLoadingContext.get().registerExtensionPoint(
+//                        ConfigScreenHandler.ConfigScreenFactory.class,
+//                        () -> new ConfigScreenHandler.ConfigScreenFactory(
+//                                (mc, screen) -> new ClothConfig(screen).getScreen()));
             }
 
 //                        if (ModList.get().isLoaded("shulkerboxtooltip")) {

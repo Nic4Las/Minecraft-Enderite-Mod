@@ -7,9 +7,10 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.entry.RegistryEntry;
 
 public class EnderiteElytraChestplate extends ArmorItem {
-    public EnderiteElytraChestplate(ArmorMaterial materialIn, ArmorItem.Type type, Settings properties) {
+    public EnderiteElytraChestplate(RegistryEntry<ArmorMaterial> materialIn, ArmorItem.Type type, Settings properties) {
         super(materialIn, type, properties);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
@@ -33,7 +34,7 @@ public class EnderiteElytraChestplate extends ArmorItem {
     @Override
     public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
         if (!entity.getWorld().isClient() && (flightTicks + 1) % 20 == 0) {
-            stack.damage(1, entity, e -> ((LivingEntity) e).sendEquipmentBreakStatus(EquipmentSlot.CHEST));
+            stack.damage(1, entity, EquipmentSlot.CHEST);
         }
         return isUsable(stack);
     }

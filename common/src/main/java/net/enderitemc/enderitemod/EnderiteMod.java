@@ -159,13 +159,20 @@ public class EnderiteMod {
         .register("crafting_special_enderiteshulkerbox",
             () -> new SpecialRecipeSerializer<>(
                 EnderiteShulkerBoxRecipe::new));
-    public static RegistrySupplier<BlockEntityType<EnderiteShulkerBoxBlockEntity>> ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
+    public static final RegistrySupplier<BlockEntityType<EnderiteShulkerBoxBlockEntity>> ENDERITE_SHULKER_BOX_BLOCK_ENTITY = EnderiteMod.BLOCK_ENTITY_TYPES
+            .register("enderite_shulker_box_block_entity",
+                    () -> BlockEntityType.Builder
+                            .create(EnderiteShulkerBoxBlockEntity::new,
+                                    EnderiteMod.ENDERITE_SHULKER_BOX.get())
+                            .build(null));
 
     // Enchantment
     public static RegistrySupplier<Enchantment> VOID_FLOATING_ENCHANTMENT = ENCHANTMENTS.register("void_floating",
         () -> new VoidFloatingEnchantment());
 
     public static ScreenHandlerType<EnderiteShulkerBoxScreenHandler> ENDERITE_SHULKER_BOX_SCREEN_HANDLER;
+
+
 
     // Trims
     public static final RegistrySupplier<Item> ENDERITE_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("enderite_upgrade_smithing_template",

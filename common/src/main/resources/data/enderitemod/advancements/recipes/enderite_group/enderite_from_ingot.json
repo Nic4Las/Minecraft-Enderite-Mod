@@ -1,0 +1,42 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_enderite_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "enderitemod:enderite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_enderite_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "enderitemod:enderite_block",
+      "enderitemod:enderite_pickaxe",
+      "enderitemod:enderite_axe",
+      "enderitemod:enderite_sword",
+      "enderitemod:enderite_shovel",
+      "enderitemod:enderite_hoe",
+      "enderitemod:enderite_helmet",
+      "enderitemod:enderite_chestplate",
+      "enderitemod:enderite_leggings",
+      "enderitemod:enderite_boots",
+      "enderitemod:enderite_respawn_anchor",
+      "enderitemod:enderite_shulker",
+      "enderitemod:enderite_elytra",
+      "enderitemod:enderite_bow",
+      "enderitemod:enderite_crossbow",
+      "enderitemod:enderite_shield",
+      "enderitemod:enderite_elytra_seperated",
+      "enderitemod:enderite_shears"
+    ]
+  }
+}

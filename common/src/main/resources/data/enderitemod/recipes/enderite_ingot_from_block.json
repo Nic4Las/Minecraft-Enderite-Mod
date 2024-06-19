@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "enderitemod:enderite_block"
+      "tag": "c:storage_blocks/enderite"
     }
   ],
   "result": {

@@ -15,10 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.ShearsItem;
 import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.MatchToolLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -61,71 +63,69 @@ public class EnderiteShears extends ShearsItem {
     }
 
     public static void registerLoottables_Fabric() {
-        LootEvent.MODIFY_LOOT_TABLE.register((baseTable, table, builtin) -> {
-            Identifier id = baseTable.getValue();
+        LootEvent.MODIFY_LOOT_TABLE.register((key, context, builtin) -> {
+            tryBuildLootTable(key, context, Blocks.ACACIA_LEAVES);
 
-            tryBuildLootTable(id, table, Blocks.ACACIA_LEAVES);
+            tryBuildLootTable(key, context, Blocks.AZALEA_LEAVES);
 
-            tryBuildLootTable(id, table, Blocks.AZALEA_LEAVES);
+            tryBuildLootTable(key, context, Blocks.BIRCH_LEAVES);
 
-            tryBuildLootTable(id, table, Blocks.BIRCH_LEAVES);
+            tryBuildLootTable(key, context, Blocks.CAVE_VINES);
+            tryBuildLootTable(key, context, Blocks.CAVE_VINES_PLANT);
 
-            tryBuildLootTable(id, table, Blocks.CAVE_VINES);
-            tryBuildLootTable(id, table, Blocks.CAVE_VINES_PLANT);
+            tryBuildLootTable(key, context, Blocks.COBWEB);
 
-            tryBuildLootTable(id, table, Blocks.COBWEB);
+            tryBuildLootTable(key, context, Blocks.DARK_OAK_LEAVES);
 
-            tryBuildLootTable(id, table, Blocks.DARK_OAK_LEAVES);
+            tryBuildLootTable(key, context, Blocks.DEAD_BUSH);
 
-            tryBuildLootTable(id, table, Blocks.DEAD_BUSH);
+            tryBuildLootTable(key, context, Blocks.FERN);
 
-            tryBuildLootTable(id, table, Blocks.FERN);
+            tryBuildLootTable(key, context, Blocks.FLOWERING_AZALEA_LEAVES);
 
-            tryBuildLootTable(id, table, Blocks.FLOWERING_AZALEA_LEAVES);
+            tryBuildLootTable(key, context, Blocks.GLOW_LICHEN);
 
-            tryBuildLootTable(id, table, Blocks.GLOW_LICHEN);
+            tryBuildLootTable(key, context, Blocks.SHORT_GRASS);
 
-            tryBuildLootTable(id, table, Blocks.SHORT_GRASS);
+            tryBuildLootTable(key, context, Blocks.JUNGLE_LEAVES);
 
-            tryBuildLootTable(id, table, Blocks.JUNGLE_LEAVES);
+            tryBuildLootTable(key, context, Blocks.LARGE_FERN);
 
-            tryBuildLootTable(id, table, Blocks.LARGE_FERN);
+            tryBuildLootTable(key, context, Blocks.NETHER_SPROUTS);
 
-            tryBuildLootTable(id, table, Blocks.NETHER_SPROUTS);
+            tryBuildLootTable(key, context, Blocks.OAK_LEAVES);
 
-            tryBuildLootTable(id, table, Blocks.OAK_LEAVES);
+            tryBuildLootTable(key, context, Blocks.SEAGRASS);
 
-            tryBuildLootTable(id, table, Blocks.SEAGRASS);
+            tryBuildLootTable(key, context, Blocks.SPRUCE_LEAVES);
 
-            tryBuildLootTable(id, table, Blocks.SPRUCE_LEAVES);
+            tryBuildLootTable(key, context, Blocks.TALL_GRASS);
 
-            tryBuildLootTable(id, table, Blocks.TALL_GRASS);
+            tryBuildLootTable(key, context, Blocks.TALL_SEAGRASS);
 
-            tryBuildLootTable(id, table, Blocks.TALL_SEAGRASS);
+            tryBuildLootTable(key, context, Blocks.TWISTING_VINES);
+            tryBuildLootTable(key, context, Blocks.TWISTING_VINES_PLANT);
 
-            tryBuildLootTable(id, table, Blocks.TWISTING_VINES);
-            tryBuildLootTable(id, table, Blocks.TWISTING_VINES_PLANT);
+            tryBuildLootTable(key, context, Blocks.VINE);
 
-            tryBuildLootTable(id, table, Blocks.VINE);
+            tryBuildLootTable(key, context, Blocks.WEEPING_VINES);
+            tryBuildLootTable(key, context, Blocks.WEEPING_VINES_PLANT);
 
-            tryBuildLootTable(id, table, Blocks.WEEPING_VINES);
-            tryBuildLootTable(id, table, Blocks.WEEPING_VINES_PLANT);
+            tryBuildLootTable(key, context, Blocks.SMALL_DRIPLEAF);
 
-            tryBuildLootTable(id, table, Blocks.SMALL_DRIPLEAF);
-
-            tryBuildLootTable(id, table, Blocks.MANGROVE_LEAVES);
-            tryBuildLootTable(id, table, Blocks.HANGING_ROOTS);
+            tryBuildLootTable(key, context, Blocks.MANGROVE_LEAVES);
+            tryBuildLootTable(key, context, Blocks.HANGING_ROOTS);
         });
     }
 
-    public static void tryBuildLootTable(Identifier id, LootTableModificationContext table, Block block) {
-        if (block.getLootTableKey().equals(id)) {
+    public static void tryBuildLootTable(RegistryKey<LootTable> key, LootTableModificationContext context, Block block) {
+        if (block.getLootTableKey().equals(key)) {
             LootPool.Builder pool = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
                     .conditionally(MatchToolLootCondition
                             .builder(ItemPredicate.Builder.create().items(EnderiteTools.ENDERITE_SHEAR.get())))
                     .with(ItemEntry.builder(block.asItem()));
-            table.addPool(pool);
+            context.addPool(pool);
         }
     }
 

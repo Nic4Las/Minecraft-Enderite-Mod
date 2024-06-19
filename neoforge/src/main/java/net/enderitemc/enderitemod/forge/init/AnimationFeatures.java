@@ -1,5 +1,8 @@
 package net.enderitemc.enderitemod.forge.init;
 
+import net.enderitemc.enderitemod.tools.EnderiteTools;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ChargedProjectilesComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +20,7 @@ public class AnimationFeatures {
         private static final Logger LOGGER = LogManager.getLogger();
 
         public static void init() {
-                ModelPredicateProviderRegistry.register((Item) EnderiteMod.ENDERITE_BOW.get(), new Identifier("pull"),
+                ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_BOW.get(), new Identifier("pull"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         if (livingEntity == null) {
                                                 return 0.0F;
@@ -28,14 +31,14 @@ public class AnimationFeatures {
                                                                                 / EnderiteBow.chargeTime;
                                         }
                                 });
-                ModelPredicateProviderRegistry.register((Item) EnderiteMod.ENDERITE_BOW.get(),
+                ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_BOW.get(),
                                 new Identifier("pulling"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
                                 });
 
-                ModelPredicateProviderRegistry.register((Item) EnderiteMod.ENDERITE_CROSSBOW.get(),
+                ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_CROSSBOW.get(),
                                 new Identifier("pull"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         if (livingEntity == null) {
@@ -48,24 +51,23 @@ public class AnimationFeatures {
                                                                                                 .getPullTime(itemStack);
                                         }
                                 });
-                ModelPredicateProviderRegistry.register((Item) EnderiteMod.ENDERITE_CROSSBOW.get(),
+                ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_CROSSBOW.get(),
                                 new Identifier("pulling"), (itemStack, clientWorld, livingEntity, id) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack
                                                         && !EnderiteCrossbow.isCharged(itemStack) ? 1.0F : 0.0F;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.get(), new Identifier("charged"),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get(), new Identifier("charged"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         return livingEntity != null && EnderiteCrossbow.isCharged(itemStack) ? 1.0F
                                                         : 0.0F;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_CROSSBOW.get(), new Identifier("firework"),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get(), new Identifier("firework"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
-                                        return livingEntity != null && EnderiteCrossbow.isCharged(itemStack)
-                                                        && EnderiteCrossbow.hasProjectile(itemStack,
-                                                                        Items.FIREWORK_ROCKET) ? 1.0F : 0.0F;
+                                    ChargedProjectilesComponent chargedProjectilesComponent = itemStack.get(DataComponentTypes.CHARGED_PROJECTILES);
+                                    return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.FIREWORK_ROCKET) ? 1.0F : 0.0F;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_SHIELD.get(), new Identifier("blocking"),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_SHIELD.get(), new Identifier("blocking"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;

@@ -28,17 +28,9 @@ public class EnderiteModFabricLike {
                         () -> new EnderiteElytraSeperated(
                                         EnderiteMod.ENDERITE_ELYTRA_SEPERATED_ITEM_SETTINGS));
 
-        public static final RegistrySupplier<BlockEntityType<EnderiteShulkerBoxBlockEntity>> ENDERITE_SHULKER_BOX_BLOCK_ENTITY = EnderiteMod.BLOCK_ENTITY_TYPES
-                        .register("enderite_shulker_box_block_entity",
-                                        () -> FabricBlockEntityTypeBuilder
-                                                        .create(EnderiteShulkerBoxBlockEntity::new,
-                                                                        EnderiteMod.ENDERITE_SHULKER_BOX.get())
-                                                        .build(null));
-
         public static void init() {
                 EnderiteMod.ENDERITE_ELYTRA = ENDERITE_ELYTRA;
                 EnderiteMod.ENDERITE_ELYTRA_SEPERATED = ENDERITE_ELYTRA_SEPERATED;
-                EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY = ENDERITE_SHULKER_BOX_BLOCK_ENTITY;
                 
                 EnderiteMod.init();
                 EnderiteShears.registerLoottables_Fabric();

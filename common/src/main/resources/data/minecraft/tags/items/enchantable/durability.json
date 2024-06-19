@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#enderitemod:enderite_armor",
+    "#enderitemod:enderite_elytras",
+    "#enderitemod:enderite_tools"
+  ]
+}
