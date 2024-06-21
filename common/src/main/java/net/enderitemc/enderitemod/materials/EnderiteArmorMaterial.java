@@ -27,7 +27,7 @@ public class EnderiteArmorMaterial {
     public static final Identifier DARKER_ENDERITE_ARMOR_TRIM_ID = new Identifier(EnderiteMod.MOD_ID, "enderite_darker");
 
     public static final ArmorMaterial ENDERITE = new ArmorMaterial(
-            Util.make(new EnumMap(ArmorItem.Type.class), map -> {
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
                 map.put(ArmorItem.Type.BOOTS,  EnderiteMod.CONFIG.armor.bootsProtection);
                 map.put(ArmorItem.Type.LEGGINGS, EnderiteMod.CONFIG.armor.leggingsProtection);
                 map.put(ArmorItem.Type.CHESTPLATE, EnderiteMod.CONFIG.armor.chestplateProtection);

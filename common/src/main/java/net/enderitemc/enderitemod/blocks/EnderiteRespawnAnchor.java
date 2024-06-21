@@ -7,6 +7,7 @@ import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -20,7 +21,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionTypes;
-import org.jetbrains.annotations.Nullable;
 
 public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEntityProvider {
 
@@ -34,8 +34,6 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
     private static boolean isChargeItem(ItemStack stack) {
         return stack.getItem() == Items.ENDER_PEARL;
     }
-
-
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
@@ -99,10 +97,16 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        if (state.get(CHARGES) == 0) {
+            return;
+        }
         if(world.getBlockState(pos.up()).isSolid()) {
             // Remove particles if top block is solid
             return;
         }
-        super.randomDisplayTick(state, world, pos, random);
+        double d = (double)pos.getX() + random.nextDouble();
+        double e = (double)pos.getY() + 0.8;
+        double f = (double)pos.getZ() + random.nextDouble();
+        world.addParticle(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0);
     }
 }

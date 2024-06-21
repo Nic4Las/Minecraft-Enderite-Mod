@@ -36,7 +36,6 @@ public class EnderiteModClient implements ClientModInitializer {
 
                 BlockEntityRendererFactories.register(EnderiteMod.ENDERITE_RESPAWN_ANCHOR_BLOCK_ENTITY.get(),
                                 EnderiteRespawnAnchorRenderer::new);
-                BlockRenderLayerMap.INSTANCE.putBlock(EnderiteMod.ENDERITE_RESPAWN_ANCHOR.get(), RenderLayer.getCutout());
                                 
 
                 ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_BOW.get().asItem(), new Identifier("pull"),

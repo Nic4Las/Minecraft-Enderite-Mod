@@ -38,11 +38,11 @@ public class EnderiteRespawnAnchorRenderer<T extends EnderiteRespawnAnchorBlockE
     }
 
     protected float getTopYOffset() {
-        return 0.999f;
+        return 1.001f;
     }
 
     protected float getSideOffset() {
-        return 0.0625f;
+        return 0.125f;
     }
 
     protected RenderLayer getLayer() {

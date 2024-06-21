@@ -41,12 +41,6 @@ public class EnderiteShieldRenderer extends BuiltinModelItemRenderer {
         shieldModel = () -> new ShieldEntityModel(entityModelLoader.getModelPart(EntityModelLayers.SHIELD));
     }
 
-    public EnderiteShieldRenderer() {
-        super(null, null);
-        // Fabric
-        shieldModel = Suppliers.memoize(()->new ShieldEntityModel(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(EntityModelLayers.SHIELD)));
-    }
-
     @Override
     public void render(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices,
                        VertexConsumerProvider vertexConsumers, int light,

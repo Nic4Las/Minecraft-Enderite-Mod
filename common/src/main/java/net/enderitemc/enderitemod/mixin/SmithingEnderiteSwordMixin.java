@@ -5,6 +5,7 @@ import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.registry.RegistryKeys;
@@ -51,16 +52,27 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
         ItemStack pearls2 = this.input.getStack(2);
         if ((sword.isOf(EnderiteTools.ENDERITE_SWORD.get()) || sword.isOf(EnderiteTools.ENDERITE_SHIELD.get()))
                 && (pearls1.isOf(Items.ENDER_PEARL) || pearls1.isEmpty()) && (pearls2.isOf(Items.ENDER_PEARL))) {
+            ItemStack newSword = sword.copy();
+
             // If new sword, basic charge is enderpearl count
             int pearls = pearls1.getCount() + pearls2.getCount();
 
             // Read the charge of sword
             int teleport_charge = sword.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
+
+            // LEGACY teleport charge
+            NbtCompound nbt = sword.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(new NbtCompound())).copyNbt();
+            if(nbt.contains("teleport_charge")) {
+                teleport_charge = nbt.getInt("teleport_charge");
+                nbt.remove("teleport_charge");
+                newSword.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+            }
+
+            // Clamp teleport charge
             if (teleport_charge < EnderiteMod.CONFIG.tools.maxTeleportCharge) {
                 // Charge is old charge + amount of enderpearls
                 teleport_charge = Math.min(teleport_charge + pearls, EnderiteMod.CONFIG.tools.maxTeleportCharge);
                 // Copy the same sword and put charge into it
-                ItemStack newSword = sword.copy();
                 newSword.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), teleport_charge);
                 this.output.setStack(0, newSword);
             } else {
