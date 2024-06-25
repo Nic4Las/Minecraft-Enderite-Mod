@@ -57,9 +57,12 @@ public abstract class SmithingEnderiteSwordTakeMixin extends ForgingScreenHandle
             int allowableSubstract = EnderiteMod.CONFIG.tools.maxTeleportCharge - tp_charge;
             amountToSubstract = Math.min(allowableSubstract, amountToSubstract);
 
-            int subtract1 = Math.min(amountToSubstract, pearls1.getCount());
+            int half = amountToSubstract/2;
+            int subtract1 = Math.min(half, pearls1.getCount());
+            int subtract2 = Math.min(amountToSubstract - subtract1, pearls2.getCount());
+            subtract1 = Math.min(amountToSubstract - subtract2, pearls1.getCount());
             this.superDecrement(0, subtract1 - 1);
-            this.superDecrement(2, amountToSubstract - subtract1 - 1);
+            this.superDecrement(2, subtract2 - 1);
         }
     }
 }

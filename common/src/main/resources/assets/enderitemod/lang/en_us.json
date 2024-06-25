@@ -145,7 +145,7 @@
   "tag.item.enderitemod.enderite_elytras":  "Enderite Elytras",
   "tag.item.enderitemod.enderite_armor": "Enderite Armor",
   "tag.item.enderitemod.enderite_tools": "Enderite Tools",
-  "tag.item.c.ores/enderite_scrap": "Enderite Scraps",
-  "tag.item.c.ingots/enderite": "Enderite Ingots",
-  "tag.item.c.storage_blocks/enderite": "Enderite Blocks"
+  "tag.item.c.ores.enderite_scrap": "Enderite Scraps",
+  "tag.item.c.ingots.enderite": "Enderite Ingots",
+  "tag.item.c.storage_blocks.enderite": "Enderite Blocks"
 }

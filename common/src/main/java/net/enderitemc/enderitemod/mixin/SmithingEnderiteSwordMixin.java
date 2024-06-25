@@ -60,14 +60,6 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
             // Read the charge of sword
             int teleport_charge = sword.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
 
-            // LEGACY teleport charge
-            NbtCompound nbt = sword.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(new NbtCompound())).copyNbt();
-            if(nbt.contains("teleport_charge")) {
-                teleport_charge = nbt.getInt("teleport_charge");
-                nbt.remove("teleport_charge");
-                newSword.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
-            }
-
             // Clamp teleport charge
             if (teleport_charge < EnderiteMod.CONFIG.tools.maxTeleportCharge) {
                 // Charge is old charge + amount of enderpearls

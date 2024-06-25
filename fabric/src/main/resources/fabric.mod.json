@@ -26,7 +26,6 @@
     "enderitemod.mixins.json",
     "enderitemod-common.mixins.json"
   ],
-  "accessWidener": "enderitemod.accesswidener",
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.20.5",

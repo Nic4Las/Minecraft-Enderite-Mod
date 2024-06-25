@@ -15,7 +15,10 @@
     "ShulkerBoxColoringMixin",
     "SmithingEnderiteSwordMixin",
     "SmithingEnderiteSwordOutputMixin",
-    "SmithingEnderiteSwordTakeMixin"
+    "SmithingEnderiteSwordTakeMixin",
+    "datafix.ItemStackComponentizationFixMixin",
+    "datafix.RenameBlockEntityMapMixin",
+    "datafix.RegisterEnderiteBlockEntityMixin"
   ],
   "client": [
     "CapeFeatureRendererMixin",
