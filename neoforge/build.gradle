@@ -54,7 +54,7 @@ dependencies {
 
     modApi("me.shedaniel.cloth:cloth-config-neoforge:${rootProject.cloth_config_version}")
 
-    modImplementation("com.misterpemodder:shulkerboxtooltip-neoforge:${rootProject.shulker_box_tooltip_version}") { transitive false }
+    //modImplementation("com.misterpemodder:shulkerboxtooltip-neoforge:${rootProject.shulker_box_tooltip_version}") { transitive false }
 }
 
 processResources {

@@ -1,12 +1,15 @@
 package net.enderitemc.enderitemod.forge;
 
 import net.enderitemc.enderitemod.tools.EnderiteTools;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.SmithingTemplateItem;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -42,6 +45,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
+import org.jetbrains.annotations.NotNull;
 
 @Mod(EnderiteMod.MOD_ID)
 public class EnderiteModForge {
@@ -82,6 +86,18 @@ public class EnderiteModForge {
                 new BlockPlacementDispenserBehavior());
         DispenserBlock.registerBehavior(EnderiteTools.ENDERITE_SHEAR.get().asItem(),
                 new ShearsDispenserBehavior());
+
+        if(ModList.get().isLoaded("cloth_config")) {
+            ModLoadingContext.get().registerExtensionPoint(
+                IConfigScreenFactory.class,
+                () -> new IConfigScreenFactory() {
+                    @Override
+                    public Screen createScreen(MinecraftClient mc, Screen screen) {
+                        return new ClothConfig(screen).getScreen();
+                    }
+                }
+            );
+        }
     }
 
     @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT, modid = EnderiteMod.MOD_ID)
