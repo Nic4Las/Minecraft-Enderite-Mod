@@ -38,39 +38,39 @@ public class EnderiteModClient implements ClientModInitializer {
                                 EnderiteRespawnAnchorRenderer::new);
                                 
 
-                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_BOW.get().asItem(), new Identifier("pull"),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_BOW.get().asItem(), Identifier.of("pull"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         if (livingEntity == null) {
                                                 return 0.0F;
                                         } else {
                                                 return livingEntity.getActiveItem() != itemStack ? 0.0F
-                                                                : (float) (itemStack.getMaxUseTime()
+                                                                : (float) (itemStack.getMaxUseTime(livingEntity)
                                                                                 - livingEntity.getItemUseTimeLeft())
                                                                                 / 20.0F;
                                         }
                                 });
                 ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_BOW.get().asItem(),
-                                new Identifier("pulling"),
+                                Identifier.of("pulling"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
                                 });
 
                 ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get().asItem(),
-                                new Identifier("pull"),
+                                Identifier.of("pull"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         if (livingEntity == null) {
                                                 return 0.0F;
                                         } else {
                                                 return EnderiteCrossbow.isCharged(itemStack) ? 0.0F
-                                                                : (float) (itemStack.getMaxUseTime()
+                                                                : (float) (itemStack.getMaxUseTime(livingEntity)
                                                                                 - livingEntity.getItemUseTimeLeft())
                                                                                 / (float) EnderiteCrossbow
-                                                                                                .getPullTime(itemStack);
+                                                                                                .getPullTime(itemStack, livingEntity);
                                         }
                                 });
                 ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get().asItem(),
-                                new Identifier("pulling"),
+                                Identifier.of("pulling"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack
@@ -79,29 +79,29 @@ public class EnderiteModClient implements ClientModInitializer {
                                                                         : 0.0F;
                                 });
                 ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get().asItem(),
-                                new Identifier("charged"),
+                                Identifier.of("charged"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return livingEntity != null && EnderiteCrossbow.isCharged(itemStack) ? 1.0F
                                                         : 0.0F;
                                 });
                 ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get().asItem(),
-                                new Identifier("firework"), (itemStack, clientWorld, livingEntity, seed) -> {
+                                Identifier.of("firework"), (itemStack, clientWorld, livingEntity, seed) -> {
                                     ChargedProjectilesComponent chargedProjectilesComponent = itemStack.get(DataComponentTypes.CHARGED_PROJECTILES);
                                     return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.FIREWORK_ROCKET) ? 1.0f : 0.0f;
                                 });
                 ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_SHIELD.get().asItem(),
-                                new Identifier("blocking"),
+                                Identifier.of("blocking"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
                                 });
                 ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA.get().asItem(),
-                                new Identifier("broken"),
+                                Identifier.of("broken"),
                                 (itemStack, clientWorld, livingEntity, seed) -> {
                                         return EnderiteElytraChestplate.isUsable(itemStack) ? 0.0F : 1.0F;
                                 });
                 ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA_SEPERATED.get().asItem(),
-                                new Identifier("broken"), (itemStack, clientWorld, livingEntity, seed) -> {
+                                Identifier.of("broken"), (itemStack, clientWorld, livingEntity, seed) -> {
                                         return EnderiteElytraSeperated.isUsable(itemStack) ? 0.0F : 1.0F;
                                 });
 

@@ -16,6 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryWrapper;
@@ -27,12 +28,12 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         super(category);
     }
 
-    public boolean matches(RecipeInputInventory craftingInventory, World world) {
+    public boolean matches(CraftingRecipeInput craftingInventory, World world) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.size(); ++i) {
-            ItemStack itemStack3 = craftingInventory.getStack(i);
+        for (int i = 0; i < craftingInventory.getSize(); ++i) {
+            ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.isOf(EnderiteMod.ENDERITE_CHESTPLATE.get())) {
                     if (!itemStack2.isEmpty()) {
@@ -62,12 +63,12 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory craftingInventory, RegistryWrapper.WrapperLookup registryManager) {
+    public ItemStack craft(CraftingRecipeInput craftingInventory, RegistryWrapper.WrapperLookup registryManager) {
         ItemStack chestplate_stack = ItemStack.EMPTY;
         ItemStack elytra_stack = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.size(); ++i) {
-            ItemStack itemStack3 = craftingInventory.getStack(i);
+        for (int i = 0; i < craftingInventory.getSize(); ++i) {
+            ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.isOf(EnderiteMod.ENDERITE_CHESTPLATE.get())) {
                     chestplate_stack = itemStack3;
@@ -86,11 +87,11 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
 
             ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(map1);
             // Merge new enchantment with old, if same level: level up, else: take higher level
-            for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry2 : map2.getEnchantmentsMap()) {
-                Enchantment enchant = entry2.getKey().value();
+            for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry2 : map2.getEnchantmentEntries()) {
+                RegistryEntry<Enchantment> enchant = entry2.getKey();
                 int level1 = entry2.getIntValue();
                 int level2 = builder.getLevel(enchant);
-                int level = level1 == level2 ? Math.min(level1 + 1, enchant.getMaxLevel()) : Math.max(level1, level2);
+                int level = level1 == level2 ? Math.min(level1 + 1, enchant.value().getMaxLevel()) : Math.max(level1, level2);
                 builder.set(enchant, level);
             }
             EnchantmentHelper.set(result_stack, builder.build());

@@ -14,14 +14,14 @@ public class ShulkerBoxTooltipApiImplementation implements ShulkerBoxTooltipApi 
 
     @Override
     public void registerProviders(PreviewProviderRegistry registry) {
-        registry.register(new Identifier("enderitemod", "enderite_shulker_box"),
+        registry.register(Identifier.of("enderitemod", "enderite_shulker_box"),
                 EnderiteShulkerBoxPreviewProvider.INSTANCE,
                 EnderiteMod.ENDERITE_SHULKER_BOX.get().asItem());
     }
 
     @Environment(EnvType.CLIENT)
     public void registerColors(ColorRegistry registry) {
-        registry.category(new Identifier("enderitemod","enderite_category"))
+        registry.category(Identifier.of("enderitemod","enderite_category"))
               .register(ClientOnly.ENDERITE_COLOR_KEY, "enderite_color");
     }
 

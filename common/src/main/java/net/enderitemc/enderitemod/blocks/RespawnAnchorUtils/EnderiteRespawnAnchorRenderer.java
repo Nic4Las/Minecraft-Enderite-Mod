@@ -31,10 +31,10 @@ public class EnderiteRespawnAnchorRenderer<T extends EnderiteRespawnAnchorBlockE
     }
 
     private void renderSide(T entity, Matrix4f model, VertexConsumer vertices, float x1, float x2, float y1, float y2, float z1, float z2, float z3, float z4, Direction side) {
-        vertices.vertex(model, x1, y1, z1).next();
-        vertices.vertex(model, x2, y1, z2).next();
-        vertices.vertex(model, x2, y2, z3).next();
-        vertices.vertex(model, x1, y2, z4).next();
+        vertices.vertex(model, x1, y1, z1);
+        vertices.vertex(model, x2, y1, z2);
+        vertices.vertex(model, x2, y2, z3);
+        vertices.vertex(model, x1, y2, z4);
     }
 
     protected float getTopYOffset() {

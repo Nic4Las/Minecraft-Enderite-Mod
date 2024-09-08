@@ -5,7 +5,6 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.ElytraEntityModel;
@@ -17,12 +16,13 @@ import net.minecraft.client.util.SkinTextures;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerModelPart;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 public class EnderiteElytraFeatureRender<T extends LivingEntity, M extends EntityModel<T>>
                 extends FeatureRenderer<T, M> {
-        private static final Identifier SKIN = new Identifier("textures/entity/enderite_elytra.png");
+        private static final Identifier SKIN = Identifier.of("textures/entity/enderite_elytra.png");
         private final ElytraEntityModel<T> elytra;
 
         public EnderiteElytraFeatureRender(FeatureRendererContext<T, M> context, EntityModelLoader loader) {
@@ -47,11 +47,10 @@ public class EnderiteElytraFeatureRender<T extends LivingEntity, M extends Entit
                 matrixStack.translate(0.0, 0.0, 0.125);
                 this.getContextModel().copyStateTo(this.elytra);
                 this.elytra.setAngles(livingEntity, f, g, j, k, l);
-                VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider,
-                                RenderLayer.getArmorCutoutNoCull(identifier), false, itemStack.hasGlint());
-                this.elytra.render(matrixStack, (VertexConsumer) vertexConsumer, i,
-                                OverlayTexture.DEFAULT_UV, 1.0f,
-                                1.0f, 1.0f, 1.0f);
+                VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(
+                        vertexConsumerProvider, RenderLayer.getArmorCutoutNoCull(identifier), itemStack.hasGlint()
+                );
+                this.elytra.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV);
                 matrixStack.pop();
         }
 

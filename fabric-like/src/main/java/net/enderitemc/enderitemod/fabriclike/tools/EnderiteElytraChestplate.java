@@ -10,7 +10,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 
 public class EnderiteElytraChestplate extends ArmorItem implements FabricElytraItem {
 
-    public EnderiteElytraChestplate(RegistryEntry<ArmorMaterial> material, ArmorItem.Type type, Settings settings) {
+    public EnderiteElytraChestplate(RegistryEntry<ArmorMaterial> material, ArmorItem.Type type, net.minecraft.item.Item.Settings settings) {
         super(material, type, settings);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }

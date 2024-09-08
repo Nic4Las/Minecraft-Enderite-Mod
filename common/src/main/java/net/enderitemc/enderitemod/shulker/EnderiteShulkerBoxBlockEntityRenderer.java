@@ -20,7 +20,7 @@ import net.minecraft.util.math.Direction;
 
 public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRenderer<EnderiteShulkerBoxBlockEntity> {
     private final ShulkerEntityModel<?> model;
-    private static final Identifier TEXTURE = new Identifier("textures/entity/shulker/enderite_shulker.png");
+    private static final Identifier TEXTURE = Identifier.of("textures/entity/shulker/enderite_shulker.png");
     private static final RenderLayer ENDERITE_SHULKER;
 
     public EnderiteShulkerBoxBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
@@ -38,7 +38,7 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
         }
 
         SpriteIdentifier spriteIdentifier = new SpriteIdentifier(TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE,
-                new Identifier("entity/shulker/enderite_shulker"));
+                Identifier.of("entity/shulker/enderite_shulker"));
         matrixStack.push();
         matrixStack.translate(0.5f, 0.5f, 0.5f);
         float g = 0.9995f;
@@ -51,7 +51,7 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
         modelPart.yaw = 270.0f * shulkerBoxBlockEntity.getAnimationProgress(f) * ((float) Math.PI / 180);
         VertexConsumer vertexConsumer = spriteIdentifier.getVertexConsumer(vertexConsumerProvider,
                 RenderLayer::getEntityCutoutNoCull);
-        this.model.render(matrixStack, vertexConsumer, i, j, 1.0f, 1.0f, 1.0f, 1.0f);
+        this.model.render(matrixStack, vertexConsumer, i, j);
         matrixStack.pop();
     }
 

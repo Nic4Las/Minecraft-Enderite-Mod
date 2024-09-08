@@ -1,0 +1,21 @@
+{
+    DataVersion: 3953,
+    size: [2, 2, 2],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:bedrock"},
+        {pos: [0, 0, 1], state: "minecraft:bedrock"},
+        {pos: [1, 0, 0], state: "minecraft:bedrock"},
+        {pos: [1, 0, 1], state: "minecraft:bedrock"},
+        {pos: [0, 1, 0], state: "minecraft:tnt{unstable:false}"},
+        {pos: [0, 1, 1], state: "minecraft:air"},
+        {pos: [1, 1, 0], state: "minecraft:air"},
+        {pos: [1, 1, 1], state: "enderitemod:enderite_ore"}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:bedrock",
+        "minecraft:tnt{unstable:false}",
+        "enderitemod:enderite_ore",
+        "minecraft:air"
+    ]
+}

@@ -31,8 +31,8 @@ public class EnderiteShieldRenderer extends BuiltinModelItemRenderer {
 
     protected final Supplier<ShieldEntityModel> shieldModel;// = Suppliers.memoize(()->new ShieldEntityModel(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(EntityModelLayers.SHIELD)));
 
-    public static final SpriteIdentifier SHIELD_BASE = new SpriteIdentifier(TexturedRenderLayers.SHIELD_PATTERNS_ATLAS_TEXTURE, new Identifier(EnderiteMod.MOD_ID,"entity/enderite_shield_base"));
-    public static final SpriteIdentifier SHIELD_BASE_NO_PATTERN = new SpriteIdentifier(TexturedRenderLayers.SHIELD_PATTERNS_ATLAS_TEXTURE, new Identifier(EnderiteMod.MOD_ID,"entity/enderite_shield_base_nopattern"));
+    public static final SpriteIdentifier SHIELD_BASE = new SpriteIdentifier(TexturedRenderLayers.SHIELD_PATTERNS_ATLAS_TEXTURE, Identifier.of(EnderiteMod.MOD_ID,"entity/enderite_shield_base"));
+    public static final SpriteIdentifier SHIELD_BASE_NO_PATTERN = new SpriteIdentifier(TexturedRenderLayers.SHIELD_PATTERNS_ATLAS_TEXTURE, Identifier.of(EnderiteMod.MOD_ID,"entity/enderite_shield_base_nopattern"));
 
     public EnderiteShieldRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher,
                                   EntityModelLoader entityModelLoader) {
@@ -52,11 +52,11 @@ public class EnderiteShieldRenderer extends BuiltinModelItemRenderer {
         matrices.scale(1.0f, -1.0f, -1.0f);
         SpriteIdentifier spriteIdentifier = bl ? SHIELD_BASE : SHIELD_BASE_NO_PATTERN;
         VertexConsumer vertexConsumer = spriteIdentifier.getSprite().getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.shieldModel.get().getLayer(spriteIdentifier.getAtlasId()), true, stack.hasGlint()));
-        this.shieldModel.get().getHandle().render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
+        this.shieldModel.get().getHandle().render(matrices, vertexConsumer, light, overlay);
         if (bl) {
             BannerBlockEntityRenderer.renderCanvas(matrices, vertexConsumers, light, overlay, this.shieldModel.get().getPlate(), spriteIdentifier, false, Objects.requireNonNullElse(dyeColor2, DyeColor.WHITE), bannerPatternsComponent, stack.hasGlint());
         } else {
-            this.shieldModel.get().getPlate().render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
+            this.shieldModel.get().getPlate().render(matrices, vertexConsumer, light, overlay);
         }
         matrices.pop();
     }

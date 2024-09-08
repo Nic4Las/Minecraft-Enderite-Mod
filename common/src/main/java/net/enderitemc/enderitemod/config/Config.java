@@ -9,6 +9,7 @@ public class Config {
 
     public static class General {
         public boolean allowVoidFloatingEnchantment = true;
+        public float enderiteUpgradeTemplateChance = 0.5f;
     }
 
     public static class Tools {
@@ -22,8 +23,10 @@ public class Config {
         public float enderiteBowArrowSpeed = 3.5f;
         public boolean enderiteBowNeedsArrow = true;
         public boolean enderiteBowWithInfinityNeedsArrow = false;
+        public float enderiteBowChargeTime = 30.0f;
         public float enderiteCrossbowAD = 3.0f;
         public float enderiteCrossbowArrowSpeed = 3.65f;
+        public float enderiteCrossBowChargeTime = 35.0f;
 
         public int durability = 4096;
 

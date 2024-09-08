@@ -3,7 +3,7 @@ package net.enderitemc.enderitemod.blocks;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.enums.Instrument;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -27,7 +27,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
 
     public EnderiteRespawnAnchor() {
         super(AbstractBlock.Settings.create().mapColor(MapColor.BLACK)
-                .instrument(Instrument.BASEDRUM).requiresTool().strength(50.0f, 1200.0f)
+                .instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(50.0f, 1200.0f)
                 .luminance(state -> RespawnAnchorBlock.getLightLevel(state, 15)));
     }
 

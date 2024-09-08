@@ -9,7 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrim;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemEntity.class)
 public abstract class EnderiteDropDamageMixin extends Entity {
@@ -33,8 +32,13 @@ public abstract class EnderiteDropDamageMixin extends Entity {
 	private void damageItem(CallbackInfo info) {
 		// Items in the void get teleported up and will live on (because they float)
 		if (this.getY() < this.getWorld().getBottomY()) {
+			int i = 0;
+
 			// Survival rate with Void Floating Enchantment
-			int i = EnchantmentHelper.getLevel(EnderiteMod.VOID_FLOATING_ENCHANTMENT.get(), getStack());
+			var enchant = this.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(EnderiteMod.VOID_FLOATING_ENCHANTMENT_ID);
+			if(enchant.isPresent()) {
+				i += EnchantmentHelper.getLevel(enchant.get(), getStack());
+			}
 
 			// Survival rate with Enderite Armor Trim
 			ArmorTrim trim = getStack().get(DataComponentTypes.TRIM);

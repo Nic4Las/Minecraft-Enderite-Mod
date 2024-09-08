@@ -20,65 +20,65 @@ public class AnimationFeatures {
         private static final Logger LOGGER = LogManager.getLogger();
 
         public static void init() {
-                ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_BOW.get(), new Identifier("pull"),
+                ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_BOW.get(), Identifier.of("pull"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         if (livingEntity == null) {
                                                 return 0.0F;
                                         } else {
                                                 return livingEntity.getActiveItem() != itemStack ? 0.0F
-                                                                : (float) (itemStack.getMaxUseTime() - livingEntity
+                                                                : (float) (itemStack.getMaxUseTime(livingEntity) - livingEntity
                                                                                 .getItemUseTimeLeft())
-                                                                                / EnderiteBow.chargeTime;
+                                                                                / EnderiteMod.CONFIG.tools.enderiteBowChargeTime;
                                         }
                                 });
                 ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_BOW.get(),
-                                new Identifier("pulling"),
+                                Identifier.of("pulling"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
                                 });
 
                 ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_CROSSBOW.get(),
-                                new Identifier("pull"),
+                                Identifier.of("pull"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         if (livingEntity == null) {
                                                 return 0.0F;
                                         } else {
                                                 return EnderiteCrossbow.isCharged(itemStack) ? 0.0F
-                                                                : (float) (itemStack.getMaxUseTime() - livingEntity
+                                                                : (float) (itemStack.getMaxUseTime(livingEntity) - livingEntity
                                                                                 .getItemUseTimeLeft())
                                                                                 / (float) EnderiteCrossbow
-                                                                                                .getPullTime(itemStack);
+                                                                                                .getPullTime(itemStack, livingEntity);
                                         }
                                 });
                 ModelPredicateProviderRegistry.register((Item) EnderiteTools.ENDERITE_CROSSBOW.get(),
-                                new Identifier("pulling"), (itemStack, clientWorld, livingEntity, id) -> {
+                                Identifier.of("pulling"), (itemStack, clientWorld, livingEntity, id) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack
                                                         && !EnderiteCrossbow.isCharged(itemStack) ? 1.0F : 0.0F;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get(), new Identifier("charged"),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get(), Identifier.of("charged"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         return livingEntity != null && EnderiteCrossbow.isCharged(itemStack) ? 1.0F
                                                         : 0.0F;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get(), new Identifier("firework"),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_CROSSBOW.get(), Identifier.of("firework"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                     ChargedProjectilesComponent chargedProjectilesComponent = itemStack.get(DataComponentTypes.CHARGED_PROJECTILES);
                                     return chargedProjectilesComponent != null && chargedProjectilesComponent.contains(Items.FIREWORK_ROCKET) ? 1.0F : 0.0F;
                                 });
-                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_SHIELD.get(), new Identifier("blocking"),
+                ModelPredicateProviderRegistry.register(EnderiteTools.ENDERITE_SHIELD.get(), Identifier.of("blocking"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         return livingEntity != null && livingEntity.isUsingItem()
                                                         && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
                                 });
 
-                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA.get(), new Identifier("broken"),
+                ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA.get(), Identifier.of("broken"),
                                 (itemStack, clientWorld, livingEntity, id) -> {
                                         return EnderiteElytraChestplate.isUsable(itemStack) ? 0.0F : 1.0F;
                                 });
                 ModelPredicateProviderRegistry.register(EnderiteMod.ENDERITE_ELYTRA_SEPERATED.get().asItem(),
-                                new Identifier("broken"), (itemStack, clientWorld, livingEntity, seed) -> {
+                                Identifier.of("broken"), (itemStack, clientWorld, livingEntity, seed) -> {
                                         return EnderiteElytraSeperated.isUsable(itemStack) ? 0.0F : 1.0F;
                                 });
         }

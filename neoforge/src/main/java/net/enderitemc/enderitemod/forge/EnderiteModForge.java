@@ -1,12 +1,19 @@
 package net.enderitemc.enderitemod.forge;
 
+import com.misterpemodder.shulkerboxtooltip.api.neoforge.ShulkerBoxTooltipPlugin;
+import dev.architectury.platform.hooks.EventBusesHooks;
+import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.SmithingTemplateItem;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -68,11 +75,11 @@ public class EnderiteModForge {
         // time
         //EventBuses.registerModEventBus(EnderiteMod.MOD_ID, modBus);
 
-        EnderiteMod.init();
-
         EnderiteMod.ENDERITE_ELYTRA = ENDERITE_ELYTRA;
         EnderiteMod.ENDERITE_ELYTRA_SEPERATED = ENDERITE_ELYTRA_SEPERATED;
         EnderiteTools.ENDERITE_SHIELD = ENDERITE_SHIELD_FORGE;
+
+        EnderiteMod.init();
 
         modBus.addListener(this::setup);
     }
@@ -89,7 +96,7 @@ public class EnderiteModForge {
 
         @SubscribeEvent
         public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
-            AnimationFeatures.init();
+            event.enqueueWork(AnimationFeatures::init);
         }
 
         @SubscribeEvent
@@ -98,17 +105,20 @@ public class EnderiteModForge {
                     EnderiteShulkerBoxBlockEntityRenderer::new);
 
             if (ModList.get().isLoaded("cloth_config")) {
-//                ModLoadingContext.get().registerExtensionPoint(
-//                        ConfigScreenHandler.ConfigScreenFactory.class,
-//                        () -> new ConfigScreenHandler.ConfigScreenFactory(
-//                                (mc, screen) -> new ClothConfig(screen).getScreen()));
+                ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class,
+                    () -> new IConfigScreenFactory() {
+                        @Override
+                        public Screen createScreen(ModContainer modContainer, Screen screen) {
+                            return new ClothConfig(screen).getScreen();
+                        }
+                    });
             }
 
-//                        if (ModList.get().isLoaded("shulkerboxtooltip")) {
-//                                ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
-//                                                () -> new ShulkerBoxTooltipPlugin(
-//                                                                ShulkerBoxTooltipApiImplementation::new));
-//                        }
+            if (ModList.get().isLoaded("shulkerboxtooltip")) {
+                ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
+                    () -> new ShulkerBoxTooltipPlugin(
+                        ShulkerBoxTooltipApiImplementation::new));
+            }
         }
 
         @SubscribeEvent(priority = EventPriority.LOW)

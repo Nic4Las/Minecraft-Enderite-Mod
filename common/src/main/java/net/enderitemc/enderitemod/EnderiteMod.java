@@ -17,7 +17,6 @@ import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
 import net.enderitemc.enderitemod.config.Config;
 import net.enderitemc.enderitemod.config.ConfigLoader;
-import net.enderitemc.enderitemod.enchantments.VoidFloatingEnchantment;
 import net.enderitemc.enderitemod.items.EnderiteIngot;
 import net.enderitemc.enderitemod.items.EnderiteScrap;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
@@ -30,7 +29,9 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxRecipe;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.DataComponentType;
+import net.minecraft.component.ComponentType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.Settings;
@@ -55,13 +56,11 @@ public class EnderiteMod {
         RegistryKeys.RECIPE_SERIALIZER);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(MOD_ID,
         RegistryKeys.BLOCK_ENTITY_TYPE);
-    public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(MOD_ID,
-        RegistryKeys.ENCHANTMENT);
     public static final DeferredRegister<ItemGroup> TABS =
         DeferredRegister.create(MOD_ID, RegistryKeys.ITEM_GROUP);
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIAL =
             DeferredRegister.create(MOD_ID, RegistryKeys.ARMOR_MATERIAL);
-    public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES =
+    public static final DeferredRegister<ComponentType<?>> DATA_COMPONENT_TYPES =
             DeferredRegister.create(MOD_ID, RegistryKeys.DATA_COMPONENT_TYPE);
 
 
@@ -154,7 +153,8 @@ public class EnderiteMod {
     public static final RegistrySupplier<Block> ENDERITE_SHULKER_BOX = BLOCKS.register("enderite_shulker_box",
         () -> new EnderiteShulkerBoxBlock());
     public static final RegistrySupplier<Item> ENDERITE_SHULKER_BOX_ITEM = ITEMS.register("enderite_shulker_box",
-        () -> new BlockItem(ENDERITE_SHULKER_BOX.get(), BASE_ENDERITE_ITEM_SETTINGS.get().maxCount(1)));
+        () -> new BlockItem(ENDERITE_SHULKER_BOX.get(), BASE_ENDERITE_ITEM_SETTINGS.get().maxCount(1)
+                .component(DataComponentTypes.CONTAINER, ContainerComponent.DEFAULT)));
     public static RegistrySupplier<RecipeSerializer<?>> ENDERITE_SHULKER_BOX_RECIPE = RECIPES
         .register("crafting_special_enderiteshulkerbox",
             () -> new SpecialRecipeSerializer<>(
@@ -165,23 +165,20 @@ public class EnderiteMod {
                             .create(EnderiteShulkerBoxBlockEntity::new,
                                     EnderiteMod.ENDERITE_SHULKER_BOX.get())
                             .build(null));
-
-    // Enchantment
-    public static RegistrySupplier<Enchantment> VOID_FLOATING_ENCHANTMENT = ENCHANTMENTS.register("void_floating",
-        () -> new VoidFloatingEnchantment());
-
+    
     public static ScreenHandlerType<EnderiteShulkerBoxScreenHandler> ENDERITE_SHULKER_BOX_SCREEN_HANDLER;
 
-
+    // Enchantments
+    public static Identifier VOID_FLOATING_ENCHANTMENT_ID = Identifier.of(MOD_ID, "void_floating");
 
     // Trims
     public static final RegistrySupplier<Item> ENDERITE_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("enderite_upgrade_smithing_template",
         () -> new SmithingTemplateItem(
-            Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.applies_to"))).formatted(Formatting.BLUE),
-            Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.ingredients"))).formatted(Formatting.BLUE),
-            Text.translatable(Util.createTranslationKey("upgrade", new Identifier(MOD_ID,"enderite_upgrade"))).formatted(Formatting.GRAY),
-            Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.base_slot_description"))),
-            Text.translatable(Util.createTranslationKey("item", new Identifier(MOD_ID,"smithing_template.enderite_upgrade.additions_slot_description"))),
+            Text.translatable(Util.createTranslationKey("item", Identifier.of(MOD_ID,"smithing_template.enderite_upgrade.applies_to"))).formatted(Formatting.BLUE),
+            Text.translatable(Util.createTranslationKey("item", Identifier.of(MOD_ID,"smithing_template.enderite_upgrade.ingredients"))).formatted(Formatting.BLUE),
+            Text.translatable(Util.createTranslationKey("upgrade", Identifier.of(MOD_ID,"enderite_upgrade"))).formatted(Formatting.GRAY),
+            Text.translatable(Util.createTranslationKey("item", Identifier.of(MOD_ID,"smithing_template.enderite_upgrade.base_slot_description"))),
+            Text.translatable(Util.createTranslationKey("item", Identifier.of(MOD_ID,"smithing_template.enderite_upgrade.additions_slot_description"))),
             SmithingTemplateItem.getNetheriteUpgradeEmptyBaseSlotTextures(),
             SmithingTemplateItem.getNetheriteUpgradeEmptyAdditionsSlotTextures()));
 
@@ -190,7 +187,6 @@ public class EnderiteMod {
         ITEMS.register();
         RECIPES.register();
         BLOCK_ENTITY_TYPES.register();
-        ENCHANTMENTS.register();
         TABS.register();
         ARMOR_MATERIAL.register();
         EnderiteDataComponents.init();
@@ -200,11 +196,11 @@ public class EnderiteMod {
                 mutable.getGenerationProperties().addFeature(
                     GenerationStep.Feature.UNDERGROUND_ORES,
                     RegistryKey.of(RegistryKeys.PLACED_FEATURE,
-                        new Identifier(EnderiteMod.MOD_ID,"ore_enderite_large")));
+                        Identifier.of(EnderiteMod.MOD_ID,"ore_enderite_large")));
                 mutable.getGenerationProperties().addFeature(
                     GenerationStep.Feature.UNDERGROUND_ORES,
                     RegistryKey.of(RegistryKeys.PLACED_FEATURE,
-                        new Identifier(EnderiteMod.MOD_ID,"ore_enderite_small")));
+                        Identifier.of(EnderiteMod.MOD_ID,"ore_enderite_small")));
             });
             CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
         });

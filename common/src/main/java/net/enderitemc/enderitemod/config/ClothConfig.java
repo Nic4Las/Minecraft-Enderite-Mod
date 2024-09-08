@@ -1,10 +1,13 @@
 package net.enderitemc.enderitemod.config;
 
+import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+
+import java.util.ArrayList;
 
 public class ClothConfig {
 
@@ -38,18 +41,19 @@ public class ClothConfig {
 
                 // Void floating enchantment
                 general.addEntry(entryBuilder
-                                .startBooleanToggle(Text.translatable(
-                                                "option.enderitemod.general.allow_void_floating_enchantment"),
-                                                currentConfig.general.allowVoidFloatingEnchantment)
-                                .setDefaultValue(DEFAULT.general.allowVoidFloatingEnchantment)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.general.allow_void_floating_enchantment.hover"))
-                                .setSaveConsumer(
-                                                newValue -> currentConfig.general.allowVoidFloatingEnchantment = newValue)
-                                .build());
+                        .startTextDescription(Text.translatable(
+                                "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json"))
+                        .setColor(0xFF1100)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json.hover")
+                                .append("\n- enderitemod/enchantment/void_floating.json")
+                                .append("\n- minecraft/tags/enchantment/non_treasure.json"))
+                        .build());
 
                 // BOW
-                general.addEntry(entryBuilder
+                ArrayList<AbstractConfigListEntry> list_bc = new ArrayList<>();
+
+                list_bc.add(entryBuilder
                                 .startFloatField(Text.translatable(
                                                 "option.enderitemod.general.enderite_bow.attack_damage"),
                                                 currentConfig.tools.enderiteBowAD)
@@ -57,7 +61,7 @@ public class ClothConfig {
                                 .setTooltip(Text.translatable(
                                                 "option.enderitemod.general.enderite_bow.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowAD = newValue).build());
-                general.addEntry(entryBuilder
+                list_bc.add(entryBuilder
                                 .startFloatField(
                                                 Text.translatable(
                                                                 "option.enderitemod.general.enderite_bow.arrow_speed"),
@@ -67,26 +71,44 @@ public class ClothConfig {
                                                 "option.enderitemod.general.enderite_bow.arrow_speed.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowArrowSpeed = newValue)
                                 .build());
-                general.addEntry(entryBuilder.startBooleanToggle(
-                                                                Text.translatable(
-                                                                                "option.enderitemod.general.enderite_bow.needs_arrow"),
-                                                                currentConfig.tools.enderiteBowNeedsArrow)
-                                .setDefaultValue(DEFAULT.tools.enderiteBowNeedsArrow)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.general.enderite_bow.needs_arrow.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowNeedsArrow = newValue)
-                                .build());
-                general.addEntry(entryBuilder.startBooleanToggle(
-                                                                Text.translatable("option.enderitemod.general.enderite_bow.infinity_needs_arrow"),
-                                                                currentConfig.tools.enderiteBowWithInfinityNeedsArrow)
-                                .setDefaultValue(DEFAULT.tools.enderiteBowWithInfinityNeedsArrow)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.general.enderite_bow.infinity_needs_arrow.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowWithInfinityNeedsArrow = newValue)
-                                .build());
+                list_bc.add(entryBuilder
+                        .startFloatField(
+                                Text.translatable(
+                                        "option.enderitemod.general.enderite_bow.charge_time"),
+                                currentConfig.tools.enderiteBowChargeTime)
+                        .setDefaultValue(DEFAULT.tools.enderiteBowChargeTime).setMin(1.0f).setMax(100.0f)
+                        .setTooltip(Text.translatable(
+                                "option.enderitemod.general.enderite_bow.charge_time.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowChargeTime = newValue)
+                        .build());
+                list_bc.add(entryBuilder.startBooleanToggle(
+                                Text.translatable(
+                                                "option.enderitemod.general.enderite_bow.needs_arrow"),
+                                currentConfig.tools.enderiteBowNeedsArrow)
+                        .setDefaultValue(DEFAULT.tools.enderiteBowNeedsArrow)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.general.enderite_bow.needs_arrow.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowNeedsArrow = newValue)
+                        .build());
+                list_bc.add(entryBuilder.startBooleanToggle(
+                                Text.translatable("option.enderitemod.general.enderite_bow.infinity_needs_arrow"),
+                                currentConfig.tools.enderiteBowWithInfinityNeedsArrow)
+                        .setDefaultValue(DEFAULT.tools.enderiteBowWithInfinityNeedsArrow)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.general.enderite_bow.infinity_needs_arrow.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderiteBowWithInfinityNeedsArrow = newValue)
+                        .build());
+
+                general.addEntry(entryBuilder
+                        .startSubCategory(
+                                Text.translatable("option.enderitemod.general.enderite_bow.config"),
+                                list_bc)
+                        .build());
 
                 // Crossbow
-                general.addEntry(entryBuilder
+                ArrayList<AbstractConfigListEntry> list_cbc = new ArrayList<>();
+
+                list_cbc.add(entryBuilder
                                 .startFloatField(Text.translatable(
                                                 "option.enderitemod.general.enderite_crossbow.attack_damage"),
                                                 currentConfig.tools.enderiteCrossbowAD)
@@ -95,7 +117,7 @@ public class ClothConfig {
                                                 "option.enderitemod.general.enderite_crossbow.attack_damage.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteCrossbowAD = newValue)
                                 .build());
-                general.addEntry(entryBuilder
+                list_cbc.add(entryBuilder
                                 .startFloatField(Text.translatable(
                                                 "option.enderitemod.general.enderite_crossbow.arrow_speed"),
                                                 currentConfig.tools.enderiteCrossbowArrowSpeed)
@@ -104,19 +126,48 @@ public class ClothConfig {
                                                 "option.enderitemod.general.enderite_crossbow.arrow_speed.hover"))
                                 .setSaveConsumer(newValue -> currentConfig.tools.enderiteCrossbowArrowSpeed = newValue)
                                 .build());
+                list_cbc.add(entryBuilder
+                        .startFloatField(
+                                Text.translatable(
+                                        "option.enderitemod.general.enderite_crossbow.charge_time"),
+                                currentConfig.tools.enderiteCrossBowChargeTime)
+                        .setDefaultValue(DEFAULT.tools.enderiteCrossBowChargeTime).setMin(1.0f).setMax(100.0f)
+                        .setTooltip(Text.translatable(
+                                "option.enderitemod.general.enderite_crossbow.charge_time.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderiteCrossBowChargeTime = newValue)
+                        .build());
+
+                general.addEntry(entryBuilder
+                        .startSubCategory(
+                                Text.translatable("option.enderitemod.general.enderite_crossbow.config"),
+                                list_cbc)
+                        .build());
+
+                // RESTART
+                // Upgrade Template
+                restart.addEntry(entryBuilder
+                        .startFloatField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_upgrade_template_frequency"),
+                                currentConfig.general.enderiteUpgradeTemplateChance)
+                        .setDefaultValue(DEFAULT.general.enderiteUpgradeTemplateChance).setMin(0.0f).setMax(1.0f)
+                        .setTooltip(Text.translatable(
+                                "option.enderitemod.restart.enderite_upgrade_template_frequency.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.general.enderiteUpgradeTemplateChance = newValue)
+                        .requireRestart()
+                        .build());
 
                 // ORE
                 restart.addEntry(entryBuilder
-                                .startTextDescription(Text.translatable(
-                                                "option.enderitemod.restart.enderite_ore.moved_to_json"))
-                                .setColor(0xFF1100)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_ore.moved_to_json.hover")
-                                                .append("\n- enderitemod/worldgen/configured_feature/ore_enderite_large.json")
-                                                .append("\n- enderitemod/worldgen/configured_feature/ore_enderite_small.json")
-                                                .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_large.json")
-                                                .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_small.json"))
-                                .build());
+                        .startTextDescription(Text.translatable(
+                                        "option.enderitemod.restart.enderite_ore.moved_to_json"))
+                        .setColor(0xFF1100)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_ore.moved_to_json.hover")
+                                        .append("\n- enderitemod/worldgen/configured_feature/ore_enderite_large.json")
+                                        .append("\n- enderitemod/worldgen/configured_feature/ore_enderite_small.json")
+                                        .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_large.json")
+                                        .append("\n- enderitemod/worldgen/placed_feature/ore_enderite_small.json"))
+                        .build());
 
                 // restart.addEntry(entryBuilder
                 // .startIntField(Text.translatable(
@@ -127,7 +178,8 @@ public class ClothConfig {
                 // "option.enderitemod.restart.enderite_ore.vein_size.hover"))
                 // .setSaveConsumer(
                 // newValue -> currentConfig.worldGeneration.enderiteOre.veinSize = newValue)
-                // .build());
+                //
+                //.build());
 
                 // restart.addEntry(entryBuilder
                 // .startIntField(Text.translatable(
@@ -138,69 +190,88 @@ public class ClothConfig {
                 // "option.enderitemod.restart.enderite_ore.vein_amount.hover"))
                 // .setSaveConsumer(
                 // newValue -> currentConfig.worldGeneration.enderiteOre.veinAmount = newValue)
-                // .build());
+                //
+                //.build());
 
                 // TOOLS
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_sword.attack_damage"),
-                                                currentConfig.tools.enderiteSwordAD + 3)
-                                .setDefaultValue(DEFAULT.tools.enderiteSwordAD + 3).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_sword.attack_damage.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.tools.enderiteSwordAD = newValue - 3)
-                                .build());
+                ArrayList<AbstractConfigListEntry> list_tdc = new ArrayList<>();
 
-                // TOOLS
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_pickaxe.attack_damage"),
-                                                currentConfig.tools.enderitePickaxeAD + 3)
-                                .setDefaultValue(DEFAULT.tools.enderitePickaxeAD + 3).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_pickaxe.attack_damage.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.tools.enderitePickaxeAD = newValue - 3)
-                                .build());
+                list_tdc.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_sword.attack_damage"),
+                                        currentConfig.tools.enderiteSwordAD + 3)
+                        .setDefaultValue(DEFAULT.tools.enderiteSwordAD + 3).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_sword.attack_damage.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderiteSwordAD = newValue - 3)
+                        .requireRestart()
+                        .build());
+
+                list_tdc.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_pickaxe.attack_damage"),
+                                        currentConfig.tools.enderitePickaxeAD + 3)
+                        .setDefaultValue(DEFAULT.tools.enderitePickaxeAD + 3).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_pickaxe.attack_damage.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderitePickaxeAD = newValue - 3)
+                        .requireRestart()
+                        .build());
+
+                list_tdc.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_axe.attack_damage"),
+                                        currentConfig.tools.enderiteAxeAD + 3)
+                        .setDefaultValue(DEFAULT.tools.enderiteAxeAD + 3).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_axe.attack_damage.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderiteAxeAD = newValue - 3)
+                        .requireRestart()
+                        .build());
+
+                list_tdc.add(entryBuilder
+                        .startFloatField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_shovel.attack_damage"),
+                                        currentConfig.tools.enderiteShovelAD + 3)
+                        .setDefaultValue(DEFAULT.tools.enderiteShovelAD + 3).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_shovel.attack_damage.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderiteShovelAD = newValue - 3)
+
+                        .requireRestart()
+                        .build());
+
+                list_tdc.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_hoe.attack_damage"),
+                                        currentConfig.tools.enderiteHoeAD + 3)
+                        .setDefaultValue(DEFAULT.tools.enderiteHoeAD + 3).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_hoe.attack_damage.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - 3)
+                        .requireRestart()
+                        .build());
 
                 restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_axe.attack_damage"),
-                                                currentConfig.tools.enderiteAxeAD + 3)
-                                .setDefaultValue(DEFAULT.tools.enderiteAxeAD + 3).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_axe.attack_damage.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.tools.enderiteAxeAD = newValue - 3).build());
+                        .startSubCategory(
+                                Text.translatable("option.enderitemod.restart.tools.damage_config"),
+                                list_tdc)
+                        .build());
 
-                restart.addEntry(entryBuilder
-                                .startFloatField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_shovel.attack_damage"),
-                                                currentConfig.tools.enderiteShovelAD + 3)
-                                .setDefaultValue(DEFAULT.tools.enderiteShovelAD + 3).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_shovel.attack_damage.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.tools.enderiteShovelAD = newValue - 3)
-                                .build());
+                // Tools general
+                ArrayList<AbstractConfigListEntry> list_tgc = new ArrayList<>();
+                list_tgc.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_tools.durability"),
+                                        currentConfig.tools.durability)
+                        .setDefaultValue(DEFAULT.tools.durability).setMin(1)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_tools.durability.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.tools.durability = newValue)
+                        .requireRestart()
+                        .build());
 
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_hoe.attack_damage"),
-                                                currentConfig.tools.enderiteHoeAD + 3)
-                                .setDefaultValue(DEFAULT.tools.enderiteHoeAD + 3).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_hoe.attack_damage.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - 3).build());
-
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_tools.durability"),
-                                                currentConfig.tools.durability)
-                                .setDefaultValue(DEFAULT.tools.durability).setMin(1)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_tools.durability.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.tools.durability = newValue)
-                                .build());
-
-                restart.addEntry(entryBuilder
+                list_tgc.add(entryBuilder
                         .startIntField(Text.translatable(
                                         "option.enderitemod.restart.enderite_tools.max_teleport_charge"),
                                 currentConfig.tools.maxTeleportCharge)
@@ -208,51 +279,64 @@ public class ClothConfig {
                         .setTooltip(Text.translatable(
                                 "option.enderitemod.restart.enderite_tools.max_teleport_charge.hover"))
                         .setSaveConsumer(newValue -> currentConfig.tools.maxTeleportCharge = newValue)
+                        .requireRestart()
+                        .build());
+
+                restart.addEntry(entryBuilder
+                        .startSubCategory(
+                                Text.translatable("option.enderitemod.restart.tools.general_config"),
+                                list_tgc)
                         .build());
 
                 
                 // ARMOR
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_helmet.protection"),
-                                                currentConfig.armor.helmetProtection)
-                                .setDefaultValue(DEFAULT.armor.helmetProtection).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_helmet.protection.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.armor.helmetProtection = newValue)
-                                .build());
+                ArrayList<AbstractConfigListEntry> list_ac = new ArrayList<>();
 
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_chestplate.protection"),
-                                                currentConfig.armor.chestplateProtection)
-                                .setDefaultValue(DEFAULT.armor.chestplateProtection).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_chestplate.protection.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.armor.chestplateProtection = newValue)
-                                .build());
+                list_ac.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_helmet.protection"),
+                                        currentConfig.armor.helmetProtection)
+                        .setDefaultValue(DEFAULT.armor.helmetProtection).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_helmet.protection.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.helmetProtection = newValue)
+                        .requireRestart()
+                        .build());
 
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_leggings.protection"),
-                                                currentConfig.armor.leggingsProtection)
-                                .setDefaultValue(DEFAULT.armor.leggingsProtection).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_leggings.protection.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.armor.leggingsProtection = newValue)
-                                .build());
+                list_ac.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_chestplate.protection"),
+                                        currentConfig.armor.chestplateProtection)
+                        .setDefaultValue(DEFAULT.armor.chestplateProtection).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_chestplate.protection.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.chestplateProtection = newValue)
+                        .requireRestart()
+                        .build());
 
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.enderite_boots.protection"),
-                                                currentConfig.armor.bootsProtection)
-                                .setDefaultValue(DEFAULT.armor.bootsProtection).setMin(1).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.enderite_boots.protection.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.armor.bootsProtection = newValue)
-                                .build());
+                list_ac.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_leggings.protection"),
+                                        currentConfig.armor.leggingsProtection)
+                        .setDefaultValue(DEFAULT.armor.leggingsProtection).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_leggings.protection.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.leggingsProtection = newValue)
+                        .requireRestart()
+                        .build());
 
-                restart.addEntry(entryBuilder
+                list_ac.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.enderite_boots.protection"),
+                                        currentConfig.armor.bootsProtection)
+                        .setDefaultValue(DEFAULT.armor.bootsProtection).setMin(1).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.enderite_boots.protection.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.bootsProtection = newValue)
+                        .requireRestart()
+                        .build());
+
+                list_ac.add(entryBuilder
                         .startIntField(Text.translatable(
                                         "option.enderitemod.restart.enderite_body.protection"),
                                 currentConfig.armor.bodyProtection)
@@ -260,47 +344,58 @@ public class ClothConfig {
                         .setTooltip(Text.translatable(
                                 "option.enderitemod.restart.enderite_body.protection.hover"))
                         .setSaveConsumer(newValue -> currentConfig.armor.bodyProtection = newValue)
+                        .requireRestart()
+                        .build());
+
+                list_ac.add(entryBuilder
+                        .startFloatField(Text.translatable(
+                                        "option.enderitemod.restart.armor.toughness"),
+                                        currentConfig.armor.toughness)
+                        .setDefaultValue(DEFAULT.armor.toughness).setMin(0).setMax(16)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.armor.toughness.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.toughness = newValue)
+                        .requireRestart()
+                        .build());
+
+                list_ac.add(entryBuilder
+                        .startFloatField(Text.translatable(
+                                        "option.enderitemod.restart.armor.knockbackResistance"),
+                                        currentConfig.armor.knockbackResistance)
+                        .setDefaultValue(DEFAULT.armor.knockbackResistance).setMin(0).setMax(1)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.armor.knockbackResistance.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.knockbackResistance = newValue)
+                        .requireRestart()
+                        .build());
+
+                list_ac.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.armor.durabilityMultiplier"),
+                                        currentConfig.armor.durabilityMultiplier)
+                        .setDefaultValue(DEFAULT.armor.durabilityMultiplier).setMin(1).setMax(99)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.armor.durabilityMultiplier.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.durabilityMultiplier = newValue)
+                        .requireRestart()
+                        .build());
+
+                list_ac.add(entryBuilder
+                        .startIntField(Text.translatable(
+                                        "option.enderitemod.restart.armor.enchantability"),
+                                        currentConfig.armor.enchantability)
+                        .setDefaultValue(DEFAULT.armor.enchantability).setMin(1).setMax(99)
+                        .setTooltip(Text.translatable(
+                                        "option.enderitemod.restart.armor.enchantability.hover"))
+                        .setSaveConsumer(newValue -> currentConfig.armor.enchantability = newValue)
+                        .requireRestart()
                         .build());
 
                 restart.addEntry(entryBuilder
-                                .startFloatField(Text.translatable(
-                                                "option.enderitemod.restart.armor.toughness"),
-                                                currentConfig.armor.toughness)
-                                .setDefaultValue(DEFAULT.armor.toughness).setMin(0).setMax(16)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.armor.toughness.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.armor.toughness = newValue)
-                                .build());
-
-                restart.addEntry(entryBuilder
-                                .startFloatField(Text.translatable(
-                                                "option.enderitemod.restart.armor.knockbackResistance"),
-                                                currentConfig.armor.knockbackResistance)
-                                .setDefaultValue(DEFAULT.armor.knockbackResistance).setMin(0).setMax(1)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.armor.knockbackResistance.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.armor.knockbackResistance = newValue)
-                                .build());
-
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.armor.durabilityMultiplier"),
-                                                currentConfig.armor.durabilityMultiplier)
-                                .setDefaultValue(DEFAULT.armor.durabilityMultiplier).setMin(1).setMax(99)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.armor.durabilityMultiplier.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.armor.durabilityMultiplier = newValue)
-                                .build());
-
-                restart.addEntry(entryBuilder
-                                .startIntField(Text.translatable(
-                                                "option.enderitemod.restart.armor.enchantability"),
-                                                currentConfig.armor.enchantability)
-                                .setDefaultValue(DEFAULT.armor.enchantability).setMin(1).setMax(99)
-                                .setTooltip(Text.translatable(
-                                                "option.enderitemod.restart.armor.enchantability.hover"))
-                                .setSaveConsumer(newValue -> currentConfig.armor.enchantability = newValue)
-                                .build());
+                        .startSubCategory(
+                                Text.translatable("option.enderitemod.restart.tools.armor_config"),
+                                list_ac)
+                        .build());
 
                 this.screen = builder.build();
                 

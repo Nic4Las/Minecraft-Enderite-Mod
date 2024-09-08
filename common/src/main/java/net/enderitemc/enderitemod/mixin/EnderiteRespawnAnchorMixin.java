@@ -5,23 +5,23 @@ import java.util.Optional;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PlayerEntity.class)
+@Mixin(ServerPlayerEntity.class)
 public class EnderiteRespawnAnchorMixin {
 
     @Inject(at = @At("HEAD"), method = "findRespawnPosition", cancellable = true)
     private static void isEnd(ServerWorld world, BlockPos pos, float f, boolean bl, boolean bl2,
-            CallbackInfoReturnable<Optional<Vec3d>> info) {
+            CallbackInfoReturnable<Optional<ServerPlayerEntity.RespawnPos>> info) {
         // Implements possibility to spawn in end with enderite respawn anchor
         BlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
@@ -34,7 +34,7 @@ public class EnderiteRespawnAnchorMixin {
                         (Integer) blockState.get(EnderiteRespawnAnchor.CHARGES) - 1), 3);
             }
 
-            info.setReturnValue(optional);
+            info.setReturnValue(optional.map(respawnPos -> ServerPlayerEntity.RespawnPos.fromCurrentPos(respawnPos, pos)));
         }
     }
 

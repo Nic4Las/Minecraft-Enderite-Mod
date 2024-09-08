@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod.fabriclike;
 
 import net.enderitemc.enderitemod.tools.EnderiteShears;
+import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
@@ -16,6 +17,8 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 
+import static net.enderitemc.enderitemod.tools.EnderiteTools.ENDERITE_SHIELD_ITEM_SETTINGS;
+
 public class EnderiteModFabricLike {
 
         // Enderite Elytra
@@ -28,9 +31,14 @@ public class EnderiteModFabricLike {
                         () -> new EnderiteElytraSeperated(
                                         EnderiteMod.ENDERITE_ELYTRA_SEPERATED_ITEM_SETTINGS));
 
+        public static final RegistrySupplier<Item> ENDERITE_SHIELD = EnderiteMod.ITEMS.register("enderite_shield",
+                 () -> new EnderiteShield(
+                ENDERITE_SHIELD_ITEM_SETTINGS));
+
         public static void init() {
                 EnderiteMod.ENDERITE_ELYTRA = ENDERITE_ELYTRA;
                 EnderiteMod.ENDERITE_ELYTRA_SEPERATED = ENDERITE_ELYTRA_SEPERATED;
+                EnderiteTools.ENDERITE_SHIELD = ENDERITE_SHIELD;
                 
                 EnderiteMod.init();
                 EnderiteShears.registerLoottables_Fabric();

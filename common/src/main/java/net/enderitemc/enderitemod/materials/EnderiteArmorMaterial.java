@@ -21,10 +21,10 @@ import net.minecraft.util.Util;
 
 public class EnderiteArmorMaterial {
 
-    public static final Identifier ID = new Identifier(EnderiteMod.MOD_ID, "enderite");
+    public static final Identifier ID = Identifier.of(EnderiteMod.MOD_ID, "enderite");
 
     public static final Identifier ENDERITE_ARMOR_TRIM_ID = ID;
-    public static final Identifier DARKER_ENDERITE_ARMOR_TRIM_ID = new Identifier(EnderiteMod.MOD_ID, "enderite_darker");
+    public static final Identifier DARKER_ENDERITE_ARMOR_TRIM_ID = Identifier.of(EnderiteMod.MOD_ID, "enderite_darker");
 
     public static final ArmorMaterial ENDERITE = new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {

@@ -16,6 +16,7 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 
 
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -30,6 +31,7 @@ public abstract class SmithingEnderiteSwordTakeMixin extends ForgingScreenHandle
         super(ScreenHandlerType.SMITHING, syncId, playerInventory, context);
     }
 
+    @Unique
     private void superDecrement(int i, int amount) {
         ItemStack itemStack = this.input.getStack(i);
         if (!itemStack.isEmpty()) {

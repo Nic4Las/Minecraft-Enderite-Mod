@@ -2,3 +2,4 @@ accessWidener   v2  named
 accessible  method   net/minecraft/item/SmithingTemplateItem   getNetheriteUpgradeEmptyBaseSlotTextures   ()Ljava/util/List;
 accessible  method   net/minecraft/item/SmithingTemplateItem   getNetheriteUpgradeEmptyAdditionsSlotTextures   ()Ljava/util/List;
 accessible class net/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData
+accessible class net/minecraft/server/network/ServerPlayerEntity$RespawnPos

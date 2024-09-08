@@ -5,6 +5,7 @@ import dev.architectury.event.events.common.LootEvent.LootTableModificationConte
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
+import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.util.Identifier;
@@ -22,6 +23,7 @@ public abstract class EnderiteUpgradeSmithingTemplate {
         if (name.equals(id)) {
             LootPool.Builder pool = LootPool.builder()
                     .rolls(ConstantLootNumberProvider.create(1))
+                    .conditionally(RandomChanceLootCondition.builder(EnderiteMod.CONFIG.general.enderiteUpgradeTemplateChance))
                     .with(ItemEntry.builder(EnderiteMod.ENDERITE_UPGRADE_SMITHING_TEMPLATE.get().asItem()));
             table.addPool(pool);
         }

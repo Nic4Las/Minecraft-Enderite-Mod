@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+  ],
+  "remove": [
+    "#enderitemod:needs_enderite_tool"
+  ]
+}

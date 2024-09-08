@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class EnderiteElytraSeperated extends ElytraItem implements FabricElytraItem {
 
-    public EnderiteElytraSeperated(Settings settings) {
+    public EnderiteElytraSeperated(net.minecraft.item.Item.Settings settings) {
         super(settings);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }

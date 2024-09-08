@@ -147,5 +147,19 @@
   "tag.item.enderitemod.enderite_tools": "Enderite Tools",
   "tag.item.c.ores.enderite_scrap": "Enderite Scraps",
   "tag.item.c.ingots.enderite": "Enderite Ingots",
-  "tag.item.c.storage_blocks.enderite": "Enderite Blocks"
+  "tag.item.c.storage_blocks.enderite": "Enderite Blocks",
+
+  "option.enderitemod.general.enderite_bow.config": "Enderite Bow Config",
+  "option.enderitemod.general.enderite_bow.charge_time": "Enderite Bow Charge Time",
+  "option.enderitemod.general.enderite_bow.charge_time.hover": "Normal Bow has 20.0",
+  "option.enderitemod.general.enderite_crossbow.config": "Enderite Crossbow Config",
+  "option.enderitemod.general.enderite_crossbow.charge_time": "Enderite Crossbow Charge Time",
+  "option.enderitemod.general.enderite_crossbow.charge_time.hover": "Normal Crossbow has 25.0",
+  "option.enderitemod.restart.enderite_upgrade_template_frequency" : "Enderite Upgrade Template Chance (Chest Spawns)",
+  "option.enderitemod.restart.enderite_upgrade_template_frequency.hover" : "0.0: disabled, 0.5: in every second chest, 1.0: in every chest",
+  "option.enderitemod.restart.tools.damage_config": "Tools Damage Config",
+  "option.enderitemod.restart.tools.general_config": "Tools General Config",
+  "option.enderitemod.restart.tools.armor_config": "Armor Config",
+  "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json": "Void Floating Enchantment config via datapack",
+  "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json.hover": "Configuration has been moved to json (datapack)"
 }

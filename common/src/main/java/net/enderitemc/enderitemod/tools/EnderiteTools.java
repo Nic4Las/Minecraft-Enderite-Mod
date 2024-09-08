@@ -70,9 +70,7 @@ public class EnderiteTools {
     // Shield
     public static final Item.Settings ENDERITE_SHIELD_ITEM_SETTINGS = ENDERITE_TOOL_SETTINGS.get().maxCount(1).maxDamage(768);
 
-    public static RegistrySupplier<Item> ENDERITE_SHIELD = EnderiteMod.ITEMS.register("enderite_shield",
-        () -> new EnderiteShield(
-            ENDERITE_SHIELD_ITEM_SETTINGS));
+    public static RegistrySupplier<Item> ENDERITE_SHIELD;
 
     public static RegistrySupplier<RecipeSerializer<?>> ENDERITE_SHIELD_DECORATION_RECIPE = EnderiteMod.RECIPES
         .register("crafting_special_enderiteshielddecoration",
