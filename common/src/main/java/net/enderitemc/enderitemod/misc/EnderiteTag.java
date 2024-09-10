@@ -21,6 +21,8 @@ public class EnderiteTag {
 
     public static final TagKey<Block> INCORRECT_FOR_ENDERITE_TOOL = TagKey.of(RegistryKeys.BLOCK,
             Identifier.of(EnderiteMod.MOD_ID, "incorrect_for_enderite_tool"));
+    public static final TagKey<Block> NEEDS_ENDERITE_TOOL = TagKey.of(RegistryKeys.BLOCK,
+            Identifier.of(EnderiteMod.MOD_ID, "needs_enderite_tool"));
     public static final TagKey<Block> IS_VOID_FLOATING_ENCHANTABLE = TagKey.of(RegistryKeys.BLOCK,
             Identifier.of(EnderiteMod.MOD_ID, "is_void_floating_enchantable"));
 }

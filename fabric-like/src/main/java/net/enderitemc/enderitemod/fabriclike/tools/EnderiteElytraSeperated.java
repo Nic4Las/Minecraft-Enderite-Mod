@@ -19,10 +19,6 @@ public class EnderiteElytraSeperated extends ElytraItem implements FabricElytraI
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
     }
 
-    public EquipmentSlot getSlotType() {
-        return EquipmentSlot.CHEST;
-    }
-
     public static boolean isUsable(ItemStack stack) {
         return stack.getDamage() < stack.getMaxDamage() - 1;
     }

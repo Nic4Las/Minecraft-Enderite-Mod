@@ -11,7 +11,6 @@
     "EnderiteShearsSheepMixin",
     "EnderiteShieldPlayerEntityMixin",
     "EndermanStopStaringMixin",
-    "MobEntityMixin",
     "ShulkerBoxColoringMixin",
     "SmithingEnderiteSwordMixin",
     "SmithingEnderiteSwordOutputMixin",

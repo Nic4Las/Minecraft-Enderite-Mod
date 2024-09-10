@@ -1,0 +1,16 @@
+{
+    DataVersion: 3953,
+    size: [2, 2, 1],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:bedrock"},
+        {pos: [1, 0, 0], state: "minecraft:bedrock"},
+        {pos: [0, 1, 0], state: "enderitemod:enderite_respawn_anchor{charges:0}", nbt: {id: "enderitemod:enderite_respawn_anchor"}},
+        {pos: [1, 1, 0], state: "minecraft:dirt"}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:bedrock",
+        "minecraft:dirt",
+        "enderitemod:enderite_respawn_anchor{charges:0}"
+    ]
+}
