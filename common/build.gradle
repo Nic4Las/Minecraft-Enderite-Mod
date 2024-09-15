@@ -22,3 +22,13 @@ dependencies {
     }
     modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-common:${rootProject.shulker_box_tooltip_version}")
 }
+
+processResources {
+    copy {
+        // Copy enderite gametest structures from fabric location to neoforge location
+        from("src/main/resources/data/enderitemod/gametest/structure")
+        include("**/*.snbt")
+        rename("(enderitetests.)(.+)", '$2')
+        into("build/resources/main/data/enderitemod/structures")
+    }
+}
