@@ -30,9 +30,23 @@ side = "BOTH"
 [[dependencies.enderitemod]]
 modId = "architectury"
 type = "required"
-versionRange = "[14.0.0,)"
+versionRange = "[14.0.4,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.enderitemod]]
+modId = "cloth_config"
+type = "optional"
+versionRange = "[16.0.141,)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.enderitemod]]
+modId = "shulkerboxtooltip"
+type = "optional"
+versionRange = "[5.2.0,)"
+ordering = "AFTER"
+side = "CLIENT"
 
 [[mixins]]
 config = "enderitemod-common.mixins.json"

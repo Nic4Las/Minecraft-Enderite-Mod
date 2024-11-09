@@ -1,33 +1,28 @@
 package net.enderitemc.enderitemod.forge;
 
-import com.misterpemodder.shulkerboxtooltip.api.neoforge.ShulkerBoxTooltipPlugin;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorRenderer;
-import net.enderitemc.enderitemod.config.ClothConfig;
 import net.enderitemc.enderitemod.forge.init.AnimationFeatures;
 import net.enderitemc.enderitemod.forge.item.EnderiteShieldForge;
-import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
+import net.enderitemc.enderitemod.forge.modIntegrations.ClothConfigImplementation;
+import net.enderitemc.enderitemod.forge.modIntegrations.ShulkerBoxTooltipImplementation;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.dispenser.ShearsDispenserBehavior;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -75,19 +70,11 @@ public class EnderiteModForge {
                 EnderiteRespawnAnchorRenderer::new);
 
             if (ModList.get().isLoaded("cloth_config")) {
-                ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class,
-                    () -> new IConfigScreenFactory() {
-                        @Override
-                        public Screen createScreen(ModContainer modContainer, Screen screen) {
-                            return new ClothConfig(screen).getScreen();
-                        }
-                    });
+                ClothConfigImplementation.registerEntryPoint(event);
             }
 
             if (ModList.get().isLoaded("shulkerboxtooltip")) {
-                ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
-                    () -> new ShulkerBoxTooltipPlugin(
-                        ShulkerBoxTooltipApiImplementation::new));
+                ShulkerBoxTooltipImplementation.registerEntryPoint(event);
             }
         }
     }
