@@ -35,11 +35,18 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
-modId = "cloth-config"
-type = "required"
+modId = "cloth_config"
+type = "optional"
 versionRange = "[15.0.130,)"
 ordering = "AFTER"
-side = "BOTH"
+side = "CLIENT"
+
+[[dependencies.enderitemod]]
+modId = "shulkerboxtooltip"
+type = "optional"
+versionRange = "[5.0.4,)"
+ordering = "AFTER"
+side = "CLIENT"
 
 [[mixins]]
 config="enderitemod-common.mixins.json"

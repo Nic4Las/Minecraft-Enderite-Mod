@@ -1,8 +1,9 @@
 package net.enderitemc.enderitemod.forge;
 
-import com.misterpemodder.shulkerboxtooltip.api.neoforge.ShulkerBoxTooltipPlugin;
 import dev.architectury.platform.hooks.EventBusesHooks;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorRenderer;
+import net.enderitemc.enderitemod.forge.modIntegrations.ClothConfigImplementation;
+import net.enderitemc.enderitemod.forge.modIntegrations.ShulkerBoxTooltipImplementation;
 import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.client.gui.screen.Screen;
@@ -108,19 +109,11 @@ public class EnderiteModForge {
                     EnderiteRespawnAnchorRenderer::new);
 
             if (ModList.get().isLoaded("cloth_config")) {
-                ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class,
-                    () -> new IConfigScreenFactory() {
-                        @Override
-                        public Screen createScreen(ModContainer modContainer, Screen screen) {
-                            return new ClothConfig(screen).getScreen();
-                        }
-                    });
+                ClothConfigImplementation.registerEntryPoint(event);
             }
 
             if (ModList.get().isLoaded("shulkerboxtooltip")) {
-                ModLoadingContext.get().registerExtensionPoint(ShulkerBoxTooltipPlugin.class,
-                    () -> new ShulkerBoxTooltipPlugin(
-                        ShulkerBoxTooltipApiImplementation::new));
+                ShulkerBoxTooltipImplementation.registerEntryPoint(event);
             }
         }
 
