@@ -1,4 +1,6 @@
 {
   "replace": false,
-  "values": ["enderitemod:enderite_block"]
+  "values": [
+    "enderitemod:enderite_block"
+  ]
 }

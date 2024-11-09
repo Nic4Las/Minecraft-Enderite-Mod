@@ -29,6 +29,6 @@ processResources {
         from("src/main/resources/data/enderitemod/gametest/structure")
         include("**/*.snbt")
         rename("(enderitetests.)(.+)", '$2')
-        into("build/resources/main/data/enderitemod/structures")
+        into("build/resources/main/data/enderitemod/structure")
     }
 }

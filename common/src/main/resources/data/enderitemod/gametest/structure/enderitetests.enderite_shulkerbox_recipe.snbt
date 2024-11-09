@@ -8,7 +8,7 @@
         {pos: [1, 0, 1], state: "minecraft:bedrock"},
         {pos: [0, 1, 0], state: "minecraft:chest{facing:west,type:single,waterlogged:false}", nbt: {Items: [], id: "minecraft:chest"}},
         {pos: [0, 1, 1], state: "minecraft:air"},
-        {pos: [1, 1, 0], state: "minecraft:crafter{crafting:false,orientation:west_up,triggered:false}", nbt: {Items: [{Slot: 1b, count: 1, id: "enderitemod:enderite_ingot"}, {Slot: 3b, count: 1, id: "enderitemod:enderite_ingot"}, {Slot: 4b, components: {"minecraft:container": [{item: {count: 1, id: "minecraft:dirt"}, slot: 0}]}, count: 1, id: "minecraft:shulker_box"}, {Slot: 5b, count: 1, id: "enderitemod:enderite_ingot"}, {Slot: 7b, count: 1, id: "enderitemod:enderite_ingot"}], crafting_ticks_remaining: 0, disabled_slots: [I;], id: "minecraft:crafter", triggered: 0}},
+        {pos: [1, 1, 0], state: "minecraft:crafter{crafting:false,orientation:west_up,triggered:false}", nbt: {Items: [{Slot: 1b, count: 1, id: "enderitemod:enderite_ingot"}, {Slot: 4b, components: {"minecraft:container": [{item: {count: 1, id: "minecraft:dirt"}, slot: 0}]}, count: 1, id: "minecraft:shulker_box"}], crafting_ticks_remaining: 0, disabled_slots: [I;], id: "minecraft:crafter", triggered: 0}},
         {pos: [1, 1, 1], state: "minecraft:oak_button{face:wall,facing:south,powered:false}"}
     ],
     entities: [],

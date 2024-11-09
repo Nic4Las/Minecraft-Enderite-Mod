@@ -1,3 +1,7 @@
 {
-  "type": "enderitemod:crafting_special_enderiteshulkerbox"
+  "type": "minecraft:crafting_transmute",
+  "category": "misc",
+  "input": "#enderitemod:shulker_boxes",
+  "material": "enderitemod:enderite_ingot",
+  "result": "enderitemod:enderite_shulker_box"
 }

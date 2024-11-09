@@ -8,27 +8,24 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionTypes;
 
 public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEntityProvider {
 
 
-    public EnderiteRespawnAnchor() {
-        super(AbstractBlock.Settings.create().mapColor(MapColor.BLACK)
-                .instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(50.0f, 1200.0f)
-                .luminance(state -> RespawnAnchorBlock.getLightLevel(state, 15)));
+    public EnderiteRespawnAnchor(AbstractBlock.Settings settings) {
+        super(settings.mapColor(MapColor.BLACK)
+            .instrument(NoteBlockInstrument.BASEDRUM).requiresTool().strength(50.0f, 1200.0f)
+            .luminance(state -> RespawnAnchorBlock.getLightLevel(state, 15)));
     }
 
     private static boolean isChargeItem(ItemStack stack) {
@@ -36,19 +33,19 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (EnderiteRespawnAnchor.isChargeItem(stack) && EnderiteRespawnAnchor.canCharge(state)) {
             EnderiteRespawnAnchor.charge(player, world, pos, state);
             stack.decrementUnlessCreative(1, player);
-            if(world.isClient && world.getBlockEntity(pos) instanceof EnderiteRespawnAnchorBlockEntity eRA) {
+            if (world.isClient && world.getBlockEntity(pos) instanceof EnderiteRespawnAnchorBlockEntity eRA) {
                 eRA.charge = world.getBlockState(pos).get(CHARGES);
             }
-            return ItemActionResult.success(world.isClient);
+            return ActionResult.SUCCESS;
         }
         if (hand == Hand.MAIN_HAND && EnderiteRespawnAnchor.isChargeItem(player.getStackInHand(Hand.OFF_HAND)) && EnderiteRespawnAnchor.canCharge(state)) {
-            return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return ActionResult.PASS;
         }
-        return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return ActionResult.PASS_TO_DEFAULT_BLOCK_ACTION;
     }
 
     @Override
@@ -57,18 +54,19 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
             return ActionResult.PASS;
         }
         if (EnderiteRespawnAnchor.isNether(world)) {
-            ServerPlayerEntity serverPlayerEntity;
-            if (!(world.isClient || (serverPlayerEntity = (ServerPlayerEntity)player).getSpawnPointDimension() == world.getRegistryKey() && pos.equals(serverPlayerEntity.getSpawnPointPosition()))) {
-                serverPlayerEntity.setSpawnPoint(world.getRegistryKey(), pos, 0.0f, false, true);
-                world.playSound(null, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                return ActionResult.SUCCESS;
+            if(!world.isClient && player instanceof ServerPlayerEntity serverPlayerEntity) {
+                if (serverPlayerEntity.getSpawnPointDimension() != world.getRegistryKey() || !pos.equals(serverPlayerEntity.getSpawnPointPosition())) {
+                    serverPlayerEntity.setSpawnPoint(world.getRegistryKey(), pos, 0.0f, false, true);
+                    world.playSound(null, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    return ActionResult.SUCCESS_SERVER;
+                }
             }
             return ActionResult.CONSUME;
         }
         if (!world.isClient) {
             this.explode(state, world, pos);
         }
-        return ActionResult.success(world.isClient);
+        return ActionResult.SUCCESS;
     }
 
     public static boolean isNether(World world) {
@@ -82,7 +80,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
     private void explode(BlockState state, World world, final BlockPos explodedPos) {
         world.removeBlock(explodedPos, false);
         world.createExplosion(null, explodedPos.getX(), explodedPos.getY(), explodedPos.getZ(), 6.9F, true,
-                World.ExplosionSourceType.BLOCK);
+            World.ExplosionSourceType.BLOCK);
     }
 
     @Override
@@ -91,7 +89,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
     }
 
     @Override
-    protected boolean isTransparent(BlockState state, BlockView world, BlockPos pos) {
+    protected boolean isTransparent(BlockState state) {
         return false;
     }
 
@@ -100,13 +98,13 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
         if (state.get(CHARGES) == 0) {
             return;
         }
-        if(world.getBlockState(pos.up()).isSolid()) {
+        if (world.getBlockState(pos.up()).isSolid()) {
             // Remove particles if top block is solid
             return;
         }
-        double d = (double)pos.getX() + random.nextDouble();
-        double e = (double)pos.getY() + 0.8;
-        double f = (double)pos.getZ() + random.nextDouble();
+        double d = (double) pos.getX() + random.nextDouble();
+        double e = (double) pos.getY() + 0.8;
+        double f = (double) pos.getZ() + random.nextDouble();
         world.addParticle(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0);
     }
 }

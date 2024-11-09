@@ -1,7 +1,7 @@
 {
-    "replace": false,
-    "values": [
-      "enderitemod:enderite_chestplate",
-      "enderitemod:enderite_elytra"
-    ]
-  }
+  "replace": false,
+  "values": [
+    "enderitemod:enderite_chestplate",
+    "enderitemod:enderite_elytra"
+  ]
+}

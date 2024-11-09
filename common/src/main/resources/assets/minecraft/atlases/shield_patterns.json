@@ -1,12 +1,12 @@
 {
-    "sources": [
-        {
-            "type": "single",
-            "resource": "enderitemod:entity/enderite_shield_base"
-        },
-        {
-            "type": "single",
-            "resource": "enderitemod:entity/enderite_shield_base_nopattern"
-        }
-    ]
+  "sources": [
+    {
+      "type": "single",
+      "resource": "enderitemod:entity/enderite_shield_base"
+    },
+    {
+      "type": "single",
+      "resource": "enderitemod:entity/enderite_shield_base_nopattern"
+    }
+  ]
 }

@@ -7,7 +7,6 @@ import net.minecraft.block.BeehiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,12 +19,12 @@ import net.minecraft.loot.condition.MatchToolLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -57,7 +56,7 @@ public class EnderiteShears extends ShearsItem {
             if (playerEntity != null) {
                 itemStack.damage(1, playerEntity, LivingEntity.getSlotForHand(context.getHand()));
             }
-            return ActionResult.success(world.isClient);
+            return ActionResult.SUCCESS;
         }
         return super.useOnBlock(context);
     }
@@ -115,16 +114,18 @@ public class EnderiteShears extends ShearsItem {
 
             tryBuildLootTable(key, context, Blocks.MANGROVE_LEAVES);
             tryBuildLootTable(key, context, Blocks.HANGING_ROOTS);
+
+            tryBuildLootTable(key, context, Blocks.CHERRY_LEAVES);
         });
     }
 
     public static void tryBuildLootTable(RegistryKey<LootTable> key, LootTableModificationContext context, Block block) {
-        if (block.getLootTableKey().equals(key)) {
+        if (block.getLootTableKey().isPresent() && block.getLootTableKey().get().equals(key)) {
             LootPool.Builder pool = LootPool.builder()
-                    .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(MatchToolLootCondition
-                            .builder(ItemPredicate.Builder.create().items(EnderiteTools.ENDERITE_SHEAR.get())))
-                    .with(ItemEntry.builder(block.asItem()));
+                .rolls(ConstantLootNumberProvider.create(1))
+                .conditionally(MatchToolLootCondition
+                    .builder(ItemPredicate.Builder.create().items(Registries.ITEM, EnderiteTools.ENDERITE_SHEAR.get())))
+                .with(ItemEntry.builder(block.asItem()));
             context.addPool(pool);
         }
     }

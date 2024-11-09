@@ -1,38 +1,29 @@
 package net.enderitemc.enderitemod.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ArrowItem;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.Unit;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class EnderiteBow extends BowItem {
 
@@ -41,7 +32,7 @@ public class EnderiteBow extends BowItem {
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public boolean onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
 
             /* New Code */
@@ -49,67 +40,69 @@ public class EnderiteBow extends BowItem {
             /////////////
 
             ItemStack itemStack = playerEntity.getProjectileType(stack);
-            if(bl && itemStack.isEmpty()) {
+            if (bl && itemStack.isEmpty()) {
                 // Fake stack, if it can use Enderite Bow without arrow
                 itemStack = Items.ARROW.getDefaultStack().copyWithCount(64);
             }
             if (!itemStack.isEmpty()) {
                 int i = this.getMaxUseTime(stack, user) - remainingUseTicks;
                 float f = getPullProgress(i);
-                if (!((double)f < 0.1)) {
+                if (!((double) f < 0.1)) {
                     List<ItemStack> list = load(stack, itemStack, playerEntity);
                     int proj_count = playerEntity.getWorld() instanceof ServerWorld serverWorld ? EnchantmentHelper.getProjectileCount(serverWorld, stack, playerEntity, 1) : 1;
-                    if(bl) {
+                    if (bl) {
                         // If can use Enderite Bow without Arrow, then fill up projectiles list
-                        for(int proj_idx=0; proj_idx<proj_count-list.size(); proj_idx++) {
+                        for (int proj_idx = 0; proj_idx < proj_count - list.size(); proj_idx++) {
                             list.add(Items.ARROW.getDefaultStack());
                         }
                     }
                     if (world instanceof ServerWorld serverWorld && !list.isEmpty()) {
                         this.shootAll(serverWorld, playerEntity, playerEntity.getActiveHand(), stack, list,
-                                /* New Code */
-                                f * this.getSpeedMultiplier(),
-                                //////////////
-                                1.0F, f == 1.0F, null);
+                            /* New Code */
+                            f * this.getSpeedMultiplier(),
+                            //////////////
+                            1.0F, f == 1.0F, null);
                     }
 
                     world.playSound(
-                            null,
-                            playerEntity.getX(),
-                            playerEntity.getY(),
-                            playerEntity.getZ(),
-                            SoundEvents.ENTITY_ARROW_SHOOT,
-                            SoundCategory.PLAYERS,
-                            1.0F,
-                            1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F
+                        null,
+                        playerEntity.getX(),
+                        playerEntity.getY(),
+                        playerEntity.getZ(),
+                        SoundEvents.ENTITY_ARROW_SHOOT,
+                        SoundCategory.PLAYERS,
+                        1.0F,
+                        1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F
                     );
                     playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     @Override
     protected void shootAll(
-            ServerWorld world,
-            LivingEntity shooter,
-            Hand hand,
-            ItemStack stack,
-            List<ItemStack> projectiles,
-            float speed,
-            float divergence,
-            boolean critical,
-            @Nullable LivingEntity target
+        ServerWorld world,
+        LivingEntity shooter,
+        Hand hand,
+        ItemStack stack,
+        List<ItemStack> projectiles,
+        float speed,
+        float divergence,
+        boolean critical,
+        @Nullable LivingEntity target
     ) {
         float f = EnchantmentHelper.getProjectileSpread(world, stack, shooter, 0.0F);
-        float g = projectiles.size() == 1 ? 0.0F : 2.0F * f / (float)(projectiles.size() - 1);
-        float h = (float)((projectiles.size() - 1) % 2) * g / 2.0F;
+        float g = projectiles.size() == 1 ? 0.0F : 2.0F * f / (float) (projectiles.size() - 1);
+        float h = (float) ((projectiles.size() - 1) % 2) * g / 2.0F;
         float i = 1.0F;
 
         for (int j = 0; j < projectiles.size(); j++) {
-            ItemStack itemStack = (ItemStack)projectiles.get(j);
+            ItemStack itemStack = (ItemStack) projectiles.get(j);
             if (!itemStack.isEmpty()) {
-                float k = h + i * (float)((j + 1) / 2) * g;
+                float k = h + i * (float) ((j + 1) / 2) * g;
                 i = -i;
                 PersistentProjectileEntity projectileEntity = (PersistentProjectileEntity) this.createArrowEntity(world, shooter, stack, itemStack, critical);
 
@@ -118,7 +111,7 @@ public class EnderiteBow extends BowItem {
 
                 projectileEntity.setDamage(this.getBaseDamage());
 
-                if(shooter instanceof PlayerEntity && canUseWithoutArrow(stack, (PlayerEntity)shooter)) {
+                if (shooter instanceof PlayerEntity && canUseWithoutArrow(stack, (PlayerEntity) shooter)) {
                     projectileEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
                 }
                 /////////////
@@ -134,10 +127,10 @@ public class EnderiteBow extends BowItem {
     }
 
     protected static ItemStack getProjectile(ItemStack stack, ItemStack projectileStack, LivingEntity shooter, boolean multishot) {
-        boolean no_ammo_use = shooter instanceof PlayerEntity && canUseWithoutArrow(stack, (PlayerEntity)shooter);
+        boolean no_ammo_use = shooter instanceof PlayerEntity && canUseWithoutArrow(stack, (PlayerEntity) shooter);
         int i = !multishot && !shooter.isInCreativeMode() && shooter.getWorld() instanceof ServerWorld serverWorld && !no_ammo_use
-                ? EnchantmentHelper.getAmmoUse(serverWorld, stack, projectileStack, 1)
-                : 0;
+            ? EnchantmentHelper.getAmmoUse(serverWorld, stack, projectileStack, 1)
+            : 0;
         if (i > projectileStack.getCount()) {
             return ItemStack.EMPTY;
         } else if (i == 0) {
@@ -166,31 +159,21 @@ public class EnderiteBow extends BowItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         boolean bl = !user.getProjectileType(itemStack).isEmpty();
         if (!bl && !canUseWithoutArrow(itemStack, user)) {
-            return TypedActionResult.fail(itemStack);
+            return ActionResult.FAIL;
         } else {
             user.setCurrentHand(hand);
-            return TypedActionResult.consume(itemStack);
+            return ActionResult.CONSUME.withNewHandStack(itemStack);
         }
     }
 
     private static boolean canUseWithoutArrow(ItemStack bow, PlayerEntity user) {
-        var inf_enchant = user.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.INFINITY);
+        var inf_enchant = user.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.INFINITY.getValue());
         return user.getAbilities().creativeMode || !EnderiteMod.CONFIG.tools.enderiteBowNeedsArrow
             || (!EnderiteMod.CONFIG.tools.enderiteBowWithInfinityNeedsArrow && inf_enchant.isPresent() && EnchantmentHelper.getLevel(inf_enchant.get(), bow) > 0);
-    }
-
-    @Override
-    public int getEnchantability() {
-        return EnderiteMaterial.ENDERITE.getEnchantability();
-    }
-
-    @Override
-    public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-        return EnderiteMaterial.ENDERITE.getRepairIngredient().test(ingredient);
     }
 
     public float getBaseDamage() {

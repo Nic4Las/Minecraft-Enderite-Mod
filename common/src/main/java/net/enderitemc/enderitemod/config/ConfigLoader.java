@@ -2,14 +2,12 @@ package net.enderitemc.enderitemod.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import dev.architectury.platform.Platform;
+import net.enderitemc.enderitemod.EnderiteMod;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-
-import net.enderitemc.enderitemod.EnderiteMod;
 
 public class ConfigLoader {
 

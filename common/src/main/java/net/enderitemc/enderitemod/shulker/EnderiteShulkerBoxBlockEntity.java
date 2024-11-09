@@ -1,8 +1,5 @@
 package net.enderitemc.enderitemod.shulker;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,21 +15,18 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity implements SidedInventory {
     private static final int[] AVAILABLE_SLOTS = IntStream.range(0, 27).toArray();
@@ -55,7 +49,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     public void tick2() {
         this.updateAnimation();
         if (this.animationStage == EnderiteShulkerBoxBlockEntity.AnimationStage.OPENING
-                || this.animationStage == EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSING) {
+            || this.animationStage == EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSING) {
             this.pushEntities();
         }
     }
@@ -100,14 +94,14 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
     public Box getBoundingBox(Direction openDirection) {
         float f = this.getAnimationProgress(1.0F);
         return VoxelShapes.fullCube().getBoundingBox().stretch((double) (0.5F * f * (float) openDirection.getOffsetX()),
-                (double) (0.5F * f * (float) openDirection.getOffsetY()),
-                (double) (0.5F * f * (float) openDirection.getOffsetZ()));
+            (double) (0.5F * f * (float) openDirection.getOffsetY()),
+            (double) (0.5F * f * (float) openDirection.getOffsetZ()));
     }
 
     private Box getCollisionBox(Direction facing) {
         Direction direction = facing.getOpposite();
         return this.getBoundingBox(facing).shrink((double) direction.getOffsetX(), (double) direction.getOffsetY(),
-                (double) direction.getOffsetZ());
+            (double) direction.getOffsetZ());
     }
 
     private void pushEntities() {
@@ -154,7 +148,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
                         }
 
                         entity.move(MovementType.SHULKER_BOX, new Vec3d(d * (double) direction.getOffsetX(),
-                                e * (double) direction.getOffsetY(), f * (double) direction.getOffsetZ()));
+                            e * (double) direction.getOffsetY(), f * (double) direction.getOffsetZ()));
                     }
                 }
 
@@ -199,7 +193,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
             this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1, this.viewerCount);
             if (this.viewerCount == 1) {
                 this.world.playSound((PlayerEntity) null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_OPEN,
-                        SoundCategory.BLOCKS, 0.5F, this.world.random.nextFloat() * 0.1F + 0.9F);
+                    SoundCategory.BLOCKS, 0.5F, this.world.random.nextFloat() * 0.1F + 0.9F);
             }
         }
 
@@ -211,7 +205,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
             this.world.addSyncedBlockEvent(this.pos, this.getCachedState().getBlock(), 1, this.viewerCount);
             if (this.viewerCount <= 0) {
                 this.world.playSound((PlayerEntity) null, this.pos, SoundEvents.BLOCK_SHULKER_BOX_CLOSE,
-                        SoundCategory.BLOCKS, 0.5F, this.world.random.nextFloat() * 0.1F + 0.9F);
+                    SoundCategory.BLOCKS, 0.5F, this.world.random.nextFloat() * 0.1F + 0.9F);
             }
         }
 
@@ -257,7 +251,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
 
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
         return !(Block.getBlockFromItem(stack.getItem()) instanceof EnderiteShulkerBoxBlock
-                || Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock);
+            || Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock);
     }
 
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {

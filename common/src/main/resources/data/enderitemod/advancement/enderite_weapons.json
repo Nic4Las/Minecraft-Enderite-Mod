@@ -2,7 +2,7 @@
   "parent": "enderitemod:obtain_enderite_ingot",
   "display": {
     "icon": {
-    "id": "enderitemod:enderite_sword",
+      "id": "enderitemod:enderite_sword",
       "nbt": "{Damage:0}"
     },
     "title": {
@@ -25,20 +25,32 @@
       "conditions": {
         "items": [
           {
-            "items": ["enderitemod:enderite_sword"]
+            "items": [
+              "enderitemod:enderite_sword"
+            ]
           },
           {
-            "items": ["enderitemod:enderite_shield"]
+            "items": [
+              "enderitemod:enderite_shield"
+            ]
           },
           {
-            "items": ["enderitemod:enderite_bow"]
+            "items": [
+              "enderitemod:enderite_bow"
+            ]
           },
           {
-            "items": ["enderitemod:enderite_crossbow"]
+            "items": [
+              "enderitemod:enderite_crossbow"
+            ]
           }
         ]
       }
     }
   },
-  "requirements": [["enderite_weapons"]]
+  "requirements": [
+    [
+      "enderite_weapons"
+    ]
+  ]
 }

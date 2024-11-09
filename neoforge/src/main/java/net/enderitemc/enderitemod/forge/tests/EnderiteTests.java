@@ -44,4 +44,22 @@ public class EnderiteTests {
     public static void voidDeathWithEnderiteTest(TestContext ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.voidDeathWithEnderiteTest(ctx);
     }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(templateName = "enderite_armor_trims")
+    public static void eneriteArmorTrimsTest(TestContext ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteArmorTrimsTest(ctx);
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(templateName = "enderite_elytra_trim_recipe")
+    public static void enderiteElytraTrimRecipeTest(TestContext ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteElytraTrimRecipeTest(ctx);
+    }
+
+    @PrefixGameTestTemplate(false)
+    @GameTest(templateName = "enderman_enderite")
+    public static void endermanEnderiteTest(TestContext ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.endermanEnderiteTest(ctx);
+    }
 }

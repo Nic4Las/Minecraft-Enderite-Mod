@@ -4,28 +4,21 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "mixins": [
-    "ArmorTrimFixMixin",
     "EnderiteDropDamageMixin",
     "EnderiteDropMixin",
+    "EnderiteEndermanMixin",
     "EnderiteRespawnAnchorMixin",
     "EnderiteShearsSheepMixin",
     "EnderiteShieldPlayerEntityMixin",
-    "EndermanStopStaringMixin",
-    "ShulkerBoxColoringMixin",
-    "SmithingEnderiteSwordMixin",
-    "SmithingEnderiteSwordOutputMixin",
-    "SmithingEnderiteSwordTakeMixin"
+    "SmithingEnderiteSwordMixin"
   ],
   "client": [
-    "CapeFeatureRendererMixin",
     "EnderiteCrossbowPlayerRendererMixin",
     "EnderiteDropDamageMixin",
     "EnderiteDropMixin",
+    "EnderiteEndermanMixin",
     "EnderiteRespawnAnchorMixin",
-    "EndermanStopStaringMixin",
-    "SmithingEnderiteSwordMixin",
-    "SmithingEnderiteSwordOutputMixin",
-    "SmithingEnderiteSwordTakeMixin"
+    "SmithingEnderiteSwordMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,44 +1,42 @@
 package net.enderitemc.enderitemod.shulker;
 
-import java.util.List;
-
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.ShulkerBoxBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootWorldContext;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
 
-    public EnderiteShulkerBoxBlock() {
-        super((DyeColor) null, Settings.copy(Blocks.SHULKER_BOX).nonOpaque().strength(2.0f,17.0f));
+    public EnderiteShulkerBoxBlock(String id) {
+        super((DyeColor) null, Settings.copy(Blocks.SHULKER_BOX)
+            .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(EnderiteMod.MOD_ID, id)))
+            .nonOpaque().strength(2.0f, 17.0f));
     }
 
     @Override
@@ -48,31 +46,32 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
-            BlockEntityType<T> type) {
+                                                                  BlockEntityType<T> type) {
         return validateTicker(type, EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
-                (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1, be));
+            (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1, be));
     }
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.isClient) {
-            return ActionResult.SUCCESS;
-        } else if (player.isSpectator()) {
-            return ActionResult.CONSUME;
-        } else {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
-                if (canOpen(state, world, pos, shulkerBoxBlockEntity)) {
-                    player.openHandledScreen(shulkerBoxBlockEntity);
-                    player.incrementStat(Stats.OPEN_SHULKER_BOX);
-                    PiglinBrain.onGuardedBlockInteracted(player, true);
-                }
-
+        if (world instanceof ServerWorld serverWorld) {
+            if (player.isSpectator()) {
                 return ActionResult.CONSUME;
             } else {
-                return ActionResult.PASS;
+                BlockEntity blockEntity = world.getBlockEntity(pos);
+                if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
+                    if (canOpen(state, world, pos, shulkerBoxBlockEntity)) {
+                        player.openHandledScreen(shulkerBoxBlockEntity);
+                        player.incrementStat(Stats.OPEN_SHULKER_BOX);
+                        PiglinBrain.onGuardedBlockInteracted(serverWorld, player, true);
+                    }
+
+                    return ActionResult.CONSUME;
+                } else {
+                    return ActionResult.PASS;
+                }
             }
         }
+        return ActionResult.SUCCESS;
     }
 
     private static boolean canOpen(BlockState state, World world, BlockPos pos, EnderiteShulkerBoxBlockEntity entity) {
@@ -98,7 +97,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
                 }
 
                 ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
-                        (double) pos.getZ() + 0.5D, itemStack);
+                    (double) pos.getZ() + 0.5D, itemStack);
                 itemEntity.setToDefaultPickupDelay();
                 world.spawnEntity(itemEntity);
             } else {
@@ -110,10 +109,10 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     }
 
     @Override
-    public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+    public List<ItemStack> getDroppedStacks(BlockState state, LootWorldContext.Builder builder) {
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
         if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
-            EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity)blockEntity;
+            EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) blockEntity;
             builder = builder.addDynamicDrop(CONTENTS_DYNAMIC_DROP_ID, lootConsumer -> {
                 for (int i = 0; i < shulkerBoxBlockEntity.size(); ++i) {
                     lootConsumer.accept(shulkerBoxBlockEntity.getStack(i));
@@ -139,8 +138,8 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         return blockEntity instanceof EnderiteShulkerBoxBlockEntity
-                ? VoxelShapes.cuboid(((EnderiteShulkerBoxBlockEntity) blockEntity).getBoundingBox(state))
-                : VoxelShapes.fullCube();
+            ? VoxelShapes.cuboid(((EnderiteShulkerBoxBlockEntity) blockEntity).getBoundingBox(state))
+            : VoxelShapes.fullCube();
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {

@@ -49,3 +49,4 @@ replay_*.log
 *.jfr
 
 remappedSrc
+.architectury-transformer/

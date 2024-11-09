@@ -1,10 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["###", "###", "###"],
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
   "key": {
-    "#": {
-      "tag": "c:ingots/enderite"
-    }
+    "#": "#c:ingots/enderite"
   },
   "result": {
     "id": "enderitemod:enderite_block",

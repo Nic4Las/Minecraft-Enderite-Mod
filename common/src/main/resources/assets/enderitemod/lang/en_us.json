@@ -113,7 +113,7 @@
   "shulkerboxtooltip.colors.enderitemod.enderite_category": "Enderite Mod Colors",
   "shulkerboxtooltip.colors.enderitemod.enderite_category.enderite_color": "Enderite Color",
 
-  "item.enderitemod.enderite_upgrade_smithing_template": "Enderite Smithing Template",
+  "item.enderitemod.enderite_upgrade_smithing_template": "Enderite Upgrade",
 
   "option.enderitemod.restart.enderite_helmet.protection": "Enderite Helmet armor",
   "option.enderitemod.restart.enderite_helmet.protection.hover": "Base value: 4",
@@ -128,7 +128,7 @@
   "option.enderitemod.restart.armor.knockbackResistance": "Enderite Armor knockback resistance",
   "option.enderitemod.restart.armor.knockbackResistance.hover": "Base value is 0.1, Range: 0.0 - 1.0",
   "option.enderitemod.restart.armor.durabilityMultiplier": "Enderite Armor durability multiplier",
-  "option.enderitemod.restart.armor.durabilityMultiplier.hover": "Multiplies with base durability of each armor piece, Base value: 8",
+  "option.enderitemod.restart.armor.durabilityMultiplier.hover": "Multiplies with base durability of each armor piece, Base value: 72",
   "option.enderitemod.restart.armor.enchantability": "Enderite Tools/Armor enchantability",
   "option.enderitemod.restart.armor.enchantability.hover": "Enchantability for both tools and armor, Base value: 17",
 

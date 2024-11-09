@@ -3,7 +3,6 @@ package net.enderitemc.enderitemod.blocks.RespawnAnchorUtils;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.math.BlockPos;
 
 import static net.minecraft.block.RespawnAnchorBlock.CHARGES;

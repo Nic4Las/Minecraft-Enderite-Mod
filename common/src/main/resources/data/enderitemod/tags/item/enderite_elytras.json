@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": ["enderitemod:enderite_elytra", "enderitemod:enderite_elytra_seperated"]
+  "values": [
+    "enderitemod:enderite_elytra",
+    "enderitemod:enderite_elytra_seperated"
+  ]
 }

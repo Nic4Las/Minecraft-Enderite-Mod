@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "enderitemod:block/enderite_block" }
+    "": {
+      "model": "enderitemod:block/enderite_block"
+    }
   }
 }

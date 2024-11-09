@@ -112,7 +112,7 @@
   "shulkerboxtooltip.colors.enderitemod.enderite_category": "Enderite Mod Farben",
   "shulkerboxtooltip.colors.enderitemod.enderite_category.enderite_color": "Enderitfarbe",
 
-  "item.enderitemod.enderite_upgrade_smithing_template": "Enderitschmiedevorlage",
+  "item.enderitemod.enderite_upgrade_smithing_template": "Enderitaufwertung",
 
   "option.enderitemod.restart.enderite_helmet.protection": "Enderithelm-Rüstung",
   "option.enderitemod.restart.enderite_helmet.protection.hover": "Grundwert: 4",
@@ -127,7 +127,7 @@
   "option.enderitemod.restart.armor.knockbackResistance": "Standfestigkeit der Enderitrüstung",
   "option.enderitemod.restart.armor.knockbackResistance.hover": "Grundwert ist 0.1, Wertebereich: 0.0 - 1.0",
   "option.enderitemod.restart.armor.durabilityMultiplier": "Haltbarkeitsfaktor der Enderitrüstung",
-  "option.enderitemod.restart.armor.durabilityMultiplier.hover": "Wird mit der Grundhaltbarkeit jedes Rüstungsteils multipliziert, Grundwert: 8",
+  "option.enderitemod.restart.armor.durabilityMultiplier.hover": "Wird mit der Grundhaltbarkeit jedes Rüstungsteils multipliziert, Grundwert: 72",
   "option.enderitemod.restart.armor.enchantability": "Enderit-Verzauberbarkeit",
   "option.enderitemod.restart.armor.enchantability.hover": "Verzauberbarkeit von Werkzeugen und Rüstung, Grundwert: 17",
 

@@ -25,26 +25,26 @@ public abstract class ItemStackComponentizationFixMixin {
         return null;
     }
 
-    @Inject(at= @At("TAIL"), method="fixBlockEntityData(Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData;Lcom/mojang/serialization/Dynamic;Ljava/lang/String;)Lcom/mojang/serialization/Dynamic;", cancellable = true)
+    @Inject(at = @At("TAIL"), method = "fixBlockEntityData(Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData;Lcom/mojang/serialization/Dynamic;Ljava/lang/String;)Lcom/mojang/serialization/Dynamic;", cancellable = true)
     private static <T> void fixData(ItemStackComponentizationFix.StackData data, Dynamic<T> dynamic, String blockEntityId, CallbackInfoReturnable<Dynamic<T>> cir) {
-        if(blockEntityId.equals("minecraft:")
-                && data.itemEquals(EnderiteTools.ENDERITE_SHIELD.getIdAsString())) {
+        if (blockEntityId.equals("minecraft:")
+            && data.itemEquals(EnderiteTools.ENDERITE_SHIELD.getIdAsString())) {
             // Fix missing entity id for enderite shield
             cir.setReturnValue(fixBlockEntityData(data, dynamic, "minecraft:banner"));
         }
-        if((blockEntityId.equals("minecraft:") || blockEntityId.equals(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.getIdAsString()))
-                && data.itemEquals(EnderiteMod.ENDERITE_SHULKER_BOX_ITEM.getIdAsString())) {
+        if ((blockEntityId.equals("minecraft:") || blockEntityId.equals(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.getIdAsString()))
+            && data.itemEquals(EnderiteMod.ENDERITE_SHULKER_BOX_ITEM.getIdAsString())) {
             // Fix missing entity id for enderite shulker box and write
             cir.setReturnValue(fixBlockEntityData(data, dynamic, "minecraft:shulker_box"));
         }
     }
 
     @ModifyArg(method = "Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix;fixStack(Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData;Lcom/mojang/serialization/Dynamic;)V",
-            at = @At(value = "INVOKE",
+        at = @At(value = "INVOKE",
             target = "Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData;setComponent(Ljava/lang/String;Lcom/mojang/serialization/Dynamic;)V"))
     private static Dynamic<?> fixTrims(Dynamic<?> dynamic) {
         // Replace material: enderitemod:enderite_darker with material: enderitemod:enderite
-        if(dynamic.get("material").result().isPresent()) {
+        if (dynamic.get("material").result().isPresent()) {
             if (dynamic.get("material").result().get().equals(dynamic.createString("enderitemod:enderite_darker"))) {
                 dynamic = dynamic.set("material", dynamic.createString("enderitemod:enderite"));
             }
@@ -52,9 +52,9 @@ public abstract class ItemStackComponentizationFixMixin {
         return dynamic;
     }
 
-    @Inject(at= @At("HEAD"), method="Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix;fixStack(Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData;Lcom/mojang/serialization/Dynamic;)V")
+    @Inject(at = @At("HEAD"), method = "Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix;fixStack(Lnet/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData;Lcom/mojang/serialization/Dynamic;)V")
     private static <T> void fixData(ItemStackComponentizationFix.StackData data, Dynamic<T> dynamic, CallbackInfo info) {
-        if(data.itemMatches(chargable_items.get())) {
+        if (data.itemMatches(chargable_items.get())) {
             // Replace teleport_charge with Data Component enderitemod:teleport_charge
             data.moveToComponent("teleport_charge", "enderitemod:teleport_charge");
         }

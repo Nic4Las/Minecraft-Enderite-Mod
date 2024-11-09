@@ -7,7 +7,7 @@
       "translate": "advancements.enderitemod.explore_all_end_biomes.description"
     },
     "icon": {
-    "id": "enderitemod:enderite_boots",
+      "id": "enderitemod:enderite_boots",
       "nbt": "{Damage:0}"
     },
     "frame": "challenge",
@@ -97,7 +97,23 @@
       }
     }
   },
-  "requirements": [["endmidlands"], ["endhighlands"], ["endbarrens"], ["smallendislands"], ["theend"]],
+  "requirements": [
+    [
+      "endmidlands"
+    ],
+    [
+      "endhighlands"
+    ],
+    [
+      "endbarrens"
+    ],
+    [
+      "smallendislands"
+    ],
+    [
+      "theend"
+    ]
+  ],
   "rewards": {
     "experience": 500
   },

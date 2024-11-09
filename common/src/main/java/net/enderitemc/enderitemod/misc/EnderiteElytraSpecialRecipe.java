@@ -1,24 +1,17 @@
 package net.enderitemc.enderitemod.misc;
 
-import java.util.Map;
-
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.inventory.RecipeInputInventory;
-import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.trim.ArmorTrim;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.item.equipment.trim.ArmorTrim;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.World;
@@ -32,7 +25,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.getSize(); ++i) {
+        for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.isOf(EnderiteMod.ENDERITE_CHESTPLATE.get())) {
@@ -42,7 +35,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
 
                     itemStack2 = itemStack3;
                 } else {
-                    if (!(itemStack3.getItem() instanceof ElytraItem)) {
+                    if (!itemStack3.contains(DataComponentTypes.GLIDER)) {
                         return false;
                     }
 
@@ -67,12 +60,12 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         ItemStack chestplate_stack = ItemStack.EMPTY;
         ItemStack elytra_stack = ItemStack.EMPTY;
 
-        for (int i = 0; i < craftingInventory.getSize(); ++i) {
+        for (int i = 0; i < craftingInventory.size(); ++i) {
             ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.isOf(EnderiteMod.ENDERITE_CHESTPLATE.get())) {
                     chestplate_stack = itemStack3;
-                } else if (itemStack3.getItem() instanceof ElytraItem) {
+                } else if (itemStack3.contains(DataComponentTypes.GLIDER)) {
                     elytra_stack = itemStack3.copy();
                 }
             }
@@ -96,8 +89,8 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
             }
             EnchantmentHelper.set(result_stack, builder.build());
 
-            ArmorTrim trim = chestplate_stack.getOrDefault(DataComponentTypes.TRIM, null);
-            if(trim != null) {
+            ArmorTrim trim = chestplate_stack.getOrDefault(DataComponentTypes.TRIM, elytra_stack.getOrDefault(DataComponentTypes.TRIM, null));
+            if (trim != null) {
                 result_stack.set(DataComponentTypes.TRIM, trim);
             }
 
@@ -109,7 +102,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
         return width * height >= 2;
     }
 
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
         return EnderiteMod.ENDERITE_EYLTRA_SPECIAL_RECIPE.get();
     }
 

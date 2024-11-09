@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "C": {
-      "item": "minecraft:end_stone"
-    },
-    "S": {
-      "item": "enderitemod:enderite_upgrade_smithing_template"
-    }
+    "#": "minecraft:netherite_ingot",
+    "C": "minecraft:end_stone",
+    "S": "enderitemod:enderite_upgrade_smithing_template"
   },
   "pattern": [
     "#S#",

@@ -1,14 +1,8 @@
 {
   "type": "minecraft:smithing_transform",
-  "template": {
-    "item": "enderitemod:enderite_upgrade_smithing_template"
-  },
-  "base": {
-    "item": "minecraft:netherite_helmet"
-  },
-  "addition": {
-    "item": "enderitemod:enderite_ingot"
-  },
+  "template": "enderitemod:enderite_upgrade_smithing_template",
+  "base": "minecraft:netherite_helmet",
+  "addition": "enderitemod:enderite_ingot",
   "result": {
     "id": "enderitemod:enderite_helmet"
   }

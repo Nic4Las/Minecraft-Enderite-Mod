@@ -1,19 +1,19 @@
 {
-    "sources": [
-      {
-        "type": "paletted_permutations",
-        "textures": [
-          "trims/items/leggings_trim",
-          "trims/items/chestplate_trim",
-          "trims/items/helmet_trim",
-          "trims/items/boots_trim"
-        ],
-        "palette_key": "trims/color_palettes/trim_palette",
-        "permutations": {
-          "enderite": "enderitemod:trims/color_palettes/enderite",
-          "enderite_darker": "enderitemod:trims/color_palettes/enderite_darker",
-          "enderite_lighter": "enderitemod:trims/color_palettes/enderite_lighter"
-        }
+  "sources": [
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "trims/items/leggings_trim",
+        "trims/items/chestplate_trim",
+        "trims/items/helmet_trim",
+        "trims/items/boots_trim"
+      ],
+      "palette_key": "trims/color_palettes/trim_palette",
+      "permutations": {
+        "enderite": "enderitemod:trims/color_palettes/enderite",
+        "enderite_darker": "enderitemod:trims/color_palettes/enderite_darker",
+        "enderite_lighter": "enderitemod:trims/color_palettes/enderite_lighter"
       }
-    ]
-  }
+    }
+  ]
+}

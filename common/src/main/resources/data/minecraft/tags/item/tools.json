@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-	"enderitemod:enderite_sword",	     
-	"enderitemod:enderite_shovel",     
-	"enderitemod:enderite_pickaxe",
-	"enderitemod:enderite_axe",
-	"enderitemod:enderite_hoe"
+    "enderitemod:enderite_sword",
+    "enderitemod:enderite_shovel",
+    "enderitemod:enderite_pickaxe",
+    "enderitemod:enderite_axe",
+    "enderitemod:enderite_hoe"
   ]
 }

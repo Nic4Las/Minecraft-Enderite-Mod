@@ -7,7 +7,7 @@
       "translate": "advancements.enderitemod.obtain_enderite_ingot.description"
     },
     "icon": {
-    "id": "enderitemod:enderite_ingot"
+      "id": "enderitemod:enderite_ingot"
     },
     "frame": "task",
     "show_toast": true,
@@ -20,14 +20,18 @@
       "conditions": {
         "items": [
           {
-            "items": ["enderitemod:enderite_ingot"]
+            "items": [
+              "enderitemod:enderite_ingot"
+            ]
           }
         ]
       }
     }
   },
   "rewards": {
-    "recipes": ["enderite_block.json"]
+    "recipes": [
+      "enderite_block.json"
+    ]
   },
   "parent": "enderitemod:enderite_scrap"
 }

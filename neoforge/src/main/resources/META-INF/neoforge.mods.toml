@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
+loaderVersion = "[1,)"
 #issueTrackerURL = ""
 license = "All rights reserved"
 
@@ -16,23 +16,23 @@ logoFile = "icon.png"
 [[dependencies.enderitemod]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.0,)"
+versionRange = "[21.2,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[1.21.2,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "architectury"
 type = "required"
-versionRange = "[13.0.5,)"
+versionRange = "[14.0.0,)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[mixins]]
-config="enderitemod-common.mixins.json"
+config = "enderitemod-common.mixins.json"

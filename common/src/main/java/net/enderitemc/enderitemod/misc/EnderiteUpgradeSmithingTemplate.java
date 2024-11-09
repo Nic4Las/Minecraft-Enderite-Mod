@@ -22,9 +22,9 @@ public abstract class EnderiteUpgradeSmithingTemplate {
     public static void tryBuildLootTable(Identifier id, LootTableModificationContext table, Identifier name) {
         if (name.equals(id)) {
             LootPool.Builder pool = LootPool.builder()
-                    .rolls(ConstantLootNumberProvider.create(1))
-                    .conditionally(RandomChanceLootCondition.builder(EnderiteMod.CONFIG.general.enderiteUpgradeTemplateChance))
-                    .with(ItemEntry.builder(EnderiteMod.ENDERITE_UPGRADE_SMITHING_TEMPLATE.get().asItem()));
+                .rolls(ConstantLootNumberProvider.create(1))
+                .conditionally(RandomChanceLootCondition.builder(EnderiteMod.CONFIG.general.enderiteUpgradeTemplateChance))
+                .with(ItemEntry.builder(EnderiteMod.ENDERITE_UPGRADE_SMITHING_TEMPLATE.get().asItem()));
             table.addPool(pool);
         }
     }

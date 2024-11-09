@@ -1,5 +1,9 @@
 {
   "replace": false,
-  "values": ["#minecraft:enchantable/durability"],
-  "remove": ["#enderitemod:enderite_items"]
+  "values": [
+    "#minecraft:enchantable/durability"
+  ],
+  "remove": [
+    "#enderitemod:enderite_items"
+  ]
 }

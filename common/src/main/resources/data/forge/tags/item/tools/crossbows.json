@@ -1,4 +1,6 @@
 {
   "replace": false,
-  "values": ["enderitemod:enderite_crossbow"]
+  "values": [
+    "enderitemod:enderite_crossbow"
+  ]
 }

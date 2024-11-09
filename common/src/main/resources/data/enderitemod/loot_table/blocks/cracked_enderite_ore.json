@@ -2,7 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "name":"enderitemod:cracked_enderite_ore",
+      "name": "enderitemod:cracked_enderite_ore",
       "rolls": 1,
       "entries": [
         {

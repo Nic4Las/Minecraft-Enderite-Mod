@@ -7,6 +7,8 @@
   "ingredient": "enderitemod:enderite_ingot",
   "item_model_index": 0.71337,
   "override_armor_materials": {
-    "enderitemod:enderite": "enderite_darker"
+    "enderitemod:enderite": "enderite_lighter",
+    "enderitemod:enderite_elytra": "enderite_lighter",
+    "enderitemod:enderite_elytra_seperated": "enderite_lighter"
   }
 }

@@ -1,8 +1,6 @@
 {
   "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "enderitemod:cracked_enderite_ore"
-  },
+  "ingredient": "enderitemod:cracked_enderite_ore",
   "result": {
     "id": "enderitemod:enderite_scrap"
   },

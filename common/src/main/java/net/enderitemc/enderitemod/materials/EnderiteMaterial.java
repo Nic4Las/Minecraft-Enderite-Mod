@@ -1,65 +1,17 @@
 package net.enderitemc.enderitemod.materials;
 
-import java.util.function.Supplier;
-
-import net.enderitemc.enderitemod.*;
-
+import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.block.Block;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Lazy;
 
-public enum EnderiteMaterial implements ToolMaterial {
+public class EnderiteMaterial {
 
-    ENDERITE(4, EnderiteMod.CONFIG.tools.durability, 15.0F, 2.0F, EnderiteMod.CONFIG.armor.enchantability, () -> Ingredient.ofItems(EnderiteMod.ENDERITE_INGOT.get()));
-
-    private final int miningLevel;
-    private final int itemDurability;
-    private final float miningSpeed;
-    private final float attackDamage;
-    private final int enchantability;
-    private final Lazy<Ingredient> repairIngredient;
-
-    EnderiteMaterial(int miningLevel, int itemDurability, float miningSpeed, float attackDamage, int enchantability,
-            Supplier<Ingredient> repairIngredient) {
-        this.miningLevel = miningLevel;
-        this.itemDurability = itemDurability;
-        this.miningSpeed = miningSpeed;
-        this.attackDamage = attackDamage;
-        this.enchantability = enchantability;
-        this.repairIngredient = new Lazy<>(repairIngredient);
-    }
-
-    @Override
-    public int getDurability() {
-        return this.itemDurability;
-    }
-
-    @Override
-    public float getMiningSpeedMultiplier() {
-        return this.miningSpeed;
-    }
-
-    @Override
-    public float getAttackDamage() {
-        return this.attackDamage;
-    }
-
-    @Override
-    public TagKey<Block> getInverseTag() {
-        return EnderiteTag.INCORRECT_FOR_ENDERITE_TOOL;
-    }
-
-    @Override
-    public int getEnchantability() {
-        return this.enchantability;
-    }
-
-    @Override
-    public Ingredient getRepairIngredient() {
-        return this.repairIngredient.get();
-    }
+    public static final ToolMaterial ENDERITE = new ToolMaterial(
+        EnderiteTag.INCORRECT_FOR_ENDERITE_TOOL,
+        EnderiteMod.CONFIG.tools.durability,
+        15.0F,
+        2.0F,
+        EnderiteMod.CONFIG.armor.enchantability,
+        EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT
+    );
 }

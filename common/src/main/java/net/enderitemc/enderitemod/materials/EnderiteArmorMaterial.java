@@ -1,23 +1,14 @@
 package net.enderitemc.enderitemod.materials;
 
-import java.util.EnumMap;
-import java.util.List;
-import java.util.function.Supplier;
-
-import net.enderitemc.enderitemod.*;
-
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorItem.Type;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Lazy;
+import net.enderitemc.enderitemod.EnderiteMod;
+import net.enderitemc.enderitemod.misc.EnderiteTag;
+import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+
+import java.util.EnumMap;
 
 public class EnderiteArmorMaterial {
 
@@ -26,21 +17,29 @@ public class EnderiteArmorMaterial {
     public static final Identifier ENDERITE_ARMOR_TRIM_ID = ID;
     public static final Identifier DARKER_ENDERITE_ARMOR_TRIM_ID = Identifier.of(EnderiteMod.MOD_ID, "enderite_darker");
 
-    public static final ArmorMaterial ENDERITE = new ArmorMaterial(
-            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-                map.put(ArmorItem.Type.BOOTS,  EnderiteMod.CONFIG.armor.bootsProtection);
-                map.put(ArmorItem.Type.LEGGINGS, EnderiteMod.CONFIG.armor.leggingsProtection);
-                map.put(ArmorItem.Type.CHESTPLATE, EnderiteMod.CONFIG.armor.chestplateProtection);
-                map.put(ArmorItem.Type.HELMET, EnderiteMod.CONFIG.armor.helmetProtection);
-                map.put(ArmorItem.Type.BODY, EnderiteMod.CONFIG.armor.bodyProtection);
+    public static final Identifier ENDERITE_ELYTRA_ARMOR_MODEL_ID = Identifier.of(EnderiteMod.MOD_ID, "enderite_elytra");
+    public static final Identifier ENDERITE_ELYTRA_SEPERATED_ARMOR_MODEL_ID = Identifier.of(EnderiteMod.MOD_ID, "enderite_elytra_seperated");
+
+    public static final ArmorMaterial ENDERITE = genEnderiteArmorMaterial(ID);
+    public static final ArmorMaterial ENDERITE_ELYTRA = genEnderiteArmorMaterial(ENDERITE_ELYTRA_ARMOR_MODEL_ID);
+
+    public static ArmorMaterial genEnderiteArmorMaterial(Identifier id) {
+        return new ArmorMaterial(
+            EnderiteMod.CONFIG.armor.durabilityMultiplier,
+            Util.make(new EnumMap<>(EquipmentType.class), map -> {
+                map.put(EquipmentType.BOOTS, EnderiteMod.CONFIG.armor.bootsProtection);
+                map.put(EquipmentType.LEGGINGS, EnderiteMod.CONFIG.armor.leggingsProtection);
+                map.put(EquipmentType.CHESTPLATE, EnderiteMod.CONFIG.armor.chestplateProtection);
+                map.put(EquipmentType.HELMET, EnderiteMod.CONFIG.armor.helmetProtection);
+                map.put(EquipmentType.BODY, EnderiteMod.CONFIG.armor.bodyProtection);
             }),
             EnderiteMod.CONFIG.armor.enchantability,
             SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE,
-            () -> Ingredient.ofItems(EnderiteMod.ENDERITE_INGOT.get()),
-            List.of(new ArmorMaterial.Layer(ID)),
             EnderiteMod.CONFIG.armor.toughness,
-            EnderiteMod.CONFIG.armor.knockbackResistance);
-
+            EnderiteMod.CONFIG.armor.knockbackResistance,
+            EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT,
+            id);
+    }
 
 
     protected static int getDurability(int baseValue) {

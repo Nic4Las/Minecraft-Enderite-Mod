@@ -1,0 +1,10 @@
+{
+  "layers": {
+    "wings": [
+      {
+        "texture": "enderitemod:enderite_elytra",
+        "use_player_texture": true
+      }
+    ]
+  }
+}

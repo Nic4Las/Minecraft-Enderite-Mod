@@ -1,4 +1,9 @@
 {
   "replace": false,
-  "values": ["enderitemod:enderite_ore", "enderitemod:cracked_enderite_ore", "enderitemod:enderite_block", "enderitemod:enderite_respawn_anchor"]
+  "values": [
+    "enderitemod:enderite_ore",
+    "enderitemod:cracked_enderite_ore",
+    "enderitemod:enderite_block",
+    "enderitemod:enderite_respawn_anchor"
+  ]
 }

@@ -1,10 +1,6 @@
 package net.enderitemc.enderitemod.tools;
 
-import java.util.List;
-
 import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -16,22 +12,22 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class EnderiteSword extends SwordItem {
 
     public int superAufladung;
 
     public EnderiteSword(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
-        super(material,
-            settings.attributeModifiers(SwordItem.createAttributeModifiers(material, attackDamage, attackSpeed)));
+        super(material, attackDamage, attackSpeed, settings);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
+    public ActionResult use(World world, PlayerEntity playerEntity, Hand hand) {
 
         if (playerEntity.isSneaking()) {
             Double distance = 30.0d;
@@ -47,10 +43,10 @@ public class EnderiteSword extends SwordItem {
             double dZ = temp * Math.cos(Math.toRadians(yaw));
             Vec3d position = playerEntity.getPos().add(0, playerEntity.getEyeY() - playerEntity.getY(), 0);
             Vec3d endPosition = new Vec3d(position.x + dX * distance, position.y + dY * distance,
-                    position.z + dZ * distance);
+                position.z + dZ * distance);
             BlockPos blockPos = BlockPos.ofFloored(endPosition.x, endPosition.y, endPosition.z);
 
-            BlockPos[] blockPoses = { blockPos, blockPos.up(), blockPos };
+            BlockPos[] blockPoses = {blockPos, blockPos.up(), blockPos};
 
             double down = endPosition.y;
             double maxDown = down - distance - 1 > world.getBottomY() ? down - distance - 1 : world.getBottomY();
@@ -59,7 +55,7 @@ public class EnderiteSword extends SwordItem {
             if (playerEntity.getEntityWorld().getDimension().respawnAnchorWorks()) {
                 maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
             } else {
-                maxUp = up + distance - 1 < world.getTopY() ? up + distance - 1 : world.getTopY();
+                maxUp = up + distance - 1 < world.getTopYInclusive() ? up + distance - 1 : world.getTopYInclusive();
             }
             double near = distance;
 
@@ -95,13 +91,13 @@ public class EnderiteSword extends SwordItem {
                         } else {
                             --near;
                             blockPoses[2] = blockPoses[2].add((int) Math.floor(-dX),
-                                    (int) Math.floor(-dY),
-                                    (int) Math.floor(-dZ));
+                                (int) Math.floor(-dY),
+                                (int) Math.floor(-dZ));
                         }
                     }
                 }
                 if (foundSpace == 0 && !world.getBlockState(blockPos).blocksMovement()
-                        && !world.getBlockState(blockPos.up()).blocksMovement()) {
+                    && !world.getBlockState(blockPos.up()).blocksMovement()) {
                     foundSpace = 4;
                 }
                 // world.rayTraceBlock(position, endPosition, blockPos, playerEntity.shape,
@@ -124,10 +120,10 @@ public class EnderiteSword extends SwordItem {
                             down = position.y + dY * near;
                             down = down > world.getBottomY() ? down : world.getBottomY() + 1;
                             playerEntity.teleport(position.x + dX * near, down,
-                                    position.z + dZ * near, true);
+                                position.z + dZ * near, true);
                             break;
                     }
-                    playerEntity.getItemCooldownManager().set(this, 30);
+                    playerEntity.getItemCooldownManager().set(this.arch$registryName(), 30);
                     // if (!playerEntity.getAbilities().creativeMode) {
                     // playerEntity.inventory.getStack(slot).decrement(1);
                     // }
@@ -139,20 +135,20 @@ public class EnderiteSword extends SwordItem {
                     playerEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
                 }
             } else {
-                return new TypedActionResult<>(ActionResult.FAIL, playerEntity.getStackInHand(hand));
+                return ActionResult.FAIL;
             }
 
         } else {
-            return new TypedActionResult<>(ActionResult.FAIL, playerEntity.getStackInHand(hand));
+            return ActionResult.FAIL;
         }
 
-        return new TypedActionResult<>(ActionResult.SUCCESS, playerEntity.getStackInHand(hand));
+        return ActionResult.SUCCESS.withNewHandStack(playerEntity.getStackInHand(hand));
     }
 
     protected boolean checkBlocks(World world, BlockPos pos) {
         if (world.getBlockState(pos.down()).blocksMovement()
-                && !world.getBlockState(pos).blocksMovement()
-                && !world.getBlockState(pos.up()).blocksMovement()) {
+            && !world.getBlockState(pos).blocksMovement()
+            && !world.getBlockState(pos.up()).blocksMovement()) {
             return true;
         }
         return false;
@@ -162,13 +158,13 @@ public class EnderiteSword extends SwordItem {
     public void appendTooltip(ItemStack itemStack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         String charge = itemStack.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).toString();
         tooltip.add(Text.translatable("item.enderitemod.enderite_sword.charge")
-                .formatted(new Formatting[] { Formatting.DARK_AQUA }).append(Text.literal(": " + charge)));
+            .formatted(new Formatting[]{Formatting.DARK_AQUA}).append(Text.literal(": " + charge)));
         tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip1")
-                .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
+            .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
         tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip2")
-                .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
+            .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
         tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip3")
-                .formatted(new Formatting[] { Formatting.GRAY, Formatting.ITALIC }));
+            .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
 
     }
 
