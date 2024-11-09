@@ -57,7 +57,8 @@ Thanks to:
 - ES: CamoloQlo
 - ZH_CN: Samekichi, WuzgXY
 - RU: temac000, mpustovoi
-- PL: zealoussentinel512 
+- PL: zealoussentinel512
+- FR: JustArthur
 
 ## License
 
