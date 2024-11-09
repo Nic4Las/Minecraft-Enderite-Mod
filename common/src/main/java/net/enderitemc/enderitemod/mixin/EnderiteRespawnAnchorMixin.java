@@ -29,7 +29,7 @@ public class EnderiteRespawnAnchorMixin {
         if (block instanceof EnderiteRespawnAnchor && (Integer) blockState.get(EnderiteRespawnAnchor.CHARGES) > 0
                 && EnderiteRespawnAnchor.isNether(world)) {
             Optional<Vec3d> optional = EnderiteRespawnAnchor.findRespawnPosition(EntityType.PLAYER, world, pos);
-            if (!bl2 && optional.isPresent()) {
+            if (!bl && !bl2 && optional.isPresent()) {
                 world.setBlockState(pos, (BlockState) blockState.with(EnderiteRespawnAnchor.CHARGES,
                         (Integer) blockState.get(EnderiteRespawnAnchor.CHARGES) - 1), 3);
             }

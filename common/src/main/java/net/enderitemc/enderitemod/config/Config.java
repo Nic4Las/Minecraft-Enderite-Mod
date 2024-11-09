@@ -49,7 +49,7 @@ public class Config {
         public int helmetProtection = 4;
         public int bodyProtection = 12;
 
-        public int durabilityMultiplier = 8;
+        public int durabilityMultiplier = 72;
         public int enchantability = 17;
         public float toughness = 4.0f;
         public float knockbackResistance = 0.1f;

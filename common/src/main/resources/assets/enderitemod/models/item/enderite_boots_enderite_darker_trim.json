@@ -2,6 +2,6 @@
                 "parent": "minecraft:item/generated",
                 "textures": {
                    "layer0": "enderitemod:item/enderite_boots",
-                   "layer1": "minecraft:trims/items/boots_trim_enderite_darker"
+                   "layer1": "minecraft:trims/items/boots_trim_enderite_lighter"
                 }
             }

@@ -30,7 +30,14 @@ side = "BOTH"
 [[dependencies.enderitemod]]
 modId = "architectury"
 type = "required"
-versionRange = "[13.0.5,)"
+versionRange = "[13.0.8,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.enderitemod]]
+modId = "cloth-config"
+type = "required"
+versionRange = "[15.0.130,)"
 ordering = "AFTER"
 side = "BOTH"
 
