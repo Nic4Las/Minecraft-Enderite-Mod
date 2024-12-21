@@ -1,4 +1,4 @@
-package net.enderitemc.enderitemod.forge.tools.neoforge;
+package net.enderitemc.enderitemod.tools.forge;
 
 
 import net.minecraft.block.Block;

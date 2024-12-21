@@ -1,0 +1,22 @@
+{
+    DataVersion: 4082,
+    size: [2, 2, 2],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:bedrock"},
+        {pos: [0, 0, 1], state: "minecraft:bedrock"},
+        {pos: [1, 0, 0], state: "minecraft:bedrock"},
+        {pos: [1, 0, 1], state: "minecraft:bedrock"},
+        {pos: [0, 1, 0], state: "minecraft:air"},
+        {pos: [0, 1, 1], state: "minecraft:dispenser{facing:north,triggered:false}", nbt: {Items: [{Slot: 0b, count: 1, id: "minecraft:sheep_spawn_egg"}], id: "minecraft:dispenser"}},
+        {pos: [1, 1, 0], state: "minecraft:dispenser{facing:west,triggered:false}", nbt: {Items: [{Slot: 0b, count: 1, id: "enderitemod:enderite_shears"}], id: "minecraft:dispenser"}},
+        {pos: [1, 1, 1], state: "minecraft:oak_button{face:floor,facing:east,powered:false}"}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:bedrock",
+        "minecraft:air",
+        "minecraft:oak_button{face:floor,facing:east,powered:false}",
+        "minecraft:dispenser{facing:north,triggered:false}",
+        "minecraft:dispenser{facing:west,triggered:false}"
+    ]
+}

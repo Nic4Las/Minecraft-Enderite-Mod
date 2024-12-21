@@ -135,15 +135,15 @@ public class EnderiteMod {
     public static final RegistrySupplier<Item> ENDERITE_ELYTRA = EnderiteMod.ITEMS.register("enderite_elytra",
         () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE_ELYTRA,
             EquipmentType.CHESTPLATE,
-            getItemSettings("enderite_elytra", EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS)
+            getItemSettings("enderite_elytra", EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS.get())
         ));
     public static final RegistrySupplier<Item> ENDERITE_ELYTRA_SEPERATED = EnderiteMod.ITEMS.register(
         "enderite_elytra_seperated",
         () -> new Item(
-            getItemSettings("enderite_elytra_seperated", EnderiteMod.ENDERITE_ELYTRA_SEPERATED_ITEM_SETTINGS)
+            getItemSettings("enderite_elytra_seperated", EnderiteMod.ENDERITE_ELYTRA_SEPERATED_ITEM_SETTINGS.get())
         ));
 
-    public static final Settings ENDERITE_ELYTRA_SEPERATED_ITEM_SETTINGS = new Item.Settings()
+    public static final Supplier<Settings> ENDERITE_ELYTRA_SEPERATED_ITEM_SETTINGS = () -> new Item.Settings()
         .arch$tab(ENDERITE_TAB)
         .fireproof()
         .maxCount(1)
@@ -155,7 +155,7 @@ public class EnderiteMod {
             EquippableComponent.builder(EquipmentSlot.CHEST).equipSound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA).model(EnderiteArmorMaterial.ENDERITE_ELYTRA_SEPERATED_ARMOR_MODEL_ID).damageOnHurt(false).build()
         )
         .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT);
-    public static final Settings ENDERITE_ELYTRA_ITEM_SETTINGS = new Item.Settings()
+    public static final Supplier<Settings> ENDERITE_ELYTRA_ITEM_SETTINGS = () -> new Item.Settings()
         .arch$tab(ENDERITE_TAB)
         .fireproof()
         .maxCount(1)

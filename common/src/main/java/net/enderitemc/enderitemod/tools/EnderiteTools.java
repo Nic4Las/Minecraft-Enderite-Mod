@@ -84,7 +84,7 @@ public class EnderiteTools {
                 .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT)));
 
     // Shield
-    public static final Item.Settings ENDERITE_SHIELD_ITEM_SETTINGS = BASE_ENDERITE_ITEM_SETTINGS.get()
+    public static final Supplier<Item.Settings> ENDERITE_SHIELD_ITEM_SETTINGS = () -> BASE_ENDERITE_ITEM_SETTINGS.get()
         .maxCount(1)
         .maxDamage(768)
         .enchantable(EnderiteMaterial.ENDERITE.enchantmentValue())

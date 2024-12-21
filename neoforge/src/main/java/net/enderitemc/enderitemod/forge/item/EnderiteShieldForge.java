@@ -16,16 +16,13 @@ public class EnderiteShieldForge extends EnderiteShield {
         super(builder);
     }
 
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions() {
+    public static Supplier<IClientItemExtensions> RENDERER = () -> new IClientItemExtensions() {
 
-            final Supplier<BuiltinModelItemRenderer> renderer = Suppliers.memoize(() -> EnderiteShieldRenderer.INSTANCE);
+        final Supplier<BuiltinModelItemRenderer> renderer = Suppliers.memoize(() -> EnderiteShieldRenderer.INSTANCE);
 
-            @Override
-            public @NotNull BuiltinModelItemRenderer getCustomRenderer() {
-                return renderer.get();
-            }
-        });
-    }
-
+        @Override
+        public @NotNull BuiltinModelItemRenderer getCustomRenderer() {
+            return renderer.get();
+        }
+    };
 }

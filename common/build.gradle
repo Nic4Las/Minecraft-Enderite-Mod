@@ -23,12 +23,25 @@ dependencies {
     modCompileOnly modRuntimeOnly("com.misterpemodder:shulkerboxtooltip-common:${rootProject.shulker_box_tooltip_version}")
 }
 
+apply plugin: 'java'
+import java.lang.reflect.Method
+
 processResources {
-    copy {
-        // Copy enderite gametest structures from fabric location to neoforge location
-        from("src/main/resources/data/enderitemod/gametest/structure")
-        include("**/*.snbt")
-        rename("(enderitetests.)(.+)", '$2')
-        into("build/resources/main/data/enderitemod/structure")
+    // Convert Fabric GameTest .snbt to .nbt files for NeoForge
+    String inDirectory = project.projectDir.toString() + "/src/main/resources/data/enderitemod/gametest/structure"
+    String outDirectory = project.projectDir.toString() + "/build/resources/main/data/enderitemod/structure"
+    doLast {
+        // Find snbt converter
+        File[] files = sourceSets.main.runtimeClasspath.files
+        URL[] urls = files.collect {e -> e.toURI().toURL()} as URL[]
+        def classloader = new URLClassLoader(urls)
+        Class myClass = classloader.findClass("net.enderitemc.enderitemod.tests.ConvertNbt")
+        def myInstance = myClass.newInstance()
+        Method method = myClass.getMethod("convertSnbt2Nbt", List<String>, String)
+
+        // Execute snbt to nbt converter
+        List<String> filess = List.of(new File(inDirectory).absolutePath)
+        String out_file1 = new File(outDirectory).absolutePath
+        method.invoke(myInstance, filess, out_file1)
     }
 }

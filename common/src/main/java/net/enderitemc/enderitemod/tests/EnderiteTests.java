@@ -6,6 +6,7 @@ import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAncho
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.component.DataComponentTypes;
@@ -17,6 +18,7 @@ import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.EndermanEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -273,8 +275,55 @@ public class EnderiteTests {
         ctx.complete();
     }
 
-    //public dispenserBehaviourTest, ore smelting recipe
+    @GameTest(templateName = TMPL_PRE + "enderite_smelting")
+    public static void enderiteSmeltingTest(TestContext ctx) {
+        BlockPos pos = new BlockPos(0, 1, 0);
 
+        ctx.waitAndRun(15, () -> {
+            BlockEntity be = ctx.getBlockEntity(pos);
+            if (be instanceof BlastFurnaceBlockEntity bfbe) {
+                ItemStack stack = bfbe.getStack(2);
+                ctx.assertTrue(stack.isOf(EnderiteMod.ENDERITE_SCRAP.get()), "No scrap produced");
+            } else {
+                ctx.assertTrue(false, "No Chest Block Entity found");
+            }
+            ctx.complete();
+        });
+    }
+
+    @GameTest(templateName = TMPL_PRE + "enderite_dispenser_shears")
+    public static void enderiteDispenserShearsTest(TestContext ctx) {
+        ServerWorld world = ctx.getWorld();
+        BlockPos pos = ctx.getAbsolutePos(new BlockPos(0, 1, 0));
+        BlockPos button_pos = new BlockPos(1, 1, 1);
+
+        ctx.pushButton(button_pos);
+        ctx.waitAndRun(3, () -> {
+            ctx.setBlockState(button_pos, Blocks.OAK_BUTTON);
+            ctx.pushButton(button_pos);
+        });
+        ctx.waitAndRun(5, () -> {
+            LivingEntity entity = world.getClosestEntity(SheepEntity.class, TargetPredicate.DEFAULT, null, pos.getX(), pos.getY(), pos.getZ(), Box.enclosing(pos, pos));
+            if(entity instanceof SheepEntity sheep) {
+                ctx.assertTrue(sheep.isSheared(), "Sheep is not sheared!");
+            } else {
+                ctx.assertTrue(false, "No sheep spawned!");
+            }
+            ctx.complete();
+        });
+    }
+
+    @GameTest(templateName = TMPL_PRE + "enderite_dispenser_shulkerbox")
+    public static void enderiteDispenserShulkerboxTest(TestContext ctx) {
+        BlockPos pos = new BlockPos(0, 1, 0);
+        BlockPos button_pos = new BlockPos(1, 1, 1);
+
+        ctx.pushButton(button_pos);
+        ctx.waitAndRun(15, () -> {
+            ctx.expectBlock(EnderiteMod.ENDERITE_SHULKER_BOX.get(), pos);
+            ctx.complete();
+        });
+    }
 
     // HELPER
     public static void crafterRecipeTest(TestContext ctx, Consumer<ItemStack> stackVerifier) {

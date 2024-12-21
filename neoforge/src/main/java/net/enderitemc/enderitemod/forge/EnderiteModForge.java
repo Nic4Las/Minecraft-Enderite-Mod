@@ -23,6 +23,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +35,7 @@ public class EnderiteModForge {
     public static final RegistrySupplier<Item> ENDERITE_SHIELD_FORGE = EnderiteMod.ITEMS
         .register("enderite_shield",
             () -> new EnderiteShieldForge(
-                EnderiteMod.getItemSettings("enderite_shield", EnderiteTools.ENDERITE_SHIELD_ITEM_SETTINGS)));
+                EnderiteMod.getItemSettings("enderite_shield", EnderiteTools.ENDERITE_SHIELD_ITEM_SETTINGS.get())));
 
     public EnderiteModForge(IEventBus modBus) {
         // Submit our event bus to let architectury register our content on the right
@@ -76,6 +77,16 @@ public class EnderiteModForge {
             if (ModList.get().isLoaded("shulkerboxtooltip")) {
                 ShulkerBoxTooltipImplementation.registerEntryPoint(event);
             }
+        }
+
+        @SubscribeEvent
+        public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+            event.registerItem(
+                // The only instance of our IClientItemExtensions, and as such, the only instance of our BEWLR.
+                EnderiteShieldForge.RENDERER.get(),
+                // A vararg list of items that use this BEWLR.
+                EnderiteTools.ENDERITE_SHIELD.get()
+            );
         }
     }
 }

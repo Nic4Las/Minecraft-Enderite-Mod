@@ -1,0 +1,16 @@
+{
+    DataVersion: 4082,
+    size: [2, 2, 1],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:bedrock"},
+        {pos: [1, 0, 0], state: "minecraft:bedrock"},
+        {pos: [0, 1, 0], state: "minecraft:blast_furnace{facing:north,lit:true}", nbt: {BurnTime: 448, CookTime: 398, CookTimeTotal: 400, Items: [{Slot: 0b, count: 1, id: "enderitemod:cracked_enderite_ore"}], RecipesUsed: {}, id: "minecraft:blast_furnace"}},
+        {pos: [1, 1, 0], state: "minecraft:air"}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:bedrock",
+        "minecraft:air",
+        "minecraft:blast_furnace{facing:north,lit:true}"
+    ]
+}

@@ -16,7 +16,7 @@ public class EnderiteModFabricLike {
 
     public static final RegistrySupplier<Item> ENDERITE_SHIELD = EnderiteMod.ITEMS.register("enderite_shield",
         () -> new EnderiteShield(
-            EnderiteMod.getItemSettings("enderite_shield", ENDERITE_SHIELD_ITEM_SETTINGS)));
+            EnderiteMod.getItemSettings("enderite_shield", ENDERITE_SHIELD_ITEM_SETTINGS.get())));
 
     public static void init() {
         EnderiteTools.ENDERITE_SHIELD = ENDERITE_SHIELD;

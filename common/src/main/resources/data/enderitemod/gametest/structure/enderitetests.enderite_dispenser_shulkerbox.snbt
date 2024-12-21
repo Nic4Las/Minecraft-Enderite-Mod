@@ -1,0 +1,22 @@
+{
+    DataVersion: 4082,
+    size: [2, 2, 2],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:bedrock"},
+        {pos: [0, 0, 1], state: "minecraft:bedrock"},
+        {pos: [1, 0, 0], state: "minecraft:bedrock"},
+        {pos: [1, 0, 1], state: "minecraft:bedrock"},
+        {pos: [0, 1, 0], state: "minecraft:air"},
+        {pos: [0, 1, 1], state: "minecraft:barrier{waterlogged:false}"},
+        {pos: [1, 1, 0], state: "minecraft:dispenser{facing:west,triggered:false}", nbt: {Items: [{Slot: 0b, count: 1, id: "enderitemod:enderite_shulker_box"}], id: "minecraft:dispenser"}},
+        {pos: [1, 1, 1], state: "minecraft:oak_button{face:floor,facing:east,powered:false}"}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:bedrock",
+        "minecraft:barrier{waterlogged:false}",
+        "minecraft:air",
+        "minecraft:oak_button{face:floor,facing:east,powered:false}",
+        "minecraft:dispenser{facing:west,triggered:false}"
+    ]
+}
