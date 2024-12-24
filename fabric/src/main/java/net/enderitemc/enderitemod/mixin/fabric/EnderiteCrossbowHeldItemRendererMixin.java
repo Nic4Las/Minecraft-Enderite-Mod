@@ -20,6 +20,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -116,7 +117,7 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
 
     @Inject(
         at = @At("HEAD"),
-        method = "Lnet/minecraft/client/render/item/HeldItemRenderer;isChargedCrossbow(Lnet/minecraft/item/ItemStack;)Z",
+        method = "isChargedCrossbow(Lnet/minecraft/item/ItemStack;)Z",
         cancellable = true)
     private static void chargedEnderiteCrossbow(ItemStack stack, CallbackInfoReturnable<Boolean> info) {
         if (stack.isOf(EnderiteTools.ENDERITE_CROSSBOW.get()) && EnderiteCrossbow.isCharged(stack)) {
@@ -149,9 +150,36 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
         method = "renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
     private int changeBowTime(ItemStack instance, LivingEntity user, Operation<Integer> original) {
         if (instance.isOf(EnderiteTools.ENDERITE_BOW.get())) {
-            return (int) (20 / EnderiteMod.CONFIG.tools.enderiteCrossBowChargeTime * original.call(instance, user));
+            int maxTime = original.call(instance, user);
+            int useTime = (maxTime - user.getItemUseTimeLeft());
+            int dx = (int) (EnderiteMod.CONFIG.tools.enderiteBowChargeTime - 20);
+            if (dx <= 0) {
+                // Faster than vanilla bow, fast pulling
+                int dt = (int) (dx / EnderiteMod.CONFIG.tools.enderiteBowChargeTime * useTime);
+                dt = Math.max(dt, dx);
+                return maxTime - dt;
+            } else {
+                // Slower than vanilla bow, cyclic pulling
+                int p = 14;
+                int thr = 13;
+                if (useTime < thr) {
+                    return maxTime;
+                } else if (useTime < EnderiteMod.CONFIG.tools.enderiteBowChargeTime) {
+                    int dt = -triangleWave(useTime - thr, p);
+                    return maxTime - dt;
+                } else {
+                    return maxTime - triangleWave((int) (EnderiteMod.CONFIG.tools.enderiteBowChargeTime - thr), p);
+                }
+            }
         } else {
             return original.call(instance, user);
         }
+    }
+
+    @Unique
+    private static int triangleWave(int x, float p) {
+        float h_p = p / 2;
+        if (x % p <= h_p) return (int) (Math.floor((-x + 3 * p / 4) / p) * p);
+        return (int) ((-x % p) - x + p);
     }
 }

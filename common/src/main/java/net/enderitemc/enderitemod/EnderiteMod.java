@@ -17,9 +17,6 @@ import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
 import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.enderitemc.enderitemod.misc.EnderiteUpgradeSmithingTemplate;
-import net.enderitemc.enderitemod.renderer.EnderiteChargeProperty;
-import net.enderitemc.enderitemod.renderer.EnderitePlayerSneaksProperty;
-import net.enderitemc.enderitemod.renderer.EnderiteShieldRenderer;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
@@ -29,9 +26,6 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.render.item.model.special.SpecialModelTypes;
-import net.minecraft.client.render.item.property.bool.BooleanProperties;
-import net.minecraft.client.render.item.property.numeric.NumericProperties;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
@@ -198,6 +192,9 @@ public class EnderiteMod {
             getItemSettings("enderite_upgrade_smithing_template").rarity(Rarity.UNCOMMON)));
 
     public static void init() {
+        // Init static enderite tools
+        EnderiteTools.init();
+
         BLOCKS.register();
         ITEMS.register();
         RECIPES.register();
@@ -220,10 +217,6 @@ public class EnderiteMod {
         });
 
         EnderiteUpgradeSmithingTemplate.registerLoottables();
-
-        SpecialModelTypes.ID_MAPPER.put(EnderiteTools.ENDERITE_SHIELD.getId(), EnderiteShieldRenderer.Unbaked.CODEC);
-        NumericProperties.ID_MAPPER.put(Identifier.of(MOD_ID, "charge"), EnderiteChargeProperty.CODEC);
-        BooleanProperties.ID_MAPPER.put(Identifier.of(MOD_ID, "is_sneaking"), EnderitePlayerSneaksProperty.CODEC);
     }
 
     public static AbstractBlock.Settings getBlockSettings(String id) {

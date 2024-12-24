@@ -27,8 +27,7 @@
         "type": "minecraft:model",
         "model": "enderitemod:item/enderite_bow_pulling_0"
       },
-      "property": "minecraft:use_duration",
-      "scale": 0.05
+      "property": "enderitemod:bow/pull"
     },
     "property": "minecraft:using_item"
   }

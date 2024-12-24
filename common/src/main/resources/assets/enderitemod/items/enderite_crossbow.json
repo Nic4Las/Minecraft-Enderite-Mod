@@ -47,7 +47,7 @@
         "type": "minecraft:model",
         "model": "enderitemod:item/enderite_crossbow_pulling_0"
       },
-      "property": "minecraft:crossbow/pull"
+      "property": "enderitemod:crossbow/pull"
     },
     "property": "minecraft:using_item"
   }

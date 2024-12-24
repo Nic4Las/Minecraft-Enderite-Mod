@@ -92,10 +92,16 @@ public class EnderiteTools {
 
     public static final RegistrySupplier<Item> ENDERITE_SHIELD = EnderiteMod.ITEMS.register("enderite_shield",
         () -> new EnderiteShield(
-        EnderiteMod.getItemSettings("enderite_shield", ENDERITE_SHIELD_ITEM_SETTINGS.get())));
+            EnderiteMod.getItemSettings("enderite_shield", ENDERITE_SHIELD_ITEM_SETTINGS.get())));
 
     public static RegistrySupplier<RecipeSerializer<? extends SpecialCraftingRecipe>> ENDERITE_SHIELD_DECORATION_RECIPE = EnderiteMod.RECIPES
         .register("crafting_special_enderiteshielddecoration",
             () -> new SpecialRecipeSerializer<EnderiteShieldDecorationRecipe>(
                 EnderiteShieldDecorationRecipe::new));
+
+    public static void init() {
+        if (ENDERITE_SHIELD == null) {
+            System.out.println("EnderiteMod: Tools not registered!");
+        }
+    }
 }

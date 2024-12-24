@@ -64,6 +64,49 @@ Thanks to:
 
 Enderite Mod is licensed under MIT. The full license can be found in the license file.
 
+## Fabric/NeoForge
+
+### 1.7.1
+
+- [x] Added new Shield renderer (1.21.4+)
+- [x] Added custom item properties (1.21.4+)
+- [x] Bugfixes
+
+<details>
+<summary>Property Documentation</summary>
+- <b>enderitemod:enderite_shield</b> special model type
+
+  - Renders an Enderite shield
+  - Uses patterns from minecraft:banner_patterns component and color from minecraft:base_color component****
+  - No fields
+
+<br>
+- <b>enderitemod:charge</b> numeric property
+
+  - Returns remaining charge for an item (Enderite Sword or Shield)
+  - -1 if no charge or no charge data component else scaled to 0..1
+  - No fields
+    
+<br>  
+- <b>enderitemod:crossbow/pull</b> numeric property
+
+  - Returns Enderite Crossbow specific pull progress
+  - No fields
+
+<br>
+- <b>enderitemod:bow/pull</b> numeric property
+
+  - Returns Enderite Bow specific pull progress
+  - No fields
+
+<br>
+- <b>enderitemod:is_sneaking</b> boolean property
+
+  - Returns true if the holder is sneaking
+  - No fields
+
+</details>
+
 ## Fabric
 
 ### 1.5.1
