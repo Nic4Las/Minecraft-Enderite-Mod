@@ -5,7 +5,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.ShulkerEntity;
@@ -78,7 +77,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         if (entity.getAnimationStage() != EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
             return true;
         } else {
-            Box box = ShulkerEntity.calculateBoundingBox(1.0f, state.get(FACING), 0.0f, 0.5f).offset(pos).contract(1.0E-6);
+            Box box = ShulkerEntity.calculateBoundingBox(1.0f, state.get(FACING), 0.0f, 0.5f, pos.toCenterPos()).contract(1.0E-6);
             return world.isSpaceEmpty(box);
         }
     }
@@ -89,13 +88,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
             if (!world.isClient && player.isCreative() && !shulkerBoxBlockEntity.isEmpty()) {
                 ItemStack itemStack = getItemStack();
-                blockEntity.setStackNbt(itemStack, world.getRegistryManager());
-
-
-                if (shulkerBoxBlockEntity.hasCustomName()) {
-                    itemStack.set(DataComponentTypes.CUSTOM_NAME, shulkerBoxBlockEntity.getCustomName());
-                }
-
+                itemStack.applyComponentsFrom(blockEntity.createComponentMap());
                 ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
                     (double) pos.getZ() + 0.5D, itemStack);
                 itemEntity.setToDefaultPickupDelay();

@@ -14,13 +14,10 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.mob.EndermanEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ArrowItem;
 import net.minecraft.item.Item;
@@ -164,24 +161,24 @@ public class EnderiteTests {
 
     @GameTest(templateName = TMPL_PRE + "enderite_armor_trims")
     public static void enderiteArmorTrimsTest(TestContext ctx) {
-        BlockPos pos1 = ctx.getAbsolutePos(new BlockPos(-1,0,-1));
-        BlockPos pos2 = ctx.getAbsolutePos(new BlockPos(4,46,1));
+        BlockPos pos1 = ctx.getAbsolutePos(new BlockPos(-1, 0, -1));
+        BlockPos pos2 = ctx.getAbsolutePos(new BlockPos(4, 46, 1));
 
         List<ArmorStandEntity> stands = ctx.getWorld().getNonSpectatingEntities(ArmorStandEntity.class, Box.enclosing(pos1, pos2));
         stands.forEach(Entity::discard);
 
-        if(!ctx.getWorld().getClosestPlayer(TargetPredicate.createNonAttackable(), pos1.getX(), pos1.getY(), pos1.getZ()).getMainHandStack().getItem().equals(Items.ARMOR_STAND)) {
+        if (!ctx.getWorld().getClosestPlayer(TargetPredicate.createNonAttackable(), pos1.getX(), pos1.getY(), pos1.getZ()).getMainHandStack().getItem().equals(Items.ARMOR_STAND)) {
             ctx.complete();
             return;
         }
 
-        BlockPos pos = ctx.getAbsolutePos(new BlockPos(0,3,0));
+        BlockPos pos = ctx.getAbsolutePos(new BlockPos(0, 3, 0));
         ArrayList<Entity> armor_stands = new ArrayList<>();
-        for(int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
             pos = pos.offset(Direction.Axis.X, 1);
             Map<EquipmentSlot, Item> equip_map = new HashMap<>();
             Identifier material_id = Identifier.of(EnderiteMod.MOD_ID, "enderite");
-            switch(i) {
+            switch (i) {
                 case 0: {
                     equip_map.put(EquipmentSlot.HEAD, EnderiteMod.ENDERITE_HELMET.get());
                     equip_map.put(EquipmentSlot.CHEST, EnderiteMod.ENDERITE_CHESTPLATE.get());
@@ -208,18 +205,18 @@ public class EnderiteTests {
             }
             RegistryEntry<ArmorTrimMaterial> material = ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.TRIM_MATERIAL).getEntry(material_id).get();
             int idx = 0;
-            for (RegistryEntry<ArmorTrimPattern> pattern: ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.TRIM_PATTERN).getIndexedEntries()) {
+            for (RegistryEntry<ArmorTrimPattern> pattern : ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.TRIM_PATTERN).getIndexedEntries()) {
                 BlockPos new_pos = pos.up(idx);
-                idx+=2;
+                idx += 2;
                 ArmorStandEntity e = new ArmorStandEntity(ctx.getWorld(), new_pos.getX(), new_pos.getY(), new_pos.getZ());
                 int equip_idx = ctx.getWorld().getRandom().nextInt(equip_map.keySet().toArray().length);
                 EquipmentSlot slot = equip_map.keySet().stream().toList().get(equip_idx);
-                for(Map.Entry<EquipmentSlot, Item> entry: equip_map.entrySet()) {
+                for (Map.Entry<EquipmentSlot, Item> entry : equip_map.entrySet()) {
                     ItemStack stack = entry.getValue().getDefaultStack();
                     stack.set(DataComponentTypes.TRIM, new ArmorTrim(material, pattern));
                     e.equipStack(entry.getKey(), stack);
 
-                    if(entry.getKey().equals(slot)) {
+                    if (entry.getKey().equals(slot)) {
                         e.equipStack(EquipmentSlot.MAINHAND, stack);
                         e.setShowArms(true);
                     }
@@ -249,7 +246,7 @@ public class EnderiteTests {
     @GameTest(templateName = TMPL_PRE + "enderman_enderite")
     public static void endermanEnderiteTest(TestContext ctx) {
         ServerWorld world = ctx.getWorld();
-        BlockPos pos = ctx.getAbsolutePos(new BlockPos(0,1,0));
+        BlockPos pos = ctx.getAbsolutePos(new BlockPos(0, 1, 0));
 
         EndermanEntity enderman = new EndermanEntity(EntityType.ENDERMAN, world);
         enderman.setPosition(pos.toBottomCenterPos());
@@ -257,7 +254,7 @@ public class EnderiteTests {
 
         PlayerEntity player = ctx.createMockPlayer(GameMode.CREATIVE);
 
-        PersistentProjectileEntity persistentProjectileEntity2 = ((ArrowItem)Items.ARROW)
+        PersistentProjectileEntity persistentProjectileEntity2 = ((ArrowItem) Items.ARROW)
             .createArrow(world, Items.ARROW.getDefaultStack(), player, EnderiteTools.ENDERITE_BOW.get().getDefaultStack());
         persistentProjectileEntity2.setCustomName(Text.literal("Enderite Arrow"));
         DamageSource source2 = world.getDamageSources().arrow(persistentProjectileEntity2, player);
@@ -265,7 +262,7 @@ public class EnderiteTests {
         enderman.damage(world, source2, damage);
         ctx.assertEquals(enderman.getHealth(), enderman.getMaxHealth() - damage, "Enderman not damaged from enderite arrow!");
 
-        PersistentProjectileEntity persistentProjectileEntity = ((ArrowItem)Items.ARROW)
+        PersistentProjectileEntity persistentProjectileEntity = ((ArrowItem) Items.ARROW)
             .createArrow(world, Items.ARROW.getDefaultStack(), player, Items.BOW.getDefaultStack());
         DamageSource source = world.getDamageSources().arrow(persistentProjectileEntity, player);
         enderman.damage(world, source, damage);
@@ -304,7 +301,7 @@ public class EnderiteTests {
         });
         ctx.waitAndRun(5, () -> {
             LivingEntity entity = world.getClosestEntity(SheepEntity.class, TargetPredicate.DEFAULT, null, pos.getX(), pos.getY(), pos.getZ(), Box.enclosing(pos, pos));
-            if(entity instanceof SheepEntity sheep) {
+            if (entity instanceof SheepEntity sheep) {
                 ctx.assertTrue(sheep.isSheared(), "Sheep is not sheared!");
             } else {
                 ctx.assertTrue(false, "No sheep spawned!");

@@ -3,7 +3,10 @@ package net.enderitemc.enderitemod.materials;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.item.equipment.ArmorMaterial;
+import net.minecraft.item.equipment.EquipmentAsset;
 import net.minecraft.item.equipment.EquipmentType;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -11,19 +14,17 @@ import net.minecraft.util.Util;
 import java.util.EnumMap;
 
 public class EnderiteArmorMaterial {
+    static RegistryKey<? extends Registry<EquipmentAsset>> EQUIPMENT_REGISTRY_KEY = RegistryKey.ofRegistry(Identifier.ofVanilla("equipment_asset"));
 
-    public static final Identifier ID = Identifier.of(EnderiteMod.MOD_ID, "enderite");
+    public static final RegistryKey<EquipmentAsset> ID = register("enderite");
 
-    public static final Identifier ENDERITE_ARMOR_TRIM_ID = ID;
-    public static final Identifier DARKER_ENDERITE_ARMOR_TRIM_ID = Identifier.of(EnderiteMod.MOD_ID, "enderite_darker");
-
-    public static final Identifier ENDERITE_ELYTRA_ARMOR_MODEL_ID = Identifier.of(EnderiteMod.MOD_ID, "enderite_elytra");
-    public static final Identifier ENDERITE_ELYTRA_SEPERATED_ARMOR_MODEL_ID = Identifier.of(EnderiteMod.MOD_ID, "enderite_elytra_seperated");
+    public static final RegistryKey<EquipmentAsset> ENDERITE_ELYTRA_ARMOR_MODEL_ID = register("enderite_elytra");
+    public static final RegistryKey<EquipmentAsset> ENDERITE_ELYTRA_SEPERATED_ARMOR_MODEL_ID = register("enderite_elytra_seperated");
 
     public static final ArmorMaterial ENDERITE = genEnderiteArmorMaterial(ID);
     public static final ArmorMaterial ENDERITE_ELYTRA = genEnderiteArmorMaterial(ENDERITE_ELYTRA_ARMOR_MODEL_ID);
 
-    public static ArmorMaterial genEnderiteArmorMaterial(Identifier id) {
+    public static ArmorMaterial genEnderiteArmorMaterial(RegistryKey<EquipmentAsset> id) {
         return new ArmorMaterial(
             EnderiteMod.CONFIG.armor.durabilityMultiplier,
             Util.make(new EnumMap<>(EquipmentType.class), map -> {
@@ -41,8 +42,7 @@ public class EnderiteArmorMaterial {
             id);
     }
 
-
-    protected static int getDurability(int baseValue) {
-        return baseValue * EnderiteMod.CONFIG.armor.durabilityMultiplier;
+    static RegistryKey<EquipmentAsset> register(String name) {
+        return RegistryKey.of(EQUIPMENT_REGISTRY_KEY, Identifier.of(EnderiteMod.MOD_ID, name));
     }
 }

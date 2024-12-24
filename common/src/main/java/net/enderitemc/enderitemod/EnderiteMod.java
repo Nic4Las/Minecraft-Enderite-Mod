@@ -17,14 +17,21 @@ import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
 import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.enderitemc.enderitemod.misc.EnderiteUpgradeSmithingTemplate;
+import net.enderitemc.enderitemod.renderer.EnderiteChargeProperty;
+import net.enderitemc.enderitemod.renderer.EnderitePlayerSneaksProperty;
+import net.enderitemc.enderitemod.renderer.EnderiteShieldRenderer;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlock;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.enderitemc.enderitemod.tools.BlockEntityTypeBuilder;
+import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.item.model.special.SpecialModelTypes;
+import net.minecraft.client.render.item.property.bool.BooleanProperties;
+import net.minecraft.client.render.item.property.numeric.NumericProperties;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
@@ -32,7 +39,6 @@ import net.minecraft.component.type.EquippableComponent;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.Settings;
-import net.minecraft.item.equipment.EquipmentModels;
 import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -62,8 +68,6 @@ public class EnderiteMod {
         RegistryKeys.BLOCK_ENTITY_TYPE);
     public static final DeferredRegister<ItemGroup> TABS =
         DeferredRegister.create(MOD_ID, RegistryKeys.ITEM_GROUP);
-    //    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIAL =
-//            DeferredRegister.create(MOD_ID, RegistryKeys.ARMOR_MATERIAL);
     public static final DeferredRegister<ComponentType<?>> DATA_COMPONENT_TYPES =
         DeferredRegister.create(MOD_ID, RegistryKeys.DATA_COMPONENT_TYPE);
 
@@ -85,10 +89,6 @@ public class EnderiteMod {
         () -> new Item(getItemSettings("enderite_ingot", BASE_ENDERITE_ITEM_SETTINGS.get())));
     public static final RegistrySupplier<Item> ENDERITE_SCRAP = ITEMS.register("enderite_scrap",
         () -> new Item(getItemSettings("enderite_scrap", BASE_ENDERITE_ITEM_SETTINGS.get())));
-
-    // Enderite Armor
-//    public static final RegistrySupplier<ArmorMaterial> ENDERITE_ARMOR_MATERIAL = ARMOR_MATERIAL.register(EnderiteArmorMaterial.ID.getPath(),
-//            () -> EnderiteArmorMaterial.ENDERITE);
 
     // Enderite Block
     public static final RegistrySupplier<Block> ENDERITE_BLOCK = BLOCKS.register("enderite_block",
@@ -203,7 +203,6 @@ public class EnderiteMod {
         RECIPES.register();
         BLOCK_ENTITY_TYPES.register();
         TABS.register();
-        //ARMOR_MATERIAL.register();
         EnderiteDataComponents.init();
 
         LifecycleEvent.SETUP.register(() -> {
@@ -220,8 +219,11 @@ public class EnderiteMod {
             CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
         });
 
-        //EnderiteShears.registerLoottables_Fabric();
         EnderiteUpgradeSmithingTemplate.registerLoottables();
+
+        SpecialModelTypes.ID_MAPPER.put(EnderiteTools.ENDERITE_SHIELD.getId(), EnderiteShieldRenderer.Unbaked.CODEC);
+        NumericProperties.ID_MAPPER.put(Identifier.of(MOD_ID, "charge"), EnderiteChargeProperty.CODEC);
+        BooleanProperties.ID_MAPPER.put(Identifier.of(MOD_ID, "is_sneaking"), EnderitePlayerSneaksProperty.CODEC);
     }
 
     public static AbstractBlock.Settings getBlockSettings(String id) {

@@ -22,7 +22,7 @@ public abstract class EnderiteFOVMixin extends PlayerEntity {
         super(world, pos, yaw, gameProfile);
     }
 
-    @Inject(at=@At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isUsingItem()Z"), method = "getFovMultiplier(ZF)F")
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isUsingItem()Z"), method = "getFovMultiplier(ZF)F")
     public void getFovMultiplier(boolean firstPerson, float fovEffectScale, CallbackInfoReturnable<Float> cir, @Local(ordinal = 1) LocalFloatRef f) {
         if (this.isUsingItem()) {
             if (this.getActiveItem().isOf(EnderiteTools.ENDERITE_BOW.get())) {

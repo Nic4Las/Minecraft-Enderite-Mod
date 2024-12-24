@@ -3,3 +3,7 @@ accessible  method   net/minecraft/item/SmithingTemplateItem   getNetheriteUpgra
 accessible  method   net/minecraft/item/SmithingTemplateItem   getNetheriteUpgradeEmptyAdditionsSlotTextures   ()Ljava/util/List;
 accessible class net/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData
 accessible class net/minecraft/server/network/ServerPlayerEntity$RespawnPos
+
+accessible field net/minecraft/client/render/item/model/special/SpecialModelTypes ID_MAPPER Lnet/minecraft/util/dynamic/Codecs$IdMapper;
+accessible field net/minecraft/client/render/item/property/numeric/NumericProperties ID_MAPPER Lnet/minecraft/util/dynamic/Codecs$IdMapper;
+accessible field net/minecraft/client/render/item/property/bool/BooleanProperties ID_MAPPER Lnet/minecraft/util/dynamic/Codecs$IdMapper;

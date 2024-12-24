@@ -16,35 +16,35 @@ logoFile = "icon.png"
 [[dependencies.enderitemod]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.2,)"
+versionRange = "[21.4,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21.2,)"
+versionRange = "[1.21.4,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "architectury"
 type = "required"
-versionRange = "[14.0.4,)"
+versionRange = "[15.0.0,)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.enderitemod]]
 modId = "cloth_config"
 type = "optional"
-versionRange = "[16.0.141,)"
+versionRange = "[17.0.144,)"
 ordering = "AFTER"
 side = "CLIENT"
 
 [[dependencies.enderitemod]]
 modId = "shulkerboxtooltip"
 type = "optional"
-versionRange = "[5.2.0,)"
+versionRange = "[5.2.2,)"
 ordering = "AFTER"
 side = "CLIENT"
 

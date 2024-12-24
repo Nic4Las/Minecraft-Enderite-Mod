@@ -115,22 +115,22 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
     }
 
     @Inject(
-        at=@At("HEAD"),
-        method="Lnet/minecraft/client/render/item/HeldItemRenderer;isChargedCrossbow(Lnet/minecraft/item/ItemStack;)Z",
+        at = @At("HEAD"),
+        method = "Lnet/minecraft/client/render/item/HeldItemRenderer;isChargedCrossbow(Lnet/minecraft/item/ItemStack;)Z",
         cancellable = true)
     private static void chargedEnderiteCrossbow(ItemStack stack, CallbackInfoReturnable<Boolean> info) {
-        if(stack.isOf(EnderiteTools.ENDERITE_CROSSBOW.get()) && EnderiteCrossbow.isCharged(stack)) {
+        if (stack.isOf(EnderiteTools.ENDERITE_CROSSBOW.get()) && EnderiteCrossbow.isCharged(stack)) {
             info.setReturnValue(true);
         }
     }
 
     @WrapOperation(
-        at=@At(value="INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"),
-        method="getHandRenderType(Lnet/minecraft/client/network/ClientPlayerEntity;)Lnet/minecraft/client/render/item/HeldItemRenderer$HandRenderType;")
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"),
+        method = "getHandRenderType(Lnet/minecraft/client/network/ClientPlayerEntity;)Lnet/minecraft/client/render/item/HeldItemRenderer$HandRenderType;")
     private static boolean isBowOrCrossbow(ItemStack instance, Item item, Operation<Boolean> original) {
-        if(item == Items.BOW && instance.isOf(EnderiteTools.ENDERITE_BOW.get())) {
+        if (item == Items.BOW && instance.isOf(EnderiteTools.ENDERITE_BOW.get())) {
             return true;
-        } else if(item == Items.CROSSBOW && instance.isOf(EnderiteTools.ENDERITE_CROSSBOW.get())) {
+        } else if (item == Items.CROSSBOW && instance.isOf(EnderiteTools.ENDERITE_CROSSBOW.get())) {
             return true;
         } else {
             return original.call(instance, item);
@@ -138,17 +138,17 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
     }
 
     @WrapOperation(
-        at=@At(value="INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"),
-        method="getUsingItemHandRenderType(Lnet/minecraft/client/network/ClientPlayerEntity;)Lnet/minecraft/client/render/item/HeldItemRenderer$HandRenderType;")
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"),
+        method = "getUsingItemHandRenderType(Lnet/minecraft/client/network/ClientPlayerEntity;)Lnet/minecraft/client/render/item/HeldItemRenderer$HandRenderType;")
     private static boolean isBowOrCrossbowUsing(ItemStack instance, Item item, Operation<Boolean> original) {
         return isBowOrCrossbow(instance, item, original);
     }
 
     @WrapOperation(
-        at=@At(value="INVOKE", target = "Lnet/minecraft/item/ItemStack;getMaxUseTime(Lnet/minecraft/entity/LivingEntity;)I"),
-        method="renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getMaxUseTime(Lnet/minecraft/entity/LivingEntity;)I"),
+        method = "renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
     private int changeBowTime(ItemStack instance, LivingEntity user, Operation<Integer> original) {
-        if(instance.isOf(EnderiteTools.ENDERITE_BOW.get())) {
+        if (instance.isOf(EnderiteTools.ENDERITE_BOW.get())) {
             return (int) (20 / EnderiteMod.CONFIG.tools.enderiteCrossBowChargeTime * original.call(instance, user));
         } else {
             return original.call(instance, user);

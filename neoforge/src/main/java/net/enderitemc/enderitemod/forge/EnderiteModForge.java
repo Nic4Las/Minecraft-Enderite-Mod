@@ -5,7 +5,6 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorRenderer;
 import net.enderitemc.enderitemod.forge.init.AnimationFeatures;
-import net.enderitemc.enderitemod.forge.item.EnderiteShieldForge;
 import net.enderitemc.enderitemod.forge.modIntegrations.ClothConfigImplementation;
 import net.enderitemc.enderitemod.forge.modIntegrations.ShulkerBoxTooltipImplementation;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
@@ -32,16 +31,10 @@ public class EnderiteModForge {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static final RegistrySupplier<Item> ENDERITE_SHIELD_FORGE = EnderiteMod.ITEMS
-        .register("enderite_shield",
-            () -> new EnderiteShieldForge(
-                EnderiteMod.getItemSettings("enderite_shield", EnderiteTools.ENDERITE_SHIELD_ITEM_SETTINGS.get())));
-
     public EnderiteModForge(IEventBus modBus) {
         // Submit our event bus to let architectury register our content on the right
         // time
         //EventBuses.registerModEventBus(EnderiteMod.MOD_ID, modBus);
-        EnderiteTools.ENDERITE_SHIELD = ENDERITE_SHIELD_FORGE;
 
         EnderiteMod.init();
 
@@ -77,16 +70,6 @@ public class EnderiteModForge {
             if (ModList.get().isLoaded("shulkerboxtooltip")) {
                 ShulkerBoxTooltipImplementation.registerEntryPoint(event);
             }
-        }
-
-        @SubscribeEvent
-        public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-            event.registerItem(
-                // The only instance of our IClientItemExtensions, and as such, the only instance of our BEWLR.
-                EnderiteShieldForge.RENDERER.get(),
-                // A vararg list of items that use this BEWLR.
-                EnderiteTools.ENDERITE_SHIELD.get()
-            );
         }
     }
 }

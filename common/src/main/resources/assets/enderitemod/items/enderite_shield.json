@@ -1,0 +1,65 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:special",
+      "base": "enderitemod:item/enderite_shield",
+      "model": {
+        "type": "enderitemod:enderite_shield"
+      }
+    },
+    "property": "minecraft:using_item",
+    "on_true": {
+      "type": "minecraft:condition",
+      "property": "enderitemod:is_sneaking",
+      "on_true": {
+        "type": "minecraft:range_dispatch",
+        "property": "enderitemod:charge",
+        "entries": [
+          {
+            "threshold": 0,
+            "model": {
+              "type": "minecraft:range_dispatch",
+              "property": "minecraft:cooldown",
+              "scale": -1,
+              "entries": [
+                {
+                  "threshold": 0,
+                  "model": {
+                    "type": "minecraft:special",
+                    "base": "enderitemod:item/enderite_shield_blocking",
+                    "model": {
+                      "type": "enderitemod:enderite_shield",
+                      "charged": true
+                    }
+                  }
+                }
+              ],
+              "fallback": {
+                "type": "minecraft:special",
+                "base": "enderitemod:item/enderite_shield_blocking",
+                "model": {
+                  "type": "enderitemod:enderite_shield"
+                }
+              }
+            }
+          }
+        ],
+        "fallback": {
+          "type": "minecraft:special",
+          "base": "enderitemod:item/enderite_shield_blocking",
+          "model": {
+            "type": "enderitemod:enderite_shield"
+          }
+        }
+      },
+      "on_false": {
+        "type": "minecraft:special",
+        "base": "enderitemod:item/enderite_shield_blocking",
+        "model": {
+          "type": "enderitemod:enderite_shield"
+        }
+      }
+    }
+  }
+}

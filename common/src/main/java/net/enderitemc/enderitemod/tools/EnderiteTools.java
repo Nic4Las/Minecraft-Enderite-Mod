@@ -90,7 +90,9 @@ public class EnderiteTools {
         .enchantable(EnderiteMaterial.ENDERITE.enchantmentValue())
         .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT);
 
-    public static RegistrySupplier<Item> ENDERITE_SHIELD;
+    public static final RegistrySupplier<Item> ENDERITE_SHIELD = EnderiteMod.ITEMS.register("enderite_shield",
+        () -> new EnderiteShield(
+        EnderiteMod.getItemSettings("enderite_shield", ENDERITE_SHIELD_ITEM_SETTINGS.get())));
 
     public static RegistrySupplier<RecipeSerializer<? extends SpecialCraftingRecipe>> ENDERITE_SHIELD_DECORATION_RECIPE = EnderiteMod.RECIPES
         .register("crafting_special_enderiteshielddecoration",

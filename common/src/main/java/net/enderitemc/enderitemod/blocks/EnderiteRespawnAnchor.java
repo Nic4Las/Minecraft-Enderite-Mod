@@ -54,7 +54,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
             return ActionResult.PASS;
         }
         if (EnderiteRespawnAnchor.isNether(world)) {
-            if(!world.isClient && player instanceof ServerPlayerEntity serverPlayerEntity) {
+            if (!world.isClient && player instanceof ServerPlayerEntity serverPlayerEntity) {
                 if (serverPlayerEntity.getSpawnPointDimension() != world.getRegistryKey() || !pos.equals(serverPlayerEntity.getSpawnPointPosition())) {
                     serverPlayerEntity.setSpawnPoint(world.getRegistryKey(), pos, 0.0f, false, true);
                     world.playSound(null, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.BLOCKS, 1.0f, 1.0f);
