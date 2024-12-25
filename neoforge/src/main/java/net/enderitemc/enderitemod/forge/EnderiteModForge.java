@@ -75,7 +75,7 @@ public class EnderiteModForge {
 
 
         @SubscribeEvent
-        public static void setupModelTypes(RegisterRangeSelectItemModelPropertyEvent event) {
+        public static void setupNumericProviders(RegisterRangeSelectItemModelPropertyEvent event) {
             // Numeric properties
             event.register(RendererRegistries.ENDERITE_CHARGE.id(), RendererRegistries.ENDERITE_CHARGE.codec());
             event.register(RendererRegistries.ENDERITE_CROSSBOW_PULL.id(), RendererRegistries.ENDERITE_CROSSBOW_PULL.codec());
@@ -84,7 +84,7 @@ public class EnderiteModForge {
 
 
         @SubscribeEvent
-        public static void setupModelTypes(RegisterConditionalItemModelPropertyEvent event) {
+        public static void setupConditionalProviders(RegisterConditionalItemModelPropertyEvent event) {
             // Boolean properties
             event.register(RendererRegistries.ENDERITE_PLAYER_SNEAKS.id(), RendererRegistries.ENDERITE_PLAYER_SNEAKS.codec());
         }

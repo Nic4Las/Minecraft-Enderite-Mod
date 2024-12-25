@@ -9,13 +9,6 @@ architectury {
     }
 }
 
-repositories {
-    maven {
-        name = 'NeoForged'
-        url = 'https://maven.neoforged.net/releases'
-    }
-}
-
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
@@ -40,7 +33,13 @@ configurations {
         canBeResolved = true
         canBeConsumed = false
     }
-    shadowCommon
+}
+
+repositories {
+    maven {
+        name = 'NeoForged'
+        url = 'https://maven.neoforged.net/releases'
+    }
 }
 
 dependencies {
@@ -50,7 +49,7 @@ dependencies {
     modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowBundle(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
+    shadowBundle(project(path: ':common', configuration: 'transformProductionNeoForge'))
 
     modApi("me.shedaniel.cloth:cloth-config-neoforge:${rootProject.cloth_config_version}")
 
@@ -66,11 +65,15 @@ processResources {
 }
 
 shadowJar {
+    exclude 'fabric.mod.json'
+    exclude 'architectury.common.json'
+
     configurations = [project.configurations.shadowBundle]
     archiveClassifier = 'dev-shadow'
 }
 
 remapJar {
     inputFile.set shadowJar.archiveFile
-    atAccessWideners.add("${rootProject.archives_name}.accesswidener")
+    dependsOn shadowJar
+    atAccessWideners.add(loom.accessWidenerPath.get().asFile.getName())
 }

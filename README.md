@@ -74,33 +74,36 @@ Enderite Mod is licensed under MIT. The full license can be found in the license
 
 <details>
 <summary>Property Documentation</summary>
-- <b>enderitemod:enderite_shield</b> special model type
+- <b style="color:purple">enderitemod:enderite_shield</b> special model type
 
   - Renders an Enderite shield
-  - Uses patterns from minecraft:banner_patterns component and color from minecraft:base_color component****
-  - No fields
+  - Uses patterns from minecraft:banner_patterns component and color from minecraft:base_color component
+  - Fields:
+    
+    - <b style="color:purple">charged</b> - If true will render an ender portal over the shield
 
 <br>
-- <b>enderitemod:charge</b> numeric property
+- <b style="color:purple">enderitemod:charge</b> numeric property
 
   - Returns remaining charge for an item (Enderite Sword or Shield)
+  - Uses `enderitemod:teleport_charge` component
   - -1 if no charge or no charge data component else scaled to 0..1
   - No fields
     
 <br>  
-- <b>enderitemod:crossbow/pull</b> numeric property
+- <b style="color:purple">enderitemod:crossbow/pull</b> numeric property
 
   - Returns Enderite Crossbow specific pull progress
   - No fields
 
 <br>
-- <b>enderitemod:bow/pull</b> numeric property
+- <b style="color:purple">enderitemod:bow/pull</b> numeric property
 
   - Returns Enderite Bow specific pull progress
   - No fields
 
 <br>
-- <b>enderitemod:is_sneaking</b> boolean property
+- <b style="color:purple">enderitemod:is_sneaking</b> boolean property
 
   - Returns true if the holder is sneaking
   - No fields

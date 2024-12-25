@@ -9,16 +9,14 @@ architectury {
 }
 
 allprojects {
-    apply plugin: 'java'
-    apply plugin: 'architectury-plugin'
-    apply plugin: 'maven-publish'
-
     group = rootProject.maven_group
     version = rootProject.mod_version
 }
 
 subprojects {
     apply plugin: 'dev.architectury.loom'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
 
     loom {
         silentMojangMappingsLicense()
@@ -37,23 +35,23 @@ subprojects {
         // for more information about repositories.
         maven {
 			name = "Jitpack"
-			url 'https://jitpack.io/'
+			url = 'https://jitpack.io/'
 		}
 
-        maven { url "https://maven.shedaniel.me/" }
+        maven { url = "https://maven.shedaniel.me/" }
 
         maven {
-            url "https://maven.terraformersmc.com/releases/"
+            url = "https://maven.terraformersmc.com/releases/"
             content {
                 includeGroup "com.terraformersmc"
             }
         }
 
-        maven {url "https://maven.misterpemodder.com/libs-release/"}
+        maven {url = "https://maven.misterpemodder.com/libs-release/"}
         
-	    maven { url 'https://maven.kyrptonaught.dev' }
+	    maven { url = 'https://maven.kyrptonaught.dev' }
         maven {
-            url "https://www.cursemaven.com"
+            url = "https://www.cursemaven.com"
             content {
                 includeGroup "curse.maven"
             }
