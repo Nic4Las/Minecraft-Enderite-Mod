@@ -24,7 +24,7 @@
   "item.enderitemod.enderite_sword.tooltip3": "웅크리기 + 우클릭으로 순간이동하세요!",
   "item.enderitemod.enderite_sword.charge": "순간이동 횟수",
 
-  "enchantment.enderitemod.void_floating": "공허 공중 부양",
+  "enchantment.enderitemod.void_floating": "공허 부유",
   "enchantment.enderitemod.void_floating.desc": "아이템이 불에 타지 않고, 중력의 영향을 받지 않으며, 세계에서 떨어뜨리면 공중에 떠오릅니다.",
   "item.enderitemod.enderite_bow": "엔더라이트 활",
   "item.enderitemod.enderite_crossbow": "엔더라이트 쇠뇌",
@@ -50,8 +50,8 @@
   "item.enderitemod.enderite_elytra_seperated": "엔더라이트 겉날개",
   "item.enderitemod.enderite_shears": "엔더라이트 가위",
   "category.enderitemod.general": "일반 설정",
-  "option.enderitemod.general.allow_void_floating_enchantment": "공허 공중 부양 마법 허용",
-  "option.enderitemod.general.allow_void_floating_enchantment.hover": "true로 설정하면 아이템에 공허 공중 부양 마법을 부여할 수 있습니다.",
+  "option.enderitemod.general.allow_void_floating_enchantment": "공허 부유 마법 허용",
+  "option.enderitemod.general.allow_void_floating_enchantment.hover": "true로 설정하면 아이템에 공허 부유 마법을 부여할 수 있습니다.",
   "option.enderitemod.general.enderite_bow.attack_damage": "엔더라이트 활 기본 공격 피해",
   "option.enderitemod.general.enderite_bow.attack_damage.hover": "일반 활은 2.0입니다.",
   "option.enderitemod.general.enderite_bow.arrow_speed": "엔더라이트 활 화살 속도",
@@ -102,7 +102,7 @@
   "option.enderitemod.restart.enderite_ore.moved_to_json": "데이터팩을 통한 광석 생성 설정",
   "option.enderitemod.restart.enderite_ore.moved_to_json.hover": "광석 생성 설정이 json (데이터팩)으로 이동되었습니다.",
 
-  "trim_material.enderitemod.enderite": "엔더라이트 재료 (공허 공중 부양 I처럼 작동)",
+  "trim_material.enderitemod.enderite": "엔더라이트 재료 (공허 부유 I처럼 작동)",
 
   "upgrade.enderitemod.enderite_upgrade": "엔더라이트 강화",
   "item.enderitemod.smithing_template.enderite_upgrade.additions_slot_description": "엔더라이트 주괴 추가",
@@ -160,8 +160,8 @@
   "option.enderitemod.restart.tools.damage_config": "도구 공격 피해 설정",
   "option.enderitemod.restart.tools.general_config": "도구 일반 설정",
   "option.enderitemod.restart.tools.armor_config": "갑옷 설정",
-  "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json": "공허 공중 부양 마법 설정을 데이터팩으로 이동",
+  "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json": "공허 부유 마법 설정을 데이터팩으로 이동",
   "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json.hover": "설정이 json (데이터팩)으로 이동되었습니다.",
-  "tag.item.enderitemod.is_void_floating_enchantable": "공허 공중 부양 마법 부여 가능",
+  "tag.item.enderitemod.is_void_floating_enchantable": "공허 부유 마법 부여 가능",
   "tag.block.enderitemod.needs_enderite_tool": "채굴에 엔더라이트 도구 필요"
 }
