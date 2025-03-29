@@ -16,6 +16,7 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 
 public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRenderer<EnderiteShulkerBoxBlockEntity> {
     private final ShulkerBoxBlockModel model;
@@ -26,8 +27,9 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
         this.model = new ShulkerBoxBlockModel(ctx.getLayerModelPart(EntityModelLayers.SHULKER_BOX));
     }
 
-    public void render(EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity, float f, MatrixStack matrixStack,
-                       VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+    @Override
+    public void render(EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity, float tickProgress, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
+
         Direction direction = Direction.UP;
         if (shulkerBoxBlockEntity.hasWorld()) {
             BlockState blockState = shulkerBoxBlockEntity.getWorld().getBlockState(shulkerBoxBlockEntity.getPos());
@@ -45,10 +47,10 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
         matrixStack.multiply(direction.getRotationQuaternion());
         matrixStack.scale(1.0f, -1.0f, -1.0f);
         matrixStack.translate(0.0f, -1.0f, 0.0f);
-        this.model.animateLid(shulkerBoxBlockEntity, f);
-        VertexConsumer vertexConsumer = spriteIdentifier.getVertexConsumer(vertexConsumerProvider,
+        this.model.animateLid(shulkerBoxBlockEntity, tickProgress);
+        VertexConsumer vertexConsumer = spriteIdentifier.getVertexConsumer(vertexConsumers,
             RenderLayer::getEntityCutoutNoCull);
-        this.model.render(matrixStack, vertexConsumer, i, j);
+        this.model.render(matrixStack, vertexConsumer, light, overlay);
         matrixStack.pop();
     }
 
@@ -62,7 +64,7 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
         }
 
         public void animateLid(EnderiteShulkerBoxBlockEntity blockEntity, float delta) {
-            this.lid.setPivot(0.0F, 24.0F - blockEntity.getAnimationProgress(delta) * 0.5F * 16.0F, 0.0F);
+            this.lid.setOrigin(0.0F, 24.0F - blockEntity.getAnimationProgress(delta) * 0.5F * 16.0F, 0.0F);
             this.lid.yaw = 270.0F * blockEntity.getAnimationProgress(delta) * (float) (Math.PI / 180.0);
         }
     }

@@ -7,6 +7,7 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 
 public class EnderiteRespawnAnchorRenderer<T extends EnderiteRespawnAnchorBlockEntity>
@@ -15,8 +16,9 @@ public class EnderiteRespawnAnchorRenderer<T extends EnderiteRespawnAnchorBlockE
     public EnderiteRespawnAnchorRenderer(BlockEntityRendererFactory.Context ctx) {
     }
 
+
     @Override
-    public void render(T entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(T entity, float tickProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
         Matrix4f matrix4f = matrices.peek().getPositionMatrix();
         if (entity.isCharged() && entity.shouldRenderPortal()) {
             this.renderSides(entity, matrix4f, vertexConsumers.getBuffer(this.getLayer()));

@@ -59,6 +59,7 @@ Thanks to:
 - RU: temac000, mpustovoi
 - PL: zealoussentinel512
 - FR: JustArthur
+- KR: smoong951
 
 ## License
 

@@ -1,7 +1,8 @@
 package net.enderitemc.enderitemod.mixin;
 
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
+import net.enderitemc.enderitemod.component.EnderiteChargeComponent;
+import net.enderitemc.enderitemod.component.EnderiteDataComponents;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -49,14 +50,14 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
             int pearls = pearls1.getCount() + pearls2.getCount();
 
             // Read the charge of sword
-            int teleport_charge = sword.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
+            int teleport_charge = sword.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
 
             // Clamp teleport charge
             if (teleport_charge < EnderiteMod.CONFIG.tools.maxTeleportCharge) {
                 // Charge is old charge + amount of enderpearls
                 teleport_charge = Math.min(teleport_charge + pearls, EnderiteMod.CONFIG.tools.maxTeleportCharge);
                 // Copy the same sword and put charge into it
-                newSword.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), teleport_charge);
+                newSword.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(teleport_charge));
                 this.output.setStack(0, newSword);
             } else {
                 this.output.clear();
@@ -88,7 +89,7 @@ public abstract class SmithingEnderiteSwordMixin extends ForgingScreenHandler {
             // Read the charge of sword
 
             // Charge is old charge + amount of enderpearls
-            int tp_charge = sword.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
+            int tp_charge = sword.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
             int allowableSubstract = EnderiteMod.CONFIG.tools.maxTeleportCharge - tp_charge;
             amountToSubstract = Math.min(allowableSubstract, amountToSubstract);
 

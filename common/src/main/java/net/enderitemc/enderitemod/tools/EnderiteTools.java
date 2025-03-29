@@ -2,17 +2,26 @@ package net.enderitemc.enderitemod.tools;
 
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
+import net.enderitemc.enderitemod.component.EnderiteChargeComponent;
+import net.enderitemc.enderitemod.component.EnderiteDataComponents;
+import net.enderitemc.enderitemod.component.EnderiteTooltipComponent;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlocksAttacksComponent;
 import net.minecraft.component.type.ChargedProjectilesComponent;
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.item.*;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.SpecialCraftingRecipe.SpecialRecipeSerializer;
+import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Rarity;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static net.enderitemc.enderitemod.EnderiteMod.BASE_ENDERITE_ITEM_SETTINGS;
@@ -22,10 +31,11 @@ public class EnderiteTools {
 
     // Enderite Tools
     public static final RegistrySupplier<Item> ENDERITE_PICKAXE = EnderiteMod.ITEMS.register("enderite_pickaxe",
-        () -> new PickaxeItem(EnderiteMaterial.ENDERITE,
-            EnderiteMod.CONFIG.tools.enderitePickaxeAD,
-            -2.8F,
-            getItemSettings("enderite_pickaxe", BASE_ENDERITE_ITEM_SETTINGS.get())));
+        () -> new Item(
+            getItemSettings("enderite_pickaxe", BASE_ENDERITE_ITEM_SETTINGS.get())
+                .pickaxe(EnderiteMaterial.ENDERITE,
+                    EnderiteMod.CONFIG.tools.enderitePickaxeAD,
+                    -2.8F)));
 
     public static final RegistrySupplier<Item> ENDERITE_AXE = EnderiteMod.ITEMS.register("enderite_axe",
         () -> new AxeItem(EnderiteMaterial.ENDERITE,
@@ -52,7 +62,9 @@ public class EnderiteTools {
         () -> new EnderiteSword(EnderiteMaterial.ENDERITE,
             EnderiteMod.CONFIG.tools.enderiteSwordAD,
             -2.4F,
-            getItemSettings("enderite_sword", BASE_ENDERITE_ITEM_SETTINGS.get())));
+            getItemSettings("enderite_sword", BASE_ENDERITE_ITEM_SETTINGS.get())
+                .component(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(0))
+                .component(EnderiteDataComponents.ENDERITE_TOOLTIP.get(), EnderiteTooltipComponent.ofSword())));
 
     // MOST IMPORTANT
     public static final RegistrySupplier<Item> ENDERITE_SHEAR = EnderiteMod.ITEMS.register("enderite_shears",
@@ -88,7 +100,21 @@ public class EnderiteTools {
         .maxCount(1)
         .maxDamage(768)
         .enchantable(EnderiteMaterial.ENDERITE.enchantmentValue())
-        .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT);
+        .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT)
+        .component(DataComponentTypes.BLOCKS_ATTACKS,
+            new BlocksAttacksComponent(
+                0.25F,
+                1.0F,
+                List.of(new BlocksAttacksComponent.DamageReduction(90.0F, Optional.empty(), 0.0F, 1.0F)),
+                new BlocksAttacksComponent.ItemDamage(3.0F, 1.0F, 1.0F),
+                Optional.of(DamageTypeTags.BYPASSES_SHIELD),
+                Optional.of(SoundEvents.ITEM_SHIELD_BLOCK),
+                Optional.of(SoundEvents.ITEM_SHIELD_BREAK)
+            )
+        )
+        .component(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(0))
+        .component(EnderiteDataComponents.ENDERITE_TOOLTIP.get(), EnderiteTooltipComponent.ofShield())
+        .component(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplayComponent.DEFAULT.with(EnderiteDataComponents.ENDERITE_TOOLTIP.get(), false));
 
     public static final RegistrySupplier<Item> ENDERITE_SHIELD = EnderiteMod.ITEMS.register("enderite_shield",
         () -> new EnderiteShield(

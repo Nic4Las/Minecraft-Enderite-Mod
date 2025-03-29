@@ -1,29 +1,24 @@
 package net.enderitemc.enderitemod.tools;
 
-import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
+import net.enderitemc.enderitemod.component.EnderiteChargeComponent;
+import net.enderitemc.enderitemod.component.EnderiteDataComponents;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.List;
-
-public class EnderiteSword extends SwordItem {
+public class EnderiteSword extends Item {
 
     public int superAufladung;
 
-    public EnderiteSword(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
-        super(material, attackDamage, attackSpeed, settings);
+    public EnderiteSword(ToolMaterial material, int attackDamage, float attackSpeed, Item.Settings settings) {
+        super(settings.sword(material, attackDamage, attackSpeed));
     }
 
     @Override
@@ -59,7 +54,7 @@ public class EnderiteSword extends SwordItem {
             }
             double near = distance;
 
-            int slot = playerEntity.getStackInHand(hand).getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
+            int slot = playerEntity.getStackInHand(hand).getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
 
             // Check to Teleport
             if (world.isChunkLoaded(blockPos) && (slot > 0 || playerEntity.getAbilities().creativeMode)) {
@@ -128,7 +123,7 @@ public class EnderiteSword extends SwordItem {
                     // playerEntity.inventory.getStack(slot).decrement(1);
                     // }
                     if (!playerEntity.getAbilities().creativeMode) {
-                        playerEntity.getStackInHand(hand).set(EnderiteDataComponents.TELEPORT_CHARGE.get(), slot - 1);
+                        playerEntity.getStackInHand(hand).set(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(slot - 1));
                     }
                     world.sendEntityStatus(playerEntity, (byte) 46);
                     world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1.0f, 1.0f);
@@ -152,20 +147,6 @@ public class EnderiteSword extends SwordItem {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void appendTooltip(ItemStack itemStack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        String charge = itemStack.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).toString();
-        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.charge")
-            .formatted(new Formatting[]{Formatting.DARK_AQUA}).append(Text.literal(": " + charge)));
-        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip1")
-            .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
-        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip2")
-            .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
-        tooltip.add(Text.translatable("item.enderitemod.enderite_sword.tooltip3")
-            .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
-
     }
 
 }

@@ -52,21 +52,25 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (state.get(CHARGES) == 0) {
             return ActionResult.PASS;
-        }
-        if (EnderiteRespawnAnchor.isNether(world)) {
-            if (!world.isClient && player instanceof ServerPlayerEntity serverPlayerEntity) {
-                if (serverPlayerEntity.getSpawnPointDimension() != world.getRegistryKey() || !pos.equals(serverPlayerEntity.getSpawnPointPosition())) {
-                    serverPlayerEntity.setSpawnPoint(world.getRegistryKey(), pos, 0.0f, false, true);
-                    world.playSound(null, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.BLOCKS, 1.0f, 1.0f);
+        } else if (!isNether(world)) {
+            if (!world.isClient) {
+                this.explode(state, world, pos);
+            }
+
+            return ActionResult.SUCCESS;
+        } else {
+            if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+                ServerPlayerEntity.Respawn respawn = serverPlayerEntity.getRespawn();
+                ServerPlayerEntity.Respawn respawn2 = new ServerPlayerEntity.Respawn(world.getRegistryKey(), pos, 0.0F, false);
+                if (respawn == null || !respawn.posEquals(respawn2)) {
+                    serverPlayerEntity.setSpawnPoint(respawn2, true);
+                    world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     return ActionResult.SUCCESS_SERVER;
                 }
             }
+
             return ActionResult.CONSUME;
         }
-        if (!world.isClient) {
-            this.explode(state, world, pos);
-        }
-        return ActionResult.SUCCESS;
     }
 
     public static boolean isNether(World world) {
@@ -105,6 +109,6 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
         double d = (double) pos.getX() + random.nextDouble();
         double e = (double) pos.getY() + 0.8;
         double f = (double) pos.getZ() + random.nextDouble();
-        world.addParticle(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0);
+        world.addParticleClient(ParticleTypes.SMOKE, d, e, f, 0.0, 0.0, 0.0);
     }
 }

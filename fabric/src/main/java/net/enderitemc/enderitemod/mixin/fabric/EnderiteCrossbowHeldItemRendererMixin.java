@@ -11,9 +11,9 @@ import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.ModelTransformationMode;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class EnderiteCrossbowHeldItemRendererMixin {
 
     @Shadow
-    public abstract void renderItem(LivingEntity player, ItemStack item, ModelTransformationMode modelTransformationMode, boolean b, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light);
+    public abstract void renderItem(LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light);
 
     @Shadow
     protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
@@ -102,8 +102,7 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
             this.renderItem(
                 player,
                 item,
-                bl3 ? ModelTransformationMode.FIRST_PERSON_RIGHT_HAND : ModelTransformationMode.FIRST_PERSON_LEFT_HAND,
-                !bl3,
+                bl3 ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND,
                 matrices,
                 vertexConsumers,
                 light

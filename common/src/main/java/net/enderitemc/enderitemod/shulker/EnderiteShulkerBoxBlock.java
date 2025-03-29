@@ -116,18 +116,6 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        if (!state.isOf(newState.getBlock())) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
-                world.updateComparators(pos, state.getBlock());
-            }
-
-            super.onStateReplaced(state, world, pos, newState, moved);
-        }
-    }
-
-    @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         return blockEntity instanceof EnderiteShulkerBoxBlockEntity

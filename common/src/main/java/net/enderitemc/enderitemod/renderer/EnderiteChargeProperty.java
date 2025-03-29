@@ -2,7 +2,7 @@ package net.enderitemc.enderitemod.renderer;
 
 import com.mojang.serialization.MapCodec;
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
+import net.enderitemc.enderitemod.component.EnderiteDataComponents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.item.property.numeric.NumericProperty;
@@ -17,7 +17,7 @@ public record EnderiteChargeProperty() implements NumericProperty {
 
     @Override
     public float getValue(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity holder, int seed) {
-        float charge = stack.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0);
+        float charge = stack.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
         if (charge <= 0 || EnderiteMod.CONFIG.tools.maxTeleportCharge <= 0) {
             // No charge or charge disabled
             return -1;

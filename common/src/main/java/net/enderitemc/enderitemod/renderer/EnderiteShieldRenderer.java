@@ -21,8 +21,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BannerPatternsComponent;
+import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ModelTransformationMode;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +54,7 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
 
     public void render(
         @Nullable ComponentMap componentMap,
-        ModelTransformationMode modelTransformationMode,
+        ItemDisplayContext modelTransformationMode,
         MatrixStack matrixStack,
         VertexConsumerProvider vertexConsumerProvider,
         int i,
@@ -72,7 +72,7 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
         VertexConsumer vertexConsumer = spriteIdentifier.getSprite()
             .getTextureSpecificVertexConsumer(
                 ItemRenderer.getItemGlintConsumer(
-                    vertexConsumerProvider, this.model.getLayer(spriteIdentifier.getAtlasId()), modelTransformationMode == ModelTransformationMode.GUI, bl
+                    vertexConsumerProvider, this.model.getLayer(spriteIdentifier.getAtlasId()), modelTransformationMode == ItemDisplayContext.GUI, bl
                 )
             );
         this.model.getHandle().render(matrixStack, vertexConsumer, i, j);
@@ -94,8 +94,8 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
             this.model.getPlate().render(matrixStack, vertexConsumer, i, j);
         }
         if (this.charged &&
-            (modelTransformationMode == ModelTransformationMode.THIRD_PERSON_LEFT_HAND
-                || modelTransformationMode == ModelTransformationMode.THIRD_PERSON_RIGHT_HAND)) {
+            (modelTransformationMode == ItemDisplayContext.THIRD_PERSON_LEFT_HAND
+                || modelTransformationMode == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) {
             // Custom end portal shader
             this.renderSides(matrixStack.peek().getPositionMatrix(), vertexConsumerProvider.getBuffer(RenderLayer.getEndPortal()));
         }

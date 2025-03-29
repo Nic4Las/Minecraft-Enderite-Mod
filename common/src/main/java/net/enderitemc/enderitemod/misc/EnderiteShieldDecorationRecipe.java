@@ -7,6 +7,7 @@ import net.minecraft.component.type.BannerPatternsComponent;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -23,47 +24,43 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         super(category);
     }
 
-    public boolean matches(CraftingRecipeInput craftingInventory, World world) {
-        ItemStack itemStack = ItemStack.EMPTY;
-        ItemStack itemStack2 = ItemStack.EMPTY;
+    public boolean matches(CraftingRecipeInput craftingRecipeInput, World world) {
+        if (craftingRecipeInput.getStackCount() != 2) {
+            return false;
+        } else {
+            boolean bl = false;
+            boolean bl2 = false;
 
-        for (int i = 0; i < craftingInventory.size(); ++i) {
-            ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
-            if (!itemStack3.isEmpty()) {
-                if (itemStack3.getItem() instanceof BannerItem) {
-                    if (!itemStack2.isEmpty()) {
-                        return false;
-                    }
+            for (int i = 0; i < craftingRecipeInput.size(); i++) {
+                ItemStack itemStack = craftingRecipeInput.getStackInSlot(i);
+                if (!itemStack.isEmpty()) {
+                    if (itemStack.getItem() instanceof BannerItem) {
+                        if (bl2) {
+                            return false;
+                        }
 
-                    itemStack2 = itemStack3;
-                } else {
-                    if (!(itemStack3.getItem() instanceof EnderiteShield)) {
-                        return false;
-                    }
-                    NbtCompound compoundTag = new NbtCompound();
-                    NbtCompound compoundTag2 = itemStack3.getOrDefault(DataComponentTypes.BLOCK_ENTITY_DATA, NbtComponent.of(compoundTag)).copyNbt();
-                    if (compoundTag2.contains("Base")) {
-                        int color = compoundTag2.getInt("Base");
-                        itemStack3.set(DataComponentTypes.BASE_COLOR, DyeColor.byId(color));
-                    }
-                    if (compoundTag2.contains("Patterns")) {
-                        NbtElement nbtList = compoundTag2.get("Patterns");
-                        itemStack3.set(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.CODEC.parse(NbtOps.INSTANCE, nbtList).getOrThrow());
-                    }
-                    if (!itemStack.isEmpty()) {
-                        return false;
-                    }
-                    BannerPatternsComponent bannerPatternsComponent = itemStack3.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT);
-                    if (!bannerPatternsComponent.layers().isEmpty()) {
-                        return false;
-                    }
+                        bl2 = true;
+                    } else {
+                        if (!(itemStack.getItem() instanceof EnderiteShield)) {
+                            return false;
+                        }
 
-                    itemStack = itemStack3;
+                        if (bl) {
+                            return false;
+                        }
+
+                        BannerPatternsComponent bannerPatternsComponent = itemStack.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT);
+                        if (!bannerPatternsComponent.layers().isEmpty()) {
+                            return false;
+                        }
+
+                        bl = true;
+                    }
                 }
             }
-        }
 
-        return !itemStack.isEmpty() && !itemStack2.isEmpty();
+            return bl && bl2;
+        }
     }
 
     public ItemStack craft(CraftingRecipeInput craftingInventory, RegistryWrapper.WrapperLookup registryManager) {

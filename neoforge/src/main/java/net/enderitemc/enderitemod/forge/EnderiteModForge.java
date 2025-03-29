@@ -54,6 +54,8 @@ public class EnderiteModForge {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            EnderiteMod.clientInit();
+
             event.enqueueWork(() -> {
                 BlockEntityRendererRegistry.register(EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
                     EnderiteShulkerBoxBlockEntityRenderer::new);

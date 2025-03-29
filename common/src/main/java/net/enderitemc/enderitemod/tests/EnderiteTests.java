@@ -10,6 +10,8 @@ import net.minecraft.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -30,7 +32,7 @@ import net.minecraft.item.equipment.trim.ArmorTrimPattern;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.test.GameTest;
+import net.minecraft.test.GameTestState;
 import net.minecraft.test.TestContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -44,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class EnderiteTests {
@@ -51,69 +54,64 @@ public class EnderiteTests {
     public static final String TMPL_NS = "enderitetests.";
     public static final String TMPL_PRE = TMPL_MI + TMPL_NS;
 
-    @GameTest(templateName = TMPL_PRE + "explode_enderite_ore")
     public static void explodeEnderiteOreTest(TestContext ctx) {
         ctx.spawnEntity(EntityType.TNT, new BlockPos(1, 1, 0));
         ctx.waitAndRun(99, () -> ctx.checkBlock(new BlockPos(1, 1, 1),
             (Block block) -> block.equals(EnderiteMod.CRACKED_ENDERITE_ORE.get()),
-            "TnT didn't crack the enderite ore"
+            (a) -> Text.of("TnT didn't crack the enderite ore")
         ));
         ctx.expectBlockAtEnd(EnderiteMod.CRACKED_ENDERITE_ORE.get(), new BlockPos(1, 1, 1));
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_shulkerbox_recipe")
     public static void enderiteShulkerboxRecipeTest(TestContext ctx) {
         crafterRecipeTest(ctx, (ItemStack stack) -> {
             var component = stack.get(DataComponentTypes.CONTAINER);
             if (component != null) {
                 ctx.assertTrue(component.copyFirstStack().isOf(Items.DIRT),
-                    "No items found in Enderite Shulkerbox item");
+                    Text.of("No items found in Enderite Shulkerbox item"));
             } else {
-                ctx.assertTrue(false, "No Container Component in stack" + stack.toString());
+                ctx.assertTrue(false, Text.of("No Container Component in stack" + stack.toString()));
             }
         });
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_elytra_recipe")
     public static void enderiteElytraRecipeTest(TestContext ctx) {
         crafterRecipeTest(ctx, (ItemStack stack) -> {
             var component = stack.get(DataComponentTypes.ENCHANTMENTS);
             if (component != null) {
                 var enchant0 = ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.UNBREAKING.getValue());
                 ctx.assertTrue(enchant0.isPresent() && component.getLevel(enchant0.get()) == 3,
-                    "Enchantment wrong on Enderite Elytra");
+                    Text.of("Enchantment wrong on Enderite Elytra"));
                 var enchant1 = ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.PROTECTION.getValue());
                 ctx.assertTrue(enchant1.isPresent() && component.getLevel(enchant1.get()) == 1,
-                    "Enchantment wrong on Enderite Elytra");
+                    Text.of("Enchantment wrong on Enderite Elytra"));
             } else {
-                ctx.assertTrue(false, "No Container Component in stack" + stack.toString());
+                ctx.assertTrue(false, Text.of("No Container Component in stack" + stack.toString()));
             }
         });
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_shield_deco_recipe")
     public static void enderiteShieldDecoRecipeTest(TestContext ctx) {
         crafterRecipeTest(ctx, (ItemStack stack) -> {
             var component = stack.get(DataComponentTypes.ENCHANTMENTS);
             if (component != null) {
                 var enchant0 = ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.UNBREAKING.getValue());
                 ctx.assertTrue(enchant0.isPresent() && component.getLevel(enchant0.get()) == 3,
-                    "Enchantment wrong on decorated Enderite Shield");
+                    Text.of("Enchantment wrong on decorated Enderite Shield"));
             } else {
-                ctx.assertTrue(false, "No Enchantment Component in stack" + stack.toString());
+                ctx.assertTrue(false, Text.of("No Enchantment Component in stack" + stack.toString()));
             }
         });
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_respawn_anchor")
     public static void enderiteRespawnAnchorTest(TestContext ctx) {
         BlockPos anchor_pos = new BlockPos(0, 1, 0);
         BlockPos dirt_pos = new BlockPos(1, 1, 0);
 
         // Check block entity
-        BlockEntity be = ctx.getBlockEntity(anchor_pos);
+        BlockEntity be = ctx.getBlockEntity(anchor_pos, EnderiteRespawnAnchorBlockEntity.class);
         ctx.assertTrue(be instanceof EnderiteRespawnAnchorBlockEntity,
-            "Enderite Respawn Anchor Block Entity is missing");
+            Text.of("Enderite Respawn Anchor Block Entity is missing"));
         ctx.expectBlock(Blocks.DIRT, dirt_pos);
 
         // Check charges
@@ -125,7 +123,7 @@ public class EnderiteTests {
             ctx.useStackOnBlock(player, Items.ENDER_PEARL.getDefaultStack(), anchor_pos, Direction.NORTH);
             ctx.assertEquals(ctx.getBlockState(anchor_pos).get(EnderiteRespawnAnchor.CHARGES),
                 expected_charge,
-                "Enderite Respawn anchor has wrong amount of charge");
+                Text.of("Enderite Respawn anchor has wrong amount of charge"));
         }
 
         ctx.useBlock(anchor_pos, player);
@@ -141,7 +139,6 @@ public class EnderiteTests {
         ctx.complete();
     }
 
-    @GameTest(templateName = TMPL_PRE + "void_death_with_enderite")
     public static void voidDeathWithEnderiteTest(TestContext ctx) {
         Vec3d relative_pos = new Vec3d(0, 0, 0);
         Vec3d absolute_pos = ctx.getAbsolute(relative_pos);
@@ -159,7 +156,6 @@ public class EnderiteTests {
         });
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_armor_trims")
     public static void enderiteArmorTrimsTest(TestContext ctx) {
         BlockPos pos1 = ctx.getAbsolutePos(new BlockPos(-1, 0, -1));
         BlockPos pos2 = ctx.getAbsolutePos(new BlockPos(4, 46, 1));
@@ -230,20 +226,18 @@ public class EnderiteTests {
         ctx.complete();
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_elytra_trim_recipe")
     public static void enderiteElytraTrimRecipeTest(TestContext ctx) {
         crafterRecipeTest(ctx, (ItemStack stack) -> {
             var component = stack.get(DataComponentTypes.TRIM);
             if (component != null) {
                 String trim = component.material().getIdAsString();
-                ctx.assertEquals(trim, "minecraft:gold", "Wrong trim was applied.");
+                ctx.assertEquals(trim, "minecraft:gold", Text.of("Wrong trim was applied."));
             } else {
-                ctx.assertTrue(false, "No Trim Component in stack" + stack.toString());
+                ctx.assertTrue(false, Text.of("No Trim Component in stack" + stack.toString()));
             }
         });
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderman_enderite")
     public static void endermanEnderiteTest(TestContext ctx) {
         ServerWorld world = ctx.getWorld();
         BlockPos pos = ctx.getAbsolutePos(new BlockPos(0, 1, 0));
@@ -260,35 +254,33 @@ public class EnderiteTests {
         DamageSource source2 = world.getDamageSources().arrow(persistentProjectileEntity2, player);
         int damage = 10;
         enderman.damage(world, source2, damage);
-        ctx.assertEquals(enderman.getHealth(), enderman.getMaxHealth() - damage, "Enderman not damaged from enderite arrow!");
+        ctx.assertEquals(enderman.getHealth(), enderman.getMaxHealth() - damage, Text.of("Enderman not damaged from enderite arrow!"));
 
         PersistentProjectileEntity persistentProjectileEntity = ((ArrowItem) Items.ARROW)
             .createArrow(world, Items.ARROW.getDefaultStack(), player, Items.BOW.getDefaultStack());
         DamageSource source = world.getDamageSources().arrow(persistentProjectileEntity, player);
         enderman.damage(world, source, damage);
-        ctx.assertEquals(enderman.getHealth(), enderman.getMaxHealth() - damage, "Enderman damaged from default arrow!");
+        ctx.assertEquals(enderman.getHealth(), enderman.getMaxHealth() - damage, Text.of("Enderman damaged from default arrow!"));
 
         enderman.discard();
         ctx.complete();
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_smelting")
     public static void enderiteSmeltingTest(TestContext ctx) {
         BlockPos pos = new BlockPos(0, 1, 0);
 
         ctx.waitAndRun(15, () -> {
-            BlockEntity be = ctx.getBlockEntity(pos);
+            BlockEntity be = ctx.getBlockEntity(pos, BlastFurnaceBlockEntity.class);
             if (be instanceof BlastFurnaceBlockEntity bfbe) {
                 ItemStack stack = bfbe.getStack(2);
-                ctx.assertTrue(stack.isOf(EnderiteMod.ENDERITE_SCRAP.get()), "No scrap produced");
+                ctx.assertTrue(stack.isOf(EnderiteMod.ENDERITE_SCRAP.get()), Text.of("No scrap produced"));
             } else {
-                ctx.assertTrue(false, "No Chest Block Entity found");
+                ctx.assertTrue(false, Text.of("No Chest Block Entity found"));
             }
             ctx.complete();
         });
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_dispenser_shears")
     public static void enderiteDispenserShearsTest(TestContext ctx) {
         ServerWorld world = ctx.getWorld();
         BlockPos pos = ctx.getAbsolutePos(new BlockPos(0, 1, 0));
@@ -302,15 +294,14 @@ public class EnderiteTests {
         ctx.waitAndRun(5, () -> {
             LivingEntity entity = world.getClosestEntity(SheepEntity.class, TargetPredicate.DEFAULT, null, pos.getX(), pos.getY(), pos.getZ(), Box.enclosing(pos, pos));
             if (entity instanceof SheepEntity sheep) {
-                ctx.assertTrue(sheep.isSheared(), "Sheep is not sheared!");
+                ctx.assertTrue(sheep.isSheared(), Text.of("Sheep is not sheared!"));
             } else {
-                ctx.assertTrue(false, "No sheep spawned!");
+                ctx.assertTrue(false, Text.of("No sheep spawned!"));
             }
             ctx.complete();
         });
     }
 
-    @GameTest(templateName = TMPL_PRE + "enderite_dispenser_shulkerbox")
     public static void enderiteDispenserShulkerboxTest(TestContext ctx) {
         BlockPos pos = new BlockPos(0, 1, 0);
         BlockPos button_pos = new BlockPos(1, 1, 1);
@@ -326,12 +317,12 @@ public class EnderiteTests {
     public static void crafterRecipeTest(TestContext ctx, Consumer<ItemStack> stackVerifier) {
         ctx.pushButton(1, 1, 1);
         ctx.waitAndRun(15, () -> {
-            BlockEntity be = ctx.getBlockEntity(new BlockPos(0, 1, 0));
+            BlockEntity be = ctx.getBlockEntity(new BlockPos(0, 1, 0), ChestBlockEntity.class);
             if (be instanceof ChestBlockEntity cbe) {
                 ItemStack stack = cbe.getStack(0);
                 stackVerifier.accept(stack);
             } else {
-                ctx.assertTrue(false, "No Chest Block Entity found");
+                ctx.assertTrue(false, Text.of("No Chest Block Entity found"));
             }
             ctx.complete();
         });

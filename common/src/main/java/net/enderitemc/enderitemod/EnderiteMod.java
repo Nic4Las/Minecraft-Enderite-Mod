@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod;
 
 import com.google.common.base.Suppliers;
+import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.level.biome.BiomeModifications;
@@ -13,7 +14,7 @@ import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAncho
 import net.enderitemc.enderitemod.config.Config;
 import net.enderitemc.enderitemod.config.ConfigLoader;
 import net.enderitemc.enderitemod.materials.EnderiteArmorMaterial;
-import net.enderitemc.enderitemod.misc.EnderiteDataComponents;
+import net.enderitemc.enderitemod.component.EnderiteDataComponents;
 import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.enderitemc.enderitemod.misc.EnderiteUpgradeSmithingTemplate;
@@ -22,6 +23,8 @@ import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxScreenHandler;
 import net.enderitemc.enderitemod.tools.BlockEntityTypeBuilder;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -34,6 +37,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.Settings;
 import net.minecraft.item.equipment.EquipmentType;
+import net.minecraft.item.tooltip.TooltipAppender;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.SpecialCraftingRecipe.SpecialRecipeSerializer;
@@ -47,6 +51,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.world.gen.GenerationStep;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class EnderiteMod {
@@ -113,23 +118,22 @@ public class EnderiteMod {
 
     // Enderite Armor
     public static final RegistrySupplier<Item> ENDERITE_HELMET = ITEMS.register("enderite_helmet",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentType.HELMET,
-            (getItemSettings("enderite_helmet", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.HELMET.getMaxDamage(CONFIG.armor.durabilityMultiplier)))));
+        () -> new Item((getItemSettings("enderite_helmet", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.HELMET.getMaxDamage(CONFIG.armor.durabilityMultiplier)))
+            .armor(EnderiteArmorMaterial.ENDERITE, EquipmentType.HELMET)));
     public static final RegistrySupplier<Item> ENDERITE_CHESTPLATE = ITEMS.register("enderite_chestplate",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentType.CHESTPLATE,
-            (getItemSettings("enderite_chestplate", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.CHESTPLATE.getMaxDamage(CONFIG.armor.durabilityMultiplier)))));
+        () -> new Item((getItemSettings("enderite_chestplate", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.CHESTPLATE.getMaxDamage(CONFIG.armor.durabilityMultiplier)))
+            .armor(EnderiteArmorMaterial.ENDERITE, EquipmentType.CHESTPLATE)));
     public static final RegistrySupplier<Item> ENDERITE_LEGGINGS = ITEMS.register("enderite_leggings",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentType.LEGGINGS,
-            (getItemSettings("enderite_leggings", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.LEGGINGS.getMaxDamage(CONFIG.armor.durabilityMultiplier)))));
+        () -> new Item((getItemSettings("enderite_leggings", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.LEGGINGS.getMaxDamage(CONFIG.armor.durabilityMultiplier)))
+            .armor(EnderiteArmorMaterial.ENDERITE, EquipmentType.LEGGINGS)));
     public static final RegistrySupplier<Item> ENDERITE_BOOTS = ITEMS.register("enderite_boots",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE, EquipmentType.BOOTS,
-            (getItemSettings("enderite_boots", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.BOOTS.getMaxDamage(CONFIG.armor.durabilityMultiplier)))));
+        () -> new Item((getItemSettings("enderite_boots", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.BOOTS.getMaxDamage(CONFIG.armor.durabilityMultiplier)))
+            .armor(EnderiteArmorMaterial.ENDERITE, EquipmentType.BOOTS)));
 
     // Enderite Elytra
     public static final RegistrySupplier<Item> ENDERITE_ELYTRA = EnderiteMod.ITEMS.register("enderite_elytra",
-        () -> new ArmorItem(EnderiteArmorMaterial.ENDERITE_ELYTRA,
-            EquipmentType.CHESTPLATE,
-            getItemSettings("enderite_elytra", EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS.get())
+        () -> new Item(getItemSettings("enderite_elytra", EnderiteMod.ENDERITE_ELYTRA_ITEM_SETTINGS.get())
+            .armor(EnderiteArmorMaterial.ENDERITE_ELYTRA, EquipmentType.CHESTPLATE)
         ));
     public static final RegistrySupplier<Item> ENDERITE_ELYTRA_SEPERATED = EnderiteMod.ITEMS.register(
         "enderite_elytra_seperated",
@@ -195,12 +199,12 @@ public class EnderiteMod {
         // Init static enderite tools
         EnderiteTools.init();
 
+        EnderiteDataComponents.init();
         BLOCKS.register();
         ITEMS.register();
         RECIPES.register();
         BLOCK_ENTITY_TYPES.register();
         TABS.register();
-        EnderiteDataComponents.init();
 
         LifecycleEvent.SETUP.register(() -> {
             BiomeModifications.addProperties((ctx) -> ctx.hasTag(BiomeTags.IS_END), (ctx, mutable) -> {
@@ -217,6 +221,21 @@ public class EnderiteMod {
         });
 
         EnderiteUpgradeSmithingTemplate.registerLoottables();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void clientInit() {
+        ClientTooltipEvent.ITEM.register((stack, lines, tooltipContext, flag) -> {
+            ArrayList<Text> component_tooltip = new ArrayList<>();
+            if(stack.get(EnderiteDataComponents.TELEPORT_CHARGE.get()) instanceof TooltipAppender tta) {
+                tta.appendTooltip(tooltipContext, component_tooltip::add, flag, stack.getComponents());
+            }
+
+            if(stack.get(EnderiteDataComponents.ENDERITE_TOOLTIP.get()) instanceof TooltipAppender tta) {
+                tta.appendTooltip(tooltipContext, component_tooltip::add, flag, stack.getComponents());
+            }
+            lines.addAll(1, component_tooltip);
+        });
     }
 
     public static AbstractBlock.Settings getBlockSettings(String id) {

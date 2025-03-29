@@ -230,7 +230,7 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
 
     public void readInventoryNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
         this.inventory = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
-        if (!this.readLootTable(nbt) && nbt.contains("Items", NbtElement.LIST_TYPE)) {
+        if (!this.readLootTable(nbt)) {
             Inventories.readNbt(nbt, this.inventory, lookup);
         }
     }
