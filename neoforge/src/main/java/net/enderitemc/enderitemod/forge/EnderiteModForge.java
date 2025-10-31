@@ -1,5 +1,6 @@
 package net.enderitemc.enderitemod.forge;
 
+import com.mojang.serialization.MapCodec;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorRenderer;
@@ -12,6 +13,7 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.dispenser.ShearsDispenserBehavior;
 import net.minecraft.client.render.item.model.special.SpecialModelTypes;
+import net.minecraft.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,6 +23,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.RegisterItemModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,7 +52,7 @@ public class EnderiteModForge {
         });
     }
 
-    @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT, modid = EnderiteMod.MOD_ID)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = EnderiteMod.MOD_ID)
     public static class RegistryEventsClient {
 
         @SubscribeEvent
@@ -71,7 +74,7 @@ public class EnderiteModForge {
                 }
 
                 // Special model types (No neoforge event)
-                SpecialModelTypes.ID_MAPPER.put(RendererRegistries.ENDERITE_SHIELD.id(), RendererRegistries.ENDERITE_SHIELD.codec());
+//                SpecialModelTypes.ID_MAPPER.put(RendererRegistries.ENDERITE_SHIELD.id(), RendererRegistries.ENDERITE_SHIELD.codec());
             });
         }
 
@@ -89,6 +92,11 @@ public class EnderiteModForge {
         public static void setupConditionalProviders(RegisterConditionalItemModelPropertyEvent event) {
             // Boolean properties
             event.register(RendererRegistries.ENDERITE_PLAYER_SNEAKS.id(), RendererRegistries.ENDERITE_PLAYER_SNEAKS.codec());
+        }
+
+        @SubscribeEvent
+        public static void registerItemModels(RegisterItemModelsEvent event) {
+            SpecialModelTypes.ID_MAPPER.put(RendererRegistries.ENDERITE_SHIELD.id(), RendererRegistries.ENDERITE_SHIELD.codec());
         }
     }
 }

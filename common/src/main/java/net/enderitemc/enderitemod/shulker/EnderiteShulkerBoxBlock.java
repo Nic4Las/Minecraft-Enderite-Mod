@@ -32,6 +32,8 @@ import java.util.List;
 
 public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
 
+    public static final Identifier CONTENTS_DYNAMIC_DROP_ID = Identifier.ofVanilla("contents");
+
     public EnderiteShulkerBoxBlock(String id) {
         super((DyeColor) null, Settings.copy(Blocks.SHULKER_BOX)
             .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(EnderiteMod.MOD_ID, id)))
@@ -86,7 +88,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
-            if (!world.isClient && player.isCreative() && !shulkerBoxBlockEntity.isEmpty()) {
+            if (!world.isClient && player.shouldSkipBlockDrops() && !shulkerBoxBlockEntity.isEmpty()) {
                 ItemStack itemStack = getItemStack();
                 itemStack.applyComponentsFrom(blockEntity.createComponentMap());
                 ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
@@ -101,11 +103,11 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         return super.onBreak(world, pos, state, player);
     }
 
+
     @Override
     public List<ItemStack> getDroppedStacks(BlockState state, LootWorldContext.Builder builder) {
         BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
-        if (blockEntity instanceof EnderiteShulkerBoxBlockEntity) {
-            EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity = (EnderiteShulkerBoxBlockEntity) blockEntity;
+        if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
             builder = builder.addDynamicDrop(CONTENTS_DYNAMIC_DROP_ID, lootConsumer -> {
                 for (int i = 0; i < shulkerBoxBlockEntity.size(); ++i) {
                     lootConsumer.accept(shulkerBoxBlockEntity.getStack(i));

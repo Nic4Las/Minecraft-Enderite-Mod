@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity implements SidedInventory {
-    private static final int[] AVAILABLE_SLOTS = IntStream.range(0, 27).toArray();
+    private static final int[] AVAILABLE_SLOTS = IntStream.range(0, 45).toArray();
     private DefaultedList<ItemStack> inventory;
     private int viewerCount;
     private EnderiteShulkerBoxBlockEntity.AnimationStage animationStage;
@@ -181,6 +181,10 @@ public class EnderiteShulkerBoxBlockEntity extends LootableContainerBlockEntity 
 
     private void updateNeighborStates() {
         this.getCachedState().updateNeighbors(this.getWorld(), this.getPos(), 3);
+    }
+
+    @Override
+    public void onBlockReplaced(BlockPos pos, BlockState oldState){
     }
 
     public void onOpen(PlayerEntity player) {

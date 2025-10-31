@@ -249,4 +249,6 @@ public class EnderiteMod {
     public static Item.Settings getItemSettings(String id, Item.Settings settings) {
         return settings.registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, id)));
     }
+
+
 }

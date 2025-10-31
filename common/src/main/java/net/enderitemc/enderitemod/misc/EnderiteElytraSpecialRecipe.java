@@ -16,6 +16,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.World;
 
+import static net.enderitemc.enderitemod.ComponentHolderWrapper.contains;
+
 public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
     public EnderiteElytraSpecialRecipe(CraftingRecipeCategory category) {
         super(category);
@@ -35,7 +37,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
 
                     itemStack2 = itemStack3;
                 } else {
-                    if (!itemStack3.contains(DataComponentTypes.GLIDER)) {
+                    if (!contains(itemStack3,DataComponentTypes.GLIDER)) {
                         return false;
                     }
 
@@ -65,7 +67,7 @@ public class EnderiteElytraSpecialRecipe extends SpecialCraftingRecipe {
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.isOf(EnderiteMod.ENDERITE_CHESTPLATE.get())) {
                     chestplate_stack = itemStack3;
-                } else if (itemStack3.contains(DataComponentTypes.GLIDER)) {
+                } else if (contains(itemStack3,  DataComponentTypes.GLIDER)) {
                     elytra_stack = itemStack3.copy();
                 }
             }

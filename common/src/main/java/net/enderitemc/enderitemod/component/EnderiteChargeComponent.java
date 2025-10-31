@@ -67,4 +67,14 @@ public class EnderiteChargeComponent extends Number implements TooltipAppender {
         textConsumer.accept(Text.translatable("item.enderitemod.enderite_sword.charge")
                 .formatted(new Formatting[]{Formatting.DARK_AQUA}).append(Text.literal(": " + charge)));
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
