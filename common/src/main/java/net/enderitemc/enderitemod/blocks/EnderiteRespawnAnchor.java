@@ -52,7 +52,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (state.get(CHARGES) == 0) {
             return ActionResult.PASS;
-        } else if (!isNether(world)) {
+        } else if (!isEnd(world)) {
             if (!world.isClient) {
                 this.explode(state, world, pos);
             }
@@ -73,8 +73,12 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
         }
     }
 
-    public static boolean isNether(World world) {
+    public static boolean isEnd(World world) {
         return world.getDimensionEntry().matchesKey(DimensionTypes.THE_END);// getDimension().hasEnderDragonFight();
+    }
+
+    public static boolean shouldRespawnPlayer(World world, boolean is_dead) {
+        return isEnd(world) && is_dead;
     }
 
     private static boolean canCharge(BlockState state) {

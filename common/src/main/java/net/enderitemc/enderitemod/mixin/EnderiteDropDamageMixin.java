@@ -1,6 +1,5 @@
 package net.enderitemc.enderitemod.mixin;
 
-import java.util.Optional;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.component.DataComponentTypes;

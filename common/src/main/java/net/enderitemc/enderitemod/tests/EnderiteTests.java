@@ -10,8 +10,6 @@ import net.minecraft.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ContainerComponent;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -32,7 +30,6 @@ import net.minecraft.item.equipment.trim.ArmorTrimPattern;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.test.GameTestState;
 import net.minecraft.test.TestContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -46,7 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class EnderiteTests {
@@ -127,7 +123,7 @@ public class EnderiteTests {
         }
 
         ctx.useBlock(anchor_pos, player);
-        if (EnderiteRespawnAnchor.isNether(ctx.getWorld())) {
+        if (EnderiteRespawnAnchor.isEnd(ctx.getWorld())) {
             // End -> Check if there
             ctx.expectBlock(EnderiteMod.ENDERITE_RESPAWN_ANCHOR.get(), anchor_pos);
             ctx.expectBlock(Blocks.DIRT, dirt_pos);

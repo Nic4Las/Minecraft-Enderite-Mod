@@ -2,8 +2,6 @@ package net.enderitemc.enderitemod.component;
 
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.component.ComponentType;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.util.dynamic.Codecs;
 
 import java.util.function.UnaryOperator;
 

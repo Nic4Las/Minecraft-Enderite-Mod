@@ -19,19 +19,19 @@ import java.util.Optional;
 public class EnderiteRespawnAnchorMixin {
 
     @Inject(at = @At("HEAD"), method = "findRespawnPosition", cancellable = true)
-    private static void isEnd(ServerWorld world, ServerPlayerEntity.Respawn respawn, boolean alive, CallbackInfoReturnable<Optional<ServerPlayerEntity.RespawnPos>> cir) {
+    private static void isEnd(ServerWorld world, ServerPlayerEntity.Respawn respawn, boolean is_dead, CallbackInfoReturnable<Optional<ServerPlayerEntity.RespawnPos>> cir) {
         // Implements possibility to spawn in end with enderite respawn anchor
         BlockPos pos = respawn.pos();
         BlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
         boolean spawnForced = respawn.forced();
         // isNether() method is actually checking if dimension is the end
-        if (block instanceof EnderiteRespawnAnchor && (spawnForced || (Integer) blockState.get(EnderiteRespawnAnchor.CHARGES) > 0)
-            && EnderiteRespawnAnchor.isNether(world)) {
+        if (block instanceof EnderiteRespawnAnchor && (spawnForced || blockState.get(EnderiteRespawnAnchor.CHARGES) > 0)
+            && EnderiteRespawnAnchor.shouldRespawnPlayer(world, is_dead)) {
             Optional<Vec3d> optional = EnderiteRespawnAnchor.findRespawnPosition(EntityType.PLAYER, world, pos);
-            if (!spawnForced && alive && optional.isPresent()) {
-                world.setBlockState(pos, (BlockState) blockState.with(EnderiteRespawnAnchor.CHARGES,
-                    (Integer) blockState.get(EnderiteRespawnAnchor.CHARGES) - 1), 3);
+            if (!spawnForced && optional.isPresent()) {
+                world.setBlockState(pos, blockState.with(EnderiteRespawnAnchor.CHARGES,
+                    blockState.get(EnderiteRespawnAnchor.CHARGES) - 1), 3);
             }
 
             cir.setReturnValue(optional.map(respawnPos -> ServerPlayerEntity.RespawnPos.fromCurrentPos(respawnPos, pos)));

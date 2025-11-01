@@ -4,19 +4,13 @@ import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BannerPatternsComponent;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
 
 public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
