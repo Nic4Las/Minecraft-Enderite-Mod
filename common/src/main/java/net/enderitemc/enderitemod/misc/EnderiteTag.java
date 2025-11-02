@@ -2,6 +2,7 @@ package net.enderitemc.enderitemod.misc;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -27,5 +28,8 @@ public class EnderiteTag {
         Identifier.of(EnderiteMod.MOD_ID, "needs_enderite_tool"));
     public static final TagKey<Block> IS_VOID_FLOATING_ENCHANTABLE = TagKey.of(RegistryKeys.BLOCK,
         Identifier.of(EnderiteMod.MOD_ID, "is_void_floating_enchantable"));
+
+    public static final TagKey<EntityType<?>> UNAFFECTED_BY_ENDERITE_SHIELD = TagKey.of(RegistryKeys.ENTITY_TYPE,
+        Identifier.of(EnderiteMod.MOD_ID, "unaffected_by_enderite_shield"));
 
 }

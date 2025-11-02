@@ -82,7 +82,7 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "enderitemod:item/enderite_resin_trim"
+          "model": "enderitemod:item/enderite_helmet_resin_trim"
         },
         "when": "minecraft:resin"
       }

@@ -47,7 +47,7 @@ public class EnderiteSword extends Item {
             double maxDown = down - distance - 1 > world.getBottomY() ? down - distance - 1 : world.getBottomY();
             double up = endPosition.y + 1;
             double maxUp = 128;
-            if (playerEntity.getEntityWorld().getDimension().respawnAnchorWorks()) {
+            if (playerEntity.getWorld().getDimension().respawnAnchorWorks()) {
                 maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
             } else {
                 maxUp = up + distance - 1 < world.getTopYInclusive() ? up + distance - 1 : world.getTopYInclusive();

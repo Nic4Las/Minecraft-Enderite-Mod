@@ -2,12 +2,10 @@ package net.enderitemc.enderitemod.mixin;
 
 import net.enderitemc.enderitemod.component.EnderiteChargeComponent;
 import net.enderitemc.enderitemod.component.EnderiteDataComponents;
+import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.mob.ElderGuardianEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,8 +38,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
 
             int charge = this.activeItemStack.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
 
-            if (!world.isClient() && charge > 0 && !(attacker instanceof EnderDragonEntity
-                || attacker instanceof WitherEntity || attacker instanceof ElderGuardianEntity)) {
+            if (!world.isClient() && charge > 0 && !attacker.getType().isIn(EnderiteTag.UNAFFECTED_BY_ENDERITE_SHIELD)) {
                 double d = attacker.getX();
                 double e = attacker.getY();
                 double f = attacker.getZ();

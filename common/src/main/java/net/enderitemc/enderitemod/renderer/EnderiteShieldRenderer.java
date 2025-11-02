@@ -27,8 +27,10 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap> {
@@ -100,6 +102,13 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
             this.renderSides(matrixStack.peek().getPositionMatrix(), vertexConsumerProvider.getBuffer(RenderLayer.getEndPortal()));
         }
         matrixStack.pop();
+    }
+
+    @Override
+    public void collectVertices(Set<Vector3f> vertices) {
+        MatrixStack matrixStack = new MatrixStack();
+        matrixStack.scale(1.0F, -1.0F, -1.0F);
+        this.model.getRootPart().collectVertices(matrixStack, vertices);
     }
 
     @Environment(EnvType.CLIENT)

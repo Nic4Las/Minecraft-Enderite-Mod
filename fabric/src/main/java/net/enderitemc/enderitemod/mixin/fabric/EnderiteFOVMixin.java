@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class EnderiteFOVMixin extends PlayerEntity {
 
-    public EnderiteFOVMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
-        super(world, pos, yaw, gameProfile);
+    public EnderiteFOVMixin(World world, GameProfile gameProfile) {
+        super(world, gameProfile);
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isUsingItem()Z"), method = "getFovMultiplier(ZF)F")

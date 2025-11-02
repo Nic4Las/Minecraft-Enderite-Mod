@@ -1,9 +1,11 @@
 {
   "credit": "Made with Blockbench",
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column",
   "textures": {
     "0": "enderitemod:block/cracked_enderite_ore_side",
     "1": "enderitemod:block/cracked_enderite_ore_top",
+    "side": "#0",
+    "end": "#1",
     "particle": "enderitemod:block/cracked_enderite_ore_side"
   },
   "elements": [

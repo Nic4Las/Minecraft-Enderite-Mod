@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 
 public class ClothConfig {
+    public static final int WARN_COLOR = 0xFFFF1100;
 
     public final Screen screen;
     Config DEFAULT = new Config();
@@ -42,7 +43,7 @@ public class ClothConfig {
         general.addEntry(entryBuilder
             .startTextDescription(Text.translatable(
                 "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json"))
-            .setColor(0xFF1100)
+            .setColor(WARN_COLOR)
             .setTooltip(Text.translatable(
                     "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json.hover")
                 .append("\n- enderitemod/enchantment/void_floating.json")
@@ -159,7 +160,7 @@ public class ClothConfig {
         restart.addEntry(entryBuilder
             .startTextDescription(Text.translatable(
                 "option.enderitemod.restart.enderite_ore.moved_to_json"))
-            .setColor(0xFF1100)
+            .setColor(WARN_COLOR)
             .setTooltip(Text.translatable(
                     "option.enderitemod.restart.enderite_ore.moved_to_json.hover")
                 .append("\n- enderitemod/worldgen/configured_feature/ore_enderite_large.json")
