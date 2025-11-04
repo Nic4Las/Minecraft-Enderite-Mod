@@ -60,7 +60,12 @@ processResources {
     inputs.property 'version', project.version
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand version: project.version
+        expand (version: project.version,
+                minecraft_version: rootProject.minecraft_version_min,
+                neoforge_version: rootProject.neoforge_version_min,
+                architectury_version: rootProject.architectury_api_version_min,
+                cloth_config_version: rootProject.cloth_config_version_min,
+                shulker_box_tooltip_version: rootProject.shulker_box_tooltip_version_min)
     }
 }
 

@@ -40,9 +40,13 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.21.4",
-    "architectury": ">=15.0.0",
-    "fabric-api": ">=0.112.0",
-    "cloth-config": ">=17.0.0"
+    "minecraft": ">=${minecraft_version}",
+    "architectury": ">=${architectury_version}",
+    "fabric-api": ">=${fabric_api_version}",
+    "cloth-config": ">=${cloth_config_version}"
+  },
+  "suggests": {
+    "modmenu": ">=${mod_menu_version}",
+    "shulkerboxtooltip": ">=${shulker_box_tooltip_version}"
   }
 }
