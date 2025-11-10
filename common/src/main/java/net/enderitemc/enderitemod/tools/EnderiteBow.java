@@ -47,7 +47,7 @@ public class EnderiteBow extends BowItem {
                 float f = getPullProgress(i);
                 if (!((double) f < 0.1)) {
                     List<ItemStack> list = load(stack, itemStack, playerEntity);
-                    int proj_count = playerEntity.getWorld() instanceof ServerWorld serverWorld ? EnchantmentHelper.getProjectileCount(serverWorld, stack, playerEntity, 1) : 1;
+                    int proj_count = playerEntity.getEntityWorld() instanceof ServerWorld serverWorld ? EnchantmentHelper.getProjectileCount(serverWorld, stack, playerEntity, 1) : 1;
                     if (bl) {
                         // If can use Enderite Bow without Arrow, then fill up projectiles list
                         for (int proj_idx = 0; proj_idx < proj_count - list.size(); proj_idx++) {
@@ -122,7 +122,7 @@ public class EnderiteBow extends BowItem {
     }
 
     private static boolean canUseWithoutArrow(ItemStack bow, PlayerEntity user) {
-        var inf_enchant = user.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.INFINITY.getValue());
+        var inf_enchant = user.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.INFINITY.getValue());
         return user.getAbilities().creativeMode || !EnderiteMod.CONFIG.tools.enderiteBowNeedsArrow
             || (!EnderiteMod.CONFIG.tools.enderiteBowWithInfinityNeedsArrow && inf_enchant.isPresent() && EnchantmentHelper.getLevel(inf_enchant.get(), bow) > 0);
     }

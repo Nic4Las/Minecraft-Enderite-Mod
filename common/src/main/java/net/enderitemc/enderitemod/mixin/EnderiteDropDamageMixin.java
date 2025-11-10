@@ -30,11 +30,11 @@ public abstract class EnderiteDropDamageMixin extends Entity {
     @Inject(at = @At("HEAD"), method = "tick")
     private void damageItem(CallbackInfo info) {
         // Items in the void get teleported up and will live on (because they float)
-        if (this.getY() < this.getWorld().getBottomY()) {
+        if (this.getY() < this.getEntityWorld().getBottomY()) {
             int i = 0;
 
             // Survival rate with Void Floating Enchantment
-            var enchant = this.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(EnderiteMod.VOID_FLOATING_ENCHANTMENT_ID);
+            var enchant = this.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(EnderiteMod.VOID_FLOATING_ENCHANTMENT_ID);
             if (enchant.isPresent()) {
                 i += EnchantmentHelper.getLevel(enchant.get(), getStack());
             }
@@ -54,7 +54,7 @@ public abstract class EnderiteDropDamageMixin extends Entity {
                 this.unsetRemoved(); //this.removed = false;
                 // ItemEntity itemEntity = new ItemEntity(this.world, this.getX(), 10,
                 // this.getZ(), getStack());
-                this.requestTeleport(this.getX(), this.getWorld().getBottomY() + 10, this.getZ());
+                this.requestTeleport(this.getX(), this.getEntityWorld().getBottomY() + 10, this.getZ());
                 this.setVelocity(0, 0, 0);
                 this.setNoGravity(true);
                 this.setGlowing(true);

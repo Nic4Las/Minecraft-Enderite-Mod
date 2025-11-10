@@ -1,6 +1,5 @@
 package net.enderitemc.enderitemod.forge;
 
-import com.mojang.serialization.MapCodec;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorRenderer;
@@ -13,7 +12,6 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.dispenser.ShearsDispenserBehavior;
 import net.minecraft.client.render.item.model.special.SpecialModelTypes;
-import net.minecraft.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;

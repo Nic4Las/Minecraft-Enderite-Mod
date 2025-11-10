@@ -9,13 +9,12 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BannerBlockEntityRenderer;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.render.entity.model.LoadedEntityModels;
 import net.minecraft.client.render.entity.model.ShieldEntityModel;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.item.model.special.SpecialModelRenderer;
+import net.minecraft.client.texture.SpriteHolder;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.ComponentMap;
@@ -25,6 +24,7 @@ import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Unit;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -41,10 +41,12 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
         TexturedRenderLayers.SHIELD_PATTERNS_ATLAS_TEXTURE, Identifier.of(EnderiteMod.MOD_ID, "entity/enderite_shield_base_nopattern")
     );
 
+    private final SpriteHolder spriteHolder;
     private final ShieldEntityModel model;
     private final boolean charged;
 
-    public EnderiteShieldRenderer(ShieldEntityModel model, boolean charged) {
+    public EnderiteShieldRenderer(SpriteHolder spriteHolder, ShieldEntityModel model, boolean charged) {
+        this.spriteHolder = spriteHolder;
         this.model = model;
         this.charged = charged;
     }
@@ -54,14 +56,16 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
         return itemStack.getImmutableComponents();
     }
 
+    @Override
     public void render(
         @Nullable ComponentMap componentMap,
-        ItemDisplayContext modelTransformationMode,
+        ItemDisplayContext displayContext,
         MatrixStack matrixStack,
-        VertexConsumerProvider vertexConsumerProvider,
-        int i,
-        int j,
-        boolean bl
+        OrderedRenderCommandQueue queue,
+        int light,
+        int overlay,
+        boolean glint,
+        int i
     ) {
         BannerPatternsComponent bannerPatternsComponent = componentMap != null
             ? componentMap.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT)
@@ -71,35 +75,59 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
         matrixStack.push();
         matrixStack.scale(1.0F, -1.0F, -1.0F);
         SpriteIdentifier spriteIdentifier = bl2 ? ENDERITE_SHIELD_BASE : ENDERITE_SHIELD_BASE_NO_PATTERN;
-        VertexConsumer vertexConsumer = spriteIdentifier.getSprite()
-            .getTextureSpecificVertexConsumer(
-                ItemRenderer.getItemGlintConsumer(
-                    vertexConsumerProvider, this.model.getLayer(spriteIdentifier.getAtlasId()), modelTransformationMode == ItemDisplayContext.GUI, bl
-                )
-            );
-        this.model.getHandle().render(matrixStack, vertexConsumer, i, j);
+        queue.submitModelPart(
+            this.model.getHandle(),
+            matrixStack,
+            this.model.getLayer(spriteIdentifier.getAtlasId()),
+            light,
+            overlay,
+            this.spriteHolder.getSprite(spriteIdentifier),
+            false,
+            glint,
+            -1,
+            null,
+            i
+        );
         if (bl2) {
             BannerBlockEntityRenderer.renderCanvas(
+                this.spriteHolder,
                 matrixStack,
-                vertexConsumerProvider,
-                i,
-                j,
-                this.model.getPlate(),
+                queue,
+                light,
+                overlay,
+                this.model,
+                Unit.INSTANCE,
                 spriteIdentifier,
                 false,
                 (DyeColor) Objects.requireNonNullElse(dyeColor, DyeColor.WHITE),
                 bannerPatternsComponent,
-                bl,
-                false
+                glint,
+                null,
+                i
             );
         } else {
-            this.model.getPlate().render(matrixStack, vertexConsumer, i, j);
+            queue.submitModelPart(
+                this.model.getPlate(),
+                matrixStack,
+                this.model.getLayer(spriteIdentifier.getAtlasId()),
+                light,
+                overlay,
+                this.spriteHolder.getSprite(spriteIdentifier),
+                false,
+                glint,
+                -1,
+                null,
+                i
+            );
         }
         if (this.charged &&
-            (modelTransformationMode == ItemDisplayContext.THIRD_PERSON_LEFT_HAND
-                || modelTransformationMode == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) {
+            (displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND
+                || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) {
             // Custom end portal shader
-            this.renderSides(matrixStack.peek().getPositionMatrix(), vertexConsumerProvider.getBuffer(RenderLayer.getEndPortal()));
+            queue.submitCustom(
+                matrixStack,
+                RenderLayer.getEndPortal(),
+                this::renderSides);
         }
         matrixStack.pop();
     }
@@ -126,12 +154,13 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
         }
 
         @Override
-        public SpecialModelRenderer<?> bake(LoadedEntityModels entityModels) {
-            return new EnderiteShieldRenderer(new ShieldEntityModel(entityModels.getModelPart(EntityModelLayers.SHIELD)), charged);
+        public SpecialModelRenderer<?> bake(SpecialModelRenderer.BakeContext context) {
+            return new EnderiteShieldRenderer(context.spriteHolder(), new ShieldEntityModel(context.entityModelSet().getModelPart(EntityModelLayers.SHIELD)), charged);
         }
     }
 
-    private void renderSides(Matrix4f matrix, VertexConsumer vertexConsumer) {
+    private void renderSides(MatrixStack.Entry matrixEntry, VertexConsumer vertexConsumer) {
+        Matrix4f matrix = matrixEntry.getPositionMatrix();
         float border = 1.0f;
         float f = (-6.0F + border) / 16.0f;
         float g = (-11.0F + border) / 16.0f;

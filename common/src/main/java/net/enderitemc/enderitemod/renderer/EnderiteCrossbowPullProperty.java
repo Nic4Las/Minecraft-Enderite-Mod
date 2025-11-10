@@ -9,6 +9,7 @@ import net.minecraft.client.render.item.property.numeric.UseDurationProperty;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.HeldItemContext;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
@@ -16,12 +17,13 @@ public class EnderiteCrossbowPullProperty implements NumericProperty {
     public static final MapCodec<EnderiteCrossbowPullProperty> CODEC = MapCodec.unit(new EnderiteCrossbowPullProperty());
 
     @Override
-    public float getValue(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity holder, int seed) {
-        if (holder == null) {
+    public float getValue(ItemStack stack, @Nullable ClientWorld world, @Nullable HeldItemContext context, int seed) {
+        if (context == null || context.getEntity() == null) {
             return 0.0F;
         } else if (EnderiteCrossbow.isCharged(stack)) {
             return 0.0F;
         } else {
+            LivingEntity holder = context.getEntity();
             int i = EnderiteCrossbow.getPullTime(stack, holder);
             return (float) UseDurationProperty.getTicksUsedSoFar(stack, holder) / (float) i;
         }

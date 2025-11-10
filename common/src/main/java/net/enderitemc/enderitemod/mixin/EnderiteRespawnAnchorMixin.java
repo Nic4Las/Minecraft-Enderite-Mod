@@ -21,7 +21,7 @@ public class EnderiteRespawnAnchorMixin {
     @Inject(at = @At("HEAD"), method = "findRespawnPosition", cancellable = true)
     private static void isEnd(ServerWorld world, ServerPlayerEntity.Respawn respawn, boolean is_dead, CallbackInfoReturnable<Optional<ServerPlayerEntity.RespawnPos>> cir) {
         // Implements possibility to spawn in end with enderite respawn anchor
-        BlockPos pos = respawn.pos();
+        BlockPos pos = respawn.respawnData().getPos();
         BlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
         boolean spawnForced = respawn.forced();
@@ -34,7 +34,7 @@ public class EnderiteRespawnAnchorMixin {
                     blockState.get(EnderiteRespawnAnchor.CHARGES) - 1), 3);
             }
 
-            cir.setReturnValue(optional.map(respawnPos -> ServerPlayerEntity.RespawnPos.fromCurrentPos(respawnPos, pos)));
+            cir.setReturnValue(optional.map(respawnPos -> ServerPlayerEntity.RespawnPos.fromCurrentPos(respawnPos, pos, 35.0F)));
         }
     }
 

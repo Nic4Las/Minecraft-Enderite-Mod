@@ -8,17 +8,11 @@
     "EnderiteDropMixin",
     "EnderiteEndermanMixin",
     "EnderiteRespawnAnchorMixin",
-    "EnderiteShearsSheepMixin",
     "EnderiteShieldPlayerEntityMixin",
     "SmithingEnderiteSwordMixin"
   ],
   "client": [
-    "EnderiteCrossbowPlayerRendererMixin",
-    "EnderiteDropDamageMixin",
-    "EnderiteDropMixin",
-    "EnderiteEndermanMixin",
-    "EnderiteRespawnAnchorMixin",
-    "SmithingEnderiteSwordMixin"
+    "EnderiteCrossbowPlayerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

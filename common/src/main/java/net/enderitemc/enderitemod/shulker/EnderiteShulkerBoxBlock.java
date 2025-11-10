@@ -23,6 +23,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -34,10 +35,16 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
 
     public static final Identifier CONTENTS_DYNAMIC_DROP_ID = Identifier.ofVanilla("contents");
 
+    private static final AbstractBlock.ContextPredicate SUFFOCATES_PREDICATE = (state, world, pos) -> world.getBlockEntity(pos) instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity
+        ? shulkerBoxBlockEntity.suffocates()
+        : true;
+
     public EnderiteShulkerBoxBlock(String id) {
         super((DyeColor) null, Settings.copy(Blocks.SHULKER_BOX)
             .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(EnderiteMod.MOD_ID, id)))
-            .nonOpaque().strength(2.0f, 17.0f));
+            .nonOpaque().strength(2.0f, 17.0f)
+            .suffocates(SUFFOCATES_PREDICATE)
+            .blockVision(SUFFOCATES_PREDICATE));
     }
 
     @Override
@@ -88,7 +95,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) {
-            if (!world.isClient && player.shouldSkipBlockDrops() && !shulkerBoxBlockEntity.isEmpty()) {
+            if (!world.isClient() && player.shouldSkipBlockDrops() && !shulkerBoxBlockEntity.isEmpty()) {
                 ItemStack itemStack = getItemStack();
                 itemStack.applyComponentsFrom(blockEntity.createComponentMap());
                 ItemEntity itemEntity = new ItemEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
@@ -118,10 +125,17 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     }
 
     @Override
+    protected VoxelShape getSidesShape(BlockState state, BlockView world, BlockPos pos) {
+        return world.getBlockEntity(pos) instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity && !shulkerBoxBlockEntity.suffocates()
+            ? (VoxelShape)SHAPES_BY_DIRECTION.get(((Direction)state.get(FACING)).getOpposite())
+            : VoxelShapes.fullCube();
+    }
+
+    @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        return blockEntity instanceof EnderiteShulkerBoxBlockEntity
-            ? VoxelShapes.cuboid(((EnderiteShulkerBoxBlockEntity) blockEntity).getBoundingBox(state))
+        return blockEntity instanceof EnderiteShulkerBoxBlockEntity shulkerBlockEntity
+            ? VoxelShapes.cuboid(shulkerBlockEntity.getBoundingBox(state))
             : VoxelShapes.fullCube();
     }
 

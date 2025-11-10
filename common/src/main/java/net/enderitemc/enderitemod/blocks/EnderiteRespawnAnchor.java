@@ -17,6 +17,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProperties;
 import net.minecraft.world.dimension.DimensionTypes;
 
 public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEntityProvider {
@@ -37,7 +38,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
         if (EnderiteRespawnAnchor.isChargeItem(stack) && EnderiteRespawnAnchor.canCharge(state)) {
             EnderiteRespawnAnchor.charge(player, world, pos, state);
             stack.decrementUnlessCreative(1, player);
-            if (world.isClient && world.getBlockEntity(pos) instanceof EnderiteRespawnAnchorBlockEntity eRA) {
+            if (world.isClient() && world.getBlockEntity(pos) instanceof EnderiteRespawnAnchorBlockEntity eRA) {
                 eRA.charge = world.getBlockState(pos).get(CHARGES);
             }
             return ActionResult.SUCCESS;
@@ -53,7 +54,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
         if (state.get(CHARGES) == 0) {
             return ActionResult.PASS;
         } else if (!isEnd(world)) {
-            if (!world.isClient) {
+            if (!world.isClient()) {
                 this.explode(state, world, pos);
             }
 
@@ -61,7 +62,7 @@ public class EnderiteRespawnAnchor extends RespawnAnchorBlock implements BlockEn
         } else {
             if (player instanceof ServerPlayerEntity serverPlayerEntity) {
                 ServerPlayerEntity.Respawn respawn = serverPlayerEntity.getRespawn();
-                ServerPlayerEntity.Respawn respawn2 = new ServerPlayerEntity.Respawn(world.getRegistryKey(), pos, 0.0F, false);
+                ServerPlayerEntity.Respawn respawn2 = new ServerPlayerEntity.Respawn(WorldProperties.SpawnPoint.create(world.getRegistryKey(), pos, 0.0F, 0.0F), false);
                 if (respawn == null || !respawn.posEquals(respawn2)) {
                     serverPlayerEntity.setSpawnPoint(respawn2, true);
                     world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.BLOCKS, 1.0F, 1.0F);

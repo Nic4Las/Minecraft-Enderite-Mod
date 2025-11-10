@@ -36,7 +36,7 @@ public class EnderiteSword extends Item {
             double dX = temp * -Math.sin(Math.toRadians(yaw));
             double dY = -Math.sin(Math.toRadians(pitch));
             double dZ = temp * Math.cos(Math.toRadians(yaw));
-            Vec3d position = playerEntity.getPos().add(0, playerEntity.getEyeY() - playerEntity.getY(), 0);
+            Vec3d position = playerEntity.getEntityPos().add(0, playerEntity.getEyeY() - playerEntity.getY(), 0);
             Vec3d endPosition = new Vec3d(position.x + dX * distance, position.y + dY * distance,
                 position.z + dZ * distance);
             BlockPos blockPos = BlockPos.ofFloored(endPosition.x, endPosition.y, endPosition.z);
@@ -47,7 +47,7 @@ public class EnderiteSword extends Item {
             double maxDown = down - distance - 1 > world.getBottomY() ? down - distance - 1 : world.getBottomY();
             double up = endPosition.y + 1;
             double maxUp = 128;
-            if (playerEntity.getWorld().getDimension().respawnAnchorWorks()) {
+            if (playerEntity.getEntityWorld().getDimension().respawnAnchorWorks()) {
                 maxUp = up + distance - 1 < 127 ? up + distance - 1 : 127;
             } else {
                 maxUp = up + distance - 1 < world.getTopYInclusive() ? up + distance - 1 : world.getTopYInclusive();

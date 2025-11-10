@@ -13,6 +13,7 @@ import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -116,7 +117,7 @@ public class EnderiteCrossbow extends CrossbowItem {
         }
         projectile.setVelocity(vector3f.x(), vector3f.y(), vector3f.z(), speed, divergence);
         float h = EnderiteCrossbow.getSoundPitch(shooter.getRandom(), index);
-        shooter.getWorld().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, shooter.getSoundCategory(), 1.0f, h);
+        shooter.getEntityWorld().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, shooter.getSoundCategory(), 1.0f, h);
     }
 
     private static Vector3f calcVelocity(LivingEntity shooter, Vec3d direction, float yaw) {
@@ -151,6 +152,46 @@ public class EnderiteCrossbow extends CrossbowItem {
     private static float getSoundPitch(boolean flag, Random random) {
         float f = flag ? 0.63f : 0.43f;
         return 1.0f / (random.nextFloat() * 0.5f + 1.8f) + f;
+    }
+
+    @Override
+    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        if (!world.isClient()) {
+            CrossbowItem.LoadingSounds loadingSounds = this.getLoadingSounds(stack);
+            float f = (float)(stack.getMaxUseTime(user) - remainingUseTicks) / getPullTime(stack, user);
+            if (f < 0.2F) {
+                this.charged = false;
+                this.loaded = false;
+            }
+
+            if (f >= 0.2F && !this.charged) {
+                this.charged = true;
+                loadingSounds.start()
+                    .ifPresent(sound -> world.playSound(null, user.getX(), user.getY(), user.getZ(), (SoundEvent)sound.value(), SoundCategory.PLAYERS, 0.5F, 1.0F));
+            }
+
+            if (f >= 0.5F && !this.loaded) {
+                this.loaded = true;
+                loadingSounds.mid()
+                    .ifPresent(sound -> world.playSound(null, user.getX(), user.getY(), user.getZ(), (SoundEvent)sound.value(), SoundCategory.PLAYERS, 0.5F, 1.0F));
+            }
+
+            if (f >= 1.0F && !isCharged(stack) && loadProjectiles(user, stack)) {
+                loadingSounds.end()
+                    .ifPresent(
+                        sound -> world.playSound(
+                            null,
+                            user.getX(),
+                            user.getY(),
+                            user.getZ(),
+                            (SoundEvent)sound.value(),
+                            user.getSoundCategory(),
+                            1.0F,
+                            1.0F / (world.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F
+                        )
+                    );
+            }
+        }
     }
 
     @Override

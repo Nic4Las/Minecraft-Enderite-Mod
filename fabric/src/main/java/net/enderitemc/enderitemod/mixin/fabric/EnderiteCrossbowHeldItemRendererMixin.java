@@ -6,7 +6,7 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
@@ -30,8 +30,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class EnderiteCrossbowHeldItemRendererMixin {
 
     @Shadow
-    public abstract void renderItem(LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, MatrixStack matrices, VertexConsumerProvider vertexConsumer, int light);
-
+    public abstract void renderItem(
+        LivingEntity entity, ItemStack stack, ItemDisplayContext renderMode, MatrixStack matrices, OrderedRenderCommandQueue orderedRenderCommandQueue, int light
+    );
     @Shadow
     protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
 
@@ -39,20 +40,20 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
     protected abstract void applyEquipOffset(MatrixStack matrices, Arm arm, float equipProgress);
 
     @Inject(
-        method = "renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
+        method = "renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;I)V",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"),
         cancellable = true
     )
     public void renderEnderiteCrossbow(
         AbstractClientPlayerEntity player,
-        float tickDelta,
+        float tickProgress,
         float pitch,
         Hand hand,
         float swingProgress,
         ItemStack item,
         float equipProgress,
         MatrixStack matrices,
-        VertexConsumerProvider vertexConsumers,
+        OrderedRenderCommandQueue orderedRenderCommandQueue,
         int light,
         CallbackInfo info
     ) {
@@ -70,7 +71,7 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
                 matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-11.935F));
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) i * 65.3F));
                 matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees((float) i * -9.785F));
-                float f = (float) item.getMaxUseTime(player) - ((float) player.getItemUseTimeLeft() - tickDelta + 1.0F);
+                float f = (float) item.getMaxUseTime(player) - ((float) player.getItemUseTimeLeft() - tickProgress + 1.0F);
                 float g = f / (float) EnderiteCrossbow.getPullTime(item, player);
                 if (g > 1.0F) {
                     g = 1.0F;
@@ -104,7 +105,7 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
                 item,
                 bl3 ? ItemDisplayContext.FIRST_PERSON_RIGHT_HAND : ItemDisplayContext.FIRST_PERSON_LEFT_HAND,
                 matrices,
-                vertexConsumers,
+                orderedRenderCommandQueue,
                 light
             );
 
@@ -146,7 +147,7 @@ public abstract class EnderiteCrossbowHeldItemRendererMixin {
 
     @WrapOperation(
         at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getMaxUseTime(Lnet/minecraft/entity/LivingEntity;)I"),
-        method = "renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
+        method = "renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;I)V")
     private int changeBowTime(ItemStack instance, LivingEntity user, Operation<Integer> original) {
         if (instance.isOf(EnderiteTools.ENDERITE_BOW.get())) {
             int maxTime = original.call(instance, user);
