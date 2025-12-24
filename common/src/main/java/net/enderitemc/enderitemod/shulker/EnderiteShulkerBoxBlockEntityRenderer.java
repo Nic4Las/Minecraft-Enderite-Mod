@@ -6,7 +6,7 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -22,9 +22,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
-import java.util.Set;
+import java.util.function.Consumer;
 
 public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRenderer<EnderiteShulkerBoxBlockEntity, ShulkerBoxBlockEntityRenderState> {
     private final SpriteHolder materials;
@@ -124,7 +124,7 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
         this.model.setAngles(openness);
     }
 
-    public void collectVertices(Direction facing, float openness, Set<Vector3f> vertices) {
+    public void collectVertices(Direction facing, float openness, Consumer<Vector3fc> vertices) {
         MatrixStack matrixStack = new MatrixStack();
         this.setTransforms(matrixStack, facing, openness);
         this.model.getRootPart().collectVertices(matrixStack, vertices);
@@ -135,7 +135,7 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
         private final ModelPart lid;
 
         public ShulkerBoxBlockModel(ModelPart root) {
-            super(root, RenderLayer::getEntityCutoutNoCull);
+            super(root, RenderLayers::entityCutoutNoCull);
             this.lid = root.getChild("lid");
         }
 

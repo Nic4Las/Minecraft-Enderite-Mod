@@ -56,6 +56,12 @@ dependencies {
 
 processResources {
     inputs.property 'version', project.version
+    inputs.property 'minecraft_version', rootProject.minecraft_version_min
+    inputs.property 'fabric_api_version', rootProject.fabric_api_version_min
+    inputs.property 'architectury_version', rootProject.architectury_api_version_min
+    inputs.property 'cloth_config_version', rootProject.cloth_config_version_min
+    inputs.property 'mod_menu_version', rootProject.mod_menu_version_min
+    inputs.property 'shulker_box_tooltip_version', rootProject.shulker_box_tooltip_version_min
 
     filesMatching('fabric.mod.json') {
         expand (version: project.version,

@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.entity.BannerBlockEntityRenderer;
@@ -27,10 +27,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Unit;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.Objects;
-import java.util.Set;
+import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap> {
@@ -126,17 +126,17 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
             // Custom end portal shader
             queue.submitCustom(
                 matrixStack,
-                RenderLayer.getEndPortal(),
+                RenderLayers.endPortal(),
                 this::renderSides);
         }
         matrixStack.pop();
     }
 
     @Override
-    public void collectVertices(Set<Vector3f> vertices) {
+    public void collectVertices(Consumer<Vector3fc> consumer) {
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.scale(1.0F, -1.0F, -1.0F);
-        this.model.getRootPart().collectVertices(matrixStack, vertices);
+        this.model.getRootPart().collectVertices(matrixStack, consumer);
     }
 
     @Environment(EnvType.CLIENT)

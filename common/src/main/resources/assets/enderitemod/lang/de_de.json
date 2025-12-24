@@ -136,7 +136,7 @@
 
   "tag.block.enderitemod.incorrect_for_enderite_tool": "Nicht abbaubar von Enderitwerkzeugen",
   "option.enderitemod.restart.enderite_body.protection": "Enderitvollkörperrüstung",
-  "option.enderitemod.restart.enderite_body.protection.hover": "Grundwert: 12, (Tierrüstung)",
+  "option.enderitemod.restart.enderite_body.protection.hover": "Grundwert: 29, (Tierrüstung)",
   "option.enderitemod.restart.enderite_tools.max_teleport_charge": "Teleportladungs-Maximalwert",
   "option.enderitemod.restart.enderite_tools.max_teleport_charge.hover": "Gilt für Enderitschwert und -schild (0 deaktiviert es)",
   "tag.item.enderitemod.enderite_items": "Enderititems",
@@ -162,5 +162,12 @@
   "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json": "Leereschwebe Verzauberungskonfiguration via Datapack",
   "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json.hover": "Konfiguration wurde in json-Dateien verschoben (Datapack)",
   "tag.item.enderitemod.is_void_floating_enchantable": "Verzauberbar mit Leereschwebe",
-  "tag.block.enderitemod.needs_enderite_tool": "Benötigt Enderitwerkzeuge zum abbauen"
+  "tag.block.enderitemod.needs_enderite_tool": "Benötigt Enderitwerkzeuge zum abbauen",
+
+  "item.enderitemod.enderite_spear": "Enderitspeer",
+  "item.enderitemod.enderite_horse_armor": "Enderitener Rossharnisch",
+  "item.enderitemod.enderite_nautilus_armor": "Enderitener Nautiluspanzer",
+  "tag.item.enderitemod.repairs_enderite_armor": "Repariert Enderitrüstungen/-werkzeuge",
+  "option.enderitemod.general.enderite_sword_teleport_distance": "Enderitschwert-Teleportationsdistanz",
+  "option.enderitemod.general.enderite_sword_teleport_distance.hover": "Grundwert: 30 Blöcke"
 }

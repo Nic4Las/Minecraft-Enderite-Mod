@@ -143,6 +143,16 @@ public class ClothConfig {
                 list_cbc)
             .build());
 
+        general.addEntry(entryBuilder.startIntField(
+            Text.translatable("option.enderitemod.general.enderite_sword_teleport_distance"),
+            currentConfig.tools.enderiteSwordTeleportDistance)
+            .setDefaultValue(DEFAULT.tools.enderiteSwordTeleportDistance)
+            .setTooltip(Text.translatable("option.enderitemod.general.enderite_sword_teleport_distance.hover"))
+                .setSaveConsumer(newValue -> currentConfig.tools.enderiteSwordTeleportDistance = newValue)
+            .setMin(0).setMax(256)
+            .build()
+        );
+
         // RESTART
         // Upgrade Template
         restart.addEntry(entryBuilder
@@ -340,7 +350,7 @@ public class ClothConfig {
             .startIntField(Text.translatable(
                     "option.enderitemod.restart.enderite_body.protection"),
                 currentConfig.armor.bodyProtection)
-            .setDefaultValue(DEFAULT.armor.bodyProtection).setMin(1).setMax(16)
+            .setDefaultValue(DEFAULT.armor.bodyProtection).setMin(1).setMax(99)
             .setTooltip(Text.translatable(
                 "option.enderitemod.restart.enderite_body.protection.hover"))
             .setSaveConsumer(newValue -> currentConfig.armor.bodyProtection = newValue)

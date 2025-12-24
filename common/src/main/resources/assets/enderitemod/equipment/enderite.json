@@ -9,6 +9,16 @@
       {
         "texture": "enderitemod:enderite"
       }
+    ],
+    "horse_body": [
+      {
+        "texture": "enderitemod:enderite"
+      }
+    ],
+    "nautilus_body": [
+      {
+        "texture": "enderitemod:enderite"
+      }
     ]
   }
 }

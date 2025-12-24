@@ -137,7 +137,7 @@
 
   "tag.block.enderitemod.incorrect_for_enderite_tool": "Incorrect for Enderite Tools",
   "option.enderitemod.restart.enderite_body.protection": "Enderite Body armor",
-  "option.enderitemod.restart.enderite_body.protection.hover": "Base value: 12, (Animal armors)",
+  "option.enderitemod.restart.enderite_body.protection.hover": "Base value: 29, (Animal armors)",
   "option.enderitemod.restart.enderite_tools.max_teleport_charge": "Maximum allowed teleport charge",
   "option.enderitemod.restart.enderite_tools.max_teleport_charge.hover": "Applies to Enderite Sword and Shield (0 disables it)",
   "tag.item.enderitemod.enderite_items": "Enderite Items",
@@ -163,5 +163,12 @@
   "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json": "Void Floating Enchantment config via datapack",
   "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json.hover": "Configuration has been moved to json (datapack)",
   "tag.item.enderitemod.is_void_floating_enchantable": "Enchantable with Void Floating",
-  "tag.block.enderitemod.needs_enderite_tool": "Needs Enderite Tool to mine"
+  "tag.block.enderitemod.needs_enderite_tool": "Needs Enderite Tool to mine",
+
+  "item.enderitemod.enderite_spear": "Enderite Spear",
+  "item.enderitemod.enderite_horse_armor": "Enderite Horse Armor",
+  "item.enderitemod.enderite_nautilus_armor": "Enderite Nautilus Armor",
+  "tag.item.enderitemod.repairs_enderite_armor": "Repairs Enderite Armor/Tools",
+  "option.enderitemod.general.enderite_sword_teleport_distance": "Enderite Sword Teleportation Distance",
+  "option.enderitemod.general.enderite_sword_teleport_distance.hover": "Default: 30 blocks"
 }

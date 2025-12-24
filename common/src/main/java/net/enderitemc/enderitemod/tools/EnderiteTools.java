@@ -125,6 +125,22 @@ public class EnderiteTools {
             () -> new SpecialRecipeSerializer<EnderiteShieldDecorationRecipe>(
                 EnderiteShieldDecorationRecipe::new));
 
+    // Spear
+    public static final RegistrySupplier<Item> ENDERITE_SPEAR = EnderiteMod.ITEMS.register("enderite_spear",
+        () -> new EnderiteShears(
+            getItemSettings("enderite_spear", BASE_ENDERITE_ITEM_SETTINGS.get())
+                .maxCount(1)
+                .spear(EnderiteMaterial.ENDERITE,
+                    1.25F,
+                    1.375F,
+                    0.3F,
+                    2.0F,
+                    6.5F,
+                    4.5F,
+                    5.1F,
+                    7.5F,
+                    4.6F)));
+
     public static void init() {
         if (ENDERITE_SHIELD == null) {
             System.out.println("EnderiteMod: Tools not registered!");

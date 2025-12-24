@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod.blocks.RespawnAnchorUtils;
 
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
@@ -63,6 +64,6 @@ public class EnderiteRespawnAnchorRenderer<T extends EnderiteRespawnAnchorBlockE
     }
 
     protected RenderLayer getLayer() {
-        return RenderLayer.getEndPortal();
+        return RenderLayers.endPortal();
     }
 }

@@ -85,7 +85,8 @@ public class EnderiteMod {
 
     // Enderite Ingot
     public static final RegistrySupplier<Item> ENDERITE_INGOT = ITEMS.register("enderite_ingot",
-        () -> new Item(getItemSettings("enderite_ingot", BASE_ENDERITE_ITEM_SETTINGS.get())));
+        () -> new Item(getItemSettings("enderite_ingot", BASE_ENDERITE_ITEM_SETTINGS.get())
+            .trimMaterial(RegistryKey.of(RegistryKeys.TRIM_MATERIAL, Identifier.of(MOD_ID, "enderite")))));
     public static final RegistrySupplier<Item> ENDERITE_SCRAP = ITEMS.register("enderite_scrap",
         () -> new Item(getItemSettings("enderite_scrap", BASE_ENDERITE_ITEM_SETTINGS.get())));
 
@@ -129,6 +130,12 @@ public class EnderiteMod {
     public static final RegistrySupplier<Item> ENDERITE_BOOTS = ITEMS.register("enderite_boots",
         () -> new Item((getItemSettings("enderite_boots", BASE_ENDERITE_ITEM_SETTINGS.get()).maxDamage(EquipmentType.BOOTS.getMaxDamage(CONFIG.armor.durabilityMultiplier)))
             .armor(EnderiteArmorMaterial.ENDERITE, EquipmentType.BOOTS)));
+
+
+    public static final RegistrySupplier<Item> ENDERITE_HORSE_ARMOR = ITEMS.register("enderite_horse_armor",
+        () -> new Item(getItemSettings("enderite_horse_armor", BASE_ENDERITE_ITEM_SETTINGS.get()).horseArmor(EnderiteArmorMaterial.ENDERITE)));
+    public static final RegistrySupplier<Item> ENDERITE_NAUTILUS_ARMOR = ITEMS.register("enderite_nautilus_armor",
+        () -> new Item(getItemSettings("enderite_nautilus_armor", BASE_ENDERITE_ITEM_SETTINGS.get()).nautilusArmor(EnderiteArmorMaterial.ENDERITE)));
 
     // Enderite Elytra
     public static final RegistrySupplier<Item> ENDERITE_ELYTRA = EnderiteMod.ITEMS.register("enderite_elytra",
