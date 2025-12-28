@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
 
 public class EnderiteSword extends Item {
 
-    public EnderiteSword(ToolMaterial material, int attackDamage, float attackSpeed, Item.Settings settings) {
+    public EnderiteSword(ToolMaterial material, float attackDamage, float attackSpeed, Item.Settings settings) {
         super(settings.sword(material, attackDamage, attackSpeed));
     }
 

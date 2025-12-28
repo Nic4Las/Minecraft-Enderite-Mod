@@ -34,33 +34,33 @@ public class EnderiteTools {
         () -> new Item(
             getItemSettings("enderite_pickaxe", BASE_ENDERITE_ITEM_SETTINGS.get())
                 .pickaxe(EnderiteMaterial.ENDERITE,
-                    EnderiteMod.CONFIG.tools.enderitePickaxeAD,
+                    EnderiteMod.CONFIG.tools.enderitePickaxeAD - 3, // TODO: change in next version
                     -2.8F)));
 
     public static final RegistrySupplier<Item> ENDERITE_AXE = EnderiteMod.ITEMS.register("enderite_axe",
         () -> new AxeItem(EnderiteMaterial.ENDERITE,
-            EnderiteMod.CONFIG.tools.enderiteAxeAD,
+            EnderiteMod.CONFIG.tools.enderiteAxeAD - 3, // TODO: change in next version
             -3.0F,
             getItemSettings("enderite_axe", BASE_ENDERITE_ITEM_SETTINGS.get()))
     );
 
     public static final RegistrySupplier<Item> ENDERITE_HOE = EnderiteMod.ITEMS.register("enderite_hoe",
         () -> new HoeItem(EnderiteMaterial.ENDERITE,
-            EnderiteMod.CONFIG.tools.enderiteHoeAD,
+            EnderiteMod.CONFIG.tools.enderiteHoeAD - 3, // TODO: change in next version
             0.0F,
             getItemSettings("enderite_hoe", BASE_ENDERITE_ITEM_SETTINGS.get()))
     );
 
     public static final RegistrySupplier<Item> ENDERITE_SHOVEL = EnderiteMod.ITEMS.register("enderite_shovel",
         () -> new ShovelItem(EnderiteMaterial.ENDERITE,
-            EnderiteMod.CONFIG.tools.enderiteShovelAD,
+            EnderiteMod.CONFIG.tools.enderiteShovelAD - 3, // TODO: change in next version
             -3.0F,
             getItemSettings("enderite_shovel", BASE_ENDERITE_ITEM_SETTINGS.get()))
     );
 
     public static final RegistrySupplier<Item> ENDERITE_SWORD = EnderiteMod.ITEMS.register("enderite_sword",
         () -> new EnderiteSword(EnderiteMaterial.ENDERITE,
-            EnderiteMod.CONFIG.tools.enderiteSwordAD,
+            EnderiteMod.CONFIG.tools.enderiteSwordAD - 3, // TODO: change in next version
             -2.4F,
             getItemSettings("enderite_sword", BASE_ENDERITE_ITEM_SETTINGS.get())
                 .component(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(0))
@@ -127,18 +127,18 @@ public class EnderiteTools {
 
     // Spear
     public static final RegistrySupplier<Item> ENDERITE_SPEAR = EnderiteMod.ITEMS.register("enderite_spear",
-        () -> new EnderiteShears(
+        () -> new Item(
             getItemSettings("enderite_spear", BASE_ENDERITE_ITEM_SETTINGS.get())
                 .maxCount(1)
                 .spear(EnderiteMaterial.ENDERITE,
-                    1.25F,
-                    1.375F,
-                    0.3F,
-                    2.0F,
-                    6.5F,
-                    4.5F,
+                    EnderiteMod.CONFIG.tools.spear.swingAnimationSeconds, // 1.25F,
+                    EnderiteMod.CONFIG.tools.spear.chargeDamageMultiplier, // 1.375F,
+                    EnderiteMod.CONFIG.tools.spear.chargeDelaySeconds, // 0.3F,
+                    EnderiteMod.CONFIG.tools.spear.maxDurationForDismountSeconds, // 2.0F,
+                    EnderiteMod.CONFIG.tools.spear.minSpeedForDismount, // 6.5F,
+                    EnderiteMod.CONFIG.tools.spear.maxDurationForDismountSeconds * 2.25F, // 4.5F
                     5.1F,
-                    7.5F,
+                    EnderiteMod.CONFIG.tools.spear.maxDurationForDismountSeconds * 3.75F, // 7.5F
                     4.6F)));
 
     public static void init() {

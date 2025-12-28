@@ -207,58 +207,69 @@ public class ClothConfig {
         ArrayList<AbstractConfigListEntry> list_tdc = new ArrayList<>();
 
         list_tdc.add(entryBuilder
-            .startIntField(Text.translatable(
+            .startFloatField(Text.translatable(
+                    "option.enderitemod.restart.enderite_tools.attack_damage_bonus"),
+                currentConfig.tools.attackDamageBonus)
+            .setDefaultValue(DEFAULT.tools.attackDamageBonus).setMin(1)
+            .setTooltip(Text.translatable(
+                "option.enderitemod.restart.enderite_tools.attack_damage_bonus.hover"))
+            .setSaveConsumer(newValue -> currentConfig.tools.attackDamageBonus = newValue)
+            .requireRestart()
+            .build());
+
+        list_tdc.add(entryBuilder
+            .startFloatField(Text.translatable(
                     "option.enderitemod.restart.enderite_sword.attack_damage"),
-                currentConfig.tools.enderiteSwordAD + 3)
-            .setDefaultValue(DEFAULT.tools.enderiteSwordAD + 3).setMin(1).setMax(16)
+                currentConfig.tools.enderiteSwordAD + (currentConfig.tools.attackDamageBonus - 2)) // TODO: change -2 in next version, see EnderiteTools
+            .setDefaultValue(DEFAULT.tools.enderiteSwordAD + (DEFAULT.tools.attackDamageBonus - 2)).setMin(1).setMax(16)
             .setTooltip(Text.translatable(
                 "option.enderitemod.restart.enderite_sword.attack_damage.hover"))
-            .setSaveConsumer(newValue -> currentConfig.tools.enderiteSwordAD = newValue - 3)
+            .setSaveConsumer(newValue -> currentConfig.tools.enderiteSwordAD = newValue - (currentConfig.tools.attackDamageBonus - 2))
             .requireRestart()
             .build());
 
         list_tdc.add(entryBuilder
-            .startIntField(Text.translatable(
+            .startFloatField(Text.translatable(
                     "option.enderitemod.restart.enderite_pickaxe.attack_damage"),
-                currentConfig.tools.enderitePickaxeAD + 3)
-            .setDefaultValue(DEFAULT.tools.enderitePickaxeAD + 3).setMin(1).setMax(16)
+                currentConfig.tools.enderitePickaxeAD + (currentConfig.tools.attackDamageBonus - 2))
+            .setDefaultValue(DEFAULT.tools.enderitePickaxeAD + (DEFAULT.tools.attackDamageBonus - 2)).setMin(1).setMax(16)
             .setTooltip(Text.translatable(
                 "option.enderitemod.restart.enderite_pickaxe.attack_damage.hover"))
-            .setSaveConsumer(newValue -> currentConfig.tools.enderitePickaxeAD = newValue - 3)
+            .setSaveConsumer(newValue -> currentConfig.tools.enderitePickaxeAD = newValue - (currentConfig.tools.attackDamageBonus - 2))
             .requireRestart()
             .build());
 
         list_tdc.add(entryBuilder
-            .startIntField(Text.translatable(
+            .startFloatField(Text.translatable(
                     "option.enderitemod.restart.enderite_axe.attack_damage"),
-                currentConfig.tools.enderiteAxeAD + 3)
-            .setDefaultValue(DEFAULT.tools.enderiteAxeAD + 3).setMin(1).setMax(16)
+                currentConfig.tools.enderiteAxeAD + (currentConfig.tools.attackDamageBonus - 2))
+            .setDefaultValue(DEFAULT.tools.enderiteAxeAD + (DEFAULT.tools.attackDamageBonus - 2)).setMin(1).setMax(16)
             .setTooltip(Text.translatable(
                 "option.enderitemod.restart.enderite_axe.attack_damage.hover"))
-            .setSaveConsumer(newValue -> currentConfig.tools.enderiteAxeAD = newValue - 3)
+            .setSaveConsumer(newValue -> currentConfig.tools.enderiteAxeAD = newValue - (currentConfig.tools.attackDamageBonus - 2))
             .requireRestart()
             .build());
 
         list_tdc.add(entryBuilder
             .startFloatField(Text.translatable(
                     "option.enderitemod.restart.enderite_shovel.attack_damage"),
-                currentConfig.tools.enderiteShovelAD + 3)
-            .setDefaultValue(DEFAULT.tools.enderiteShovelAD + 3).setMin(1).setMax(16)
+                currentConfig.tools.enderiteShovelAD + (currentConfig.tools.attackDamageBonus - 2))
+            .setDefaultValue(DEFAULT.tools.enderiteShovelAD + (DEFAULT.tools.attackDamageBonus - 2)).setMin(1).setMax(16)
             .setTooltip(Text.translatable(
                 "option.enderitemod.restart.enderite_shovel.attack_damage.hover"))
-            .setSaveConsumer(newValue -> currentConfig.tools.enderiteShovelAD = newValue - 3)
+            .setSaveConsumer(newValue -> currentConfig.tools.enderiteShovelAD = newValue - (currentConfig.tools.attackDamageBonus - 2))
 
             .requireRestart()
             .build());
 
         list_tdc.add(entryBuilder
-            .startIntField(Text.translatable(
+            .startFloatField(Text.translatable(
                     "option.enderitemod.restart.enderite_hoe.attack_damage"),
-                currentConfig.tools.enderiteHoeAD + 3)
-            .setDefaultValue(DEFAULT.tools.enderiteHoeAD + 3).setMin(1).setMax(16)
+                currentConfig.tools.enderiteHoeAD + (currentConfig.tools.attackDamageBonus - 2))
+            .setDefaultValue(DEFAULT.tools.enderiteHoeAD + (DEFAULT.tools.attackDamageBonus - 2)).setMin(1).setMax(16)
             .setTooltip(Text.translatable(
                 "option.enderitemod.restart.enderite_hoe.attack_damage.hover"))
-            .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - 3)
+            .setSaveConsumer(newValue -> currentConfig.tools.enderiteHoeAD = newValue - (currentConfig.tools.attackDamageBonus - 2))
             .requireRestart()
             .build());
 
@@ -268,8 +279,84 @@ public class ClothConfig {
                 list_tdc)
             .build());
 
+        // Spear
+        ArrayList<AbstractConfigListEntry> list_tsc = new ArrayList<>();
+
+        list_tsc.add(entryBuilder
+            .startFloatField(Text.translatable(
+                    "option.enderitemod.restart.enderite_spear.swing_animation_seconds"),
+                currentConfig.tools.spear.swingAnimationSeconds)
+            .setDefaultValue(DEFAULT.tools.spear.swingAnimationSeconds).setMin(0.1f).setMax(4)
+            .setTooltip(Text.translatable(
+                "option.enderitemod.restart.enderite_spear.swing_animation_seconds.hover"))
+            .setSaveConsumer(newValue -> currentConfig.tools.spear.swingAnimationSeconds = newValue)
+            .requireRestart()
+            .build());
+
+        list_tsc.add(entryBuilder
+            .startFloatField(Text.translatable(
+                    "option.enderitemod.restart.enderite_spear.charge_damage_multiplier"),
+                currentConfig.tools.spear.chargeDamageMultiplier)
+            .setDefaultValue(DEFAULT.tools.spear.chargeDamageMultiplier).setMin(0.1f).setMax(4)
+            .setTooltip(Text.translatable(
+                "option.enderitemod.restart.enderite_spear.charge_damage_multiplier.hover"))
+            .setSaveConsumer(newValue -> currentConfig.tools.spear.chargeDamageMultiplier = newValue)
+            .requireRestart()
+            .build());
+
+        list_tsc.add(entryBuilder
+            .startFloatField(Text.translatable(
+                    "option.enderitemod.restart.enderite_spear.charge_delay_seconds"),
+                currentConfig.tools.spear.chargeDelaySeconds)
+            .setDefaultValue(DEFAULT.tools.spear.chargeDelaySeconds).setMin(0.1f).setMax(1)
+            .setTooltip(Text.translatable(
+                "option.enderitemod.restart.enderite_spear.charge_delay_seconds.hover"))
+            .setSaveConsumer(newValue -> currentConfig.tools.spear.chargeDelaySeconds = newValue)
+            .requireRestart()
+            .build());
+
+        list_tsc.add(entryBuilder
+            .startFloatField(Text.translatable(
+                    "option.enderitemod.restart.enderite_spear.max_duration_for_dismount"),
+                currentConfig.tools.spear.maxDurationForDismountSeconds)
+            .setDefaultValue(DEFAULT.tools.spear.maxDurationForDismountSeconds).setMin(0.1f).setMax(16)
+            .setTooltip(Text.translatable(
+                "option.enderitemod.restart.enderite_spear.max_duration_for_dismount.hover"))
+            .setSaveConsumer(newValue -> currentConfig.tools.spear.maxDurationForDismountSeconds = newValue)
+            .requireRestart()
+            .build());
+
+        list_tsc.add(entryBuilder
+            .startFloatField(Text.translatable(
+                    "option.enderitemod.restart.enderite_spear.min_speed_for_dismount"),
+                currentConfig.tools.spear.minSpeedForDismount)
+            .setDefaultValue(DEFAULT.tools.spear.minSpeedForDismount).setMin(0.1f).setMax(16)
+            .setTooltip(Text.translatable(
+                "option.enderitemod.restart.enderite_spear.min_speed_for_dismount.hover"))
+            .setSaveConsumer(newValue -> currentConfig.tools.spear.minSpeedForDismount = newValue)
+            .requireRestart()
+            .build());
+
+        restart.addEntry(entryBuilder
+            .startSubCategory(
+                Text.translatable("option.enderitemod.restart.tools.spear_config"),
+                list_tsc)
+            .build());
+
         // Tools general
         ArrayList<AbstractConfigListEntry> list_tgc = new ArrayList<>();
+
+        list_tgc.add(entryBuilder
+            .startFloatField(Text.translatable(
+                    "option.enderitemod.restart.enderite_tools.mining_speed"),
+                currentConfig.tools.miningSpeed)
+            .setDefaultValue(DEFAULT.tools.miningSpeed).setMin(1)
+            .setTooltip(Text.translatable(
+                "option.enderitemod.restart.enderite_tools.mining_speed.hover"))
+            .setSaveConsumer(newValue -> currentConfig.tools.miningSpeed = newValue)
+            .requireRestart()
+            .build());
+
         list_tgc.add(entryBuilder
             .startIntField(Text.translatable(
                     "option.enderitemod.restart.enderite_tools.durability"),

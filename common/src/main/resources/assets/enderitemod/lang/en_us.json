@@ -25,7 +25,7 @@
   "item.enderitemod.enderite_sword.charge": "Charge",
 
   "enchantment.enderitemod.void_floating": "Void Floating",
-  "enchantment.enderitemod.void_floating.desc": "The item becomes fireproof, unaffected by gravity, and floats above the void when dropped in the world.",
+  "enchantment.enderitemod.void_floating.desc": "The item may, more probable per level, float above the void instead of disappearing.",
   "item.enderitemod.enderite_bow": "Enderite Bow",
   "item.enderitemod.enderite_crossbow": "Enderite Crossbow",
   "item.enderitemod.enderite_shield": "Enderite Shield",
@@ -170,5 +170,21 @@
   "item.enderitemod.enderite_nautilus_armor": "Enderite Nautilus Armor",
   "tag.item.enderitemod.repairs_enderite_armor": "Repairs Enderite Armor/Tools",
   "option.enderitemod.general.enderite_sword_teleport_distance": "Enderite Sword Teleportation Distance",
-  "option.enderitemod.general.enderite_sword_teleport_distance.hover": "Default: 30 blocks"
+  "option.enderitemod.general.enderite_sword_teleport_distance.hover": "Default: 30 blocks",
+
+  "option.enderitemod.restart.tools.spear_config": "Enderite Spear Config",
+  "option.enderitemod.restart.enderite_spear.swing_animation_seconds": "Swing Duration",
+  "option.enderitemod.restart.enderite_spear.swing_animation_seconds.hover": "Netherite: 1.15 seconds",
+  "option.enderitemod.restart.enderite_spear.charge_damage_multiplier": "Charge Damage Multiplier",
+  "option.enderitemod.restart.enderite_spear.charge_damage_multiplier.hover": "Netherite: x1.2",
+  "option.enderitemod.restart.enderite_spear.charge_delay_seconds": "Charge Delay",
+  "option.enderitemod.restart.enderite_spear.charge_delay_seconds.hover": "Netherite: 0.4 seconds (lower is better)",
+  "option.enderitemod.restart.enderite_spear.max_duration_for_dismount": "Max Holding Duration for Dismount",
+  "option.enderitemod.restart.enderite_spear.max_duration_for_dismount.hover": "Netherite: 2.5 seconds",
+  "option.enderitemod.restart.enderite_spear.min_speed_for_dismount": "Min Speed for Dismount",
+  "option.enderitemod.restart.enderite_spear.min_speed_for_dismount.hover": "Netherite: 7.0",
+  "option.enderitemod.restart.enderite_tools.mining_speed": "Mining Speed",
+  "option.enderitemod.restart.enderite_tools.mining_speed.hover": "Netherite: 9.0",
+  "option.enderitemod.restart.enderite_tools.attack_damage_bonus": "Attack Damage Bonus",
+  "option.enderitemod.restart.enderite_tools.attack_damage_bonus.hover": "Netherite: 4.0 (modifies spear/tools)"
 }
