@@ -41,13 +41,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 21
-          distribution: temurin      
+        uses: actions/checkout@v4 
           
       - name: Read gradle.properties
         id: properties
@@ -55,6 +49,12 @@ jobs:
         with:
           file: gradle.properties
           all: true
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin     
           
       - name: Make Gradle Wrapper Executable
         if: ${{ runner.os != 'Windows' }}
