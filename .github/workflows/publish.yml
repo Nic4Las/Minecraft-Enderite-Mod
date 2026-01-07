@@ -1,76 +1,92 @@
 name: Publish
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - alpha
+          - beta
+          - release
+      changelog:
+        description: 'Changelog of the release'
+        type: string
+        required: true
+
 jobs:
-  fabric:
-    name: Publish Fabric
+  publish:
+    name: Publish ${{ matrix.loader }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    
+    strategy:
+      # This prevents one failure (e.g., NeoForge) from stopping the other (Fabric)
+      fail-fast: false
+      matrix:
+        include:
+          - loader: fabric
+            curseforge-id: 399221
+            dependencies: |
+              architectury-api(required){modrinth:lhGA9TYQ}{curseforge:306612}#(ignore:github)
+              fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
+              fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
+              
+          - loader: neoforge
+            curseforge-id: 401284
+            dependencies: 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: 21
-          distribution: temurin
+          distribution: temurin      
+          
+      - name: Read gradle.properties
+        id: properties
+        uses: madhead/read-java-properties@latest
+        with:
+          file: gradle.properties
+          all: true
           
       - name: Make Gradle Wrapper Executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
+
+      # Optimization: You can try running only the specific task for the matrix
+      # e.g., ./gradlew :${{ matrix.loader }}:build
+      # But strictly keeping your logic, we build everything:
       - name: Build with Gradle
-        run: ./gradlew fabric:build
+        run: ./gradlew build
         
-      - name: Upload
-        uses: Kir-Antipov/mc-publish@v3.3  # Fabric
+      - name: Upload ${{ matrix.loader }}
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
-          loaders: fabric
+          loaders: ${{ matrix.loader }}
+          # Dynamically select the build folder based on the matrix loader name
           files: |
-            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
-            fabric/build/libs/*-@(dev|sources|javadoc).jar
+            ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
+            ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadoc).jar
           
-          # Only include this section if you wish to publish
-          # your assets on Modrinth.
+          # Common Modrinth ID for both
           modrinth-id: 6lvRWqbA
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
-          # CurseForge.Fabric
-          curseforge-id: 399221
+          # Dynamic CurseForge ID based on the matrix
+          curseforge-id: ${{ matrix.curseforge-id }}
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-      
-  forge:
-    name: Publish NeoForge
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 21
-          distribution: temurin
-          
-      - name: Make Gradle Wrapper Executable
-        if: ${{ runner.os != 'Windows' }}
-        run: chmod +x ./gradlew
-      - name: Build with Gradle
-        run: ./gradlew neoforge:build
-        
-      - name: Upload
-        uses: Kir-Antipov/mc-publish@v3.3  # Forge
-        with:
-          loaders: neoforge
-          files: |
-            neoforge/build/libs/!(*-@(dev|sources|javadoc)).jar
-            neoforge/build/libs/*-@(dev|sources|javadoc).jar
-          
-          # Only include this section if you wish to publish
-          # your assets on Modrinth.
-          modrinth-id: 6lvRWqbA
-          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
-          # CurseForge.Forge
-          curseforge-id: 401284
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          # Properties
+          modrinth-featured: true
+          version-type: ${{ inputs.version_type }}
+
+          name: Release - MC ${{ steps.properties.outputs.minecraft_version }} - v${{ steps.properties.outputs.mod_version }}
+          changelog: ${{ inputs.changelog }}
+
