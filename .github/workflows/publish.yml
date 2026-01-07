@@ -11,10 +11,6 @@ on:
           - alpha
           - beta
           - release
-      changelog:
-        description: 'Changelog of the release'
-        type: string
-        required: true
 
 jobs:
   publish:
@@ -29,6 +25,7 @@ jobs:
       matrix:
         include:
           - loader: fabric
+            name: Fabric
             curseforge-id: 399221
             dependencies: |
               architectury-api(required){modrinth:lhGA9TYQ}{curseforge:306612}#(ignore:github)
@@ -36,6 +33,7 @@ jobs:
               fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
               
           - loader: neoforge
+            name: Neoforge
             curseforge-id: 401284
             dependencies: 
 
@@ -60,11 +58,8 @@ jobs:
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
 
-      # Optimization: You can try running only the specific task for the matrix
-      # e.g., ./gradlew :${{ matrix.loader }}:build
-      # But strictly keeping your logic, we build everything:
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew :${{ matrix.loader }}:build
         
       - name: Upload ${{ matrix.loader }}
         uses: Kir-Antipov/mc-publish@v3.3
@@ -72,21 +67,20 @@ jobs:
           loaders: ${{ matrix.loader }}
           # Dynamically select the build folder based on the matrix loader name
           files: |
-            ${{ matrix.loader }}/build/libs/!(*-@(dev|sources|javadoc)).jar
-            ${{ matrix.loader }}/build/libs/*-@(dev|sources|javadoc).jar
+            ${{ matrix.loader }}/build/libs/!(*-@(dev|dev-shadow|sources|javadoc)).jar
           
           # Common Modrinth ID for both
           modrinth-id: 6lvRWqbA
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # Dynamic CurseForge ID based on the matrix
-          #curseforge-id: ${{ matrix.curseforge-id }}
-          #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-id: ${{ matrix.curseforge-id }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           # Properties
           modrinth-featured: true
           version-type: ${{ inputs.version_type }}
 
-          name: Release - MC ${{ steps.properties.outputs.minecraft_version }} - v${{ steps.properties.outputs.mod_version }}
-          changelog: ${{ inputs.changelog }}
+          name: Release - MC ${{ steps.properties.outputs.minecraft_version }} - v${{ steps.properties.outputs.mod_version }} - ${{ matrix.name }}
+          changelog-file: CHANGELOG.md
 
