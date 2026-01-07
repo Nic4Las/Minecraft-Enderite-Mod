@@ -1,0 +1,70 @@
+name: Publish
+on: workflow_dispatch
+jobs:
+  fabric:
+    name: Publish Fabric
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+          
+      - name: Build with Gradle
+        run: ./gradlew fabric:build
+        
+      - name: Upload
+        uses: Kir-Antipov/mc-publish@v3.3  # Fabric
+        with:
+          loaders: fabric
+          files: |
+            fabric/build/libs/!(*-@(dev|sources|javadoc)).jar
+            fabric/build/libs/*-@(dev|sources|javadoc).jar
+          
+          # Only include this section if you wish to publish
+          # your assets on Modrinth.
+          modrinth-id: 6lvRWqbA
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          # CurseForge.Fabric
+          curseforge-id: 399221
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+      
+  forge:
+    name: Publish NeoForge
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+          
+      - name: Build with Gradle
+        run: ./gradlew neoforge:build
+        
+      - name: Upload
+        uses: Kir-Antipov/mc-publish@v3.3  # Forge
+        with:
+          loaders: neoforge
+          files: |
+            neoforge/build/libs/!(*-@(dev|sources|javadoc)).jar
+            neoforge/build/libs/*-@(dev|sources|javadoc).jar
+          
+          # Only include this section if you wish to publish
+          # your assets on Modrinth.
+          modrinth-id: 6lvRWqbA
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          # CurseForge.Forge
+          curseforge-id: 401284
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
