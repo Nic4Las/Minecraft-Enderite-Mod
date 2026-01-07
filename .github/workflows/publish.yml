@@ -80,8 +80,8 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # Dynamic CurseForge ID based on the matrix
-          curseforge-id: ${{ matrix.curseforge-id }}
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          #curseforge-id: ${{ matrix.curseforge-id }}
+          #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           # Properties
           modrinth-featured: true
