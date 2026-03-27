@@ -1,5 +1,4 @@
-# Release - MC 1.21.11 - v1.8.1
-- added config for spear
-- added config for mining speed
-- added config for bonus attack damage (currently only modifies spear)
-- fixed incorrect spear damage value
+# Release - MC 1.21.11 - v1.8.2
+- Fixed #155 Thanks to GoldenDistro for reporting the bug and finding the cause.
+- Added alternate texture pack by Amber3562
+- Update zh_cn.json by MrMikeForDev
