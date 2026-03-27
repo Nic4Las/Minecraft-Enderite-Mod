@@ -35,9 +35,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
 
     public static final Identifier CONTENTS_DYNAMIC_DROP_ID = Identifier.ofVanilla("contents");
 
-    private static final AbstractBlock.ContextPredicate SUFFOCATES_PREDICATE = (state, world, pos) -> world.getBlockEntity(pos) instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity
-        ? shulkerBoxBlockEntity.suffocates()
-        : true;
+    private static final AbstractBlock.ContextPredicate SUFFOCATES_PREDICATE = (state, world, pos) -> !(world.getBlockEntity(pos) instanceof EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity) || shulkerBoxBlockEntity.suffocates();
 
     public EnderiteShulkerBoxBlock(String id) {
         super((DyeColor) null, Settings.copy(Blocks.SHULKER_BOX)
@@ -56,7 +54,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
                                                                   BlockEntityType<T> type) {
         return validateTicker(type, EnderiteMod.ENDERITE_SHULKER_BOX_BLOCK_ENTITY.get(),
-            (world1, pos, state1, be) -> EnderiteShulkerBoxBlockEntity.tick(world1, pos, state1, be));
+                EnderiteShulkerBoxBlockEntity::tick);
     }
 
     @Override
@@ -86,7 +84,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         if (entity.getAnimationStage() != EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
             return true;
         } else {
-            Box box = ShulkerEntity.calculateBoundingBox(1.0f, state.get(FACING), 0.0f, 0.5f, pos.toCenterPos()).contract(1.0E-6);
+            Box box = ShulkerEntity.calculateBoundingBox(1.0f, state.get(FACING), 0.0f, 0.5f, pos.toBottomCenterPos()).contract(1.0E-6);
             return world.isSpaceEmpty(box);
         }
     }

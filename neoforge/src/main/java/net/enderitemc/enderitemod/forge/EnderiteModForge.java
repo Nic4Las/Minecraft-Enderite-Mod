@@ -12,6 +12,11 @@ import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.BlockPlacementDispenserBehavior;
 import net.minecraft.block.dispenser.ShearsDispenserBehavior;
 import net.minecraft.client.render.item.model.special.SpecialModelTypes;
+import net.minecraft.resource.ResourcePackProfile;
+import net.minecraft.resource.ResourcePackSource;
+import net.minecraft.resource.ResourceType;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,10 +28,14 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterItemModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 import org.apache.logging.log4j.LogManager;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.Logger;
 
-@Mod(EnderiteMod.MOD_ID)
+import static net.enderitemc.enderitemod.EnderiteMod.MOD_ID;
+
+@Mod(MOD_ID)
 public class EnderiteModForge {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
@@ -50,7 +59,7 @@ public class EnderiteModForge {
         });
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = EnderiteMod.MOD_ID)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = MOD_ID)
     public static class RegistryEventsClient {
 
         @SubscribeEvent
@@ -95,6 +104,23 @@ public class EnderiteModForge {
         @SubscribeEvent
         public static void registerItemModels(RegisterItemModelsEvent event) {
             SpecialModelTypes.ID_MAPPER.put(RendererRegistries.ENDERITE_SHIELD.id(), RendererRegistries.ENDERITE_SHIELD.codec());
+        }
+
+        @SubscribeEvent
+        private static void onAddPackFinders(AddPackFindersEvent event) {
+            // We only want to inject into the client-side resource packs (assets), not server data (datapacks)
+            if (event.getPackType() == ResourceType.CLIENT_RESOURCES && FMLEnvironment.isProduction()) {
+
+                // This helper method automatically looks in your mod's /resources/resourcepacks/ folder
+                event.addPackFinders(
+                        Identifier.of(MOD_ID, "resourcepacks/" + "alternative_textures_amber3562"),  // 1. The namespace and the folder name of your pack
+                        ResourceType.CLIENT_RESOURCES,                                                    // 2. The type of pack (client resources)
+                        Text.of("Alternative Enderitemod Textures (by Amber3562)"),                 // 3. The display name shown in the Resource Packs menu
+                        ResourcePackSource.BUILTIN,                                                       // 4. Denotes that this is a built-in pack
+                        false,                                                                            // 5. 'false' means optional/disabled by default
+                        ResourcePackProfile.InsertionPosition.TOP                                         // 6. Where the pack goes in the load order if enabled
+                );
+            }
         }
     }
 }
