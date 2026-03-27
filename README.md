@@ -62,7 +62,7 @@ Special thanks to:
 
 Thanks to:
 - ES: CamoloQlo
-- ZH_CN: Samekichi, WuzgXY
+- ZH_CN: Samekichi, WuzgXY, MrMikeForDev
 - RU: temac000, mpustovoi
 - PL: zealoussentinel512
 - FR: JustArthur
