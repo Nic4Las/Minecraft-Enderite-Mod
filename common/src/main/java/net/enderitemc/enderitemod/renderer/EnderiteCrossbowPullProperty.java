@@ -4,33 +4,33 @@ import com.mojang.serialization.MapCodec;
 import net.enderitemc.enderitemod.tools.EnderiteCrossbow;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.item.property.numeric.NumericProperty;
-import net.minecraft.client.render.item.property.numeric.UseDurationProperty;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.HeldItemContext;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
+import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
+import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public class EnderiteCrossbowPullProperty implements NumericProperty {
+public class EnderiteCrossbowPullProperty implements RangeSelectItemModelProperty {
     public static final MapCodec<EnderiteCrossbowPullProperty> CODEC = MapCodec.unit(new EnderiteCrossbowPullProperty());
 
     @Override
-    public float getValue(ItemStack stack, @Nullable ClientWorld world, @Nullable HeldItemContext context, int seed) {
-        if (context == null || context.getEntity() == null) {
+    public float get(ItemStack stack, @Nullable ClientLevel world, @Nullable ItemOwner context, int seed) {
+        if (context == null || context.asLivingEntity() == null) {
             return 0.0F;
         } else if (EnderiteCrossbow.isCharged(stack)) {
             return 0.0F;
         } else {
-            LivingEntity holder = context.getEntity();
-            int i = EnderiteCrossbow.getPullTime(stack, holder);
-            return (float) UseDurationProperty.getTicksUsedSoFar(stack, holder) / (float) i;
+            LivingEntity holder = context.asLivingEntity();
+            int i = EnderiteCrossbow.getChargeDuration(stack, holder);
+            return (float) UseDuration.useDuration(stack, holder) / (float) i;
         }
     }
 
     @Override
-    public MapCodec<EnderiteCrossbowPullProperty> getCodec() {
+    public MapCodec<EnderiteCrossbowPullProperty> type() {
         return CODEC;
     }
 }

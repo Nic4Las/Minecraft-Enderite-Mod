@@ -2,24 +2,23 @@ package net.enderitemc.enderitemod.component;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.item.Item;
-import net.minecraft.item.tooltip.TooltipAppender;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.dynamic.Codecs;
-
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipProvider;
 
-public class EnderiteChargeComponent extends Number implements TooltipAppender {
-    public static Codec<EnderiteChargeComponent> CODEC = Codecs.NON_NEGATIVE_INT.xmap(
+public class EnderiteChargeComponent extends Number implements TooltipProvider {
+    public static Codec<EnderiteChargeComponent> CODEC = ExtraCodecs.NON_NEGATIVE_INT.xmap(
         EnderiteChargeComponent::new,
         EnderiteChargeComponent::charge
     );
 
-    public static PacketCodec<ByteBuf, EnderiteChargeComponent> PACKET_CODEC = new PacketCodec<ByteBuf, EnderiteChargeComponent>() {
+    public static StreamCodec<ByteBuf, EnderiteChargeComponent> PACKET_CODEC = new StreamCodec<ByteBuf, EnderiteChargeComponent>() {
         public EnderiteChargeComponent decode(ByteBuf byteBuf) {
             return new EnderiteChargeComponent(byteBuf.readInt());
         }
@@ -62,10 +61,10 @@ public class EnderiteChargeComponent extends Number implements TooltipAppender {
         return charge;
     }
 
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> textConsumer, TooltipFlag type, DataComponentGetter components) {
         int charge = components.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
-        textConsumer.accept(Text.translatable("item.enderitemod.enderite_sword.charge")
-                .formatted(new Formatting[]{Formatting.DARK_AQUA}).append(Text.literal(": " + charge)));
+        textConsumer.accept(Component.translatable("item.enderitemod.enderite_sword.charge")
+                .withStyle(new ChatFormatting[]{ChatFormatting.DARK_AQUA}).append(Component.literal(": " + charge)));
     }
 
     @Override

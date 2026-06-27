@@ -5,41 +5,7 @@ import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlastFurnaceBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.equipment.trim.ArmorTrim;
-import net.minecraft.item.equipment.trim.ArmorTrimMaterial;
-import net.minecraft.item.equipment.trim.ArmorTrimMaterials;
-import net.minecraft.item.equipment.trim.ArmorTrimPattern;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.test.TestContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameMode;
-
+import net.minecraft.gametest.framework.GameTestHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,62 +18,62 @@ public class EnderiteTests {
     public static final String TMPL_PRE = TMPL_MI + TMPL_NS;
 
     @GameTest(structure = TMPL_PRE + "explode_enderite_ore")
-    public static void explodeEnderiteOreTest(TestContext ctx) {
+    public static void explodeEnderiteOreTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.explodeEnderiteOreTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_shulkerbox_recipe")
-    public static void enderiteShulkerboxRecipeTest(TestContext ctx) {
+    public static void enderiteShulkerboxRecipeTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteShulkerboxRecipeTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_elytra_recipe")
-    public static void enderiteElytraRecipeTest(TestContext ctx) {
+    public static void enderiteElytraRecipeTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteElytraRecipeTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_shield_deco_recipe")
-    public static void enderiteShieldDecoRecipeTest(TestContext ctx) {
+    public static void enderiteShieldDecoRecipeTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteShieldDecoRecipeTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_respawn_anchor")
-    public static void enderiteRespawnAnchorTest(TestContext ctx) {
+    public static void enderiteRespawnAnchorTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteRespawnAnchorTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "void_death_with_enderite")
-    public static void voidDeathWithEnderiteTest(TestContext ctx) {
+    public static void voidDeathWithEnderiteTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.voidDeathWithEnderiteTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_armor_trims")
-    public static void enderiteArmorTrimsTest(TestContext ctx) {
+    public static void enderiteArmorTrimsTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteArmorTrimsTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_elytra_trim_recipe")
-    public static void enderiteElytraTrimRecipeTest(TestContext ctx) {
+    public static void enderiteElytraTrimRecipeTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteElytraTrimRecipeTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderman_enderite")
-    public static void endermanEnderiteTest(TestContext ctx) {
+    public static void endermanEnderiteTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.endermanEnderiteTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_smelting")
-    public static void enderiteSmeltingTest(TestContext ctx) {
+    public static void enderiteSmeltingTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteSmeltingTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_dispenser_shears")
-    public static void enderiteDispenserShearsTest(TestContext ctx) {
+    public static void enderiteDispenserShearsTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteDispenserShearsTest(ctx);
     }
 
     @GameTest(structure = TMPL_PRE + "enderite_dispenser_shulkerbox")
-    public static void enderiteDispenserShulkerboxTest(TestContext ctx) {
+    public static void enderiteDispenserShulkerboxTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteDispenserShulkerboxTest(ctx);
     }
 }

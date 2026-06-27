@@ -2,24 +2,23 @@ package net.enderitemc.enderitemod.component;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.item.Item;
-import net.minecraft.item.tooltip.TooltipAppender;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipProvider;
 
-public record EnderiteTooltipComponent(boolean is_shield) implements TooltipAppender {
+public record EnderiteTooltipComponent(boolean is_shield) implements TooltipProvider {
 
     public static Codec<EnderiteTooltipComponent> CODEC = Codec.BOOL.xmap(
         EnderiteTooltipComponent::new,
         EnderiteTooltipComponent::is_shield
     );
 
-    public static PacketCodec<ByteBuf, EnderiteTooltipComponent> PACKET_CODEC = new PacketCodec<ByteBuf, EnderiteTooltipComponent>() {
+    public static StreamCodec<ByteBuf, EnderiteTooltipComponent> PACKET_CODEC = new StreamCodec<ByteBuf, EnderiteTooltipComponent>() {
         public EnderiteTooltipComponent decode(ByteBuf byteBuf) {
             return new EnderiteTooltipComponent(byteBuf.readBoolean());
         }
@@ -37,17 +36,17 @@ public record EnderiteTooltipComponent(boolean is_shield) implements TooltipAppe
         return new EnderiteTooltipComponent(true);
     }
 
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
-        textConsumer.accept(Text.translatable("item.enderitemod.enderite_sword.tooltip1")
-            .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
-        textConsumer.accept(Text.translatable("item.enderitemod.enderite_sword.tooltip2")
-            .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> textConsumer, TooltipFlag type, DataComponentGetter components) {
+        textConsumer.accept(Component.translatable("item.enderitemod.enderite_sword.tooltip1")
+            .withStyle(new ChatFormatting[]{ChatFormatting.GRAY, ChatFormatting.ITALIC}));
+        textConsumer.accept(Component.translatable("item.enderitemod.enderite_sword.tooltip2")
+            .withStyle(new ChatFormatting[]{ChatFormatting.GRAY, ChatFormatting.ITALIC}));
         if(is_shield) {
-            textConsumer.accept(Text.translatable("item.enderitemod.enderite_shield.tooltip3")
-                .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
+            textConsumer.accept(Component.translatable("item.enderitemod.enderite_shield.tooltip3")
+                .withStyle(new ChatFormatting[]{ChatFormatting.GRAY, ChatFormatting.ITALIC}));
         } else {
-            textConsumer.accept(Text.translatable("item.enderitemod.enderite_sword.tooltip3")
-                .formatted(new Formatting[]{Formatting.GRAY, Formatting.ITALIC}));
+            textConsumer.accept(Component.translatable("item.enderitemod.enderite_sword.tooltip3")
+                .withStyle(new ChatFormatting[]{ChatFormatting.GRAY, ChatFormatting.ITALIC}));
         }
 
     }

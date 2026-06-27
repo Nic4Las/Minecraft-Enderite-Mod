@@ -1,12 +1,11 @@
 package net.enderitemc.enderitemod.tests;
 
-import net.minecraft.data.DataOutput;
-import net.minecraft.data.DataWriter;
-import net.minecraft.data.SnbtProvider;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.structures.SnbtToNbt;
 
 public class ConvertNbt {
 
@@ -19,10 +18,10 @@ public class ConvertNbt {
         // Instantiate SnbtProvider
         List<Path> in_paths = input.stream().map(Path::of).toList();
         Path out_path = Path.of(output);
-        SnbtProvider provider = new SnbtProvider(
-            new DataOutput(out_path), in_paths);
+        SnbtToNbt provider = new SnbtToNbt(
+            new PackOutput(out_path), in_paths);
 
         // Rune conversion
-        provider.run(DataWriter.UNCACHED);
+        provider.run(CachedOutput.NO_CACHE);
     }
 }

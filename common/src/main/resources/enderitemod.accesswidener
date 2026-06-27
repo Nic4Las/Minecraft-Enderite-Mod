@@ -1,9 +1,9 @@
-accessWidener   v2  named
-accessible  method   net/minecraft/item/SmithingTemplateItem   getNetheriteUpgradeEmptyBaseSlotTextures   ()Ljava/util/List;
-accessible  method   net/minecraft/item/SmithingTemplateItem   getNetheriteUpgradeEmptyAdditionsSlotTextures   ()Ljava/util/List;
-accessible class net/minecraft/datafixer/fix/ItemStackComponentizationFix$StackData
-accessible class net/minecraft/server/network/ServerPlayerEntity$RespawnPos
+accessWidener   v2  official
+accessible  method   net/minecraft/world/item/SmithingTemplateItem   createNetheriteUpgradeIconList   ()Ljava/util/List;
+accessible  method   net/minecraft/world/item/SmithingTemplateItem   createNetheriteUpgradeMaterialList   ()Ljava/util/List;
+accessible class net/minecraft/util/datafix/fixes/ItemStackComponentizationFix$ItemStackData
+accessible class net/minecraft/server/level/ServerPlayer$RespawnPosAngle
 
-accessible field net/minecraft/client/render/item/model/special/SpecialModelTypes ID_MAPPER Lnet/minecraft/util/dynamic/Codecs$IdMapper;
-accessible field net/minecraft/client/render/item/property/numeric/NumericProperties ID_MAPPER Lnet/minecraft/util/dynamic/Codecs$IdMapper;
-accessible field net/minecraft/client/render/item/property/bool/BooleanProperties ID_MAPPER Lnet/minecraft/util/dynamic/Codecs$IdMapper;
+accessible field net/minecraft/client/renderer/special/SpecialModelRenderers ID_MAPPER Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
+accessible field net/minecraft/client/renderer/item/properties/numeric/RangeSelectItemModelProperties ID_MAPPER Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
+accessible field net/minecraft/client/renderer/item/properties/conditional/ConditionalItemModelProperties ID_MAPPER Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;

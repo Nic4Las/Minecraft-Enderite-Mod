@@ -1,30 +1,29 @@
 package net.enderitemc.enderitemod.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.block.entity.BannerBlockEntityRenderer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.render.entity.model.ShieldEntityModel;
-import net.minecraft.client.render.item.model.special.SpecialModelRenderer;
-import net.minecraft.client.texture.SpriteHolder;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BannerPatternsComponent;
-import net.minecraft.item.ItemDisplayContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.object.equipment.ShieldModel;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.BannerRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.client.resources.model.sprite.SpriteGetter;
+import net.minecraft.client.resources.model.sprite.SpriteId;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3fc;
@@ -33,55 +32,54 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
-public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap> {
-    public static final SpriteIdentifier ENDERITE_SHIELD_BASE = new SpriteIdentifier(
-        TexturedRenderLayers.SHIELD_PATTERNS_ATLAS_TEXTURE, Identifier.of(EnderiteMod.MOD_ID, "entity/enderite_shield_base")
+public class EnderiteShieldRenderer implements SpecialModelRenderer<DataComponentMap> {
+    public static final SpriteId ENDERITE_SHIELD_BASE = new SpriteId(
+        Sheets.SHIELD_SHEET, Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, "entity/enderite_shield_base")
     );
-    public static final SpriteIdentifier ENDERITE_SHIELD_BASE_NO_PATTERN = new SpriteIdentifier(
-        TexturedRenderLayers.SHIELD_PATTERNS_ATLAS_TEXTURE, Identifier.of(EnderiteMod.MOD_ID, "entity/enderite_shield_base_nopattern")
+    public static final SpriteId ENDERITE_SHIELD_BASE_NO_PATTERN = new SpriteId(
+        Sheets.SHIELD_SHEET, Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, "entity/enderite_shield_base_nopattern")
     );
 
-    private final SpriteHolder spriteHolder;
-    private final ShieldEntityModel model;
+    private final SpriteGetter sprites;
+    private final ShieldModel model;
     private final boolean charged;
 
-    public EnderiteShieldRenderer(SpriteHolder spriteHolder, ShieldEntityModel model, boolean charged) {
-        this.spriteHolder = spriteHolder;
+    public EnderiteShieldRenderer(SpriteGetter sprites, ShieldModel model, boolean charged) {
+        this.sprites = sprites;
         this.model = model;
         this.charged = charged;
     }
 
     @Nullable
-    public ComponentMap getData(ItemStack itemStack) {
-        return itemStack.getImmutableComponents();
+    public DataComponentMap extractArgument(ItemStack itemStack) {
+        return itemStack.immutableComponents();
     }
 
     @Override
-    public void render(
-        @Nullable ComponentMap componentMap,
-        ItemDisplayContext displayContext,
-        MatrixStack matrixStack,
-        OrderedRenderCommandQueue queue,
+    public void submit(
+        @Nullable DataComponentMap componentMap,
+        PoseStack matrixStack,
+        SubmitNodeCollector queue,
         int light,
         int overlay,
         boolean glint,
         int i
     ) {
-        BannerPatternsComponent bannerPatternsComponent = componentMap != null
-            ? componentMap.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT)
-            : BannerPatternsComponent.DEFAULT;
-        DyeColor dyeColor = componentMap != null ? componentMap.get(DataComponentTypes.BASE_COLOR) : null;
+        BannerPatternLayers bannerPatternsComponent = componentMap != null
+            ? componentMap.getOrDefault(DataComponents.BANNER_PATTERNS, BannerPatternLayers.EMPTY)
+            : BannerPatternLayers.EMPTY;
+        DyeColor dyeColor = componentMap != null ? componentMap.get(DataComponents.BASE_COLOR) : null;
         boolean bl2 = !bannerPatternsComponent.layers().isEmpty() || dyeColor != null;
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.scale(1.0F, -1.0F, -1.0F);
-        SpriteIdentifier spriteIdentifier = bl2 ? ENDERITE_SHIELD_BASE : ENDERITE_SHIELD_BASE_NO_PATTERN;
+        SpriteId spriteIdentifier = bl2 ? ENDERITE_SHIELD_BASE : ENDERITE_SHIELD_BASE_NO_PATTERN;
         queue.submitModelPart(
-            this.model.getHandle(),
+            this.model.handle(),
             matrixStack,
-            this.model.getLayer(spriteIdentifier.getAtlasId()),
+            this.model.renderType(spriteIdentifier.atlasLocation()),
             light,
             overlay,
-            this.spriteHolder.getSprite(spriteIdentifier),
+            this.sprites.get(spriteIdentifier),
             false,
             glint,
             -1,
@@ -89,30 +87,27 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
             i
         );
         if (bl2) {
-            BannerBlockEntityRenderer.renderCanvas(
-                this.spriteHolder,
+            BannerRenderer.submitPatterns(
+                this.sprites,
                 matrixStack,
                 queue,
                 light,
                 overlay,
                 this.model,
                 Unit.INSTANCE,
-                spriteIdentifier,
                 false,
                 (DyeColor) Objects.requireNonNullElse(dyeColor, DyeColor.WHITE),
                 bannerPatternsComponent,
-                glint,
-                null,
-                i
+                null
             );
         } else {
             queue.submitModelPart(
-                this.model.getPlate(),
+                this.model.plate(),
                 matrixStack,
-                this.model.getLayer(spriteIdentifier.getAtlasId()),
+                this.model.renderType(spriteIdentifier.atlasLocation()),
                 light,
                 overlay,
-                this.spriteHolder.getSprite(spriteIdentifier),
+                this.sprites.get(spriteIdentifier),
                 false,
                 glint,
                 -1,
@@ -120,23 +115,21 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
                 i
             );
         }
-        if (this.charged &&
-            (displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND
-                || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) {
+        if (this.charged) {
             // Custom end portal shader
-            queue.submitCustom(
+            queue.submitCustomGeometry(
                 matrixStack,
-                RenderLayers.endPortal(),
+                RenderTypes.endPortal(),
                 this::renderSides);
         }
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     @Override
-    public void collectVertices(Consumer<Vector3fc> consumer) {
-        MatrixStack matrixStack = new MatrixStack();
+    public void getExtents(Consumer<Vector3fc> consumer) {
+        PoseStack matrixStack = new PoseStack();
         matrixStack.scale(1.0F, -1.0F, -1.0F);
-        this.model.getRootPart().collectVertices(matrixStack, consumer);
+        this.model.root().getExtentsForGui(matrixStack, consumer);
     }
 
     @Environment(EnvType.CLIENT)
@@ -149,18 +142,18 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
         );
 
         @Override
-        public MapCodec<EnderiteShieldRenderer.Unbaked> getCodec() {
+        public MapCodec<EnderiteShieldRenderer.Unbaked> type() {
             return CODEC;
         }
 
         @Override
-        public SpecialModelRenderer<?> bake(SpecialModelRenderer.BakeContext context) {
-            return new EnderiteShieldRenderer(context.spriteHolder(), new ShieldEntityModel(context.entityModelSet().getModelPart(EntityModelLayers.SHIELD)), charged);
+        public SpecialModelRenderer<?> bake(SpecialModelRenderer.BakingContext context) {
+            return new EnderiteShieldRenderer(context.sprites(), new ShieldModel(context.entityModelSet().bakeLayer(ModelLayers.SHIELD)), charged);
         }
     }
 
-    private void renderSides(MatrixStack.Entry matrixEntry, VertexConsumer vertexConsumer) {
-        Matrix4f matrix = matrixEntry.getPositionMatrix();
+    private void renderSides(PoseStack.Pose matrixEntry, VertexConsumer vertexConsumer) {
+        Matrix4f matrix = matrixEntry.pose();
         float border = 1.0f;
         float f = (-6.0F + border) / 16.0f;
         float g = (-11.0F + border) / 16.0f;
@@ -173,9 +166,9 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<ComponentMap
     }
 
     private void renderSide(Matrix4f model, VertexConsumer vertices, float x1, float x2, float y1, float y2, float z) {
-        vertices.vertex(model, x1, y1, z);
-        vertices.vertex(model, x2, y1, z);
-        vertices.vertex(model, x2, y2, z);
-        vertices.vertex(model, x1, y2, z);
+        vertices.addVertex(model, x1, y1, z);
+        vertices.addVertex(model, x2, y1, z);
+        vertices.addVertex(model, x2, y2, z);
+        vertices.addVertex(model, x1, y2, z);
     }
 }

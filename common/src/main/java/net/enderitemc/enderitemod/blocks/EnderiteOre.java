@@ -1,25 +1,25 @@
 package net.enderitemc.enderitemod.blocks;
 
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.explosion.Explosion;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 
 
 public class EnderiteOre extends Block {
 
-    public EnderiteOre(AbstractBlock.Settings settings) {
-        super(settings.mapColor(MapColor.BLACK).sounds(BlockSoundGroup.STONE)
-            .strength(-1.0f, 9.0F).dropsNothing());
+    public EnderiteOre(BlockBehaviour.Properties settings) {
+        super(settings.mapColor(MapColor.COLOR_BLACK).sound(SoundType.STONE)
+            .strength(-1.0f, 9.0F).noLootTable());
     }
 
     @Override
-    public void onDestroyedByExplosion(ServerWorld world, BlockPos pos, Explosion explosion) {
-        world.setBlockState(pos, EnderiteMod.CRACKED_ENDERITE_ORE.get().getDefaultState());
+    public void wasExploded(ServerLevel world, BlockPos pos, Explosion explosion) {
+        world.setBlockAndUpdate(pos, EnderiteMod.CRACKED_ENDERITE_ORE.get().defaultBlockState());
     }
 
 }

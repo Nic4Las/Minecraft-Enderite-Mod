@@ -1,9 +1,9 @@
 package net.enderitemc.enderitemod.tools;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public final class BlockEntityTypeBuilder {
     private BlockEntityTypeBuilder() {
@@ -11,7 +11,7 @@ public final class BlockEntityTypeBuilder {
 
     @ExpectPlatform
     public static <T extends BlockEntity> BlockEntityType<T> create(
-        BlockEntityType.BlockEntityFactory<? extends T> blockEntityFactory, Block... blocks
+        BlockEntityType.BlockEntitySupplier<? extends T> blockEntityFactory, Block... blocks
     ) {
         throw new AssertionError();
     }

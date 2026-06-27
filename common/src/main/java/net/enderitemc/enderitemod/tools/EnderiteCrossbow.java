@@ -1,28 +1,28 @@
 package net.enderitemc.enderitemod.tools;
 
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.EnchantmentEffectComponentTypes;
-import net.minecraft.component.type.ChargedProjectilesComponent;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ChargedProjectiles;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -34,44 +34,44 @@ public class EnderiteCrossbow extends CrossbowItem {
     private boolean charged = false;
     private boolean loaded = false;
 
-    private static final CrossbowItem.LoadingSounds DEFAULT_LOADING_SOUNDS = new CrossbowItem.LoadingSounds(
-        Optional.of(SoundEvents.ITEM_CROSSBOW_LOADING_START),
-        Optional.of(SoundEvents.ITEM_CROSSBOW_LOADING_MIDDLE),
-        Optional.of(SoundEvents.ITEM_CROSSBOW_LOADING_END)
+    private static final CrossbowItem.ChargingSounds DEFAULT_LOADING_SOUNDS = new CrossbowItem.ChargingSounds(
+        Optional.of(SoundEvents.CROSSBOW_LOADING_START),
+        Optional.of(SoundEvents.CROSSBOW_LOADING_MIDDLE),
+        Optional.of(SoundEvents.CROSSBOW_LOADING_END)
     );
 
-    public EnderiteCrossbow(Item.Settings settings) {
+    public EnderiteCrossbow(Item.Properties settings) {
         super(settings);
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        ChargedProjectilesComponent chargedProjectilesComponent = itemStack.get(DataComponentTypes.CHARGED_PROJECTILES);
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        ItemStack itemStack = user.getItemInHand(hand);
+        ChargedProjectiles chargedProjectilesComponent = itemStack.get(DataComponents.CHARGED_PROJECTILES);
         if (chargedProjectilesComponent != null && !chargedProjectilesComponent.isEmpty()) {
-            this.shootAll(world, user, hand, itemStack, EnderiteCrossbow.getSpeed(chargedProjectilesComponent), 1.0f, null);
-            return ActionResult.CONSUME.withNewHandStack(itemStack);
-        } else if (!user.getProjectileType(itemStack).isEmpty()) {
+            this.performShooting(world, user, hand, itemStack, EnderiteCrossbow.getShootingPower(chargedProjectilesComponent), 1.0f, null);
+            return InteractionResult.CONSUME.heldItemTransformedTo(itemStack);
+        } else if (!user.getProjectile(itemStack).isEmpty()) {
             this.charged = false;
             this.loaded = false;
-            user.setCurrentHand(hand);
-            return ActionResult.CONSUME.withNewHandStack(itemStack);
+            user.startUsingItem(hand);
+            return InteractionResult.CONSUME.heldItemTransformedTo(itemStack);
         } else {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
     }
 
-    private static float getSpeed(ChargedProjectilesComponent stack) {
+    private static float getShootingPower(ChargedProjectiles stack) {
         return stack.contains(Items.FIREWORK_ROCKET) ? 2.1F
             : EnderiteMod.CONFIG.tools.enderiteCrossbowArrowSpeed;
     }
 
     @Override
-    public boolean onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        int i = this.getMaxUseTime(stack, user) - remainingUseTicks;
-        float f = getPullProgress(i, stack, user);
-        if (f >= 1.0F && !isCharged(stack) && loadProjectiles(user, stack)) {
-            CrossbowItem.LoadingSounds loadingSounds = this.getLoadingSounds(stack);
+    public boolean releaseUsing(ItemStack stack, Level world, LivingEntity user, int remainingUseTicks) {
+        int i = this.getUseDuration(stack, user) - remainingUseTicks;
+        float f = getPowerForTime(i, stack, user);
+        if (f >= 1.0F && !isCharged(stack) && tryLoadProjectiles(user, stack)) {
+            CrossbowItem.ChargingSounds loadingSounds = this.getChargingSounds(stack);
             loadingSounds.end()
                 .ifPresent(
                     sound -> world.playSound(
@@ -80,7 +80,7 @@ public class EnderiteCrossbow extends CrossbowItem {
                         user.getY(),
                         user.getZ(),
                         (SoundEvent) sound.value(),
-                        user.getSoundCategory(),
+                        user.getSoundSource(),
                         1.0F,
                         1.0F / (world.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F
                     )
@@ -90,10 +90,10 @@ public class EnderiteCrossbow extends CrossbowItem {
         return false;
     }
 
-    private static boolean loadProjectiles(LivingEntity shooter, ItemStack crossbow) {
-        List<ItemStack> list = load(crossbow, shooter.getProjectileType(crossbow), shooter);
+    private static boolean tryLoadProjectiles(LivingEntity shooter, ItemStack crossbow) {
+        List<ItemStack> list = draw(crossbow, shooter.getProjectile(crossbow), shooter);
         if (!list.isEmpty()) {
-            crossbow.set(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.of(list));
+            crossbow.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.ofNonEmpty(list));
             return true;
         } else {
             return false;
@@ -101,30 +101,30 @@ public class EnderiteCrossbow extends CrossbowItem {
     }
 
     @Override
-    protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+    protected void shootProjectile(LivingEntity shooter, Projectile projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
         Vector3f vector3f;
         if (target != null) {
             double d = target.getX() - shooter.getX();
             double e = target.getZ() - shooter.getZ();
             double f = Math.sqrt(d * d + e * e);
-            double g = target.getBodyY(0.3333333333333333) - projectile.getY() + f * (double) 0.2f;
-            vector3f = EnderiteCrossbow.calcVelocity(shooter, new Vec3d(d, g, e), yaw);
+            double g = target.getY(0.3333333333333333) - projectile.getY() + f * (double) 0.2f;
+            vector3f = EnderiteCrossbow.getProjectileShotVector(shooter, new Vec3(d, g, e), yaw);
         } else {
-            Vec3d vec3d = shooter.getOppositeRotationVector(1.0f);
+            Vec3 vec3d = shooter.getUpVector(1.0f);
             Quaternionf quaternionf = new Quaternionf().setAngleAxis((double) (yaw * ((float) Math.PI / 180)), vec3d.x, vec3d.y, vec3d.z);
-            Vec3d vec3d2 = shooter.getRotationVec(1.0f);
+            Vec3 vec3d2 = shooter.getViewVector(1.0f);
             vector3f = vec3d2.toVector3f().rotate(quaternionf);
         }
-        projectile.setVelocity(vector3f.x(), vector3f.y(), vector3f.z(), speed, divergence);
-        float h = EnderiteCrossbow.getSoundPitch(shooter.getRandom(), index);
-        shooter.getEntityWorld().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, shooter.getSoundCategory(), 1.0f, h);
+        projectile.shoot(vector3f.x(), vector3f.y(), vector3f.z(), speed, divergence);
+        float h = EnderiteCrossbow.getShotPitch(shooter.getRandom(), index);
+        shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, shooter.getSoundSource(), 1.0f, h);
     }
 
-    private static Vector3f calcVelocity(LivingEntity shooter, Vec3d direction, float yaw) {
+    private static Vector3f getProjectileShotVector(LivingEntity shooter, Vec3 direction, float yaw) {
         Vector3f vector3f = direction.toVector3f().normalize();
         Vector3f vector3f2 = new Vector3f(vector3f).cross(new Vector3f(0.0f, 1.0f, 0.0f));
         if ((double) vector3f2.lengthSquared() <= 1.0E-7) {
-            Vec3d vec3d = shooter.getOppositeRotationVector(1.0f);
+            Vec3 vec3d = shooter.getUpVector(1.0f);
             vector3f2 = new Vector3f(vector3f).cross(vec3d.toVector3f());
         }
         Vector3f vector3f3 = new Vector3f(vector3f).rotateAxis((float) (Math.PI / 2), vector3f2.x, vector3f2.y, vector3f2.z);
@@ -132,33 +132,33 @@ public class EnderiteCrossbow extends CrossbowItem {
     }
 
     @Override
-    protected ProjectileEntity createArrowEntity(World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
-        ProjectileEntity weakArrow = super.createArrowEntity(world, shooter, weaponStack, projectileStack, critical);
-        if (weakArrow instanceof PersistentProjectileEntity projectileEntity) {
-            projectileEntity.setCustomName(Text.literal("Enderite Arrow"));
-            projectileEntity.setDamage(EnderiteMod.CONFIG.tools.enderiteCrossbowAD);
+    protected Projectile createProjectile(Level world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
+        Projectile weakArrow = super.createProjectile(world, shooter, weaponStack, projectileStack, critical);
+        if (weakArrow instanceof AbstractArrow projectileEntity) {
+            projectileEntity.setCustomName(Component.literal("Enderite Arrow"));
+            projectileEntity.setBaseDamage(EnderiteMod.CONFIG.tools.enderiteCrossbowAD);
             return projectileEntity;
         }
         return weakArrow;
     }
 
-    private static float getSoundPitch(Random random, int index) {
+    private static float getShotPitch(RandomSource random, int index) {
         if (index == 0) {
             return 1.0f;
         }
-        return EnderiteCrossbow.getSoundPitch((index & 1) == 1, random);
+        return EnderiteCrossbow.getRandomShotPitch((index & 1) == 1, random);
     }
 
-    private static float getSoundPitch(boolean flag, Random random) {
+    private static float getRandomShotPitch(boolean flag, RandomSource random) {
         float f = flag ? 0.63f : 0.43f;
         return 1.0f / (random.nextFloat() * 0.5f + 1.8f) + f;
     }
 
     @Override
-    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        if (!world.isClient()) {
-            CrossbowItem.LoadingSounds loadingSounds = this.getLoadingSounds(stack);
-            float f = (float)(stack.getMaxUseTime(user) - remainingUseTicks) / getPullTime(stack, user);
+    public void onUseTick(Level world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        if (!world.isClientSide()) {
+            CrossbowItem.ChargingSounds loadingSounds = this.getChargingSounds(stack);
+            float f = (float)(stack.getUseDuration(user) - remainingUseTicks) / getChargeDuration(stack, user);
             if (f < 0.2F) {
                 this.charged = false;
                 this.loaded = false;
@@ -167,16 +167,16 @@ public class EnderiteCrossbow extends CrossbowItem {
             if (f >= 0.2F && !this.charged) {
                 this.charged = true;
                 loadingSounds.start()
-                    .ifPresent(sound -> world.playSound(null, user.getX(), user.getY(), user.getZ(), (SoundEvent)sound.value(), SoundCategory.PLAYERS, 0.5F, 1.0F));
+                    .ifPresent(sound -> world.playSound(null, user.getX(), user.getY(), user.getZ(), (SoundEvent)sound.value(), SoundSource.PLAYERS, 0.5F, 1.0F));
             }
 
             if (f >= 0.5F && !this.loaded) {
                 this.loaded = true;
                 loadingSounds.mid()
-                    .ifPresent(sound -> world.playSound(null, user.getX(), user.getY(), user.getZ(), (SoundEvent)sound.value(), SoundCategory.PLAYERS, 0.5F, 1.0F));
+                    .ifPresent(sound -> world.playSound(null, user.getX(), user.getY(), user.getZ(), (SoundEvent)sound.value(), SoundSource.PLAYERS, 0.5F, 1.0F));
             }
 
-            if (f >= 1.0F && !isCharged(stack) && loadProjectiles(user, stack)) {
+            if (f >= 1.0F && !isCharged(stack) && tryLoadProjectiles(user, stack)) {
                 loadingSounds.end()
                     .ifPresent(
                         sound -> world.playSound(
@@ -185,7 +185,7 @@ public class EnderiteCrossbow extends CrossbowItem {
                             user.getY(),
                             user.getZ(),
                             (SoundEvent)sound.value(),
-                            user.getSoundCategory(),
+                            user.getSoundSource(),
                             1.0F,
                             1.0F / (world.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F
                         )
@@ -195,22 +195,22 @@ public class EnderiteCrossbow extends CrossbowItem {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
-        return getPullTime(stack, user) + 3;
+    public int getUseDuration(ItemStack stack, LivingEntity user) {
+        return getChargeDuration(stack, user) + 3;
     }
 
-    public static int getPullTime(ItemStack stack, LivingEntity user) {
-        float f = EnchantmentHelper.getCrossbowChargeTime(stack, user, 1.25F);
-        return MathHelper.floor(f * EnderiteMod.CONFIG.tools.enderiteCrossBowChargeTime);
+    public static int getChargeDuration(ItemStack stack, LivingEntity user) {
+        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, user, 1.25F);
+        return Mth.floor(f * EnderiteMod.CONFIG.tools.enderiteCrossBowChargeTime);
     }
 
-    CrossbowItem.LoadingSounds getLoadingSounds(ItemStack stack) {
-        return (CrossbowItem.LoadingSounds) EnchantmentHelper.getEffect(stack, EnchantmentEffectComponentTypes.CROSSBOW_CHARGING_SOUNDS)
+    CrossbowItem.ChargingSounds getChargingSounds(ItemStack stack) {
+        return (CrossbowItem.ChargingSounds) EnchantmentHelper.pickHighestLevel(stack, EnchantmentEffectComponents.CROSSBOW_CHARGING_SOUNDS)
             .orElse(DEFAULT_LOADING_SOUNDS);
     }
 
-    private static float getPullProgress(int useTicks, ItemStack stack, LivingEntity user) {
-        float f = (float) useTicks / (float) EnderiteCrossbow.getPullTime(stack, user);
+    private static float getPowerForTime(int useTicks, ItemStack stack, LivingEntity user) {
+        float f = (float) useTicks / (float) EnderiteCrossbow.getChargeDuration(stack, user);
         if (f > 1.0f) {
             f = 1.0f;
         }

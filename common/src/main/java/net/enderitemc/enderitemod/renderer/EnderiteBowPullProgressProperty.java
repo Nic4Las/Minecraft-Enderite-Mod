@@ -4,28 +4,28 @@ import com.mojang.serialization.MapCodec;
 import net.enderitemc.enderitemod.tools.EnderiteBow;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.item.property.numeric.NumericProperty;
-import net.minecraft.client.render.item.property.numeric.UseDurationProperty;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.HeldItemContext;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
+import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
+import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public record EnderiteBowPullProgressProperty() implements NumericProperty {
+public record EnderiteBowPullProgressProperty() implements RangeSelectItemModelProperty {
     public static final MapCodec<EnderiteBowPullProgressProperty> CODEC = MapCodec.unit(new EnderiteBowPullProgressProperty());
 
     @Override
-    public float getValue(ItemStack stack, @Nullable ClientWorld world, @Nullable HeldItemContext context, int seed) {
-        if (context == null || context.getEntity() == null) {
+    public float get(ItemStack stack, @Nullable ClientLevel world, @Nullable ItemOwner context, int seed) {
+        if (context == null || context.asLivingEntity() == null) {
             return 0.0F;
         } else {
-            return EnderiteBow.getPullProgress(UseDurationProperty.getTicksUsedSoFar(stack, context.getEntity()));
+            return EnderiteBow.getPowerForTime(UseDuration.useDuration(stack, context.asLivingEntity()));
         }
     }
 
     @Override
-    public MapCodec<EnderiteBowPullProgressProperty> getCodec() {
+    public MapCodec<EnderiteBowPullProgressProperty> type() {
         return CODEC;
     }
 }

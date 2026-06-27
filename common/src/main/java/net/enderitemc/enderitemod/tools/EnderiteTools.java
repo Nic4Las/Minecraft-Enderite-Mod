@@ -8,18 +8,21 @@ import net.enderitemc.enderitemod.component.EnderiteTooltipComponent;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
 import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlocksAttacksComponent;
-import net.minecraft.component.type.ChargedProjectilesComponent;
-import net.minecraft.component.type.TooltipDisplayComponent;
-import net.minecraft.item.*;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.SpecialCraftingRecipe.SpecialRecipeSerializer;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Rarity;
-
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.component.BlocksAttacks;
+import net.minecraft.world.item.component.ChargedProjectiles;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.network.codec.StreamCodec;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -70,66 +73,67 @@ public class EnderiteTools {
     public static final RegistrySupplier<Item> ENDERITE_SHEAR = EnderiteMod.ITEMS.register("enderite_shears",
         () -> new EnderiteShears(
             getItemSettings("enderite_shears", BASE_ENDERITE_ITEM_SETTINGS.get())
-                .maxCount(1)
-                .maxDamage(2048)
+                .stacksTo(1)
+                .durability(2048)
                 .rarity(Rarity.RARE)
                 .enchantable(EnderiteMaterial.ENDERITE.enchantmentValue())
                 .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT)
-                .component(DataComponentTypes.TOOL, ShearsItem.createToolComponent())));
+                .component(DataComponents.TOOL, ShearsItem.createToolProperties())));
 
     // Bows
     public static final RegistrySupplier<Item> ENDERITE_CROSSBOW = EnderiteMod.ITEMS.register("enderite_crossbow",
         () -> new EnderiteCrossbow(
             getItemSettings("enderite_crossbow", BASE_ENDERITE_ITEM_SETTINGS.get())
-                .maxCount(1)
-                .maxDamage(768)
+                .stacksTo(1)
+                .durability(768)
                 .enchantable(EnderiteMaterial.ENDERITE.enchantmentValue())
                 .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT)
-                .component(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectilesComponent.DEFAULT)));
+                .component(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY)));
 
     public static final RegistrySupplier<Item> ENDERITE_BOW = EnderiteMod.ITEMS.register("enderite_bow",
         () -> new EnderiteBow(
             getItemSettings("enderite_bow", BASE_ENDERITE_ITEM_SETTINGS.get())
-                .maxCount(1)
-                .maxDamage(768)
+                .stacksTo(1)
+                .durability(768)
                 .enchantable(EnderiteMaterial.ENDERITE.enchantmentValue())
                 .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT)));
 
     // Shield
-    public static final Supplier<Item.Settings> ENDERITE_SHIELD_ITEM_SETTINGS = () -> BASE_ENDERITE_ITEM_SETTINGS.get()
-        .maxCount(1)
-        .maxDamage(768)
+    public static final Supplier<Item.Properties> ENDERITE_SHIELD_ITEM_SETTINGS = () -> BASE_ENDERITE_ITEM_SETTINGS.get()
+        .stacksTo(1)
+        .durability(768)
         .enchantable(EnderiteMaterial.ENDERITE.enchantmentValue())
         .repairable(EnderiteTag.REPAIRS_ENDERITE_EQUIPMENT)
-        .component(DataComponentTypes.BLOCKS_ATTACKS,
-            new BlocksAttacksComponent(
+        .component(DataComponents.BLOCKS_ATTACKS,
+            new BlocksAttacks(
                 0.25F,
                 1.0F,
-                List.of(new BlocksAttacksComponent.DamageReduction(90.0F, Optional.empty(), 0.0F, 1.0F)),
-                new BlocksAttacksComponent.ItemDamage(3.0F, 1.0F, 1.0F),
-                Optional.of(DamageTypeTags.BYPASSES_SHIELD),
-                Optional.of(SoundEvents.ITEM_SHIELD_BLOCK),
-                Optional.of(SoundEvents.ITEM_SHIELD_BREAK)
+                List.of(new BlocksAttacks.DamageReduction(90.0F, Optional.empty(), 0.0F, 1.0F)),
+                new BlocksAttacks.ItemDamageFunction(3.0F, 1.0F, 1.0F),
+                Optional.empty(),
+                Optional.of(SoundEvents.SHIELD_BLOCK),
+                Optional.of(SoundEvents.SHIELD_BREAK)
             )
         )
         .component(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(0))
         .component(EnderiteDataComponents.ENDERITE_TOOLTIP.get(), EnderiteTooltipComponent.ofShield())
-        .component(DataComponentTypes.TOOLTIP_DISPLAY, TooltipDisplayComponent.DEFAULT.with(EnderiteDataComponents.ENDERITE_TOOLTIP.get(), false));
+        .component(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(EnderiteDataComponents.ENDERITE_TOOLTIP.get(), false));
 
     public static final RegistrySupplier<Item> ENDERITE_SHIELD = EnderiteMod.ITEMS.register("enderite_shield",
         () -> new EnderiteShield(
             EnderiteMod.getItemSettings("enderite_shield", ENDERITE_SHIELD_ITEM_SETTINGS.get())));
 
-    public static RegistrySupplier<RecipeSerializer<? extends SpecialCraftingRecipe>> ENDERITE_SHIELD_DECORATION_RECIPE = EnderiteMod.RECIPES
+    public static RegistrySupplier<RecipeSerializer<? extends CustomRecipe>> ENDERITE_SHIELD_DECORATION_RECIPE = EnderiteMod.RECIPES
         .register("crafting_special_enderiteshielddecoration",
-            () -> new SpecialRecipeSerializer<EnderiteShieldDecorationRecipe>(
-                EnderiteShieldDecorationRecipe::new));
+            () -> new RecipeSerializer<>(
+                com.mojang.serialization.MapCodec.unit(new EnderiteShieldDecorationRecipe()),
+                StreamCodec.unit(new EnderiteShieldDecorationRecipe())));
 
     // Spear
     public static final RegistrySupplier<Item> ENDERITE_SPEAR = EnderiteMod.ITEMS.register("enderite_spear",
         () -> new Item(
             getItemSettings("enderite_spear", BASE_ENDERITE_ITEM_SETTINGS.get())
-                .maxCount(1)
+                .stacksTo(1)
                 .spear(EnderiteMaterial.ENDERITE,
                     EnderiteMod.CONFIG.tools.spear.swingAnimationSeconds, // 1.25F,
                     EnderiteMod.CONFIG.tools.spear.chargeDamageMultiplier, // 1.375F,

@@ -4,47 +4,47 @@ import net.enderitemc.enderitemod.component.EnderiteChargeComponent;
 import net.enderitemc.enderitemod.component.EnderiteDataComponents;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.enderitemc.enderitemod.tools.EnderiteShield;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.player.ItemCooldownManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.fox.Fox;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemCooldowns;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerEntity.class)
+@Mixin(Player.class)
 public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
 
-    protected EnderiteShieldPlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
+    protected EnderiteShieldPlayerEntityMixin(EntityType<? extends LivingEntity> entityType, Level world) {
         super(entityType, world);
     }
 
     @Shadow
-    public abstract ItemCooldownManager getItemCooldownManager();
+    public abstract ItemCooldowns getCooldowns();
 
-    @Inject(at = @At("HEAD"), method = "takeShieldHit")
-    private void portIt(ServerWorld world, LivingEntity attacker, CallbackInfo ci) {
-        if (this.isSneaking() && this.activeItemStack.getItem() instanceof EnderiteShield
-            && !this.getItemCooldownManager().isCoolingDown(this.activeItemStack)) {
+    @Inject(at = @At("HEAD"), method = "blockUsingItem")
+    private void enderitemod$portIt(ServerLevel world, LivingEntity attacker, CallbackInfo ci) {
+        if (this.isShiftKeyDown() && this.useItem.getItem() instanceof EnderiteShield
+            && !this.getCooldowns().isOnCooldown(this.useItem)) {
 
-            int charge = this.activeItemStack.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
+            int charge = this.useItem.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
 
-            if (!world.isClient() && charge > 0 && !attacker.getType().isIn(EnderiteTag.UNAFFECTED_BY_ENDERITE_SHIELD)) {
+            if (!world.isClientSide() && charge > 0 && !attacker.getType().builtInRegistryHolder().is(EnderiteTag.UNAFFECTED_BY_ENDERITE_SHIELD)) {
                 double d = attacker.getX();
                 double e = attacker.getY();
                 double f = attacker.getZ();
 
-                double yaw = (double) this.headYaw;
-                double pitch = (double) this.getPitch();
+                double yaw = (double) this.yHeadRot;
+                double pitch = (double) this.getXRot();
 
                 // x: 1 = -90, -1 = 90
                 // y: 1 = -90, -1 = 90
@@ -57,22 +57,22 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
 
                 for (int i = 0; i < 16; ++i) {
                     double g = attacker.getX() + dX * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
-                    double h = MathHelper.clamp(
+                    double h = Mth.clamp(
                         attacker.getY() + dY * distance + (double) (attacker.getRandom().nextInt(16) - 8), 0.0D,
                         (double) (world.getHeight() - 1));
                     double j = attacker.getZ() + dZ * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
-                    if (attacker.hasVehicle()) {
+                    if (attacker.isPassenger()) {
                         attacker.stopRiding();
                     }
 
-                    if (attacker.teleport(g, h, j, true)) {
-                        SoundEvent soundEvent = attacker instanceof FoxEntity ? SoundEvents.ENTITY_FOX_TELEPORT
-                            : SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
-                        world.playSound((PlayerEntity) null, d, e, f, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    if (attacker.randomTeleport(g, h, j, true)) {
+                        SoundEvent soundEvent = attacker instanceof Fox ? SoundEvents.FOX_TELEPORT
+                            : SoundEvents.CHORUS_FRUIT_TELEPORT;
+                        world.playSound((Player) null, d, e, f, soundEvent, SoundSource.PLAYERS, 1.0F, 1.0F);
                         attacker.playSound(soundEvent, 1.0F, 1.0F);
 
-                        this.activeItemStack.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(charge - 1));
-                        this.getItemCooldownManager().set(this.activeItemStack, 128);
+                        this.useItem.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(charge - 1));
+                        this.getCooldowns().addCooldown(this.useItem, 128);
                         break;
                     }
                 }

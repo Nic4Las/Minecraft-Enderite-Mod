@@ -2,31 +2,29 @@ package net.enderitemc.enderitemod.misc;
 
 import net.enderitemc.enderitemod.tools.EnderiteShield;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BannerPatternsComponent;
-import net.minecraft.item.BannerItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.world.World;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.BannerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BannerPatternLayers;
 
-public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
-    public EnderiteShieldDecorationRecipe(CraftingRecipeCategory category) {
-        super(category);
+public class EnderiteShieldDecorationRecipe extends CustomRecipe {
+    public EnderiteShieldDecorationRecipe() {
+        super();
     }
 
-    public boolean matches(CraftingRecipeInput craftingRecipeInput, World world) {
-        if (craftingRecipeInput.getStackCount() != 2) {
+    public boolean matches(CraftingInput craftingRecipeInput, Level world) {
+        if (craftingRecipeInput.ingredientCount() != 2) {
             return false;
         } else {
             boolean bl = false;
             boolean bl2 = false;
 
             for (int i = 0; i < craftingRecipeInput.size(); i++) {
-                ItemStack itemStack = craftingRecipeInput.getStackInSlot(i);
+                ItemStack itemStack = craftingRecipeInput.getItem(i);
                 if (!itemStack.isEmpty()) {
                     if (itemStack.getItem() instanceof BannerItem) {
                         if (bl2) {
@@ -43,7 +41,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
                             return false;
                         }
 
-                        BannerPatternsComponent bannerPatternsComponent = itemStack.getOrDefault(DataComponentTypes.BANNER_PATTERNS, BannerPatternsComponent.DEFAULT);
+                        BannerPatternLayers bannerPatternsComponent = itemStack.getOrDefault(DataComponents.BANNER_PATTERNS, BannerPatternLayers.EMPTY);
                         if (!bannerPatternsComponent.layers().isEmpty()) {
                             return false;
                         }
@@ -57,12 +55,12 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         }
     }
 
-    public ItemStack craft(CraftingRecipeInput craftingInventory, RegistryWrapper.WrapperLookup registryManager) {
+    public ItemStack assemble(CraftingInput craftingInventory) {
         ItemStack itemStack = ItemStack.EMPTY;
         ItemStack itemStack2 = ItemStack.EMPTY;
 
         for (int i = 0; i < craftingInventory.size(); ++i) {
-            ItemStack itemStack3 = craftingInventory.getStackInSlot(i);
+            ItemStack itemStack3 = craftingInventory.getItem(i);
             if (!itemStack3.isEmpty()) {
                 if (itemStack3.getItem() instanceof BannerItem) {
                     itemStack = itemStack3;
@@ -75,8 +73,8 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         if (itemStack2.isEmpty()) {
             return itemStack2;
         }
-        itemStack2.set(DataComponentTypes.BANNER_PATTERNS, itemStack.get(DataComponentTypes.BANNER_PATTERNS));
-        itemStack2.set(DataComponentTypes.BASE_COLOR, ((BannerItem) itemStack.getItem()).getColor());
+        itemStack2.set(DataComponents.BANNER_PATTERNS, itemStack.get(DataComponents.BANNER_PATTERNS));
+        itemStack2.set(DataComponents.BASE_COLOR, ((BannerItem) itemStack.getItem()).getColor());
         return itemStack2;
     }
 
@@ -84,7 +82,7 @@ public class EnderiteShieldDecorationRecipe extends SpecialCraftingRecipe {
         return width * height >= 2;
     }
 
-    public RecipeSerializer<? extends SpecialCraftingRecipe> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return EnderiteTools.ENDERITE_SHIELD_DECORATION_RECIPE.get();
     }
 }

@@ -4,41 +4,45 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlastFurnaceBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.equipment.trim.ArmorTrim;
-import net.minecraft.item.equipment.trim.ArmorTrimMaterial;
-import net.minecraft.item.equipment.trim.ArmorTrimMaterials;
-import net.minecraft.item.equipment.trim.ArmorTrimPattern;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.test.TestContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameMode;
-
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.*;
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.sheep.Sheep;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.equipment.trim.ArmorTrim;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
+import net.minecraft.world.item.equipment.trim.TrimPattern;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlastFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,126 +54,126 @@ public class EnderiteTests {
     public static final String TMPL_NS = "enderitetests.";
     public static final String TMPL_PRE = TMPL_MI + TMPL_NS;
 
-    public static void explodeEnderiteOreTest(TestContext ctx) {
-        ctx.spawnEntity(EntityType.TNT, new BlockPos(1, 1, 0));
-        ctx.waitAndRun(99, () -> ctx.checkBlock(new BlockPos(1, 1, 1),
+    public static void explodeEnderiteOreTest(GameTestHelper ctx) {
+        ctx.spawn(EntityType.TNT, new BlockPos(1, 1, 0));
+        ctx.runAfterDelay(99, () -> ctx.assertBlock(new BlockPos(1, 1, 1),
             (Block block) -> block.equals(EnderiteMod.CRACKED_ENDERITE_ORE.get()),
-            (a) -> Text.of("TnT didn't crack the enderite ore")
+            (a) -> Component.nullToEmpty("TnT didn't crack the enderite ore")
         ));
-        ctx.expectBlockAtEnd(EnderiteMod.CRACKED_ENDERITE_ORE.get(), new BlockPos(1, 1, 1));
+        ctx.succeedWhenBlockPresent(EnderiteMod.CRACKED_ENDERITE_ORE.get(), new BlockPos(1, 1, 1));
     }
 
-    public static void enderiteShulkerboxRecipeTest(TestContext ctx) {
+    public static void enderiteShulkerboxRecipeTest(GameTestHelper ctx) {
         crafterRecipeTest(ctx, (ItemStack stack) -> {
-            var component = stack.get(DataComponentTypes.CONTAINER);
+            var component = stack.get(DataComponents.CONTAINER);
             if (component != null) {
-                ctx.assertTrue(component.copyFirstStack().isOf(Items.DIRT),
-                    Text.of("No items found in Enderite Shulkerbox item"));
+                ctx.assertTrue(component.copyOne().is(Items.DIRT),
+                    Component.nullToEmpty("No items found in Enderite Shulkerbox item"));
             } else {
-                ctx.assertTrue(false, Text.of("No Container Component in stack" + stack.toString()));
+                ctx.assertTrue(false, Component.nullToEmpty("No Container Component in stack" + stack.toString()));
             }
         });
     }
 
-    public static void enderiteElytraRecipeTest(TestContext ctx) {
+    public static void enderiteElytraRecipeTest(GameTestHelper ctx) {
         crafterRecipeTest(ctx, (ItemStack stack) -> {
-            var component = stack.get(DataComponentTypes.ENCHANTMENTS);
+            var component = stack.get(DataComponents.ENCHANTMENTS);
             if (component != null) {
-                var enchant0 = ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.UNBREAKING.getValue());
+                var enchant0 = ctx.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(Enchantments.UNBREAKING.identifier());
                 ctx.assertTrue(enchant0.isPresent() && component.getLevel(enchant0.get()) == 3,
-                    Text.of("Enchantment wrong on Enderite Elytra"));
-                var enchant1 = ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.PROTECTION.getValue());
+                    Component.nullToEmpty("Enchantment wrong on Enderite Elytra"));
+                var enchant1 = ctx.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(Enchantments.PROTECTION.identifier());
                 ctx.assertTrue(enchant1.isPresent() && component.getLevel(enchant1.get()) == 1,
-                    Text.of("Enchantment wrong on Enderite Elytra"));
+                    Component.nullToEmpty("Enchantment wrong on Enderite Elytra"));
             } else {
-                ctx.assertTrue(false, Text.of("No Container Component in stack" + stack.toString()));
+                ctx.assertTrue(false, Component.nullToEmpty("No Container Component in stack" + stack.toString()));
             }
         });
     }
 
-    public static void enderiteShieldDecoRecipeTest(TestContext ctx) {
+    public static void enderiteShieldDecoRecipeTest(GameTestHelper ctx) {
         crafterRecipeTest(ctx, (ItemStack stack) -> {
-            var component = stack.get(DataComponentTypes.ENCHANTMENTS);
+            var component = stack.get(DataComponents.ENCHANTMENTS);
             if (component != null) {
-                var enchant0 = ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.UNBREAKING.getValue());
+                var enchant0 = ctx.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(Enchantments.UNBREAKING.identifier());
                 ctx.assertTrue(enchant0.isPresent() && component.getLevel(enchant0.get()) == 3,
-                    Text.of("Enchantment wrong on decorated Enderite Shield"));
+                    Component.nullToEmpty("Enchantment wrong on decorated Enderite Shield"));
             } else {
-                ctx.assertTrue(false, Text.of("No Enchantment Component in stack" + stack.toString()));
+                ctx.assertTrue(false, Component.nullToEmpty("No Enchantment Component in stack" + stack.toString()));
             }
         });
     }
 
-    public static void enderiteRespawnAnchorTest(TestContext ctx) {
+    public static void enderiteRespawnAnchorTest(GameTestHelper ctx) {
         BlockPos anchor_pos = new BlockPos(0, 1, 0);
         BlockPos dirt_pos = new BlockPos(1, 1, 0);
 
         // Check block entity
         BlockEntity be = ctx.getBlockEntity(anchor_pos, EnderiteRespawnAnchorBlockEntity.class);
         ctx.assertTrue(be instanceof EnderiteRespawnAnchorBlockEntity,
-            Text.of("Enderite Respawn Anchor Block Entity is missing"));
-        ctx.expectBlock(Blocks.DIRT, dirt_pos);
+            Component.nullToEmpty("Enderite Respawn Anchor Block Entity is missing"));
+        ctx.assertBlockPresent(Blocks.DIRT, dirt_pos);
 
         // Check charges
-        PlayerEntity player = ctx.createMockPlayer(GameMode.SURVIVAL);
-        player.setPosition(ctx.getAbsolute(Vec3d.ZERO));
-        player.getInventory().insertStack(Items.ENDER_PEARL.getDefaultStack().copyWithCount(4));
+        Player player = ctx.makeMockPlayer(GameType.SURVIVAL);
+        player.setPos(ctx.absoluteVec(Vec3.ZERO));
+        player.getInventory().add(Items.ENDER_PEARL.getDefaultInstance().copyWithCount(4));
         for (int expected_charge = 1; expected_charge <= 4; expected_charge++) {
             ctx.useBlock(anchor_pos, player);
-            ctx.useStackOnBlock(player, Items.ENDER_PEARL.getDefaultStack(), anchor_pos, Direction.NORTH);
-            ctx.assertEquals(ctx.getBlockState(anchor_pos).get(EnderiteRespawnAnchor.CHARGES),
+            ctx.placeAt(player, Items.ENDER_PEARL.getDefaultInstance(), anchor_pos, Direction.NORTH);
+            ctx.assertValueEqual(ctx.getBlockState(anchor_pos).getValue(EnderiteRespawnAnchor.CHARGE),
                 expected_charge,
-                Text.of("Enderite Respawn anchor has wrong amount of charge"));
+                Component.nullToEmpty("Enderite Respawn anchor has wrong amount of charge"));
         }
 
         ctx.useBlock(anchor_pos, player);
-        if (EnderiteRespawnAnchor.isEnd(ctx.getWorld())) {
+        if (EnderiteRespawnAnchor.isEnd(ctx.getLevel())) {
             // End -> Check if there
-            ctx.expectBlock(EnderiteMod.ENDERITE_RESPAWN_ANCHOR.get(), anchor_pos);
-            ctx.expectBlock(Blocks.DIRT, dirt_pos);
+            ctx.assertBlockPresent(EnderiteMod.ENDERITE_RESPAWN_ANCHOR.get(), anchor_pos);
+            ctx.assertBlockPresent(Blocks.DIRT, dirt_pos);
         } else {
             // Not End -> Check if exploded
-            ctx.dontExpectBlock(EnderiteMod.ENDERITE_RESPAWN_ANCHOR.get(), anchor_pos);
-            ctx.dontExpectBlock(Blocks.DIRT, dirt_pos);
+            ctx.assertBlockNotPresent(EnderiteMod.ENDERITE_RESPAWN_ANCHOR.get(), anchor_pos);
+            ctx.assertBlockNotPresent(Blocks.DIRT, dirt_pos);
         }
-        ctx.complete();
+        ctx.succeed();
     }
 
-    public static void voidDeathWithEnderiteTest(TestContext ctx) {
-        Vec3d relative_pos = new Vec3d(0, 0, 0);
-        Vec3d absolute_pos = ctx.getAbsolute(relative_pos);
+    public static void voidDeathWithEnderiteTest(GameTestHelper ctx) {
+        Vec3 relative_pos = new Vec3(0, 0, 0);
+        Vec3 absolute_pos = ctx.absoluteVec(relative_pos);
 
         ItemEntity ie = ctx.spawnItem(EnderiteMod.ENDERITE_HELMET.get(),
-            ctx.getRelative(new Vec3d(absolute_pos.getX(), ctx.getWorld().getBottomY() - 64, absolute_pos.getZ())));
+            ctx.relativeVec(new Vec3(absolute_pos.x(), ctx.getLevel().getMinY() - 64, absolute_pos.z())));
 
-        ctx.waitAndRun(1, () -> {
-            ctx.expectEntityAround(
+        ctx.runAfterDelay(1, () -> {
+            ctx.assertEntityPresent(
                 EntityType.ITEM,
-                ctx.getRelativePos(new BlockPos((int) absolute_pos.getX(), ctx.getWorld().getBottomY() + 10, (int) absolute_pos.getZ())),
+                ctx.relativePos(new BlockPos((int) absolute_pos.x(), ctx.getLevel().getMinY() + 10, (int) absolute_pos.z())),
                 2);
-            ie.kill(ctx.getWorld());
-            ctx.complete();
+            ie.kill(ctx.getLevel());
+            ctx.succeed();
         });
     }
 
-    public static void enderiteArmorTrimsTest(TestContext ctx) {
-        BlockPos pos1 = ctx.getAbsolutePos(new BlockPos(-1, 0, -1));
-        BlockPos pos2 = ctx.getAbsolutePos(new BlockPos(4, 46, 1));
+    public static void enderiteArmorTrimsTest(GameTestHelper ctx) {
+        BlockPos pos1 = ctx.absolutePos(new BlockPos(-1, 0, -1));
+        BlockPos pos2 = ctx.absolutePos(new BlockPos(4, 46, 1));
 
-        List<ArmorStandEntity> stands = ctx.getWorld().getNonSpectatingEntities(ArmorStandEntity.class, Box.enclosing(pos1, pos2));
+        List<ArmorStand> stands = ctx.getLevel().getEntitiesOfClass(ArmorStand.class, AABB.encapsulatingFullBlocks(pos1, pos2));
         stands.forEach(Entity::discard);
 
-        if (!ctx.getWorld().getClosestPlayer(TargetPredicate.createNonAttackable(), pos1.getX(), pos1.getY(), pos1.getZ()).getMainHandStack().getItem().equals(Items.ARMOR_STAND)) {
-            ctx.complete();
+        if (!ctx.getLevel().getNearestPlayer(TargetingConditions.forNonCombat(), pos1.getX(), pos1.getY(), pos1.getZ()).getMainHandItem().getItem().equals(Items.ARMOR_STAND)) {
+            ctx.succeed();
             return;
         }
 
-        BlockPos pos = ctx.getAbsolutePos(new BlockPos(0, 3, 0));
+        BlockPos pos = ctx.absolutePos(new BlockPos(0, 3, 0));
         ArrayList<Entity> armor_stands = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            pos = pos.offset(Direction.Axis.X, 1);
+            pos = pos.relative(Direction.Axis.X, 1);
             Map<EquipmentSlot, Item> equip_map = new HashMap<>();
-            Identifier material_id = Identifier.of(EnderiteMod.MOD_ID, "enderite");
+            Identifier material_id = Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, "enderite");
             switch (i) {
                 case 0: {
                     equip_map.put(EquipmentSlot.HEAD, EnderiteMod.ENDERITE_HELMET.get());
@@ -180,7 +184,7 @@ public class EnderiteTests {
                 }
                 case 1: {
                     equip_map.put(EquipmentSlot.CHEST, EnderiteMod.ENDERITE_ELYTRA.get());
-                    material_id = ArmorTrimMaterials.GOLD.getValue();
+                    material_id = TrimMaterials.GOLD.identifier();
                     break;
                 }
                 case 2: {
@@ -195,132 +199,132 @@ public class EnderiteTests {
                     break;
                 }
             }
-            RegistryEntry<ArmorTrimMaterial> material = ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.TRIM_MATERIAL).getEntry(material_id).get();
+            Holder<TrimMaterial> material = ctx.getLevel().registryAccess().lookupOrThrow(Registries.TRIM_MATERIAL).get(material_id).get();
             int idx = 0;
-            for (RegistryEntry<ArmorTrimPattern> pattern : ctx.getWorld().getRegistryManager().getOrThrow(RegistryKeys.TRIM_PATTERN).getIndexedEntries()) {
-                BlockPos new_pos = pos.up(idx);
+            for (Holder<TrimPattern> pattern : ctx.getLevel().registryAccess().lookupOrThrow(Registries.TRIM_PATTERN).asHolderIdMap()) {
+                BlockPos new_pos = pos.above(idx);
                 idx += 2;
-                ArmorStandEntity e = new ArmorStandEntity(ctx.getWorld(), new_pos.getX(), new_pos.getY(), new_pos.getZ());
-                int equip_idx = ctx.getWorld().getRandom().nextInt(equip_map.keySet().toArray().length);
+                ArmorStand e = new ArmorStand(ctx.getLevel(), new_pos.getX(), new_pos.getY(), new_pos.getZ());
+                int equip_idx = ctx.getLevel().getRandom().nextInt(equip_map.keySet().toArray().length);
                 EquipmentSlot slot = equip_map.keySet().stream().toList().get(equip_idx);
                 for (Map.Entry<EquipmentSlot, Item> entry : equip_map.entrySet()) {
-                    ItemStack stack = entry.getValue().getDefaultStack();
-                    stack.set(DataComponentTypes.TRIM, new ArmorTrim(material, pattern));
-                    e.equipStack(entry.getKey(), stack);
+                    ItemStack stack = entry.getValue().getDefaultInstance();
+                    stack.set(DataComponents.TRIM, new ArmorTrim(material, pattern));
+                    e.setItemSlot(entry.getKey(), stack);
 
                     if (entry.getKey().equals(slot)) {
-                        e.equipStack(EquipmentSlot.MAINHAND, stack);
+                        e.setItemSlot(EquipmentSlot.MAINHAND, stack);
                         e.setShowArms(true);
                     }
                 }
                 e.setNoGravity(true);
-                e.setHideBasePlate(true);
+                e.setNoBasePlate(true);
                 armor_stands.add(e);
             }
         }
-        ctx.getWorld().addEntities(armor_stands.stream());
-        ctx.complete();
+        ctx.getLevel().addWorldGenChunkEntities(armor_stands.stream());
+        ctx.succeed();
     }
 
-    public static void enderiteElytraTrimRecipeTest(TestContext ctx) {
+    public static void enderiteElytraTrimRecipeTest(GameTestHelper ctx) {
         crafterRecipeTest(ctx, (ItemStack stack) -> {
-            var component = stack.get(DataComponentTypes.TRIM);
+            var component = stack.get(DataComponents.TRIM);
             if (component != null) {
-                String trim = component.material().getIdAsString();
-                ctx.assertEquals(trim, "minecraft:gold", Text.of("Wrong trim was applied."));
+                String trim = component.material().getRegisteredName();
+                ctx.assertValueEqual(trim, "minecraft:gold", Component.nullToEmpty("Wrong trim was applied."));
             } else {
-                ctx.assertTrue(false, Text.of("No Trim Component in stack" + stack.toString()));
+                ctx.assertTrue(false, Component.nullToEmpty("No Trim Component in stack" + stack.toString()));
             }
         });
     }
 
-    public static void endermanEnderiteTest(TestContext ctx) {
-        ServerWorld world = ctx.getWorld();
-        BlockPos pos = ctx.getAbsolutePos(new BlockPos(0, 1, 0));
+    public static void endermanEnderiteTest(GameTestHelper ctx) {
+        ServerLevel world = ctx.getLevel();
+        BlockPos pos = ctx.absolutePos(new BlockPos(0, 1, 0));
 
-        EndermanEntity enderman = new EndermanEntity(EntityType.ENDERMAN, world);
-        enderman.setPosition(pos.toBottomCenterPos());
-        world.spawnEntity(enderman);
+        EnderMan enderman = new EnderMan(EntityType.ENDERMAN, world);
+        enderman.setPos(pos.getBottomCenter());
+        world.addFreshEntity(enderman);
 
-        PlayerEntity player = ctx.createMockPlayer(GameMode.CREATIVE);
+        Player player = ctx.makeMockPlayer(GameType.CREATIVE);
 
-        PersistentProjectileEntity persistentProjectileEntity2 = ((ArrowItem) Items.ARROW)
-            .createArrow(world, Items.ARROW.getDefaultStack(), player, EnderiteTools.ENDERITE_BOW.get().getDefaultStack());
-        persistentProjectileEntity2.setCustomName(Text.literal("Enderite Arrow"));
-        DamageSource source2 = world.getDamageSources().arrow(persistentProjectileEntity2, player);
+        AbstractArrow persistentProjectileEntity2 = ((ArrowItem) Items.ARROW)
+            .createArrow(world, Items.ARROW.getDefaultInstance(), player, EnderiteTools.ENDERITE_BOW.get().getDefaultInstance());
+        persistentProjectileEntity2.setCustomName(Component.literal("Enderite Arrow"));
+        DamageSource source2 = world.damageSources().arrow(persistentProjectileEntity2, player);
         int damage = 10;
-        enderman.damage(world, source2, damage);
-        ctx.assertEquals(enderman.getHealth(), enderman.getMaxHealth() - damage, Text.of("Enderman not damaged from enderite arrow!"));
+        enderman.hurtServer(world, source2, damage);
+        ctx.assertValueEqual(enderman.getHealth(), enderman.getMaxHealth() - damage, Component.nullToEmpty("Enderman not damaged from enderite arrow!"));
 
-        PersistentProjectileEntity persistentProjectileEntity = ((ArrowItem) Items.ARROW)
-            .createArrow(world, Items.ARROW.getDefaultStack(), player, Items.BOW.getDefaultStack());
-        DamageSource source = world.getDamageSources().arrow(persistentProjectileEntity, player);
-        enderman.damage(world, source, damage);
-        ctx.assertEquals(enderman.getHealth(), enderman.getMaxHealth() - damage, Text.of("Enderman damaged from default arrow!"));
+        AbstractArrow persistentProjectileEntity = ((ArrowItem) Items.ARROW)
+            .createArrow(world, Items.ARROW.getDefaultInstance(), player, Items.BOW.getDefaultInstance());
+        DamageSource source = world.damageSources().arrow(persistentProjectileEntity, player);
+        enderman.hurtServer(world, source, damage);
+        ctx.assertValueEqual(enderman.getHealth(), enderman.getMaxHealth() - damage, Component.nullToEmpty("Enderman damaged from default arrow!"));
 
         enderman.discard();
-        ctx.complete();
+        ctx.succeed();
     }
 
-    public static void enderiteSmeltingTest(TestContext ctx) {
+    public static void enderiteSmeltingTest(GameTestHelper ctx) {
         BlockPos pos = new BlockPos(0, 1, 0);
 
-        ctx.waitAndRun(15, () -> {
+        ctx.runAfterDelay(15, () -> {
             BlockEntity be = ctx.getBlockEntity(pos, BlastFurnaceBlockEntity.class);
             if (be instanceof BlastFurnaceBlockEntity bfbe) {
-                ItemStack stack = bfbe.getStack(2);
-                ctx.assertTrue(stack.isOf(EnderiteMod.ENDERITE_SCRAP.get()), Text.of("No scrap produced"));
+                ItemStack stack = bfbe.getItem(2);
+                ctx.assertTrue(stack.is(EnderiteMod.ENDERITE_SCRAP.get()), Component.nullToEmpty("No scrap produced"));
             } else {
-                ctx.assertTrue(false, Text.of("No Chest Block Entity found"));
+                ctx.assertTrue(false, Component.nullToEmpty("No Chest Block Entity found"));
             }
-            ctx.complete();
+            ctx.succeed();
         });
     }
 
-    public static void enderiteDispenserShearsTest(TestContext ctx) {
-        ServerWorld world = ctx.getWorld();
-        BlockPos pos = ctx.getAbsolutePos(new BlockPos(0, 1, 0));
+    public static void enderiteDispenserShearsTest(GameTestHelper ctx) {
+        ServerLevel world = ctx.getLevel();
+        BlockPos pos = ctx.absolutePos(new BlockPos(0, 1, 0));
         BlockPos button_pos = new BlockPos(1, 1, 1);
 
-        ctx.pushButton(button_pos);
-        ctx.waitAndRun(3, () -> {
-            ctx.setBlockState(button_pos, Blocks.OAK_BUTTON);
-            ctx.pushButton(button_pos);
+        ctx.pressButton(button_pos);
+        ctx.runAfterDelay(3, () -> {
+            ctx.setBlock(button_pos, Blocks.OAK_BUTTON);
+            ctx.pressButton(button_pos);
         });
-        ctx.waitAndRun(5, () -> {
-            LivingEntity entity = world.getClosestEntity(SheepEntity.class, TargetPredicate.DEFAULT, null, pos.getX(), pos.getY(), pos.getZ(), Box.enclosing(pos, pos));
-            if (entity instanceof SheepEntity sheep) {
-                ctx.assertTrue(sheep.isSheared(), Text.of("Sheep is not sheared!"));
+        ctx.runAfterDelay(5, () -> {
+            LivingEntity entity = world.getNearestEntity(Sheep.class, TargetingConditions.DEFAULT, null, pos.getX(), pos.getY(), pos.getZ(), AABB.encapsulatingFullBlocks(pos, pos));
+            if (entity instanceof Sheep sheep) {
+                ctx.assertTrue(sheep.isSheared(), Component.nullToEmpty("Sheep is not sheared!"));
             } else {
-                ctx.assertTrue(false, Text.of("No sheep spawned!"));
+                ctx.assertTrue(false, Component.nullToEmpty("No sheep spawned!"));
             }
-            ctx.complete();
+            ctx.succeed();
         });
     }
 
-    public static void enderiteDispenserShulkerboxTest(TestContext ctx) {
+    public static void enderiteDispenserShulkerboxTest(GameTestHelper ctx) {
         BlockPos pos = new BlockPos(0, 1, 0);
         BlockPos button_pos = new BlockPos(1, 1, 1);
 
-        ctx.pushButton(button_pos);
-        ctx.waitAndRun(15, () -> {
-            ctx.expectBlock(EnderiteMod.ENDERITE_SHULKER_BOX.get(), pos);
-            ctx.complete();
+        ctx.pressButton(button_pos);
+        ctx.runAfterDelay(15, () -> {
+            ctx.assertBlockPresent(EnderiteMod.ENDERITE_SHULKER_BOX.get(), pos);
+            ctx.succeed();
         });
     }
 
     // HELPER
-    public static void crafterRecipeTest(TestContext ctx, Consumer<ItemStack> stackVerifier) {
-        ctx.pushButton(1, 1, 1);
-        ctx.waitAndRun(15, () -> {
+    public static void crafterRecipeTest(GameTestHelper ctx, Consumer<ItemStack> stackVerifier) {
+        ctx.pressButton(1, 1, 1);
+        ctx.runAfterDelay(15, () -> {
             BlockEntity be = ctx.getBlockEntity(new BlockPos(0, 1, 0), ChestBlockEntity.class);
             if (be instanceof ChestBlockEntity cbe) {
-                ItemStack stack = cbe.getStack(0);
+                ItemStack stack = cbe.getItem(0);
                 stackVerifier.accept(stack);
             } else {
-                ctx.assertTrue(false, Text.of("No Chest Block Entity found"));
+                ctx.assertTrue(false, Component.nullToEmpty("No Chest Block Entity found"));
             }
-            ctx.complete();
+            ctx.succeed();
         });
     }
 }

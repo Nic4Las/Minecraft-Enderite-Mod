@@ -1,6 +1,7 @@
 plugins {
-    id 'dev.architectury.loom' version '1.13-SNAPSHOT' apply false
-    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.17.487' apply false
+    id 'dev.architectury.loom-no-remap' version '1.17.487' apply false
+    id 'architectury-plugin' version '3.5.169'
     id 'com.gradleup.shadow' version '8.3.6' apply false
 }
 
@@ -14,7 +15,7 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'dev.architectury.loom-no-remap'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
 
@@ -60,11 +61,6 @@ subprojects {
 
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
-
-        mappings loom.layered {
-            it.mappings("net.fabricmc:yarn:$rootProject.yarn_mappings:v2")
-            it.mappings("dev.architectury:yarn-mappings-patch-neoforge:$rootProject.yarn_mappings_patch_version")
-        }
     }
 
     java {
@@ -73,13 +69,13 @@ subprojects {
         // If you remove this line, sources will not be generated.
         withSourcesJar()
 
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_25
+        targetCompatibility = JavaVersion.VERSION_25
     }
 
     tasks.withType(JavaCompile).configureEach {
         it.options.encoding = "UTF-8"
-        it.options.release = 21
+        it.options.release = 25
     }
 
     // Configure Maven publishing.

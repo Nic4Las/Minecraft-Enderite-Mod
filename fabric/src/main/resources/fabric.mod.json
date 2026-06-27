@@ -39,7 +39,7 @@
     "enderitemod-common.mixins.json"
   ],
   "depends": {
-    "fabric": "*",
+    "fabricloader": "*",
     "minecraft": ">=${minecraft_version}",
     "architectury": ">=${architectury_version}",
     "fabric-api": ">=${fabric_api_version}",

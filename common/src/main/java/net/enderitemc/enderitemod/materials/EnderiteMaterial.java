@@ -2,7 +2,7 @@ package net.enderitemc.enderitemod.materials;
 
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.item.ToolMaterial;
+import net.minecraft.world.item.ToolMaterial;
 
 public class EnderiteMaterial {
 

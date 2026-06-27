@@ -1,11 +1,11 @@
 package net.enderitemc.enderitemod.mixin;
 
 import net.enderitemc.enderitemod.misc.EnderiteTag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,22 +16,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class EnderiteDropMixin extends Entity {
 
     @Shadow
-    public abstract ItemStack getStack();
+    public abstract ItemStack getItem();
 
-    protected EnderiteDropMixin(EntityType<?> type, World world) {
+    protected EnderiteDropMixin(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     @Inject(at = @At("TAIL"), method = "tick()V")
-    private void dropItem(CallbackInfo info) {
+    private void enderitemod$dropItem(CallbackInfo info) {
         // If enderite item entity has gravity, turn it off
-        if (!hasNoGravity() && !getEntityWorld().isClient() && !getStack().isEmpty()
-            && (getStack().isIn(EnderiteTag.ENDERITE_ITEM))) {
+        if (!isNoGravity() && !level().isClientSide() && !getItem().isEmpty()
+            && (getItem().is(EnderiteTag.ENDERITE_ITEM))) {
             setNoGravity(true);
         }
         // Slow down enderite item y velocity (to stop vertical spread)
-        if ((getStack().isIn(EnderiteTag.ENDERITE_ITEM))) {
-            this.setVelocity(this.getVelocity().multiply(1.0D, 0.96D, 1.0D));
+        if ((getItem().is(EnderiteTag.ENDERITE_ITEM))) {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.96D, 1.0D));
         }
     }
 }

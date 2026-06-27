@@ -2,38 +2,37 @@ package net.enderitemc.enderitemod.shulker;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
-import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.block.entity.state.ShulkerBoxBlockEntityRenderState;
-import net.minecraft.client.render.command.ModelCommandRenderer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.texture.SpriteHolder;
-import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.ShulkerBoxRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.sprite.SpriteGetter;
+import net.minecraft.client.resources.model.sprite.SpriteId;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3fc;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.Consumer;
 
-public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRenderer<EnderiteShulkerBoxBlockEntity, ShulkerBoxBlockEntityRenderState> {
-    private final SpriteHolder materials;
+public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRenderer<EnderiteShulkerBoxBlockEntity, ShulkerBoxRenderState> {
+    private final SpriteGetter sprites;
     private final ShulkerBoxBlockModel model;
-    private static final Identifier ENDERITE_SHULKER_TEXTURE = Identifier.of("entity/shulker/enderite_shulker");
+    private static final Identifier ENDERITE_SHULKER_TEXTURE = Identifier.parse("entity/shulker/enderite_shulker");
 
-    public EnderiteShulkerBoxBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
-        this.materials = ctx.spriteHolder();
-        this.model = new ShulkerBoxBlockModel(ctx.getLayerModelPart(EntityModelLayers.SHULKER_BOX));
+    public EnderiteShulkerBoxBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {
+        this.sprites = ctx.sprites();
+        this.model = new ShulkerBoxBlockModel(ctx.bakeLayer(ModelLayers.SHULKER_BOX));
     }
 
     /*
@@ -45,89 +44,90 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
      */
 
     @Override
-    public ShulkerBoxBlockEntityRenderState createRenderState() {
-        return new ShulkerBoxBlockEntityRenderState();
+    public ShulkerBoxRenderState createRenderState() {
+        return new ShulkerBoxRenderState();
     }
 
     @Override
-    public void updateRenderState(
+    public void extractRenderState(
         EnderiteShulkerBoxBlockEntity shulkerBoxBlockEntity,
-        ShulkerBoxBlockEntityRenderState shulkerBoxBlockEntityRenderState,
+        ShulkerBoxRenderState shulkerBoxBlockEntityRenderState,
         float f,
-        Vec3d vec3d,
-        @Nullable ModelCommandRenderer.CrumblingOverlayCommand crumblingOverlayCommand
+        Vec3 vec3d,
+        @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlayCommand
     ) {
-        BlockEntityRenderer.super.updateRenderState(shulkerBoxBlockEntity, shulkerBoxBlockEntityRenderState, f, vec3d, crumblingOverlayCommand);
-        shulkerBoxBlockEntityRenderState.facing = shulkerBoxBlockEntity.getCachedState().get(ShulkerBoxBlock.FACING, Direction.UP);
-        shulkerBoxBlockEntityRenderState.animationProgress = shulkerBoxBlockEntity.getAnimationProgress(f);
+        BlockEntityRenderer.super.extractRenderState(shulkerBoxBlockEntity, shulkerBoxBlockEntityRenderState, f, vec3d, crumblingOverlayCommand);
+        shulkerBoxBlockEntityRenderState.direction = shulkerBoxBlockEntity.getBlockState().getValueOrElse(ShulkerBoxBlock.FACING, Direction.UP);
+        shulkerBoxBlockEntityRenderState.progress = shulkerBoxBlockEntity.getAnimationProgress(f);
     }
 
-    public void render(
-        ShulkerBoxBlockEntityRenderState shulkerBoxBlockEntityRenderState,
-        MatrixStack matrixStack,
-        OrderedRenderCommandQueue orderedRenderCommandQueue,
+    public void submit(
+        ShulkerBoxRenderState shulkerBoxBlockEntityRenderState,
+        PoseStack matrixStack,
+        SubmitNodeCollector orderedRenderCommandQueue,
         CameraRenderState cameraRenderState
     ) {
-        SpriteIdentifier spriteIdentifier = new SpriteIdentifier(
-            TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE,
+        SpriteId spriteIdentifier = new SpriteId(
+            Sheets.SHULKER_SHEET,
             ENDERITE_SHULKER_TEXTURE
         );
 
         this.render(
             matrixStack,
             orderedRenderCommandQueue,
-            shulkerBoxBlockEntityRenderState.lightmapCoordinates,
-            OverlayTexture.DEFAULT_UV,
-            shulkerBoxBlockEntityRenderState.facing,
-            shulkerBoxBlockEntityRenderState.animationProgress,
-            shulkerBoxBlockEntityRenderState.crumblingOverlay,
+            shulkerBoxBlockEntityRenderState.lightCoords,
+            OverlayTexture.NO_OVERLAY,
+            shulkerBoxBlockEntityRenderState.direction,
+            shulkerBoxBlockEntityRenderState.progress,
+            shulkerBoxBlockEntityRenderState.breakProgress,
             spriteIdentifier,
             0
         );
     }
 
     public void render(
-        MatrixStack matrices,
-        OrderedRenderCommandQueue queue,
+        PoseStack matrices,
+        SubmitNodeCollector queue,
         int light,
         int overlay,
         Direction facing,
         float openness,
-        @Nullable ModelCommandRenderer.CrumblingOverlayCommand crumblingOverlay,
-        SpriteIdentifier spriteId,
+        @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay,
+        SpriteId spriteId,
         int i
     ) {
-        matrices.push();
-        this.setTransforms(matrices, facing, openness);
+        matrices.pushPose();
+        this.setTransforms(matrices, facing);
+        this.model.setupAnim(openness);
         queue.submitModel(
             this.model,
             openness,
             matrices,
-            spriteId.getRenderLayer(this.model::getLayer),
+            spriteId.renderType(this.model::renderType),
             light,
             overlay,
             -1,
-            this.materials.getSprite(spriteId),
+            this.sprites.get(spriteId),
             i,
             crumblingOverlay
         );
-        matrices.pop();
+        matrices.popPose();
     }
 
-    private void setTransforms(MatrixStack matrices, Direction facing, float openness) {
+    private void setTransforms(PoseStack matrices, Direction facing) {
         matrices.translate(0.5F, 0.5F, 0.5F);
         float f = 0.9995F;
         matrices.scale(0.9995F, 0.9995F, 0.9995F);
-        matrices.multiply(facing.getRotationQuaternion());
+        matrices.mulPose(facing.getRotation());
         matrices.scale(1.0F, -1.0F, -1.0F);
         matrices.translate(0.0F, -1.0F, 0.0F);
-        this.model.setAngles(openness);
     }
 
     public void collectVertices(Direction facing, float openness, Consumer<Vector3fc> vertices) {
-        MatrixStack matrixStack = new MatrixStack();
-        this.setTransforms(matrixStack, facing, openness);
-        this.model.getRootPart().collectVertices(matrixStack, vertices);
+        PoseStack matrixStack = new PoseStack();
+        this.setTransforms(matrixStack, facing);
+        this.model.setupAnim(openness);
+        this.model.root().getExtentsForGui(matrixStack, vertices);
     }
 
     @Environment(EnvType.CLIENT)
@@ -135,14 +135,15 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
         private final ModelPart lid;
 
         public ShulkerBoxBlockModel(ModelPart root) {
-            super(root, RenderLayers::entityCutoutNoCull);
+            super(root, RenderTypes::entityCutout);
             this.lid = root.getChild("lid");
         }
 
-        public void setAngles(Float float_) {
-            super.setAngles(float_);
-            this.lid.setOrigin(0.0F, 24.0F - float_ * 0.5F * 16.0F, 0.0F);
-            this.lid.yaw = 270.0F * float_ * (float) (Math.PI / 180.0);
+        @Override
+        public void setupAnim(Float progress) {
+            super.setupAnim(progress);
+            this.lid.setPos(0.0F, 24.0F - progress * 0.5F * 16.0F, 0.0F);
+            this.lid.yRot = 270.0F * progress * (float) (Math.PI / 180.0);
         }
     }
 

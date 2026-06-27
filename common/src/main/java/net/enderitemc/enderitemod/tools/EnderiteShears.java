@@ -2,21 +2,21 @@ package net.enderitemc.enderitemod.tools;
 
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.LootEvent.LootTableModificationContext;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ShearsItem;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.MatchToolLootCondition;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.predicate.item.ItemPredicate;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 public class EnderiteShears extends ShearsItem {
 
-    public EnderiteShears(Settings settings) {
+    public EnderiteShears(Properties settings) {
         super(settings);
     }
 
@@ -86,13 +86,13 @@ public class EnderiteShears extends ShearsItem {
         });
     }
 
-    public static void tryBuildLootTable(RegistryKey<LootTable> key, LootTableModificationContext context, Block block) {
-        if (block.getLootTableKey().isPresent() && block.getLootTableKey().get().equals(key)) {
-            LootPool.Builder pool = LootPool.builder()
-                .rolls(ConstantLootNumberProvider.create(1))
-                .conditionally(MatchToolLootCondition
-                    .builder(ItemPredicate.Builder.create().items(Registries.ITEM, EnderiteTools.ENDERITE_SHEAR.get())))
-                .with(ItemEntry.builder(block.asItem()));
+    public static void tryBuildLootTable(ResourceKey<LootTable> key, LootTableModificationContext context, Block block) {
+        if (block.getLootTable().isPresent() && block.getLootTable().get().equals(key)) {
+            LootPool.Builder pool = LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1))
+                .when(MatchTool
+                    .toolMatches(ItemPredicate.Builder.item().of(BuiltInRegistries.ITEM, EnderiteTools.ENDERITE_SHEAR.get())))
+                .add(LootItem.lootTableItem(block.asItem()));
             context.addPool(pool);
         }
     }

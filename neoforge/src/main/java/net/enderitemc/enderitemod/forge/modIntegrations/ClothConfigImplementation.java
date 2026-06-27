@@ -1,7 +1,7 @@
 package net.enderitemc.enderitemod.forge.modIntegrations;
 
 import net.enderitemc.enderitemod.config.ClothConfig;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;

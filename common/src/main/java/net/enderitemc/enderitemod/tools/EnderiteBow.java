@@ -3,59 +3,62 @@ package net.enderitemc.enderitemod.tools;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.component.EnderiteChargeComponent;
 import net.enderitemc.enderitemod.component.EnderiteDataComponents;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.*;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class EnderiteBow extends BowItem {
 
-    public EnderiteBow(Item.Settings settings) {
+    public EnderiteBow(Item.Properties settings) {
         super(settings);
     }
 
     @Override
-    public boolean onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity playerEntity) {
+    public boolean releaseUsing(ItemStack stack, Level world, LivingEntity user, int remainingUseTicks) {
+        if (user instanceof Player playerEntity) {
 
             /* New Code */
             boolean bl = canUseWithoutArrow(stack, playerEntity);
             /////////////
 
-            ItemStack itemStack = playerEntity.getProjectileType(stack);
+            ItemStack itemStack = playerEntity.getProjectile(stack);
             if (bl && itemStack.isEmpty()) {
                 // Fake stack, if it can use Enderite Bow without arrow
-                itemStack = Items.ARROW.getDefaultStack().copyWithCount(64);
+                itemStack = Items.ARROW.getDefaultInstance().copyWithCount(64);
                 itemStack.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), new EnderiteChargeComponent(1337));
             }
             if (!itemStack.isEmpty()) {
-                int i = this.getMaxUseTime(stack, user) - remainingUseTicks;
-                float f = getPullProgress(i);
+                int i = this.getUseDuration(stack, user) - remainingUseTicks;
+                float f = getPowerForTime(i);
                 if (!((double) f < 0.1)) {
-                    List<ItemStack> list = load(stack, itemStack, playerEntity);
-                    int proj_count = playerEntity.getEntityWorld() instanceof ServerWorld serverWorld ? EnchantmentHelper.getProjectileCount(serverWorld, stack, playerEntity, 1) : 1;
+                    List<ItemStack> list = draw(stack, itemStack, playerEntity);
+                    int proj_count = playerEntity.level() instanceof ServerLevel serverWorld ? EnchantmentHelper.processProjectileCount(serverWorld, stack, playerEntity, 1) : 1;
                     if (bl) {
                         // If can use Enderite Bow without Arrow, then fill up projectiles list
                         for (int proj_idx = 0; proj_idx < proj_count - list.size(); proj_idx++) {
-                            list.add(Items.ARROW.getDefaultStack());
+                            list.add(Items.ARROW.getDefaultInstance());
                         }
                     }
-                    if (world instanceof ServerWorld serverWorld && !list.isEmpty()) {
-                        this.shootAll(serverWorld, playerEntity, playerEntity.getActiveHand(), stack, list,
+                    if (world instanceof ServerLevel serverWorld && !list.isEmpty()) {
+                        this.shoot(serverWorld, playerEntity, playerEntity.getUsedItemHand(), stack, list,
                             /* New Code */
                             f * this.getSpeedMultiplier(),
                             //////////////
@@ -67,12 +70,12 @@ public class EnderiteBow extends BowItem {
                         playerEntity.getX(),
                         playerEntity.getY(),
                         playerEntity.getZ(),
-                        SoundEvents.ENTITY_ARROW_SHOOT,
-                        SoundCategory.PLAYERS,
+                        SoundEvents.ARROW_SHOOT,
+                        SoundSource.PLAYERS,
                         1.0F,
                         1.0F / (world.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F
                     );
-                    playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
+                    playerEntity.awardStat(Stats.ITEM_USED.get(this));
                     return true;
                 }
             }
@@ -80,25 +83,25 @@ public class EnderiteBow extends BowItem {
         return false;
     }
 
-    protected ProjectileEntity createArrowEntity(World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
+    protected Projectile createProjectile(Level world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
         ArrowItem arrowItem2 = projectileStack.getItem() instanceof ArrowItem arrowItem ? arrowItem : (ArrowItem)Items.ARROW;
-        PersistentProjectileEntity persistentProjectileEntity = arrowItem2.createArrow(world, projectileStack, shooter, weaponStack);
+        AbstractArrow persistentProjectileEntity = arrowItem2.createArrow(world, projectileStack, shooter, weaponStack);
         if (critical) {
-            persistentProjectileEntity.setCritical(true);
+            persistentProjectileEntity.setCritArrow(true);
         }
         /* New Code */
-        persistentProjectileEntity.setCustomName(Text.literal("Enderite Arrow"));
-        persistentProjectileEntity.setDamage(this.getBaseDamage());
+        persistentProjectileEntity.setCustomName(Component.literal("Enderite Arrow"));
+        persistentProjectileEntity.setBaseDamage(this.getBaseDamage());
         if (projectileStack.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), new EnderiteChargeComponent(0)).charge() == 1337) {
             // Make fake stack unpickupable
             projectileStack.remove(EnderiteDataComponents.TELEPORT_CHARGE.get());
-            persistentProjectileEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
+            persistentProjectileEntity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
         }
         //////////////
         return persistentProjectileEntity;
     }
 
-    public static float getPullProgress(int useTicks) {
+    public static float getPowerForTime(int useTicks) {
         float f = (float) useTicks / EnderiteMod.CONFIG.tools.enderiteBowChargeTime;
         ;
         f = (f * f + f * 2.0F) / 3.0F;
@@ -110,21 +113,21 @@ public class EnderiteBow extends BowItem {
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        boolean bl = !user.getProjectileType(itemStack).isEmpty();
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        ItemStack itemStack = user.getItemInHand(hand);
+        boolean bl = !user.getProjectile(itemStack).isEmpty();
         if (!bl && !canUseWithoutArrow(itemStack, user)) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         } else {
-            user.setCurrentHand(hand);
-            return ActionResult.CONSUME.withNewHandStack(itemStack);
+            user.startUsingItem(hand);
+            return InteractionResult.CONSUME.heldItemTransformedTo(itemStack);
         }
     }
 
-    private static boolean canUseWithoutArrow(ItemStack bow, PlayerEntity user) {
-        var inf_enchant = user.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.INFINITY.getValue());
-        return user.getAbilities().creativeMode || !EnderiteMod.CONFIG.tools.enderiteBowNeedsArrow
-            || (!EnderiteMod.CONFIG.tools.enderiteBowWithInfinityNeedsArrow && inf_enchant.isPresent() && EnchantmentHelper.getLevel(inf_enchant.get(), bow) > 0);
+    private static boolean canUseWithoutArrow(ItemStack bow, Player user) {
+        var inf_enchant = user.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(Enchantments.INFINITY.identifier());
+        return user.getAbilities().instabuild || !EnderiteMod.CONFIG.tools.enderiteBowNeedsArrow
+            || (!EnderiteMod.CONFIG.tools.enderiteBowWithInfinityNeedsArrow && inf_enchant.isPresent() && EnchantmentHelper.getItemEnchantmentLevel(inf_enchant.get(), bow) > 0);
     }
 
     public float getBaseDamage() {

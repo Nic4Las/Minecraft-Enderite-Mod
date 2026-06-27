@@ -1,28 +1,28 @@
 package net.enderitemc.enderitemod.shulker;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 
-public class EnderiteShulkerBoxScreenHandler extends ScreenHandler {
-    private final Inventory inventory;
+public class EnderiteShulkerBoxScreenHandler extends AbstractContainerMenu {
+    private final Container inventory;
 
-    public EnderiteShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(45));
+    public EnderiteShulkerBoxScreenHandler(int syncId, Inventory playerInventory) {
+        this(syncId, playerInventory, new SimpleContainer(45));
     }
 
-    public EnderiteShulkerBoxScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(ScreenHandlerType.GENERIC_9X5, syncId);
-        checkSize(inventory, 45);
+    public EnderiteShulkerBoxScreenHandler(int syncId, Inventory playerInventory, Container inventory) {
+        super(MenuType.GENERIC_9x5, syncId);
+        checkContainerSize(inventory, 45);
         this.inventory = inventory;
-        inventory.onOpen(playerInventory.player);
+        inventory.startOpen(playerInventory.player);
 
         int o;
         int n;
@@ -44,28 +44,28 @@ public class EnderiteShulkerBoxScreenHandler extends ScreenHandler {
 
     }
 
-    public boolean canUse(PlayerEntity player) {
-        return this.inventory.canPlayerUse(player);
+    public boolean stillValid(Player player) {
+        return this.inventory.stillValid(player);
     }
 
-    public ItemStack quickMove(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = (Slot) this.slots.get(index);
-        if (slot != null && slot.hasStack()) {
-            ItemStack itemStack2 = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
-            if (index < this.inventory.size()) {
-                if (!this.insertItem(itemStack2, this.inventory.size(), this.slots.size(), true)) {
+            if (index < this.inventory.getContainerSize()) {
+                if (!this.moveItemStackTo(itemStack2, this.inventory.getContainerSize(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(itemStack2, 0, this.inventory.size(), false)) {
+            } else if (!this.moveItemStackTo(itemStack2, 0, this.inventory.getContainerSize(), false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemStack2.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
+                slot.setByPlayer(ItemStack.EMPTY);
             } else {
-                slot.markDirty();
+                slot.setChanged();
             }
         }
 
@@ -73,22 +73,22 @@ public class EnderiteShulkerBoxScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
+    public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
         boolean bl = true;
         if (slot instanceof EnderiteShulkerSlot) {
             bl = this.acceptItems(stack);
         }
-        return super.canInsertIntoSlot(stack, slot) && bl;
+        return super.canTakeItemForPickAll(stack, slot) && bl;
     }
 
     public boolean acceptItems(ItemStack stack) {
         boolean bl1 = stack.getItem() == EnderiteShulkerBoxBlock.getItemStack().getItem();
-        boolean bl2 = Block.getBlockFromItem(stack.getItem()) instanceof ShulkerBoxBlock;
+        boolean bl2 = Block.byItem(stack.getItem()) instanceof ShulkerBoxBlock;
         return !bl1 && !bl2;
     }
 
-    public void onClosed(PlayerEntity player) {
-        super.onClosed(player);
-        this.inventory.onClose(player);
+    public void removed(Player player) {
+        super.removed(player);
+        this.inventory.stopOpen(player);
     }
 }

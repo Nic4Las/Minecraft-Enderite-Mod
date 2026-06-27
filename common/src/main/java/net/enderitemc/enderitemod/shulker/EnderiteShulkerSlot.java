@@ -1,27 +1,27 @@
 package net.enderitemc.enderitemod.shulker;
 
-import net.minecraft.block.Block;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.ShulkerBoxSlot;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.ShulkerBoxSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 
 public class EnderiteShulkerSlot extends ShulkerBoxSlot {
 
-    public EnderiteShulkerSlot(Inventory inventory, int i, int j, int k) {
+    public EnderiteShulkerSlot(Container inventory, int i, int j, int k) {
         super(inventory, i, j, k);
     }
 
     @Override
-    public boolean canInsert(ItemStack stack) {
-        return !(Block.getBlockFromItem(stack.getItem()) instanceof EnderiteShulkerBoxBlock) && super.canInsert(stack);
+    public boolean mayPlace(ItemStack stack) {
+        return !(Block.byItem(stack.getItem()) instanceof EnderiteShulkerBoxBlock) && super.mayPlace(stack);
     }
 
     @Override
-    public void setStack(ItemStack stack) {
-        if (Block.getBlockFromItem(stack.getItem()) instanceof EnderiteShulkerBoxBlock) {
-            this.inventory.markDirty();
+    public void setByPlayer(ItemStack stack) {
+        if (Block.byItem(stack.getItem()) instanceof EnderiteShulkerBoxBlock) {
+            this.container.setChanged();
         }
-        super.setStack(stack);
+        super.setByPlayer(stack);
     }
 
 }

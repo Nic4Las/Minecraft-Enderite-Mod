@@ -7,20 +7,20 @@ import com.misterpemodder.shulkerboxtooltip.api.provider.PreviewProviderRegistry
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 public class ShulkerBoxTooltipApiImplementation implements ShulkerBoxTooltipApi {
 
     @Override
     public void registerProviders(PreviewProviderRegistry registry) {
-        registry.register(Identifier.of("enderitemod", "enderite_shulker_box"),
+        registry.register(Identifier.fromNamespaceAndPath("enderitemod", "enderite_shulker_box"),
             EnderiteShulkerBoxPreviewProvider.INSTANCE,
             EnderiteMod.ENDERITE_SHULKER_BOX.get().asItem());
     }
 
     @Environment(EnvType.CLIENT)
     public void registerColors(ColorRegistry registry) {
-        registry.category(Identifier.of("enderitemod", "enderite_category"))
+        registry.category(Identifier.fromNamespaceAndPath("enderitemod", "enderite_category"))
             .register(ClientOnly.ENDERITE_COLOR_KEY, "enderite_color");
     }
 

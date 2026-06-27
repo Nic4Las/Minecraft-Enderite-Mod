@@ -1,5 +1,5 @@
 {
-  "parent": "enderitemod:block/enderite_shulker_box",
+  "parent": "minecraft:item/template_shulker_box",
   "textures": {
     "particle": "enderitemod:block/enderite_shulker_box"
   }

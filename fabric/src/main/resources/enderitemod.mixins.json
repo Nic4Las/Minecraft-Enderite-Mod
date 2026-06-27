@@ -8,7 +8,9 @@
     "EnderiteFOVMixin"
   ],
   "mixins": [
-    "EnderiteShearsMixin"
+    "EnderiteShearsBeehiveMixin",
+    "EnderiteShearsPumpkinMixin",
+    "EnderiteShearsSheepMixin"
   ],
   "injectors": {
     "defaultRequire": 1

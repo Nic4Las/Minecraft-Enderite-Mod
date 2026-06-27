@@ -1,18 +1,18 @@
 package net.enderitemc.enderitemod.blocks.RespawnAnchorUtils;
 
 import net.enderitemc.enderitemod.EnderiteMod;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-import static net.minecraft.block.RespawnAnchorBlock.CHARGES;
+import static net.minecraft.world.level.block.RespawnAnchorBlock.CHARGE;
 
 public class EnderiteRespawnAnchorBlockEntity extends BlockEntity {
     public int charge;
 
     public EnderiteRespawnAnchorBlockEntity(BlockPos pos, BlockState state) {
         super(EnderiteMod.ENDERITE_RESPAWN_ANCHOR_BLOCK_ENTITY.get(), pos, state);
-        charge = state.get(CHARGES);
+        charge = state.getValue(CHARGE);
     }
 
     public boolean isCharged() {
@@ -20,6 +20,6 @@ public class EnderiteRespawnAnchorBlockEntity extends BlockEntity {
     }
 
     public boolean shouldRenderPortal() {
-        return !this.hasWorld() || !this.getWorld().getBlockState(pos.up()).isSolid();
+        return !this.hasLevel() || !this.getLevel().getBlockState(worldPosition.above()).isSolid();
     }
 }
