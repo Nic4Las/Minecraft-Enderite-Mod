@@ -12,7 +12,10 @@
     "SmithingEnderiteSwordMixin"
   ],
   "client": [
-    "EnderiteCrossbowPlayerRendererMixin"
+    "EnderiteCrossbowPlayerRendererMixin",
+    "SulfurCubeInnerLayerMixin",
+    "SulfurCubeRendererMixin",
+    "SulfurCubeRenderStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1

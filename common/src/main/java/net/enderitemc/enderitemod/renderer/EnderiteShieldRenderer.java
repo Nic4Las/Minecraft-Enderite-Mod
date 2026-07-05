@@ -65,28 +65,25 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<DataComponen
         boolean glint,
         int i
     ) {
-        BannerPatternLayers bannerPatternsComponent = componentMap != null
+        BannerPatternLayers patterns = componentMap != null
             ? componentMap.getOrDefault(DataComponents.BANNER_PATTERNS, BannerPatternLayers.EMPTY)
             : BannerPatternLayers.EMPTY;
-        DyeColor dyeColor = componentMap != null ? componentMap.get(DataComponents.BASE_COLOR) : null;
-        boolean bl2 = !bannerPatternsComponent.layers().isEmpty() || dyeColor != null;
-        matrixStack.pushPose();
-        matrixStack.scale(1.0F, -1.0F, -1.0F);
-        SpriteId spriteIdentifier = bl2 ? ENDERITE_SHIELD_BASE : ENDERITE_SHIELD_BASE_NO_PATTERN;
-        queue.submitModelPart(
-            this.model.handle(),
+        DyeColor baseColor = componentMap != null ? componentMap.get(DataComponents.BASE_COLOR) : null;
+        boolean hasPatterns = !patterns.layers().isEmpty() || baseColor != null;
+        SpriteId base = hasPatterns ? ENDERITE_SHIELD_BASE : ENDERITE_SHIELD_BASE_NO_PATTERN;
+        queue.submitModel(
+            this.model,
+            Unit.INSTANCE,
             matrixStack,
-            this.model.renderType(spriteIdentifier.atlasLocation()),
             light,
             overlay,
-            this.sprites.get(spriteIdentifier),
-            false,
-            glint,
             -1,
-            null,
-            i
+            base,
+            this.sprites,
+            i,
+            null
         );
-        if (bl2) {
+        if (hasPatterns) {
             BannerRenderer.submitPatterns(
                 this.sprites,
                 matrixStack,
@@ -96,24 +93,14 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<DataComponen
                 this.model,
                 Unit.INSTANCE,
                 false,
-                (DyeColor) Objects.requireNonNullElse(dyeColor, DyeColor.WHITE),
-                bannerPatternsComponent,
+                Objects.requireNonNullElse(baseColor, DyeColor.WHITE),
+                patterns,
                 null
             );
-        } else {
-            queue.submitModelPart(
-                this.model.plate(),
-                matrixStack,
-                this.model.renderType(spriteIdentifier.atlasLocation()),
-                light,
-                overlay,
-                this.sprites.get(spriteIdentifier),
-                false,
-                glint,
-                -1,
-                null,
-                i
-            );
+        }
+        if (glint) {
+            queue.order(patterns.layers().size() + 1)
+                .submitModel(this.model, Unit.INSTANCE, matrixStack, RenderTypes.entityGlint(), light, overlay, -1, this.sprites.get(base), 0, null);
         }
         if (this.charged) {
             // Custom end portal shader
@@ -122,13 +109,11 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<DataComponen
                 RenderTypes.endPortal(),
                 this::renderSides);
         }
-        matrixStack.popPose();
     }
 
     @Override
     public void getExtents(Consumer<Vector3fc> consumer) {
         PoseStack matrixStack = new PoseStack();
-        matrixStack.scale(1.0F, -1.0F, -1.0F);
         this.model.root().getExtentsForGui(matrixStack, consumer);
     }
 

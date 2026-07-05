@@ -2,7 +2,7 @@ package net.enderitemc.enderitemod.tools;
 
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.LootEvent.LootTableModificationContext;
-import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.advancements.predicates.ItemPredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ShearsItem;

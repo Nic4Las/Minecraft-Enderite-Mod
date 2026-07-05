@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.fox.Fox;
@@ -32,13 +33,13 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
     public abstract ItemCooldowns getCooldowns();
 
     @Inject(at = @At("HEAD"), method = "blockUsingItem")
-    private void enderitemod$portIt(ServerLevel world, LivingEntity attacker, CallbackInfo ci) {
+    private void enderitemod$portIt(ServerLevel level, LivingEntity attacker, DamageSource source, float damage, CallbackInfo ci) {
         if (this.isShiftKeyDown() && this.useItem.getItem() instanceof EnderiteShield
             && !this.getCooldowns().isOnCooldown(this.useItem)) {
 
             int charge = this.useItem.getOrDefault(EnderiteDataComponents.TELEPORT_CHARGE.get(), 0).intValue();
 
-            if (!world.isClientSide() && charge > 0 && !attacker.getType().builtInRegistryHolder().is(EnderiteTag.UNAFFECTED_BY_ENDERITE_SHIELD)) {
+            if (!level.isClientSide() && charge > 0 && !attacker.getType().builtInRegistryHolder().is(EnderiteTag.UNAFFECTED_BY_ENDERITE_SHIELD)) {
                 double d = attacker.getX();
                 double e = attacker.getY();
                 double f = attacker.getZ();
@@ -59,7 +60,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                     double g = attacker.getX() + dX * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                     double h = Mth.clamp(
                         attacker.getY() + dY * distance + (double) (attacker.getRandom().nextInt(16) - 8), 0.0D,
-                        (double) (world.getHeight() - 1));
+                        (double) (level.getHeight() - 1));
                     double j = attacker.getZ() + dZ * distance + (attacker.getRandom().nextDouble() - 0.5D) * 16.0D;
                     if (attacker.isPassenger()) {
                         attacker.stopRiding();
@@ -68,7 +69,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                     if (attacker.randomTeleport(g, h, j, true)) {
                         SoundEvent soundEvent = attacker instanceof Fox ? SoundEvents.FOX_TELEPORT
                             : SoundEvents.CHORUS_FRUIT_TELEPORT;
-                        world.playSound((Player) null, d, e, f, soundEvent, SoundSource.PLAYERS, 1.0F, 1.0F);
+                        level.playSound((Player) null, d, e, f, soundEvent, SoundSource.PLAYERS, 1.0F, 1.0F);
                         attacker.playSound(soundEvent, 1.0F, 1.0F);
 
                         this.useItem.set(EnderiteDataComponents.TELEPORT_CHARGE.get(), EnderiteChargeComponent.of(charge - 1));

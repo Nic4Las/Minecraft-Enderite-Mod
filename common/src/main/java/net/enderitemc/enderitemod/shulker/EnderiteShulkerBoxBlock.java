@@ -33,6 +33,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -92,7 +93,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
         if (entity.getAnimationStage() != EnderiteShulkerBoxBlockEntity.AnimationStage.CLOSED) {
             return true;
         } else {
-            AABB box = Shulker.getProgressDeltaAabb(1.0f, state.getValue(FACING), 0.0f, 0.5f, pos.getBottomCenter()).deflate(1.0E-6);
+            AABB box = Shulker.getProgressDeltaAabb(1.0f, state.getValue(FACING), 0.0f, 0.5f, Vec3.atBottomCenterOf(pos)).deflate(1.0E-6);
             return world.noCollision(box);
         }
     }

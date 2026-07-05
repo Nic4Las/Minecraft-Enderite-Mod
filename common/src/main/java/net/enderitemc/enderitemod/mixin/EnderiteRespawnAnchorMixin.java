@@ -4,7 +4,7 @@ import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -28,7 +28,7 @@ public class EnderiteRespawnAnchorMixin {
         // isNether() method is actually checking if dimension is the end
         if (block instanceof EnderiteRespawnAnchor && (spawnForced || blockState.getValue(EnderiteRespawnAnchor.CHARGE) > 0)
             && EnderiteRespawnAnchor.shouldRespawnPlayer(world, is_dead)) {
-            Optional<Vec3> optional = EnderiteRespawnAnchor.findStandUpPosition(EntityType.PLAYER, world, pos);
+            Optional<Vec3> optional = EnderiteRespawnAnchor.findStandUpPosition(EntityTypes.PLAYER, world, pos);
             if (!spawnForced && optional.isPresent()) {
                 world.setBlock(pos, blockState.setValue(EnderiteRespawnAnchor.CHARGE,
                     blockState.getValue(EnderiteRespawnAnchor.CHARGE) - 1), 3);

@@ -186,5 +186,8 @@
   "option.enderitemod.restart.enderite_tools.mining_speed": "Mining Speed",
   "option.enderitemod.restart.enderite_tools.mining_speed.hover": "Netherite: 9.0",
   "option.enderitemod.restart.enderite_tools.attack_damage_bonus": "Attack Damage Bonus",
-  "option.enderitemod.restart.enderite_tools.attack_damage_bonus.hover": "Netherite: 4.0 (modifies spear/tools)"
+  "option.enderitemod.restart.enderite_tools.attack_damage_bonus.hover": "Netherite: 4.0 (modifies spear/tools)",
+
+  "option.enderitemod.general.sulfur_cube_cracked_enderite_ore_render_fix": "Cracked Enderite Ore Sulfur Cube render fix",
+  "option.enderitemod.general.sulfur_cube_cracked_enderite_ore_render_fix.hover": "Shrinks Cracked Enderite Ore inside Sulfur Cubes by 1 pixel. Disable this if a resource pack or custom model already fits correctly."
 }

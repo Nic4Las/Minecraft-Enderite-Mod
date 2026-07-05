@@ -74,6 +74,15 @@ Enderite Mod is licensed under MIT. The full license can be found in the license
 
 ## Fabric/NeoForge
 
+
+### 1.9.0
+- Updated the mod for Minecraft 26.2.
+- Added compatibility with Minecraft's new Sulfur Cube item behavior for Enderite blocks and ores.
+- Updated rendering for the latest Minecraft client rendering changes
+
+### 1.8.3
+- Added new sounds/animations for Enderite Shulkerbox
+
 ### 1.7.1
 
 - [x] Added new Shield renderer (1.21.4+)

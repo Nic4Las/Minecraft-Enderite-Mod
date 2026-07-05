@@ -16,7 +16,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -55,7 +54,7 @@ public class EnderiteTests {
     public static final String TMPL_PRE = TMPL_MI + TMPL_NS;
 
     public static void explodeEnderiteOreTest(GameTestHelper ctx) {
-        ctx.spawn(EntityType.TNT, new BlockPos(1, 1, 0));
+        ctx.spawn(EntityTypes.TNT, new BlockPos(1, 1, 0));
         ctx.runAfterDelay(99, () -> ctx.assertBlock(new BlockPos(1, 1, 1),
             (Block block) -> block.equals(EnderiteMod.CRACKED_ENDERITE_ORE.get()),
             (a) -> Component.nullToEmpty("TnT didn't crack the enderite ore")
@@ -148,7 +147,7 @@ public class EnderiteTests {
 
         ctx.runAfterDelay(1, () -> {
             ctx.assertEntityPresent(
-                EntityType.ITEM,
+                EntityTypes.ITEM,
                 ctx.relativePos(new BlockPos((int) absolute_pos.x(), ctx.getLevel().getMinY() + 10, (int) absolute_pos.z())),
                 2);
             ie.kill(ctx.getLevel());
@@ -242,8 +241,8 @@ public class EnderiteTests {
         ServerLevel world = ctx.getLevel();
         BlockPos pos = ctx.absolutePos(new BlockPos(0, 1, 0));
 
-        EnderMan enderman = new EnderMan(EntityType.ENDERMAN, world);
-        enderman.setPos(pos.getBottomCenter());
+        EnderMan enderman = new EnderMan(EntityTypes.ENDERMAN, world);
+        enderman.setPos(Vec3.atBottomCenterOf(pos));
         world.addFreshEntity(enderman);
 
         Player player = ctx.makeMockPlayer(GameType.CREATIVE);

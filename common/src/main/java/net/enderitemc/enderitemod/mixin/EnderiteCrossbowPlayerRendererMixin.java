@@ -15,7 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AvatarRenderer.class)
 public class EnderiteCrossbowPlayerRendererMixin {
 
-    @Inject(at = @At("HEAD"), method = "getArmPose(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/client/model/HumanoidModel$ArmPose;", cancellable = true)
+    @Inject(at = @At("HEAD"),
+        method = "getArmPose(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/client/model/HumanoidModel$ArmPose;",
+        cancellable = true)
     private static void enderitemod$getArmPose(Avatar player, ItemStack stack, InteractionHand hand, CallbackInfoReturnable<ArmPose> cir) {
         if (!player.swinging
             && stack.is(EnderiteTools.ENDERITE_CROSSBOW.get())

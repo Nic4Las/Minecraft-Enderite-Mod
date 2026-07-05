@@ -9,6 +9,7 @@ public class Config {
 
     public static class General {
         public boolean allowVoidFloatingEnchantment = true;
+        public boolean sulfurCubeCrackedEnderiteOreRenderFix = true;
         public float enderiteUpgradeTemplateChance = 0.5f;
     }
 

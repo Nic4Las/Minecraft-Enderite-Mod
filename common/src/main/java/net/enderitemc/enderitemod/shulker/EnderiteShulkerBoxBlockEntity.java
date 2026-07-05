@@ -129,7 +129,7 @@ public class EnderiteShulkerBoxBlockEntity extends RandomizableContainerBlockEnt
     private void pushEntities(Level world, BlockPos pos, BlockState state) {
         if (state.getBlock() instanceof EnderiteShulkerBoxBlock) {
             Direction direction = state.getValue(EnderiteShulkerBoxBlock.FACING);
-            AABB box = Shulker.getProgressDeltaAabb(1.0F, direction, this.prevAnimationProgress, this.animationProgress, pos.getBottomCenter());
+            AABB box = Shulker.getProgressDeltaAabb(1.0F, direction, this.prevAnimationProgress, this.animationProgress, Vec3.atBottomCenterOf(pos));
             List<Entity> list = world.getEntities(null, box);
             if (!list.isEmpty()) {
                 for (Entity entity : list) {

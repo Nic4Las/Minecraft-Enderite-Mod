@@ -152,6 +152,15 @@ public class ClothConfig {
             .build()
         );
 
+        general.addEntry(entryBuilder.startBooleanToggle(
+                Component.translatable("option.enderitemod.general.sulfur_cube_cracked_enderite_ore_render_fix"),
+                currentConfig.general.sulfurCubeCrackedEnderiteOreRenderFix)
+            .setDefaultValue(DEFAULT.general.sulfurCubeCrackedEnderiteOreRenderFix)
+            .setTooltip(Component.translatable("option.enderitemod.general.sulfur_cube_cracked_enderite_ore_render_fix.hover"))
+            .setSaveConsumer(newValue -> currentConfig.general.sulfurCubeCrackedEnderiteOreRenderFix = newValue)
+            .build()
+        );
+
         // RESTART
         // Upgrade Template
         restart.addEntry(entryBuilder

@@ -186,5 +186,8 @@
   "option.enderitemod.restart.enderite_tools.mining_speed": "Abbaugeschwindigkeit",
   "option.enderitemod.restart.enderite_tools.mining_speed.hover": "Netherit: 9.0",
   "option.enderitemod.restart.enderite_tools.attack_damage_bonus": "Angriffsschaden-Bonus",
-  "option.enderitemod.restart.enderite_tools.attack_damage_bonus.hover": "Netherit: 4.0 (verändert Speer/Werkzeuge)"
+  "option.enderitemod.restart.enderite_tools.attack_damage_bonus.hover": "Netherit: 4.0 (verändert Speer/Werkzeuge)",
+
+  "option.enderitemod.general.sulfur_cube_cracked_enderite_ore_render_fix": "Render fix für rissiges Enderiterz im Schwefelwürfel",
+  "option.enderitemod.general.sulfur_cube_cracked_enderite_ore_render_fix.hover": "Verkleinert rissiges Enderiterz im Schwefelwürfel um einen Pixel. Deaktivieren bei Resourcepacks, die ein korrekt passendes Blockmodell nutzen."
 }

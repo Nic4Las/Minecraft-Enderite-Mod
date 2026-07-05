@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "enderitemod:enderite_block",
+    "enderitemod:enderite_ore",
+    "enderitemod:cracked_enderite_ore"
+  ]
+}
