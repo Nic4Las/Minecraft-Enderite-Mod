@@ -50,3 +50,6 @@ side = "CLIENT"
 
 [[mixins]]
 config = "enderitemod-common.mixins.json"
+
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"

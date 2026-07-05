@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class EnderiteShulkerBoxBlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
-    public static float OPEN_SPEED = 0.67f;
-    public static float CLOSE_SPEED = 1.25f;
+    public static float OPEN_SPEED = 1.25f;
+    public static float CLOSE_SPEED = 0.67f;
 
     private static final int[] AVAILABLE_SLOTS = IntStream.range(0, 45).toArray();
     private NonNullList<ItemStack> inventory;
@@ -53,6 +53,29 @@ public class EnderiteShulkerBoxBlockEntity extends RandomizableContainerBlockEnt
         be.updateAnimation(world, pos, state);
     }
 
+    protected float getOpenSpeed(BlockState state) {
+        if (state.getBlock() instanceof EnderiteShulkerBoxBlock) {
+            Direction direction = state.getValue(EnderiteShulkerBoxBlock.FACING);
+            return switch (direction) {
+                case UP -> OPEN_SPEED;
+                case DOWN -> CLOSE_SPEED;
+                default -> 1.0f;
+            };
+        }
+        return 1.0f;
+    }
+    protected float getCloseSpeed(BlockState state) {
+        if (state.getBlock() instanceof EnderiteShulkerBoxBlock) {
+            Direction direction = state.getValue(EnderiteShulkerBoxBlock.FACING);
+            return switch (direction) {
+                case UP -> CLOSE_SPEED;
+                case DOWN -> OPEN_SPEED;
+                default -> 1.0f;
+            };
+        }
+        return 1.0f;
+    }
+
     protected void updateAnimation(Level world, BlockPos pos, BlockState state) {
         this.prevAnimationProgress = this.animationProgress;
         switch (this.animationStage) {
@@ -60,7 +83,7 @@ public class EnderiteShulkerBoxBlockEntity extends RandomizableContainerBlockEnt
                 this.animationProgress = 0.0F;
                 break;
             case OPENING:
-                this.animationProgress += 0.1F * OPEN_SPEED;
+                this.animationProgress += 0.1F * getOpenSpeed(state);
                 if (this.prevAnimationProgress == 0.0F) {
                     updateNeighborStates(world, pos, state);
                 }
@@ -73,7 +96,7 @@ public class EnderiteShulkerBoxBlockEntity extends RandomizableContainerBlockEnt
                 this.pushEntities(world, pos, state);
                 break;
             case CLOSING:
-                this.animationProgress -= 0.1F * CLOSE_SPEED;
+                this.animationProgress -= 0.1F * getCloseSpeed(state);
                 if (this.prevAnimationProgress == 1.0F) {
                     updateNeighborStates(world, pos, state);
                 }
@@ -168,7 +191,7 @@ public class EnderiteShulkerBoxBlockEntity extends RandomizableContainerBlockEnt
             if (this.viewerCount == 1) {
                 this.level.gameEvent(player.getLivingEntity(), GameEvent.CONTAINER_OPEN, this.worldPosition);
                 this.level.playSound((Player) null, this.worldPosition, SoundEvents.SHULKER_BOX_OPEN,
-                    SoundSource.BLOCKS, 0.5F, this.level.getRandom().nextFloat() * 0.1F + 0.72F * OPEN_SPEED);
+                    SoundSource.BLOCKS, 0.5F, this.level.getRandom().nextFloat() * 0.1F + 0.72F * getOpenSpeed(this.level.getBlockState(this.worldPosition)));
             }
         }
 
@@ -182,7 +205,7 @@ public class EnderiteShulkerBoxBlockEntity extends RandomizableContainerBlockEnt
             if (this.viewerCount <= 0) {
                 this.level.gameEvent(player.getLivingEntity(), GameEvent.CONTAINER_CLOSE, this.worldPosition);
                 this.level.playSound((Player) null, this.worldPosition, SoundEvents.SHULKER_BOX_CLOSE,
-                    SoundSource.BLOCKS, 0.5F, this.level.getRandom().nextFloat() * 0.1F + 0.72F * CLOSE_SPEED);
+                    SoundSource.BLOCKS, 0.5F, this.level.getRandom().nextFloat() * 0.1F + 0.72F * getCloseSpeed(this.level.getBlockState(this.worldPosition)));
             }
         }
 

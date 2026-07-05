@@ -9,7 +9,7 @@ architectury {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/enderitemod.accesswidener")
+    accessWidenerPath = file("src/main/resources/enderitemod.classtweaker")
 }
 
 dependencies {

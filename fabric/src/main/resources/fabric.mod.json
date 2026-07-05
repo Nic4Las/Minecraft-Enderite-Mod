@@ -38,6 +38,7 @@
     "enderitemod.mixins.json",
     "enderitemod-common.mixins.json"
   ],
+  "accessWidener": "enderitemod.classtweaker",
   "depends": {
     "fabricloader": "*",
     "minecraft": ">=${minecraft_version}",
