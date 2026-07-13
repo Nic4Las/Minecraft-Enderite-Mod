@@ -6,6 +6,7 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorRenderer;
 import net.enderitemc.enderitemod.forge.modIntegrations.ClothConfigImplementation;
 import net.enderitemc.enderitemod.forge.modIntegrations.ShulkerBoxTooltipImplementation;
+import net.enderitemc.enderitemod.forge.tests.EnderiteNeoforgeTests;
 import net.enderitemc.enderitemod.renderer.RendererRegistries;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntityRenderer;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
@@ -48,6 +49,7 @@ public class EnderiteModForge {
         //EventBuses.registerModEventBus(EnderiteMod.MOD_ID, modBus);
 
         EnderiteMod.init();
+        EnderiteNeoforgeTests.init(modBus);
 
         modBus.addListener(this::setup);
     }
@@ -59,6 +61,7 @@ public class EnderiteModForge {
             DispenserBlock.registerBehavior(EnderiteTools.ENDERITE_SHEAR.get(),
                 new ShearsDispenseItemBehavior());
         });
+
     }
 
     @EventBusSubscriber(value = Dist.CLIENT, modid = MOD_ID)

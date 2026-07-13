@@ -1,0 +1,10 @@
+{
+  "environment": "minecraft:default",
+  "structure": "enderitemod:enderitetests.enderite_dispenser_shulkerbox",
+  "max_ticks": 400,
+  "setup_ticks": 0,
+  "required": true,
+  "rotation": "none",
+  "type": "minecraft:function",
+  "function": "enderitemod:enderite_dispenser_shulkerbox_test"
+}

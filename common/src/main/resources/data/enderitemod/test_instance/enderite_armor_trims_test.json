@@ -1,0 +1,11 @@
+{
+  "environment": "minecraft:default",
+  "structure": "enderitemod:enderitetests.enderite_armor_trims",
+  "max_ticks": 400,
+  "setup_ticks": 0,
+  "required": true,
+  "rotation": "none",
+  "manual_only": true,
+  "type": "minecraft:function",
+  "function": "enderitemod:enderite_armor_trims_test"
+}

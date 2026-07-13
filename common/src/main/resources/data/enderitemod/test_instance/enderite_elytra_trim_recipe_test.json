@@ -1,0 +1,10 @@
+{
+  "environment": "minecraft:default",
+  "structure": "enderitemod:enderitetests.enderite_elytra_trim_recipe",
+  "max_ticks": 400,
+  "setup_ticks": 0,
+  "required": true,
+  "rotation": "none",
+  "type": "minecraft:function",
+  "function": "enderitemod:enderite_elytra_trim_recipe_test"
+}

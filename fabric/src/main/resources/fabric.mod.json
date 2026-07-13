@@ -24,9 +24,6 @@
         "value": "net.enderitemc.enderitemod.fabriclike.EnderiteModClient"
       }
     ],
-    "fabric-gametest": [
-      "net.enderitemc.enderitemod.tests.EnderiteTests"
-    ],
     "modmenu": [
       "net.enderitemc.enderitemod.fabriclike.config.EnderiteModModMenuIntegration"
     ],

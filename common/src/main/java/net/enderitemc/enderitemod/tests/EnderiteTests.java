@@ -1,5 +1,7 @@
 package net.enderitemc.enderitemod.tests;
 
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
@@ -8,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.*;
 import net.minecraft.gametest.framework.GameTestHelper;

@@ -1,0 +1,10 @@
+{
+  "environment": "minecraft:default",
+  "structure": "enderitemod:enderitetests.void_death_with_enderite",
+  "max_ticks": 400,
+  "setup_ticks": 0,
+  "required": true,
+  "rotation": "none",
+  "type": "minecraft:function",
+  "function": "enderitemod:void_death_with_enderite_test"
+}
