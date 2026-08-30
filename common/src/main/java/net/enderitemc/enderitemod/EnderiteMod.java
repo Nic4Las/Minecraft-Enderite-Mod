@@ -223,6 +223,14 @@ public class EnderiteMod {
         TABS.register();
 
         LifecycleEvent.SETUP.register(() -> {
+            CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
+        });
+
+        EnderiteUpgradeSmithingTemplate.registerLoottables();
+    }
+
+    public static void setupBiomeModifications() {
+        LifecycleEvent.SETUP.register(() -> {
             BiomeModifications.addProperties((ctx) -> ctx.hasTag(BiomeTags.IS_END), (ctx, mutable) -> {
                 mutable.getGenerationProperties().addFeature(
                     GenerationStep.Decoration.UNDERGROUND_ORES,
@@ -233,10 +241,7 @@ public class EnderiteMod {
                     ResourceKey.create(Registries.PLACED_FEATURE,
                         Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, "ore_enderite_small")));
             });
-            CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
         });
-
-        EnderiteUpgradeSmithingTemplate.registerLoottables();
     }
 
     @Environment(EnvType.CLIENT)
