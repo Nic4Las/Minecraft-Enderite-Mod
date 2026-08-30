@@ -1,0 +1,10 @@
+{
+  "environment": "enderitemod:mob_griefing",
+  "structure": "enderitemod:enderitetests.creeper_explode_enderite_ore",
+  "max_ticks": 100,
+  "setup_ticks": 0,
+  "required": true,
+  "rotation": "none",
+  "type": "minecraft:function",
+  "function": "enderitemod:creeper_explode_enderite_ore_test"
+}

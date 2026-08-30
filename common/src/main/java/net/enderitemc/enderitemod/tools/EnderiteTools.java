@@ -6,6 +6,7 @@ import net.enderitemc.enderitemod.component.EnderiteChargeComponent;
 import net.enderitemc.enderitemod.component.EnderiteDataComponents;
 import net.enderitemc.enderitemod.component.EnderiteTooltipComponent;
 import net.enderitemc.enderitemod.materials.EnderiteMaterial;
+import net.enderitemc.enderitemod.misc.EnderiteElytraSpecialRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteShieldDecorationRecipe;
 import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.core.component.DataComponents;
@@ -123,11 +124,13 @@ public class EnderiteTools {
         () -> new EnderiteShield(
             EnderiteMod.getItemSettings("enderite_shield", ENDERITE_SHIELD_ITEM_SETTINGS.get())));
 
+    public static EnderiteShieldDecorationRecipe ENDERITE_SHIELD_DECORATION_RECIPE_INSTANCE = new EnderiteShieldDecorationRecipe();
+
     public static RegistrySupplier<RecipeSerializer<? extends CustomRecipe>> ENDERITE_SHIELD_DECORATION_RECIPE = EnderiteMod.RECIPES
         .register("crafting_special_enderiteshielddecoration",
             () -> new RecipeSerializer<>(
-                com.mojang.serialization.MapCodec.unit(new EnderiteShieldDecorationRecipe()),
-                StreamCodec.unit(new EnderiteShieldDecorationRecipe())));
+                com.mojang.serialization.MapCodec.unit(ENDERITE_SHIELD_DECORATION_RECIPE_INSTANCE),
+                StreamCodec.unit(ENDERITE_SHIELD_DECORATION_RECIPE_INSTANCE)));
 
     // Spear
     public static final RegistrySupplier<Item> ENDERITE_SPEAR = EnderiteMod.ITEMS.register("enderite_spear",

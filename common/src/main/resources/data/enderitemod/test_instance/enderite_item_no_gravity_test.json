@@ -1,0 +1,10 @@
+{
+  "environment": "minecraft:default",
+  "structure": "enderitemod:enderitetests.enderite_item_no_gravity",
+  "max_ticks": 100,
+  "setup_ticks": 0,
+  "required": true,
+  "rotation": "none",
+  "type": "minecraft:function",
+  "function": "enderitemod:enderite_item_no_gravity_test"
+}

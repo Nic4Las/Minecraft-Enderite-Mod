@@ -50,7 +50,6 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.Equippable;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -175,11 +174,13 @@ public class EnderiteMod {
         .rarity(Rarity.EPIC)
         .component(DataComponents.GLIDER, Unit.INSTANCE);
 
+    public static EnderiteElytraSpecialRecipe ENDERITE_ELYTRA_SPECIAL_RECIPE_INSTANCE = new EnderiteElytraSpecialRecipe();
+
     public static RegistrySupplier<RecipeSerializer<? extends CustomRecipe>> ENDERITE_EYLTRA_SPECIAL_RECIPE = RECIPES
         .register("crafting_special_enderiteelytra",
             () -> new RecipeSerializer<>(
-                com.mojang.serialization.MapCodec.unit(new EnderiteElytraSpecialRecipe()),
-                StreamCodec.unit(new EnderiteElytraSpecialRecipe())));
+                com.mojang.serialization.MapCodec.unit(ENDERITE_ELYTRA_SPECIAL_RECIPE_INSTANCE),
+                StreamCodec.unit(ENDERITE_ELYTRA_SPECIAL_RECIPE_INSTANCE)));
 
     // Shulker Box
     public static final RegistrySupplier<Block> ENDERITE_SHULKER_BOX = BLOCKS.register("enderite_shulker_box",

@@ -5,6 +5,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
+import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,12 +27,14 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
@@ -43,6 +46,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlastFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
@@ -311,6 +316,103 @@ public class EnderiteTests {
         ctx.pressButton(button_pos);
         ctx.runAfterDelay(15, () -> {
             ctx.assertBlockPresent(EnderiteMod.ENDERITE_SHULKER_BOX.get(), pos);
+            ctx.succeed();
+        });
+    }
+
+    public static void enderiteItemNoGravityTest(GameTestHelper ctx) {
+        ItemEntity enderite = ctx.spawnItem(EnderiteMod.ENDERITE_INGOT.get(), 0.5F, 3.0F, 0.5F);
+        ItemEntity control = ctx.spawnItem(Items.DIRT, 1.5F, 3.0F, 0.5F);
+
+        ctx.runAfterDelay(20, () -> {
+            ctx.assertTrue(enderite.isAlive(), Component.literal("Enderite item unexpectedly disappeared"));
+            ctx.assertTrue(enderite.isNoGravity(), Component.literal("Enderite item still has gravity"));
+            ctx.assertFalse(control.isNoGravity(), Component.literal("Control item unexpectedly has no gravity"));
+            ctx.assertTrue(
+                enderite.getY() > control.getY() + 0.5D,
+                Component.literal("Enderite item did not remain above the falling control item")
+            );
+            ctx.succeed();
+        });
+    }
+
+    public static void enderiteItemFireproofTest(GameTestHelper ctx) {
+        ItemEntity enderite = ctx.spawnItem(EnderiteMod.ENDERITE_INGOT.get(), 0.5F, 1.1F, 0.5F);
+        ItemEntity control = ctx.spawnItem(Items.DIRT, 1.5F, 1.1F, 0.5F);
+
+        ctx.runAfterDelay(40, () -> {
+            ctx.assertTrue(enderite.isAlive(), Component.literal("Enderite item did not survive lava"));
+            ctx.assertFalse(control.isAlive(), Component.literal("Control item unexpectedly survived lava"));
+            ctx.succeed();
+        });
+    }
+
+    public static void enderiteDispenserShulkerboxContentsTest(GameTestHelper ctx) {
+        BlockPos dispenserPos = new BlockPos(1, 1, 0);
+        DispenserBlockEntity dispenser = ctx.getBlockEntity(dispenserPos, DispenserBlockEntity.class);
+        ItemStack shulker = EnderiteMod.ENDERITE_SHULKER_BOX_ITEM.get().getDefaultInstance();
+        shulker.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(
+            Items.DIAMOND.getDefaultInstance().copyWithCount(3),
+            Items.DIRT.getDefaultInstance().copyWithCount(17)
+        )));
+        dispenser.setItem(0, shulker);
+
+        ctx.pressButton(1, 1, 1);
+        ctx.runAfterDelay(15, () -> {
+            EnderiteShulkerBoxBlockEntity placed = ctx.getBlockEntity(
+                new BlockPos(0, 1, 0),
+                EnderiteShulkerBoxBlockEntity.class
+            );
+            ctx.assertTrue(placed.getItem(0).is(Items.DIAMOND), Component.literal("First shulker-box item was not preserved"));
+            ctx.assertValueEqual(placed.getItem(0).getCount(), 3, Component.literal("Diamond count was not preserved"));
+            ctx.assertTrue(placed.getItem(1).is(Items.DIRT), Component.literal("Second shulker-box item was not preserved"));
+            ctx.assertValueEqual(placed.getItem(1).getCount(), 17, Component.literal("Dirt count was not preserved"));
+            ctx.succeed();
+        });
+    }
+
+    public static void enderiteShulkerboxHopperTest(GameTestHelper ctx) {
+        EnderiteShulkerBoxBlockEntity shulker = ctx.getBlockEntity(
+            new BlockPos(0, 3, 0),
+            EnderiteShulkerBoxBlockEntity.class
+        );
+
+        ctx.assertTrue(
+            shulker.canPlaceItemThroughFace(0, Items.DIAMOND.getDefaultInstance(), Direction.UP),
+            Component.literal("Enderite shulker box rejected an ordinary item")
+        );
+        ctx.assertFalse(
+            shulker.canPlaceItemThroughFace(0, Items.SHULKER_BOX.getDefaultInstance(), Direction.UP),
+            Component.literal("Enderite shulker box accepted a vanilla shulker box")
+        );
+        ctx.assertFalse(
+            shulker.canPlaceItemThroughFace(0, EnderiteMod.ENDERITE_SHULKER_BOX_ITEM.get().getDefaultInstance(), Direction.UP),
+            Component.literal("Enderite shulker box accepted another Enderite shulker box")
+        );
+
+        shulker.setItem(0, Items.DIAMOND.getDefaultInstance().copyWithCount(2));
+        ctx.runAfterDelay(20, () -> {
+            ChestBlockEntity chest = ctx.getBlockEntity(new BlockPos(0, 1, 0), ChestBlockEntity.class);
+            ctx.assertTrue(chest.getItem(0).is(Items.DIAMOND), Component.literal("Hopper did not extract from Enderite shulker box"));
+            ctx.assertTrue(chest.getItem(0).getCount() > 0, Component.literal("Extracted diamond stack was empty"));
+            ctx.succeed();
+        });
+    }
+
+    public static void creeperExplodeEnderiteOreTest(GameTestHelper ctx) {
+        Creeper creeper = ctx.spawnWithNoFreeWill(EntityTypes.CREEPER, new BlockPos(1, 1, 1));
+        creeper.ignite();
+        ctx.succeedWhenBlockPresent(EnderiteMod.CRACKED_ENDERITE_ORE.get(), new BlockPos(1, 1, 2));
+    }
+
+    public static void enderiteRegularFurnaceRejectsOreTest(GameTestHelper ctx) {
+        FurnaceBlockEntity furnace = ctx.getBlockEntity(new BlockPos(0, 1, 0), FurnaceBlockEntity.class);
+        furnace.setItem(0, EnderiteMod.CRACKED_ENDERITE_ORE_ITEM.get().getDefaultInstance());
+        furnace.setItem(1, Items.COAL.getDefaultInstance());
+
+        ctx.runAfterDelay(450, () -> {
+            ctx.assertTrue(furnace.getItem(0).is(EnderiteMod.CRACKED_ENDERITE_ORE_ITEM.get()), Component.literal("Regular furnace consumed cracked Enderite ore"));
+            ctx.assertTrue(furnace.getItem(2).isEmpty(), Component.literal("Regular furnace smelted a blasting-only recipe"));
             ctx.succeed();
         });
     }

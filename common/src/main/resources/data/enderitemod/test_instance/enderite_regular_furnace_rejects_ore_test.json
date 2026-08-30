@@ -1,0 +1,10 @@
+{
+  "environment": "minecraft:default",
+  "structure": "enderitemod:enderitetests.enderite_regular_furnace_rejects_ore",
+  "max_ticks": 500,
+  "setup_ticks": 0,
+  "required": true,
+  "rotation": "none",
+  "type": "minecraft:function",
+  "function": "enderitemod:enderite_regular_furnace_rejects_ore_test"
+}

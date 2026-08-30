@@ -16,6 +16,15 @@ loom {
         //convertAccessWideners = true
         //extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
     }
+
+    runs {
+        gameTestServer {
+            server()
+            environment("gametestserver")
+            forgeTemplate("gameTestServer")
+            property "neoforge.enabledGameTestNamespaces", "enderitemod"
+        }
+    }
 }
 
 configurations {

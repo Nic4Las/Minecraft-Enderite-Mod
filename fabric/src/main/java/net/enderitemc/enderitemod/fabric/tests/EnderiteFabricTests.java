@@ -27,6 +27,12 @@ public final class EnderiteFabricTests {
         register("enderite_smelting_test", EnderiteTests::enderiteSmeltingTest);
         register("enderite_dispenser_shears_test", EnderiteTests::enderiteDispenserShearsTest);
         register("enderite_dispenser_shulkerbox_test", EnderiteTests::enderiteDispenserShulkerboxTest);
+        register("enderite_item_no_gravity_test", EnderiteTests::enderiteItemNoGravityTest);
+        register("enderite_item_fireproof_test", EnderiteTests::enderiteItemFireproofTest);
+        register("enderite_dispenser_shulkerbox_contents_test", EnderiteTests::enderiteDispenserShulkerboxContentsTest);
+        register("enderite_shulkerbox_hopper_test", EnderiteTests::enderiteShulkerboxHopperTest);
+        register("creeper_explode_enderite_ore_test", EnderiteTests::creeperExplodeEnderiteOreTest);
+        register("enderite_regular_furnace_rejects_ore_test", EnderiteTests::enderiteRegularFurnaceRejectsOreTest);
     }
 
     private static void register(String name, Consumer<GameTestHelper> testFunction) {

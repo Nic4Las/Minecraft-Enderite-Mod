@@ -29,6 +29,12 @@ public final class EnderiteNeoforgeTests {
         TEST_FUNCTIONS.register("enderite_smelting_test", () -> EnderiteTests::enderiteSmeltingTest);
         TEST_FUNCTIONS.register("enderite_dispenser_shears_test", () -> EnderiteTests::enderiteDispenserShearsTest);
         TEST_FUNCTIONS.register("enderite_dispenser_shulkerbox_test", () -> EnderiteTests::enderiteDispenserShulkerboxTest);
+        TEST_FUNCTIONS.register("enderite_item_no_gravity_test", () -> EnderiteTests::enderiteItemNoGravityTest);
+        TEST_FUNCTIONS.register("enderite_item_fireproof_test", () -> EnderiteTests::enderiteItemFireproofTest);
+        TEST_FUNCTIONS.register("enderite_dispenser_shulkerbox_contents_test", () -> EnderiteTests::enderiteDispenserShulkerboxContentsTest);
+        TEST_FUNCTIONS.register("enderite_shulkerbox_hopper_test", () -> EnderiteTests::enderiteShulkerboxHopperTest);
+        TEST_FUNCTIONS.register("creeper_explode_enderite_ore_test", () -> EnderiteTests::creeperExplodeEnderiteOreTest);
+        TEST_FUNCTIONS.register("enderite_regular_furnace_rejects_ore_test", () -> EnderiteTests::enderiteRegularFurnaceRejectsOreTest);
     }
 
     private EnderiteNeoforgeTests() {
