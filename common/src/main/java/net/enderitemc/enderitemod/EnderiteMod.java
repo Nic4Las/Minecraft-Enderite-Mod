@@ -1,6 +1,7 @@
 package net.enderitemc.enderitemod;
 
 import com.google.common.base.Suppliers;
+import com.mojang.serialization.MapCodec;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.registry.CreativeTabRegistry;
@@ -175,11 +176,13 @@ public class EnderiteMod {
         .rarity(Rarity.EPIC)
         .component(DataComponents.GLIDER, Unit.INSTANCE);
 
+    public static final EnderiteElytraSpecialRecipe ENDERITE_ELYTRA_SPECIAL_RECIPE_INSTANCE = new EnderiteElytraSpecialRecipe();
+
     public static RegistrySupplier<RecipeSerializer<? extends CustomRecipe>> ENDERITE_EYLTRA_SPECIAL_RECIPE = RECIPES
         .register("crafting_special_enderiteelytra",
             () -> new RecipeSerializer<>(
-                com.mojang.serialization.MapCodec.unit(new EnderiteElytraSpecialRecipe()),
-                StreamCodec.unit(new EnderiteElytraSpecialRecipe())));
+                MapCodec.unit(ENDERITE_ELYTRA_SPECIAL_RECIPE_INSTANCE),
+                StreamCodec.unit(ENDERITE_ELYTRA_SPECIAL_RECIPE_INSTANCE)));
 
     // Shulker Box
     public static final RegistrySupplier<Block> ENDERITE_SHULKER_BOX = BLOCKS.register("enderite_shulker_box",
@@ -222,6 +225,25 @@ public class EnderiteMod {
         TABS.register();
 
         LifecycleEvent.SETUP.register(() -> {
+            CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
+        });
+
+        EnderiteMod.registerEndOreBiomeModifications();
+        EnderiteUpgradeSmithingTemplate.registerLoottables();
+
+    }
+
+    /**
+     * Adds the enderite ore features to every end biome.
+     * <p>
+     * Only Fabric-like platforms call this. NeoForge gets the exact same features from the
+     * {@code neoforge:add_features} biome modifier in
+     * {@code data/enderitemod/neoforge/biome_modifier/end_biomes_enderite_ore_patch.json}, and running
+     * both paths adds each placed feature twice, which makes vanilla's feature sorter throw a
+     * "Feature order cycle found" once the first end chunk is decorated. See issue #163.
+     */
+    public static void registerEndOreBiomeModifications() {
+        LifecycleEvent.SETUP.register(() -> {
             BiomeModifications.addProperties((ctx) -> ctx.hasTag(BiomeTags.IS_END), (ctx, mutable) -> {
                 mutable.getGenerationProperties().addFeature(
                     GenerationStep.Decoration.UNDERGROUND_ORES,
@@ -232,10 +254,7 @@ public class EnderiteMod {
                     ResourceKey.create(Registries.PLACED_FEATURE,
                         Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, "ore_enderite_small")));
             });
-            CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
         });
-
-        EnderiteUpgradeSmithingTemplate.registerLoottables();
     }
 
     @Environment(EnvType.CLIENT)
