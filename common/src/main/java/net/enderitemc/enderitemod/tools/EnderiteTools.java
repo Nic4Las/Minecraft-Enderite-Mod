@@ -11,12 +11,9 @@ import net.enderitemc.enderitemod.misc.EnderiteTag;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.ChargedProjectiles;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -41,24 +38,24 @@ public class EnderiteTools {
                     -2.8F)));
 
     public static final RegistrySupplier<Item> ENDERITE_AXE = EnderiteMod.ITEMS.register("enderite_axe",
-        () -> new AxeItem(EnderiteMaterial.ENDERITE,
-            EnderiteMod.CONFIG.tools.enderiteAxeAD - 3, // TODO: change in next version
-            -3.0F,
-            getItemSettings("enderite_axe", BASE_ENDERITE_ITEM_SETTINGS.get()))
+        () -> new Item(getItemSettings("enderite_axe", BASE_ENDERITE_ITEM_SETTINGS.get())
+            .axe(EnderiteMaterial.ENDERITE,
+                EnderiteMod.CONFIG.tools.enderiteAxeAD - 3,
+                -3.0F))
     );
 
     public static final RegistrySupplier<Item> ENDERITE_HOE = EnderiteMod.ITEMS.register("enderite_hoe",
-        () -> new HoeItem(EnderiteMaterial.ENDERITE,
-            EnderiteMod.CONFIG.tools.enderiteHoeAD - 3, // TODO: change in next version
-            0.0F,
-            getItemSettings("enderite_hoe", BASE_ENDERITE_ITEM_SETTINGS.get()))
+        () -> new Item(getItemSettings("enderite_hoe", BASE_ENDERITE_ITEM_SETTINGS.get())
+            .hoe(EnderiteMaterial.ENDERITE,
+                EnderiteMod.CONFIG.tools.enderiteHoeAD - 3,
+                0.0F))
     );
 
     public static final RegistrySupplier<Item> ENDERITE_SHOVEL = EnderiteMod.ITEMS.register("enderite_shovel",
-        () -> new ShovelItem(EnderiteMaterial.ENDERITE,
-            EnderiteMod.CONFIG.tools.enderiteShovelAD - 3, // TODO: change in next version
-            -3.0F,
-            getItemSettings("enderite_shovel", BASE_ENDERITE_ITEM_SETTINGS.get()))
+        () -> new Item(getItemSettings("enderite_shovel", BASE_ENDERITE_ITEM_SETTINGS.get())
+            .shovel(EnderiteMaterial.ENDERITE,
+                EnderiteMod.CONFIG.tools.enderiteShovelAD - 3,
+                -3.0F))
     );
 
     public static final RegistrySupplier<Item> ENDERITE_SWORD = EnderiteMod.ITEMS.register("enderite_sword",

@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -33,7 +34,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
     public abstract ItemCooldowns getCooldowns();
 
     @Inject(at = @At("HEAD"), method = "blockUsingItem")
-    private void enderitemod$portIt(ServerLevel level, LivingEntity attacker, DamageSource source, float damage, CallbackInfo ci) {
+    private void enderitemod$portIt(ServerLevel level, LivingEntity attacker, DamageSource source, float damage, boolean fullyBlocked, CallbackInfo ci) {
         if (this.isShiftKeyDown() && this.useItem.getItem() instanceof EnderiteShield
             && !this.getCooldowns().isOnCooldown(this.useItem)) {
 
@@ -66,7 +67,7 @@ public abstract class EnderiteShieldPlayerEntityMixin extends LivingEntity {
                         attacker.stopRiding();
                     }
 
-                    if (attacker.randomTeleport(g, h, j, true)) {
+                    if (attacker.randomTeleport(g, h, j, true, BlockTags.CONSUMABLE_DOES_NOT_TELEPORT_TO)) {
                         SoundEvent soundEvent = attacker instanceof Fox ? SoundEvents.FOX_TELEPORT
                             : SoundEvents.CHORUS_FRUIT_TELEPORT;
                         level.playSound((Player) null, d, e, f, soundEvent, SoundSource.PLAYERS, 1.0F, 1.0F);

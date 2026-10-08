@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderitemod:enderite_ingot_from_scrap"
+        "recipes": "enderitemod:enderite_ingot_from_scrap"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

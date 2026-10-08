@@ -1,7 +1,7 @@
 {
   "pack": {
     "description": "Alternative Enderitemod Textures (by Amber3562)",
-    "min_format": 82,
-    "max_format": 88
+    "min_format": [97, 1],
+    "max_format": [97, 1]
   }
 }

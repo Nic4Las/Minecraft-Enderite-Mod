@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.ShulkerBoxRenderer;
 import net.minecraft.client.renderer.blockentity.state.ShulkerBoxRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -108,19 +109,17 @@ public class EnderiteShulkerBoxBlockEntityRenderer implements BlockEntityRendere
             overlay,
             -1,
             this.sprites.get(spriteId),
-            i,
-            crumblingOverlay
+            i
         );
+        if (crumblingOverlay != null) {
+            queue.order(1).submitCrumblingOverlay(this.model, openness, matrices,
+                spriteId.renderType(this.model::renderType), light, overlay, -1, crumblingOverlay);
+        }
         matrices.popPose();
     }
 
     private void setTransforms(PoseStack matrices, Direction facing) {
-        matrices.translate(0.5F, 0.5F, 0.5F);
-        float f = 0.9995F;
-        matrices.scale(0.9995F, 0.9995F, 0.9995F);
-        matrices.mulPose(facing.getRotation());
-        matrices.scale(1.0F, -1.0F, -1.0F);
-        matrices.translate(0.0F, -1.0F, 0.0F);
+        matrices.mulPose(ShulkerBoxRenderer.modelTransform(facing));
     }
 
     public void collectVertices(Direction facing, float openness, Consumer<Vector3fc> vertices) {

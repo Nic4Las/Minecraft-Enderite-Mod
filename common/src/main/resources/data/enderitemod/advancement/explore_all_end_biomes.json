@@ -19,81 +19,71 @@
     "endmidlands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "minecraft:end_midlands"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "minecraft:end_midlands"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       }
     },
     "endhighlands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "minecraft:end_highlands"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "minecraft:end_highlands"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       }
     },
     "endbarrens": {
       "trigger": "minecraft:location",
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "minecraft:end_barrens"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "minecraft:end_barrens"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       }
     },
     "smallendislands": {
       "trigger": "minecraft:location",
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "minecraft:small_end_islands"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "minecraft:small_end_islands"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       }
     },
     "theend": {
       "trigger": "minecraft:location",
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "minecraft:the_end"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "minecraft:the_end"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       }
     }
   },

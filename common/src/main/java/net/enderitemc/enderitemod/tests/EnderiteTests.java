@@ -4,6 +4,7 @@ import net.enderitemc.enderitemod.EnderiteMod;
 import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
+import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -14,6 +15,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -22,13 +24,15 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.inventory.SmithingMenu;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
@@ -42,6 +46,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.BlockHitResult;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,15 +68,24 @@ public class EnderiteTests {
     }
 
     public static void enderiteShulkerboxRecipeTest(GameTestHelper ctx) {
-        crafterRecipeTest(ctx, (ItemStack stack) -> {
-            var component = stack.get(DataComponents.CONTAINER);
-            if (component != null) {
-                ctx.assertTrue(component.copyOne().is(Items.DIRT),
-                    Component.nullToEmpty("No items found in Enderite Shulkerbox item"));
-            } else {
-                ctx.assertTrue(false, Component.nullToEmpty("No Container Component in stack" + stack.toString()));
-            }
-        });
+        Player player = ctx.makeMockPlayer(GameType.SURVIVAL);
+        SmithingMenu menu = new SmithingMenu(0, player.getInventory());
+        ItemStack original = Items.SHULKER_BOX.getDefaultInstance();
+        original.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(new ItemStack(Items.DIRT, 32))));
+        original.set(DataComponents.CUSTOM_NAME, Component.literal("Upgrade test"));
+        menu.getSlot(SmithingMenu.BASE_SLOT).set(original);
+        menu.getSlot(SmithingMenu.ADDITIONAL_SLOT).set(EnderiteMod.ENDERITE_INGOT.get().getDefaultInstance());
+        ctx.assertTrue(menu.getSlot(SmithingMenu.RESULT_SLOT).getItem().isEmpty(),
+            Component.literal("Shulker upgrade must require a smithing template"));
+        menu.getSlot(SmithingMenu.TEMPLATE_SLOT).set(EnderiteMod.ENDERITE_UPGRADE_SMITHING_TEMPLATE.get().getDefaultInstance());
+        ItemStack upgraded = menu.getSlot(SmithingMenu.RESULT_SLOT).getItem();
+        ctx.assertTrue(upgraded.is(EnderiteMod.ENDERITE_SHULKER_BOX_ITEM.get()),
+            Component.literal("Smithing did not produce an Enderite shulker box"));
+        ctx.assertValueEqual(upgraded.get(DataComponents.CONTAINER), original.get(DataComponents.CONTAINER),
+            Component.literal("Smithing must preserve all shulker contents"));
+        ctx.assertValueEqual(upgraded.get(DataComponents.CUSTOM_NAME), original.get(DataComponents.CUSTOM_NAME),
+            Component.literal("Smithing must preserve the shulker name"));
+        ctx.succeed();
     }
 
     public static void enderiteElytraRecipeTest(GameTestHelper ctx) {
@@ -162,11 +176,6 @@ public class EnderiteTests {
         List<ArmorStand> stands = ctx.getLevel().getEntitiesOfClass(ArmorStand.class, AABB.encapsulatingFullBlocks(pos1, pos2));
         stands.forEach(Entity::discard);
 
-        if (!ctx.getLevel().getNearestPlayer(TargetingConditions.forNonCombat(), pos1.getX(), pos1.getY(), pos1.getZ()).getMainHandItem().getItem().equals(Items.ARMOR_STAND)) {
-            ctx.succeed();
-            return;
-        }
-
         BlockPos pos = ctx.absolutePos(new BlockPos(0, 3, 0));
         ArrayList<Entity> armor_stands = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -241,7 +250,7 @@ public class EnderiteTests {
         ServerLevel world = ctx.getLevel();
         BlockPos pos = ctx.absolutePos(new BlockPos(0, 1, 0));
 
-        EnderMan enderman = new EnderMan(EntityTypes.ENDERMAN, world);
+        Enderman enderman = new Enderman(EntityTypes.ENDERMAN, world);
         enderman.setPos(Vec3.atBottomCenterOf(pos));
         world.addFreshEntity(enderman);
 
@@ -310,6 +319,62 @@ public class EnderiteTests {
             ctx.assertBlockPresent(EnderiteMod.ENDERITE_SHULKER_BOX.get(), pos);
             ctx.succeed();
         });
+    }
+
+    public static void enderiteToolInteractionsTest(GameTestHelper ctx) {
+        Player player = ctx.makeMockPlayer(GameType.SURVIVAL);
+        BlockPos pos = new BlockPos(1, 1, 1);
+        BlockPos absolutePos = ctx.absolutePos(pos);
+        BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(absolutePos), Direction.UP, absolutePos, false);
+        ctx.setBlock(pos.above(), Blocks.AIR);
+
+        ctx.setBlock(pos, Blocks.OAK_LOG);
+        player.setItemSlot(EquipmentSlot.MAINHAND, EnderiteTools.ENDERITE_AXE.get().getDefaultInstance());
+        ctx.useBlock(pos, player, hit);
+        ctx.assertBlockPresent(Blocks.STRIPPED_OAK_LOG, pos);
+
+        ctx.setBlock(pos, Blocks.DIRT);
+        player.setItemSlot(EquipmentSlot.MAINHAND, EnderiteTools.ENDERITE_HOE.get().getDefaultInstance());
+        ctx.useBlock(pos, player, hit);
+        ctx.assertBlockPresent(Blocks.FARMLAND, pos);
+
+        ctx.setBlock(pos, Blocks.GRASS_BLOCK);
+        player.setItemSlot(EquipmentSlot.MAINHAND, EnderiteTools.ENDERITE_SHOVEL.get().getDefaultInstance());
+        ctx.useBlock(pos, player, hit);
+        ctx.assertBlockPresent(Blocks.DIRT_PATH, pos);
+
+        // Vanilla teleportation now finds supporting blocks through the blocks_motion tag.
+        for (Block floor : List.of(EnderiteMod.ENDERITE_BLOCK.get(), EnderiteMod.ENDERITE_ORE.get(),
+                EnderiteMod.CRACKED_ENDERITE_ORE.get(), EnderiteMod.ENDERITE_RESPAWN_ANCHOR.get(),
+                EnderiteMod.ENDERITE_SHULKER_BOX.get())) {
+            ctx.setBlock(pos, floor);
+            ctx.assertTrue(ctx.getBlockState(pos).is(BlockTags.ENTITIES_CAN_TELEPORT_TO),
+                Component.literal("Missing vanilla teleport-floor tag for " + floor));
+            ctx.assertTrue(player.randomTeleport(absolutePos.getX() + 0.5, absolutePos.getY() + 1,
+                    absolutePos.getZ() + 0.5, false, BlockTags.CONSUMABLE_DOES_NOT_TELEPORT_TO),
+                Component.literal("Vanilla teleportation must accept " + floor + " as a floor"));
+        }
+        ctx.succeed();
+    }
+
+    public static void enderiteShulkerboxDropsTest(GameTestHelper ctx) {
+        BlockPos pos = new BlockPos(1, 1, 1);
+        ctx.setBlock(pos, EnderiteMod.ENDERITE_SHULKER_BOX.get());
+        EnderiteShulkerBoxBlockEntity box = ctx.getBlockEntity(pos, EnderiteShulkerBoxBlockEntity.class);
+        ItemStack namedBox = EnderiteMod.ENDERITE_SHULKER_BOX_ITEM.get().getDefaultInstance();
+        namedBox.set(DataComponents.CUSTOM_NAME, Component.literal("Loot test"));
+        box.applyComponentsFromItemStack(namedBox);
+        box.setItem(0, new ItemStack(Items.DIRT, 32));
+        ctx.getLevel().destroyBlock(ctx.absolutePos(pos), true);
+        List<ItemEntity> drops = ctx.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(ctx.absolutePos(pos)).inflate(1));
+        ctx.assertValueEqual(drops.size(), 1, Component.literal("Shulker box must drop exactly one item"));
+        ItemStack dropped = drops.getFirst().getItem();
+        ctx.assertTrue(dropped.is(EnderiteMod.ENDERITE_SHULKER_BOX_ITEM.get()), Component.literal("Wrong shulker drop"));
+        ItemStack contents = dropped.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyOne();
+        ctx.assertTrue(contents.is(Items.DIRT) && contents.getCount() == 32, Component.literal("Shulker loot lost stored items"));
+        ctx.assertValueEqual(dropped.get(DataComponents.CUSTOM_NAME), Component.literal("Loot test"),
+            Component.literal("Shulker loot lost its custom name"));
+        ctx.succeed();
     }
 
     // HELPER

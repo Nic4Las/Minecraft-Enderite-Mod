@@ -133,7 +133,7 @@ public class EnderiteShulkerBoxBlockEntity extends RandomizableContainerBlockEnt
             List<Entity> list = world.getEntities(null, box);
             if (!list.isEmpty()) {
                 for (Entity entity : list) {
-                    if (entity.getPistonPushReaction() != PushReaction.IGNORE) {
+                    if (entity.getPistonPushReaction() != PushReaction.IGNORE_ENTITY) {
                         entity.move(
                             MoverType.SHULKER_BOX,
                             new Vec3(

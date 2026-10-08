@@ -19,7 +19,7 @@ public class EnderiteCrossbowPlayerRendererMixin {
         method = "getArmPose(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/client/model/HumanoidModel$ArmPose;",
         cancellable = true)
     private static void enderitemod$getArmPose(Avatar player, ItemStack stack, InteractionHand hand, CallbackInfoReturnable<ArmPose> cir) {
-        if (!player.swinging
+        if (!player.isSwinging()
             && stack.is(EnderiteTools.ENDERITE_CROSSBOW.get())
             && EnderiteCrossbow.isCharged(stack)) {
             cir.setReturnValue(ArmPose.CROSSBOW_HOLD);

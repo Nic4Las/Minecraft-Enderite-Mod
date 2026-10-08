@@ -22,6 +22,6 @@ public class ConvertNbt {
             new PackOutput(out_path), in_paths);
 
         // Rune conversion
-        provider.run(CachedOutput.NO_CACHE);
+        provider.run(CachedOutput.NO_CACHE).join();
     }
 }

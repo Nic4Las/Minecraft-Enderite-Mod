@@ -16,5 +16,13 @@
         "use_player_texture": true
       }
     ]
-  }
+  },
+  "trim_overrides": [
+    {
+      "palette": "enderitemod:trim/enderite_lighter",
+      "when": {
+        "material": "enderitemod:enderite"
+      }
+    }
+  ]
 }

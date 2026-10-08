@@ -71,18 +71,22 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<DataComponen
         DyeColor baseColor = componentMap != null ? componentMap.get(DataComponents.BASE_COLOR) : null;
         boolean hasPatterns = !patterns.layers().isEmpty() || baseColor != null;
         SpriteId base = hasPatterns ? ENDERITE_SHIELD_BASE : ENDERITE_SHIELD_BASE_NO_PATTERN;
-        queue.submitModel(
-            this.model,
-            Unit.INSTANCE,
-            matrixStack,
-            light,
-            overlay,
-            -1,
-            base,
-            this.sprites,
-            i,
-            null
-        );
+        if (glint && !hasPatterns) {
+            queue.submitModel(this.model, Unit.INSTANCE, matrixStack,
+                RenderTypes.entitySolidGlint(base.atlasLocation()), light, overlay, -1, this.sprites.get(base), i);
+        } else {
+            queue.submitModel(
+                this.model,
+                Unit.INSTANCE,
+                matrixStack,
+                light,
+                overlay,
+                -1,
+                base,
+                this.sprites,
+                i
+            );
+        }
         if (hasPatterns) {
             BannerRenderer.submitPatterns(
                 this.sprites,
@@ -94,13 +98,12 @@ public class EnderiteShieldRenderer implements SpecialModelRenderer<DataComponen
                 Unit.INSTANCE,
                 false,
                 Objects.requireNonNullElse(baseColor, DyeColor.WHITE),
-                patterns,
-                null
+                patterns
             );
         }
-        if (glint) {
-            queue.order(patterns.layers().size() + 1)
-                .submitModel(this.model, Unit.INSTANCE, matrixStack, RenderTypes.entityGlint(), light, overlay, -1, this.sprites.get(base), 0, null);
+        if (glint && hasPatterns) {
+            queue.order(patterns.layers().size() + 2)
+                .submitModel(this.model, Unit.INSTANCE, matrixStack, RenderTypes.patternedShieldGlint(), light, overlay, -1, this.sprites.get(base), 0);
         }
         if (this.charged) {
             // Custom end portal shader

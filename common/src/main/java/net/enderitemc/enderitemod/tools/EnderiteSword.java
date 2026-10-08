@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -101,7 +102,7 @@ public class EnderiteSword extends Item {
 
             // FIX 2: Only consume charge if the teleport actually succeeds
             // The teleport method returns 'true' only if the entity was successfully moved.
-            if (playerEntity.randomTeleport(validTeleportPos.x, validTeleportPos.y, validTeleportPos.z, true)) {
+            if (playerEntity.randomTeleport(validTeleportPos.x, validTeleportPos.y, validTeleportPos.z, true, BlockTags.CONSUMABLE_DOES_NOT_TELEPORT_TO)) {
 
                 // Audio & Feedback
                 world.playSound(null, playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(),
@@ -189,9 +190,9 @@ public class EnderiteSword extends Item {
 
     protected boolean checkBlocks(Level world, BlockPos pos) {
         // Ensure floor is solid, and two blocks above are not solid (Head and Feet space)
-        return world.getBlockState(pos.below()).blocksMotion()
-            && !world.getBlockState(pos).blocksMotion()
-            && !world.getBlockState(pos.above()).blocksMotion();
+        return world.getBlockState(pos.below()).is(BlockTags.BLOCKS_MOTION)
+            && !world.getBlockState(pos).is(BlockTags.BLOCKS_MOTION)
+            && !world.getBlockState(pos.above()).is(BlockTags.BLOCKS_MOTION);
     }
 
 }

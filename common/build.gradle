@@ -28,23 +28,22 @@ dependencies {
 }
 
 
-import java.lang.reflect.Method;
-processResources {
-    // Convert Fabric GameTest .snbt to .nbt files for NeoForge
-    String inDirectory = project.projectDir.toString() + "/src/main/resources/data/enderitemod/gametest/structure"
-    String outDirectory = project.projectDir.toString() + "/build/resources/main/data/enderitemod/structure"
-    doLast {
-        // Find snbt converter
-        File[] files = sourceSets.main.runtimeClasspath.files
-        URL[] urls = files.collect { e -> e.toURI().toURL() } as URL[]
-        def classloader = new URLClassLoader(urls)
-        Class myClass = classloader.findClass("net.enderitemc.enderitemod.tests.ConvertNbt")
-        def myInstance = myClass.newInstance()
-        Method method = myClass.getMethod("convertSnbt2Nbt", List<String>, String)
-
-        // Execute snbt to nbt converter
-        List<String> filess = List.of(new File(inDirectory).absolutePath)
-        String out_file1 = new File(outDirectory).absolutePath
-        method.invoke(myInstance, filess, out_file1)
+def gameTestResources = layout.buildDirectory.dir('generated/gametestResources')
+tasks.register('convertGameTestStructures', JavaExec) {
+    dependsOn tasks.named('compileJava')
+    classpath = files(sourceSets.main.output.classesDirs, configurations.runtimeClasspath)
+    mainClass = 'net.enderitemc.enderitemod.tests.ConvertNbt'
+    def structures = file('src/main/resources/data/enderitemod/gametest/structure')
+    inputs.dir structures
+    outputs.dir gameTestResources
+    args structures.absolutePath, gameTestResources.get().dir('data/enderitemod/structure').asFile.absolutePath
+    workingDir layout.buildDirectory.dir('gametest-converter').get().asFile
+    doFirst {
+        new File(workingDir, 'logs').mkdirs()
     }
+}
+
+processResources {
+    dependsOn tasks.named('convertGameTestStructures')
+    from gameTestResources
 }

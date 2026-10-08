@@ -9,6 +9,41 @@ architectury {
 
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    runs {
+        clientSmoke {
+            client()
+            name = 'Client Smoke Test'
+            runDir 'build/client-smoke'
+        }
+        gameTest {
+            server()
+            name = 'Game Tests'
+            vmArg '-Dfabric-api.gametest'
+            vmArg '-Dfabric-api.gametest.filter=enderitemod:*'
+            vmArg "-Dfabric-api.gametest.report-file=${layout.buildDirectory.file('reports/gametest/results.xml').get().asFile}"
+            runDir 'build/gametest'
+        }
+    }
+}
+
+tasks.named('runGameTest') {
+    doFirst {
+        layout.buildDirectory.dir('reports/gametest').get().asFile.mkdirs()
+        layout.buildDirectory.file('reports/gametest/results.xml').get().asFile.delete()
+    }
+    doLast {
+        def report = layout.buildDirectory.file('reports/gametest/results.xml').get().asFile
+        if (!report.isFile()) {
+            throw new GradleException('GameTest server did not produce a test report.')
+        }
+        def results = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(report)
+        if (results.getElementsByTagName('testcase').length == 0
+            || results.getElementsByTagName('failure').length != 0
+            || results.getElementsByTagName('error').length != 0) {
+            throw new GradleException("GameTests failed or no tests ran. See ${report}")
+        }
+    }
 }
 
 configurations {
@@ -53,6 +88,8 @@ dependencies {
 processResources {
     inputs.property 'version', project.version
     inputs.property 'minecraft_version', rootProject.minecraft_version_min
+    inputs.property 'minecraft_version_max', rootProject.minecraft_version_max
+    inputs.property 'fabric_loader_version', rootProject.fabric_loader_version
     inputs.property 'fabric_api_version', rootProject.fabric_api_version_min
     inputs.property 'architectury_version', rootProject.architectury_api_version_min
     inputs.property 'cloth_config_version', rootProject.cloth_config_version_min
@@ -62,6 +99,8 @@ processResources {
     filesMatching('fabric.mod.json') {
         expand (version: project.version,
                 minecraft_version: rootProject.minecraft_version_min,
+                minecraft_version_max: rootProject.minecraft_version_max,
+                fabric_loader_version: rootProject.fabric_loader_version,
                 fabric_api_version: rootProject.fabric_api_version_min,
                 architectury_version: rootProject.architectury_api_version_min,
                 cloth_config_version: rootProject.cloth_config_version_min,

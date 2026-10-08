@@ -50,7 +50,7 @@ public class EnderiteShulkerBoxBlock extends ShulkerBoxBlock {
             .setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, id)))
             .noOcclusion().strength(2.0f, 17.0f)
             .isSuffocating(SUFFOCATES_PREDICATE)
-            .isViewBlocking(SUFFOCATES_PREDICATE)
+            .isViewBlocking((state, world, pos, bounds) -> SUFFOCATES_PREDICATE.test(state, world, pos))
             .sound(SoundType.NETHERITE_BLOCK));
     }
 

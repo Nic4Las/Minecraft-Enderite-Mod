@@ -12,7 +12,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public class EnderiteShears extends ShearsItem {
 
@@ -22,7 +22,7 @@ public class EnderiteShears extends ShearsItem {
 
 
     public static void registerLoottables_Fabric() {
-        LootEvent.MODIFY_LOOT_TABLE.register((key, context, builtin) -> {
+        LootEvent.MODIFY_LOOT_TABLE.register((registries, key, context, builtin) -> {
             tryBuildLootTable(key, context, Blocks.ACACIA_LEAVES);
 
             tryBuildLootTable(key, context, Blocks.AZALEA_LEAVES);
@@ -89,7 +89,7 @@ public class EnderiteShears extends ShearsItem {
     public static void tryBuildLootTable(ResourceKey<LootTable> key, LootTableModificationContext context, Block block) {
         if (block.getLootTable().isPresent() && block.getLootTable().get().equals(key)) {
             LootPool.Builder pool = LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(1))
+                .setRolls(ContextIntProviders.exactly(1))
                 .when(MatchTool
                     .toolMatches(ItemPredicate.Builder.item().of(BuiltInRegistries.ITEM, EnderiteTools.ENDERITE_SHEAR.get())))
                 .add(LootItem.lootTableItem(block.asItem()));

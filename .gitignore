@@ -31,7 +31,6 @@ classes/
 .vscode
 .settings
 *.launch
-.github
 
 # macos
 
@@ -50,3 +49,6 @@ replay_*.log
 
 remappedSrc
 .architectury-transformer/
+
+# Local crash reports and reference patches
+/refs/
