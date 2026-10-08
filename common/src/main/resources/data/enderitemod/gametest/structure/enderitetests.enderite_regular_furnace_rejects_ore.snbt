@@ -1,0 +1,10 @@
+{
+    DataVersion: 4082,
+    size: [1, 2, 1],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:bedrock"},
+        {pos: [0, 1, 0], state: "minecraft:furnace{facing:north,lit:false}", nbt: {Items: [], RecipesUsed: {}, id: "minecraft:furnace"}}
+    ],
+    entities: [],
+    palette: ["minecraft:bedrock", "minecraft:furnace{facing:north,lit:false}"]
+}

@@ -59,6 +59,7 @@ public class EnderiteModForge {
             DispenserBlock.registerBehavior(EnderiteTools.ENDERITE_SHEAR.get(),
                 new ShearsDispenseItemBehavior());
         });
+
     }
 
     @EventBusSubscriber(value = Dist.CLIENT, modid = MOD_ID)

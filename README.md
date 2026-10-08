@@ -67,7 +67,7 @@ The current version targets Minecraft **26.3** on Fabric and NeoForge and requir
 .\gradlew.bat :fabric:runGameTest :neoforge:runGameTest
 ```
 
-On Linux/macOS, use `./gradlew` instead. Each loader runs the same 14 in-game tests. The tests cover ore explosions, recipes, armor trims, respawn anchors, void survival, Endermen, smelting, dispensers, vanilla tool interactions, teleportation onto Enderite blocks, and shulker drop preservation. The shulker upgrade test uses the vanilla smithing menu and checks the template requirement and preservation of contents and name.
+On Linux/macOS, use `./gradlew` instead. Each loader runs the same 21 in-game tests. The tests cover End ore registration and chunk generation, ore explosions, recipes, armor trims, respawn anchors, void survival, Endermen, smelting, dispensers, vanilla tool interactions, teleportation onto Enderite blocks, shulker drop preservation, item gravity/fire resistance, hopper extraction, creeper explosions, and rejection of ore by regular furnaces. The shulker upgrade test uses the vanilla smithing menu and checks the template requirement and preservation of contents and name.
 
 Tests use disposable worlds under each loader's `build/gametest` directory. JUnit XML reports are written to `fabric/build/reports/gametest/results.xml` and `neoforge/build/reports/gametest/results.xml`. The tasks fail if the server produces no report, runs no tests, or reports failures.
 

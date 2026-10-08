@@ -1,0 +1,17 @@
+{
+    DataVersion: 4082,
+    size: [1, 4, 1],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:bedrock"},
+        {pos: [0, 1, 0], state: "minecraft:chest{facing:north,type:single,waterlogged:false}", nbt: {Items: [], id: "minecraft:chest"}},
+        {pos: [0, 2, 0], state: "minecraft:hopper{enabled:true,facing:down}", nbt: {Items: [], TransferCooldown: 0, id: "minecraft:hopper"}},
+        {pos: [0, 3, 0], state: "enderitemod:enderite_shulker_box{facing:up}", nbt: {Items: [], id: "enderitemod:enderite_shulker_box_block_entity"}}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:bedrock",
+        "minecraft:chest{facing:north,type:single,waterlogged:false}",
+        "minecraft:hopper{enabled:true,facing:down}",
+        "enderitemod:enderite_shulker_box{facing:up}"
+    ]
+}

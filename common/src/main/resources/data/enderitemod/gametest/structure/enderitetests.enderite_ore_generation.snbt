@@ -1,0 +1,7 @@
+{
+    DataVersion: 4082,
+    size: [1, 1, 1],
+    data: [{pos: [0, 0, 0], state: "minecraft:bedrock"}],
+    entities: [],
+    palette: ["minecraft:bedrock"]
+}

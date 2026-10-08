@@ -51,7 +51,6 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.Equippable;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -228,21 +227,11 @@ public class EnderiteMod {
             CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
         });
 
-        EnderiteMod.registerEndOreBiomeModifications();
         EnderiteUpgradeSmithingTemplate.registerLoottables();
-
     }
 
-    /**
-     * Adds the enderite ore features to every end biome.
-     * <p>
-     * Only Fabric-like platforms call this. NeoForge gets the exact same features from the
-     * {@code neoforge:add_features} biome modifier in
-     * {@code data/enderitemod/neoforge/biome_modifier/end_biomes_enderite_ore_patch.json}, and running
-     * both paths adds each placed feature twice, which makes vanilla's feature sorter throw a
-     * "Feature order cycle found" once the first end chunk is decorated. See issue #163.
-     */
-    public static void registerEndOreBiomeModifications() {
+    // Fabric-like platforms use this hook; NeoForge uses its data-driven biome modifier.
+    public static void setupBiomeModifications() {
         LifecycleEvent.SETUP.register(() -> {
             BiomeModifications.addProperties((ctx) -> ctx.hasTag(BiomeTags.IS_END), (ctx, mutable) -> {
                 mutable.getGenerationProperties().addFeature(

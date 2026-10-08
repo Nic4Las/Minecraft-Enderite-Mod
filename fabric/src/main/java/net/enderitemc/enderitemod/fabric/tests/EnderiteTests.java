@@ -17,6 +17,11 @@ public class EnderiteTests {
     public static final String TMPL_NS = "enderitetests.";
     public static final String TMPL_PRE = TMPL_MI + TMPL_NS;
 
+    @GameTest(structure = TMPL_PRE + "enderite_ore_generation", maxTicks = 200)
+    public void enderiteOreGenerationTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteOreGenerationTest(ctx);
+    }
+
     @GameTest(structure = TMPL_PRE + "enderite_tool_interactions")
     public void enderiteToolInteractionsTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteToolInteractionsTest(ctx);
@@ -85,5 +90,35 @@ public class EnderiteTests {
     @GameTest(structure = TMPL_PRE + "enderite_dispenser_shulkerbox")
     public void enderiteDispenserShulkerboxTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteDispenserShulkerboxTest(ctx);
+    }
+
+    @GameTest(structure = TMPL_PRE + "creeper_explode_enderite_ore", maxTicks = 100, environment = "enderitemod:mob_griefing")
+    public void creeperExplodeEnderiteOreTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.creeperExplodeEnderiteOreTest(ctx);
+    }
+
+    @GameTest(structure = TMPL_PRE + "enderite_dispenser_shulkerbox_contents", maxTicks = 100)
+    public void enderiteDispenserShulkerboxContentsTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteDispenserShulkerboxContentsTest(ctx);
+    }
+
+    @GameTest(structure = TMPL_PRE + "enderite_item_fireproof", maxTicks = 100)
+    public void enderiteItemFireproofTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteItemFireproofTest(ctx);
+    }
+
+    @GameTest(structure = TMPL_PRE + "enderite_item_no_gravity", maxTicks = 100)
+    public void enderiteItemNoGravityTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteItemNoGravityTest(ctx);
+    }
+
+    @GameTest(structure = TMPL_PRE + "enderite_regular_furnace_rejects_ore", maxTicks = 500)
+    public void enderiteRegularFurnaceRejectsOreTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteRegularFurnaceRejectsOreTest(ctx);
+    }
+
+    @GameTest(structure = TMPL_PRE + "enderite_shulkerbox_hopper", maxTicks = 100)
+    public void enderiteShulkerboxHopperTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteShulkerboxHopperTest(ctx);
     }
 }

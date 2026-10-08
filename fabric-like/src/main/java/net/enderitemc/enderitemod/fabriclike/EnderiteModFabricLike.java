@@ -11,6 +11,7 @@ public class EnderiteModFabricLike {
 
     public static void init() {
         EnderiteMod.init();
+        EnderiteMod.setupBiomeModifications();
         EnderiteShears.registerLoottables_Fabric();
 
         DispenserBlock.registerBehavior(EnderiteMod.ENDERITE_SHULKER_BOX.get().asItem(),

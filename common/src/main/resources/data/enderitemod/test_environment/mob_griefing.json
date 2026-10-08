@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:game_rules",
+  "rules": {
+    "minecraft:mob_griefing": true
+  }
+}
