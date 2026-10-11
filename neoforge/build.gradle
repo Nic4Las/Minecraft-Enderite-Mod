@@ -87,7 +87,6 @@ dependencies {
 processResources {
     inputs.property 'version', project.version
     inputs.property 'minecraft_version', rootProject.minecraft_version_min
-    inputs.property 'minecraft_version_max', rootProject.minecraft_version_max
     inputs.property 'neoforge_version', rootProject.neoforge_version_min
     inputs.property 'architectury_version', rootProject.architectury_api_version_min
     inputs.property 'cloth_config_version', rootProject.cloth_config_version_min
@@ -96,7 +95,6 @@ processResources {
     filesMatching('META-INF/neoforge.mods.toml') {
         expand (version: project.version,
                 minecraft_version: rootProject.minecraft_version_min,
-                minecraft_version_max: rootProject.minecraft_version_max,
                 neoforge_version: rootProject.neoforge_version_min,
                 architectury_version: rootProject.architectury_api_version_min,
                 cloth_config_version: rootProject.cloth_config_version_min,

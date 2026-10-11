@@ -24,7 +24,7 @@ side = "BOTH"
 [[dependencies.enderitemod]]
 modId = "minecraft"
 type = "required"
-versionRange = "[${minecraft_version},${minecraft_version_max})"
+versionRange = "[${minecraft_version},)"
 ordering = "NONE"
 side = "BOTH"
 

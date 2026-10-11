@@ -83,6 +83,10 @@ public class EnderiteShears extends ShearsItem {
             tryBuildLootTable(key, context, Blocks.BUSH);
             tryBuildLootTable(key, context, Blocks.SHORT_DRY_GRASS);
             tryBuildLootTable(key, context, Blocks.TALL_DRY_GRASS);
+
+            tryBuildLootTable(key, context, Blocks.RED_POPLAR_LEAVES);
+            tryBuildLootTable(key, context, Blocks.ORANGE_POPLAR_LEAVES);
+            tryBuildLootTable(key, context, Blocks.YELLOW_POPLAR_LEAVES);
         });
     }
 

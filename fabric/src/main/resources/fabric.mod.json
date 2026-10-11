@@ -41,7 +41,7 @@
   "accessWidener": "enderitemod.classtweaker",
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
-    "minecraft": ">=${minecraft_version} <${minecraft_version_max}",
+    "minecraft": ">=${minecraft_version}",
     "java": ">=25",
     "architectury": ">=${architectury_version}",
     "fabric-api": ">=${fabric_api_version}",

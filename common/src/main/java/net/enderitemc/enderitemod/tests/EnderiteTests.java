@@ -363,6 +363,24 @@ public class EnderiteTests {
         ctx.succeed();
     }
 
+    public static void enderiteShearsLeavesTest(GameTestHelper ctx) {
+        var leaves = ctx.getLevel().registryAccess().lookupOrThrow(Registries.BLOCK).getOrThrow(BlockTags.LEAVES);
+        ctx.assertTrue(leaves.size() > 0, Component.literal("The leaves tag must not be empty"));
+        Player player = ctx.makeMockPlayer(GameType.SURVIVAL);
+        ItemStack shears = EnderiteTools.ENDERITE_SHEAR.get().getDefaultInstance();
+        player.setItemSlot(EquipmentSlot.MAINHAND, shears);
+        BlockPos pos = ctx.absolutePos(new BlockPos(1, 1, 1));
+        for (var leaf : leaves) {
+            Block block = leaf.value();
+            List<ItemStack> drops = Block.getDrops(block.defaultBlockState(), ctx.getLevel(), pos, null, player, shears);
+            int leafCount = drops.stream().filter(stack -> stack.is(block.asItem())).mapToInt(ItemStack::getCount).sum();
+            ctx.assertValueEqual(leafCount, 1,
+                Component.literal("Enderite shears must drop exactly one " + leaf.unwrapKey().orElseThrow().identifier()
+                    + "; got " + drops));
+        }
+        ctx.succeed();
+    }
+
     public static void enderiteShulkerboxDropsTest(GameTestHelper ctx) {
         BlockPos pos = new BlockPos(1, 1, 1);
         ctx.setBlock(pos, EnderiteMod.ENDERITE_SHULKER_BOX.get());

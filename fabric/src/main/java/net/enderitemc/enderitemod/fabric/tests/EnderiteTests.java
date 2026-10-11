@@ -27,6 +27,11 @@ public class EnderiteTests {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteToolInteractionsTest(ctx);
     }
 
+    @GameTest(structure = TMPL_PRE + "enderite_shears_leaves")
+    public void enderiteShearsLeavesTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteShearsLeavesTest(ctx);
+    }
+
     @GameTest(structure = TMPL_PRE + "enderite_shulkerbox_drops")
     public void enderiteShulkerboxDropsTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteShulkerboxDropsTest(ctx);

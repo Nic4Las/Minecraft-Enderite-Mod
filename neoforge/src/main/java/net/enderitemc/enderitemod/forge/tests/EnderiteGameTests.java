@@ -36,6 +36,7 @@ public final class EnderiteGameTests {
     private static final List<Test> TESTS = List.of(
         new Test("enderite_ore_generation", 200, EnderiteTests::enderiteOreGenerationTest),
         new Test("enderite_tool_interactions", 20, EnderiteTests::enderiteToolInteractionsTest),
+        new Test("enderite_shears_leaves", 20, EnderiteTests::enderiteShearsLeavesTest),
         new Test("enderite_shulkerbox_drops", 20, EnderiteTests::enderiteShulkerboxDropsTest),
         new Test("explode_enderite_ore", 120, EnderiteTests::explodeEnderiteOreTest),
         new Test("enderite_shulkerbox_recipe", 20, EnderiteTests::enderiteShulkerboxRecipeTest),
