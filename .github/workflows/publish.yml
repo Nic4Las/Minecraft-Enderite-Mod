@@ -1,0 +1,85 @@
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - alpha
+          - beta
+          - release
+
+jobs:
+  publish:
+    name: Publish ${{ matrix.loader }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - loader: fabric
+            name: Fabric
+            curseforge-id: 399221
+            dependencies: |
+              architectury-api(required){modrinth:lhGA9TYQ}{curseforge:419699}#(ignore:github)
+              fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
+
+          - loader: neoforge
+            name: NeoForge
+            curseforge-id: 401284
+            dependencies: |
+              architectury-api(required){modrinth:lhGA9TYQ}{curseforge:419699}#(ignore:github)
+              cloth-config(optional){modrinth:9s6osm5g}{curseforge:348521}#(ignore:github)
+              shulkerboxtooltip(optional){modrinth:2M01OLQq}{curseforge:315811}#(ignore:github)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read gradle.properties
+        id: properties
+        uses: madhead/read-java-properties@latest
+        with:
+          file: gradle.properties
+          all: true
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: temurin
+
+      - name: Make Gradle Wrapper Executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew :${{ matrix.loader }}:build
+
+      - name: Upload ${{ matrix.loader }}
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          loaders: ${{ matrix.loader }}
+          files: ${{ matrix.loader }}/build/libs/${{ steps.properties.outputs.archives_name }}-${{ matrix.loader }}-${{ steps.properties.outputs.mod_version }}.jar
+          game-versions: ${{ steps.properties.outputs.minecraft_version }}
+          version: ${{ steps.properties.outputs.mod_version }}
+          java: 21
+          dependencies: ${{ matrix.dependencies }}
+
+          modrinth-id: 6lvRWqbA
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          curseforge-id: ${{ matrix.curseforge-id }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          modrinth-featured: true
+          version-type: ${{ inputs.version_type }}
+
+          name: Release - MC ${{ steps.properties.outputs.minecraft_version }} - v${{ steps.properties.outputs.mod_version }} - ${{ matrix.name }}
+          changelog-file: CHANGELOG.md
