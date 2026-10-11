@@ -1,8 +1,6 @@
 package net.enderitemc.enderitemod.forge.modIntegrations;
 
-import com.misterpemodder.shulkerboxtooltip.api.neoforge.ShulkerBoxTooltipPlugin;
 import net.enderitemc.enderitemod.config.ClothConfig;
-import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
 import net.minecraft.client.gui.screen.Screen;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;

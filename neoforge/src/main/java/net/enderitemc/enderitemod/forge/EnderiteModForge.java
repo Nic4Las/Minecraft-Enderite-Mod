@@ -4,7 +4,6 @@ import dev.architectury.platform.hooks.EventBusesHooks;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorRenderer;
 import net.enderitemc.enderitemod.forge.modIntegrations.ClothConfigImplementation;
 import net.enderitemc.enderitemod.forge.modIntegrations.ShulkerBoxTooltipImplementation;
-import net.enderitemc.enderitemod.modIntegrations.ShulkerBoxTooltipApiImplementation;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.SmithingTemplateItem;
@@ -113,6 +112,7 @@ public class EnderiteModForge {
             }
 
             if (ModList.get().isLoaded("shulkerboxtooltip")) {
+                // Isolate the optional API from NeoForge's method discovery.
                 ShulkerBoxTooltipImplementation.registerEntryPoint(event);
             }
         }

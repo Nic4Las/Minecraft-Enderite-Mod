@@ -41,6 +41,7 @@ public class EnderiteModFabricLike {
                 EnderiteTools.ENDERITE_SHIELD = ENDERITE_SHIELD;
                 
                 EnderiteMod.init();
+                EnderiteMod.registerEndOreBiomeModifications();
                 EnderiteShears.registerLoottables_Fabric();
 
                 // ItemGroup

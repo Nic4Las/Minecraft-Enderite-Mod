@@ -192,6 +192,16 @@ public class EnderiteMod {
         EnderiteDataComponents.init();
 
         LifecycleEvent.SETUP.register(() -> {
+            CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
+        });
+
+        //EnderiteShears.registerLoottables_Fabric();
+        EnderiteUpgradeSmithingTemplate.registerLoottables();
+    }
+
+    // Fabric-like only; NeoForge adds ore through its biome modifier.
+    public static void registerEndOreBiomeModifications() {
+        LifecycleEvent.SETUP.register(() -> {
             BiomeModifications.addProperties((ctx) -> ctx.hasTag(BiomeTags.IS_END), (ctx, mutable) -> {
                 mutable.getGenerationProperties().addFeature(
                     GenerationStep.Feature.UNDERGROUND_ORES,
@@ -202,10 +212,6 @@ public class EnderiteMod {
                     RegistryKey.of(RegistryKeys.PLACED_FEATURE,
                         Identifier.of(EnderiteMod.MOD_ID,"ore_enderite_small")));
             });
-            CreativeTabRegistry.append(ENDERITE_TAB, ENDERITE_UPGRADE_SMITHING_TEMPLATE.get());
         });
-
-        //EnderiteShears.registerLoottables_Fabric();
-        EnderiteUpgradeSmithingTemplate.registerLoottables();
     }
 }

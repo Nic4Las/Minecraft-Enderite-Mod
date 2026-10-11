@@ -5,6 +5,13 @@
 
 ## Description
 
+### Minecraft 1.21.1 hotfix (1.6.3)
+
+- Fix End chunk generation freezing with Architectury 13.0.11 on NeoForge by registering Enderite ore once per biome.
+- Include the previously unreleased fix that makes Shulker Box Tooltip optional on NeoForge.
+
+Build with Java 21 using `./gradlew build` (or `./gradlew.bat build` on Windows).
+
 <details>
   <summary>Open Description</summary>
   
