@@ -72,6 +72,11 @@ public class EnderiteTests {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteArmorTrimsTest(ctx);
     }
 
+    @GameTest(structure = TMPL_PRE + "enderite_armor_trims")
+    public void enderiteArmorAdvancementTest(GameTestHelper ctx) {
+        net.enderitemc.enderitemod.tests.EnderiteTests.enderiteArmorAdvancementTest(ctx);
+    }
+
     @GameTest(structure = TMPL_PRE + "enderite_elytra_trim_recipe")
     public void enderiteElytraTrimRecipeTest(GameTestHelper ctx) {
         net.enderitemc.enderitemod.tests.EnderiteTests.enderiteElytraTrimRecipeTest(ctx);

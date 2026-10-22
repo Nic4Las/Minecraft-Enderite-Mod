@@ -29,7 +29,8 @@ public final class EnderiteGameTests {
         }
 
         Identifier structure() {
-            return Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, "enderitetests." + name);
+            return Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, "enderitetests."
+                + (name.equals("enderite_armor_advancement") ? "enderite_armor_trims" : name));
         }
     }
 
@@ -45,6 +46,7 @@ public final class EnderiteGameTests {
         new Test("enderite_respawn_anchor", 20, EnderiteTests::enderiteRespawnAnchorTest),
         new Test("void_death_with_enderite", 20, EnderiteTests::voidDeathWithEnderiteTest),
         new Test("enderite_armor_trims", 20, EnderiteTests::enderiteArmorTrimsTest),
+        new Test("enderite_armor_advancement", 20, EnderiteTests::enderiteArmorAdvancementTest),
         new Test("enderite_elytra_trim_recipe", 20, EnderiteTests::enderiteElytraTrimRecipeTest),
         new Test("enderman_enderite", 20, EnderiteTests::endermanEnderiteTest),
         new Test("enderite_smelting", 20, EnderiteTests::enderiteSmeltingTest),

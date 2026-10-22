@@ -5,6 +5,7 @@ import net.enderitemc.enderitemod.blocks.EnderiteRespawnAnchor;
 import net.enderitemc.enderitemod.blocks.RespawnAnchorUtils.EnderiteRespawnAnchorBlockEntity;
 import net.enderitemc.enderitemod.shulker.EnderiteShulkerBoxBlockEntity;
 import net.enderitemc.enderitemod.tools.EnderiteTools;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -16,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -237,6 +239,55 @@ public class EnderiteTests {
             }
         }
         ctx.getLevel().addWorldGenChunkEntities(armor_stands.stream());
+        ctx.succeed();
+    }
+
+    public static void enderiteArmorAdvancementTest(GameTestHelper ctx) {
+        ServerPlayer player = ctx.makeMockServerPlayerInLevel();
+        try {
+            var advancement = ctx.getLevel().getServer().getAdvancements().get(
+                Identifier.fromNamespaceAndPath(EnderiteMod.MOD_ID, "enderite_armor"));
+            ctx.assertTrue(advancement != null, Component.literal("Total Protection advancement is missing"));
+            Consumer<Player> elytraArmor = p -> equipEnderiteArmor(p, EnderiteMod.ENDERITE_ELYTRA.get());
+
+            armorAdvancementTest(ctx, player, advancement,
+                p -> equipEnderiteArmor(p, EnderiteMod.ENDERITE_CHESTPLATE.get()), true, "ordinary chestplate full set");
+            armorAdvancementTest(ctx, player, advancement, p -> {
+                elytraArmor.accept(p);
+                p.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+            }, false, "missing helmet");
+            armorAdvancementTest(ctx, player, advancement, p -> {
+                elytraArmor.accept(p);
+                p.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+            }, false, "missing chest armour");
+            armorAdvancementTest(ctx, player, advancement, p -> {
+                elytraArmor.accept(p);
+                p.setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
+            }, false, "missing leggings");
+            armorAdvancementTest(ctx, player, advancement, p -> {
+                elytraArmor.accept(p);
+                p.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
+            }, false, "missing boots");
+            armorAdvancementTest(ctx, player, advancement,
+                p -> p.setItemSlot(EquipmentSlot.CHEST, EnderiteMod.ENDERITE_ELYTRA_SEPERATED.get().getDefaultInstance()),
+                false, "separated wings alone");
+            armorAdvancementTest(ctx, player, advancement, p -> {
+                elytraArmor.accept(p);
+                p.setItemSlot(EquipmentSlot.CHEST, EnderiteMod.ENDERITE_ELYTRA_SEPERATED.get().getDefaultInstance());
+            }, false, "separated wings with other armour equipped");
+            for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
+                int inventorySlot = slot;
+                armorAdvancementTest(ctx, player, advancement, p -> {
+                    p.getInventory().setItem(inventorySlot, EnderiteMod.ENDERITE_ELYTRA_SEPERATED.get().getDefaultInstance());
+                    p.getInventory().add(EnderiteMod.ENDERITE_HELMET.get().getDefaultInstance());
+                    p.getInventory().add(EnderiteMod.ENDERITE_LEGGINGS.get().getDefaultInstance());
+                    p.getInventory().add(EnderiteMod.ENDERITE_BOOTS.get().getDefaultInstance());
+                }, false, "separated wings in inventory slot " + slot);
+            }
+            armorAdvancementTest(ctx, player, advancement, elytraArmor, true, "elytra chestplate full set");
+        } finally {
+            ctx.getLevel().getServer().getPlayerList().remove(player);
+        }
         ctx.succeed();
     }
 
@@ -519,6 +570,33 @@ public class EnderiteTests {
     }
 
     // HELPER
+    private static void equipEnderiteArmor(Player player, Item chest) {
+        player.setItemSlot(EquipmentSlot.HEAD, EnderiteMod.ENDERITE_HELMET.get().getDefaultInstance());
+        player.setItemSlot(EquipmentSlot.CHEST, chest.getDefaultInstance());
+        player.setItemSlot(EquipmentSlot.LEGS, EnderiteMod.ENDERITE_LEGGINGS.get().getDefaultInstance());
+        player.setItemSlot(EquipmentSlot.FEET, EnderiteMod.ENDERITE_BOOTS.get().getDefaultInstance());
+    }
+
+    private static void armorAdvancementTest(GameTestHelper ctx, ServerPlayer player, AdvancementHolder advancement,
+            Consumer<Player> equip, boolean expected, String name) {
+        player.getInventory().clearContent();
+        player.inventoryMenu.broadcastChanges();
+        player.getAdvancements().revoke(advancement, "enderite_armor");
+        ctx.assertFalse(player.getAdvancements().getOrStartProgress(advancement).isDone(),
+            Component.literal("Advancement was not reset before " + name));
+        equip.accept(player);
+        // The server inventory listener fires the real inventory_changed trigger.
+        player.inventoryMenu.broadcastChanges();
+        ctx.assertValueEqual(player.getAdvancements().getOrStartProgress(advancement).isDone(), expected,
+            Component.literal("Wrong Total Protection award for " + name));
+        if (!expected) {
+            equipEnderiteArmor(player, EnderiteMod.ENDERITE_CHESTPLATE.get());
+            player.inventoryMenu.broadcastChanges();
+            ctx.assertTrue(player.getAdvancements().getOrStartProgress(advancement).isDone(),
+                Component.literal("Ordinary full armour must award Total Protection after " + name));
+        }
+    }
+
     public static void crafterRecipeTest(GameTestHelper ctx, Consumer<ItemStack> stackVerifier) {
         ctx.pressButton(1, 1, 1);
         ctx.runAfterDelay(15, () -> {
