@@ -164,4 +164,8 @@
   "option.enderitemod.general.allow_void_floating_enchantment.moved_to_json.hover": "该配置已移至json（数据包）",
   "tag.item.enderitemod.is_void_floating_enchantable": "可通过附魔台来获取虚空漂浮附魔",
   "tag.block.enderitemod.needs_enderite_tool": "需要使用末影合金等级的工具来挖掘"
+  ,
+  "item.enderitemod.enderite_spear": "末影合金矛",
+  "item.enderitemod.enderite_horse_armor": "末影合金马铠",
+  "item.enderitemod.enderite_nautilus_armor": "末影合金鹦鹉螺铠"
 }
